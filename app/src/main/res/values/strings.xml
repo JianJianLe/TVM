@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">TVM</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="tvm_title">自助售票</string>
+    <string name="tvm_support">本机支持现金 微信 支付宝 支付</string>
+	
+    <!-- 图片浏览 -->
+    <string name="only_choose_num">超出可选图片张数</string>
+    <string name="finish">完成</string>
+    <string name="invalidSD">sdcard无效或没有插入！</string>
+    <string name="photo">选择相册</string>
+    <string name="album">相册</string>
+    <string name="preview">预览</string>
+    <string name="unfinished">完成</string> 
+    <string name="camera_cancel">取消</string>
+    <string name="no_photo">相册没有图片</string>
+    <string name="disclaimer_content">    
+    &#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;本软件及所附带的文件是作为不提供任何明确的或隐含的赔偿或担保的形式提供的。
+    \n&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;用户出于自愿而使用本软件，您必须了解使用本软件的风险，在尚未购买产品技术服务之前，我们不承诺提供任何形式的技术支持、使用担保，也不承担任何因使用本软件而产生问题的相关责任。
+    \n&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;有关‘简剪乐’最终用户授权协议、商业授权与技术服务的详细内容，均由‘简剪乐’官方网站独家提供。
+               简剪乐公司拥有在不事先通知的情况下，修改授权协议和服务价目表的权力，修改后的协议或价目表对自改变之日起的新授权用户生效。
+    \n&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;电子文本形式的授权协议如同双方书面签署的协议一样，具有完全的和等同的法律效力。您一旦开始安装‘简剪乐’，即被视为完全理解并接受本协议的各项条款，在享有上述条款授予的权力的同时，受到相关的约束和限制。协议许可范围以外的行为，将直接违反本授权协议并 构成侵权，我们有权随时终止授权，责令停止损害，并保留追究相关责任的权力。
+	</string>
+	
+    <string-array name="week_name">
+        <item>日</item>
+        <item>一</item>
+        <item>二</item>
+        <item>三</item>
+        <item>四</item>
+        <item>五</item>
+        <item>六</item>
+    </string-array>
+</resources>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="video">
+        <item>上传视频</item>
+        <item>下载视频</item>
+    </array>
+    
+    <array name="image">
+        <item>上传图片</item>
+        <item>下载图片</item>
+    </array>
+    
+    <array name="discount">
+        <item>开始日期和时间</item>
+        <item>结束日期和时间</item>
+    </array>
+</resources>

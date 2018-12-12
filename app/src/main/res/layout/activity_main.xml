@@ -32,6 +32,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:textColor="@color/red"
+                    android:textSize="@dimen/xy10sp"
                     android:layout_gravity="center"
                     android:text="2018年11月13日"/>
                 <TextView
@@ -40,6 +41,7 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:text="10:32"
+                    android:textSize="@dimen/xy10sp"
                     android:textColor="@color/red"
                     android:gravity="center"
                     android:layout_gravity="center"
@@ -66,7 +68,7 @@
                     android:textColor="@color/red"
                     android:textStyle="bold"
                     android:gravity="center"
-                    android:textSize="@dimen/xy8sp"
+                    android:textSize="@dimen/xy20sp"
                     android:layout_gravity="center"
                     android:text="01"/>
             </LinearLayout>
@@ -114,7 +116,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:background="@drawable/btn_back"
-                android:textSize="@dimen/xy5sp"
+                android:textSize="@dimen/xy15sp"
                 android:gravity="center"
                 android:textStyle="bold"
                 android:layout_marginTop="@dimen/xy5dp"
@@ -134,7 +136,7 @@
                 android:id="@+id/tv_main_desc_desc"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textSize="@dimen/xy4sp"
+                android:textSize="@dimen/xy10sp"
                 android:textColor="@color/red"
                 android:gravity="center"
                 android:layout_gravity="center"
@@ -152,20 +154,20 @@
 
             <ImageView
                 android:id="@+id/iv_main_icon_wechat"
-                android:layout_width="@dimen/xy15dp"
-                android:layout_height="@dimen/xy15dp"
+                android:layout_width="@dimen/xy30dp"
+                android:layout_height="@dimen/xy30dp"
                 android:src="@drawable/wechat" />
             <ImageView
                 android:id="@+id/iv_main_icon_ali"
-                android:layout_width="@dimen/xy15dp"
-                android:layout_height="@dimen/xy15dp"
+                android:layout_width="@dimen/xy30dp"
+                android:layout_height="@dimen/xy30dp"
                 android:layout_marginRight="@dimen/xy5dp"
                 android:layout_marginLeft="@dimen/xy5dp"
                 android:src="@drawable/ali"/>
             <ImageView
                 android:id="@+id/iv_main_icon_cash"
-                android:layout_width="@dimen/xy15dp"
-                android:layout_height="@dimen/xy15dp"
+                android:layout_width="@dimen/xy30dp"
+                android:layout_height="@dimen/xy30dp"
                 android:src="@drawable/cash"/>
 
         </LinearLayout>
@@ -184,7 +186,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:textSize="@dimen/xy5dp"
+                android:textSize="@dimen/xy10dp"
                 android:text="广州市亿儿美有限公司"/>
         </LinearLayout>
 

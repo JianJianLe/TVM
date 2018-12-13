@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E1EFFC"
+    android:background="@drawable/bg"
     android:orientation="vertical" >
 
     <FrameLayout
@@ -59,7 +59,7 @@
                 android:paddingLeft="@dimen/xy20dp"
                 android:paddingRight="@dimen/xy20dp"
                 android:paddingTop="@dimen/xy10dp"
-                android:text="个人中心"
+                android:text="@string/personal_setting"
                 android:textSize="@dimen/xy16sp"
                 android:textColor="@color/black" />
             
@@ -83,7 +83,7 @@
                 android:paddingLeft="@dimen/xy20dp"
                 android:paddingRight="@dimen/xy20dp"
                 android:paddingTop="@dimen/xy10dp"
-                android:text="常规设置"
+                android:text="@string/normal_setting"
                 android:textSize="@dimen/xy16sp" 
                 android:textColor="@color/black"/>
 
@@ -106,7 +106,7 @@
                 android:paddingLeft="@dimen/xy20dp"
                 android:paddingRight="@dimen/xy20dp"
                 android:paddingTop="@dimen/xy10dp"
-                android:text="票价设置"
+                android:text="@string/ticket_setting"
                 android:textSize="@dimen/xy16sp" 
                 android:textColor="@color/black"/>
 
@@ -115,7 +115,7 @@
                 android:layout_height="@dimen/xy1dp"
                 android:layout_marginLeft="@dimen/xy10dp"
                 android:layout_marginRight="@dimen/xy10dp"
-                android:background="@drawable/wear_1" />
+                android:background="@drawable/wear_2" />
             
             <TextView
                 android:id="@+id/tv_settings_bill"
@@ -129,7 +129,7 @@
                 android:paddingLeft="@dimen/xy20dp"
                 android:paddingRight="@dimen/xy20dp"
                 android:paddingTop="@dimen/xy10dp"
-                android:text="微信设置"
+                android:text="@string/bill_setting"
                 android:textSize="@dimen/xy16sp" 
                 android:textColor="@color/black"/>
 
@@ -156,7 +156,7 @@
                 android:paddingLeft="@dimen/xy20dp"
                 android:paddingRight="@dimen/xy20dp"
                 android:paddingTop="@dimen/xy10dp"
-                android:text="账单查询"
+                android:text="@string/bill_query"
                 android:textSize="@dimen/xy16sp"
                 android:textColor="@color/black" />
             <TextView
@@ -171,7 +171,7 @@
                 android:paddingLeft="@dimen/xy20dp"
                 android:paddingRight="@dimen/xy20dp"
                 android:paddingTop="@dimen/xy10dp"
-                android:text="异常查询"
+                android:text="@string/exception_query"
                 android:textSize="@dimen/xy16sp"
                 android:textColor="@color/black" />
             
@@ -195,7 +195,7 @@
                 android:paddingLeft="@dimen/xy20dp"
                 android:paddingRight="@dimen/xy20dp"
                 android:paddingTop="@dimen/xy10dp"
-                android:text="关于我们"
+                android:text="@string/about"
                 android:textSize="@dimen/xy16sp"
                 android:textColor="@color/black" />
 
@@ -219,7 +219,7 @@
                 android:paddingLeft="@dimen/xy20dp"
                 android:paddingRight="@dimen/xy20dp"
                 android:paddingTop="@dimen/xy10dp"
-                android:text="免责声明"
+                android:text="@string/mianze"
                 android:textSize="@dimen/xy16sp" 
                 android:textColor="@color/black"/>
 

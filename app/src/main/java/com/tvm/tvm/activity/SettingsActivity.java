@@ -8,6 +8,7 @@ import com.tvm.tvm.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * - @Description:  $desc$
@@ -42,5 +43,16 @@ public class SettingsActivity extends BaseActivity {
         setContentView(R.layout.activity_settings);
         ButterKnife.bind(this);
     }
+
+    @OnClick(R.id.ib_settings_back)
+    public void back(){
+        this.finish();
+    }
+
+    @OnClick(R.id.tv_settings_person_manage)
+    public void personal(){
+
+    }
+
 
 }

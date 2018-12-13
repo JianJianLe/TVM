@@ -7,12 +7,15 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.tvm.tvm.R;
 import com.tvm.tvm.application.AppApplication;
 import com.tvm.tvm.bean.User;
 import com.tvm.tvm.bean.dao.UserDao;
+import com.tvm.tvm.util.PreConfig;
+import com.tvm.tvm.util.SharedPrefsUtil;
 import com.tvm.tvm.util.StringUtils;
 
 import java.util.List;
@@ -32,6 +35,8 @@ public class LoginActivity extends BaseActivity {
     EditText et_login_password;
     @BindView(R.id.bt_login_login)
     Button bt_login_login;
+    @BindView(R.id.ib_login_back)
+    ImageButton ib_login_back;
 
     //用户dao
     private UserDao userDao;
@@ -42,6 +47,11 @@ public class LoginActivity extends BaseActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         userDao = AppApplication.getApplication().getDaoSession().getUserDao();
+    }
+
+    @OnClick(R.id.ib_login_back)
+    public void back(){
+        this.finish();
     }
 
     @OnClick(R.id.bt_login_login)
@@ -57,7 +67,13 @@ public class LoginActivity extends BaseActivity {
         }
 
         if (proccessLogin(et_login_username.getText().toString().trim(),et_login_password.getText().toString().trim())){
-            startActivity(TAG,SettingsActivity.class);
+            if ("superManager".equals(et_login_username.getText().toString().trim())){
+                initDatabase();
+            }else {
+                startActivity(TAG,SettingsActivity.class);
+                SharedPrefsUtil.putValue(getApplicationContext(),PreConfig.USER,et_login_username.getText().toString().trim());
+                this.finish();
+            }
         }
     }
 
@@ -102,7 +118,11 @@ public class LoginActivity extends BaseActivity {
         User manager = new User();
         manager.setUserName("manager");
         manager.setPassword("manager123");
+        User superManager = new User();
+        superManager.setUserName("superManager");
+        superManager.setPassword("star2config");
         userDao.save(admin);
         userDao.save(manager);
+        userDao.save(superManager);
     }
 }

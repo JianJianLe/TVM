@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#E1EFFC"
+    android:orientation="vertical" >
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/xy40dp"
+        android:background="@color/light_gray"
+        android:orientation="horizontal" >
+
+        <ImageButton
+            android:id="@+id/settingBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="@dimen/xy10dp"
+            android:background="@null"
+            android:clickable="true"
+            android:src="@drawable/left_back" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/setting"
+            android:textColor="@color/black"
+            android:textSize="@dimen/xy18sp" />
+    </FrameLayout>
+    
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/xy1dp"
+        android:layout_marginLeft="@dimen/xy10dp"
+        android:layout_marginRight="@dimen/xy10dp"
+        android:background="@drawable/wear_1" />
+    
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+			android:layout_margin="@dimen/xy20dp">
+ 
+            <TextView
+                android:id="@+id/settingCenter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/xy10dp"
+                android:layout_marginRight="@dimen/xy10dp"
+                android:background="#FFFFFF"
+                android:gravity="center|left"
+                android:paddingBottom="@dimen/xy10dp"
+                android:paddingLeft="@dimen/xy20dp"
+                android:paddingRight="@dimen/xy20dp"
+                android:paddingTop="@dimen/xy10dp"
+                android:text="个人中心"
+                android:textSize="@dimen/xy16sp"
+                android:textColor="@color/black" />
+            
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/xy1dp"
+                android:layout_marginLeft="@dimen/xy10dp"
+                android:layout_marginRight="@dimen/xy10dp"
+                android:background="@drawable/wear_1" />
+            
+            
+           <TextView
+                android:id="@+id/settingAuthority"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/xy10dp"
+                android:layout_marginRight="@dimen/xy10dp"
+                android:background="#FFFFFF"
+                android:gravity="center|left"
+                android:paddingBottom="@dimen/xy10dp"
+                android:paddingLeft="@dimen/xy20dp"
+                android:paddingRight="@dimen/xy20dp"
+                android:paddingTop="@dimen/xy10dp"
+                android:text="权限设置"
+                android:textSize="@dimen/xy16sp" 
+                android:textColor="@color/black"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/xy1dp"
+                android:layout_marginLeft="@dimen/xy10dp"
+                android:layout_marginRight="@dimen/xy10dp"
+                android:background="@drawable/wear_1" />
+            
+             <TextView
+                android:id="@+id/settingSystem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/xy10dp"
+                android:layout_marginRight="@dimen/xy10dp"
+                android:background="#FFFFFF"
+                android:gravity="center|left"
+                android:paddingBottom="@dimen/xy10dp"
+                android:paddingLeft="@dimen/xy20dp"
+                android:paddingRight="@dimen/xy20dp"
+                android:paddingTop="@dimen/xy10dp"
+                android:text="系统设置"
+                android:textSize="@dimen/xy16sp" 
+                android:textColor="@color/black"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/xy1dp"
+                android:layout_marginLeft="@dimen/xy10dp"
+                android:layout_marginRight="@dimen/xy10dp"
+                android:background="@drawable/wear_1" />
+            
+            <TextView
+                android:id="@+id/settingWechat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/xy10dp"
+                android:layout_marginRight="@dimen/xy10dp"
+                android:background="#FFFFFF"
+                android:gravity="center|left"
+                android:paddingBottom="@dimen/xy10dp"
+                android:paddingLeft="@dimen/xy20dp"
+                android:paddingRight="@dimen/xy20dp"
+                android:paddingTop="@dimen/xy10dp"
+                android:text="微信设置"
+                android:textSize="@dimen/xy16sp" 
+                android:textColor="@color/black"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/xy1dp"
+                android:layout_marginLeft="@dimen/xy10dp"
+                android:layout_marginRight="@dimen/xy10dp"
+                android:background="@drawable/wear_1" />
+            
+            <!-- 图片、视频 -->
+			<!-- =================================================== -->
+            <TextView
+                android:id="@+id/settingImage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/xy10dp"
+                android:layout_marginRight="@dimen/xy10dp"
+                android:layout_marginTop="@dimen/xy10dp"
+                android:background="#FFFFFF"
+                android:gravity="center|left"
+                android:paddingBottom="@dimen/xy10dp"
+                android:paddingLeft="@dimen/xy20dp"
+                android:paddingRight="@dimen/xy20dp"
+                android:paddingTop="@dimen/xy10dp"
+                android:text="图片"
+                android:textSize="@dimen/xy16sp"
+                android:textColor="@color/black" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/xy1dp"
+                android:layout_marginLeft="@dimen/xy10dp"
+                android:layout_marginRight="@dimen/xy10dp"
+                android:background="@drawable/wear_1" />
+			
+            <!-- 视频上传：指定分店播放 -->
+            <TextView
+                android:id="@+id/settingVideo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/xy10dp"
+                android:layout_marginRight="@dimen/xy10dp"
+                android:background="#FFFFFF"
+                android:gravity="center|left"
+                android:paddingBottom="@dimen/xy10dp"
+                android:paddingLeft="@dimen/xy20dp"
+                android:paddingRight="@dimen/xy20dp"
+                android:paddingTop="@dimen/xy10dp"
+                android:text="视频"
+                android:textSize="@dimen/xy16sp" 
+                android:textColor="@color/black"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/xy1dp"
+                android:layout_marginLeft="@dimen/xy10dp"
+                android:layout_marginRight="@dimen/xy10dp"
+                android:background="@drawable/wear_1" />
+            
+            
+            <!-- 文字提示设置 -->
+            <TextView
+                android:id="@+id/settingChars"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/xy10dp"
+                android:layout_marginRight="@dimen/xy10dp"
+                android:background="#FFFFFF"
+                android:gravity="center|left"
+                android:paddingBottom="@dimen/xy10dp"
+                android:paddingLeft="@dimen/xy20dp"
+                android:paddingRight="@dimen/xy20dp"
+                android:paddingTop="@dimen/xy10dp"
+                android:text="文字"
+                android:textSize="@dimen/xy16sp" 
+                android:textColor="@color/black"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/xy1dp"
+                android:layout_marginLeft="@dimen/xy10dp"
+                android:layout_marginRight="@dimen/xy10dp"
+                android:background="@drawable/wear_1" />
+			<!-- =================================================== -->
+			
+			
+			<!-- =================================================== -->  
+			<TextView
+                android:id="@+id/commonSet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/xy10dp"
+                android:layout_marginRight="@dimen/xy10dp"
+                android:layout_marginTop="@dimen/xy10dp"
+                android:background="#FFFFFF"
+                android:gravity="center|left"
+                android:paddingBottom="@dimen/xy10dp"
+                android:paddingLeft="@dimen/xy20dp"
+                android:paddingRight="@dimen/xy20dp"
+                android:paddingTop="@dimen/xy10dp"
+                android:text="常规设置"
+                android:textSize="@dimen/xy16sp"
+                android:textColor="@color/black" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/xy1dp"
+                android:layout_marginLeft="@dimen/xy10dp"
+                android:layout_marginRight="@dimen/xy10dp"
+                android:background="@drawable/wear_1" />
+            <!-- =================================================== -->  
+            
+            
+            
+            <!-- 查询分为账单查询、异常查询 -->
+            <!-- =================================================== -->            
+            <TextView
+                android:id="@+id/billSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/xy10dp"
+                android:layout_marginRight="@dimen/xy10dp"
+                android:layout_marginTop="@dimen/xy10dp"
+                android:background="#FFFFFF"
+                android:gravity="center|left"
+                android:paddingBottom="@dimen/xy10dp"
+                android:paddingLeft="@dimen/xy20dp"
+                android:paddingRight="@dimen/xy20dp"
+                android:paddingTop="@dimen/xy10dp"
+                android:text="账单查询"
+                android:textSize="@dimen/xy16sp"
+                android:textColor="@color/black" />
+            <TextView
+                android:id="@+id/exceptionSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/xy10dp"
+                android:layout_marginRight="@dimen/xy10dp"
+                android:background="#FFFFFF"
+                android:gravity="center|left"
+                android:paddingBottom="@dimen/xy10dp"
+                android:paddingLeft="@dimen/xy20dp"
+                android:paddingRight="@dimen/xy20dp"
+                android:paddingTop="@dimen/xy10dp"
+                android:text="异常查询"
+                android:textSize="@dimen/xy16sp"
+                android:textColor="@color/black" />
+            
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/xy1dp"
+                android:layout_marginLeft="@dimen/xy10dp"
+                android:layout_marginRight="@dimen/xy10dp"
+                android:background="@drawable/wear_1" />
+            <!-- =================================================== -->
+            
+			<!-- 其他  -->
+			<!-- =================================================== -->
+            <TextView
+                android:id="@+id/settingUpdateVersion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/xy10dp"
+                android:layout_marginRight="@dimen/xy10dp"
+                android:layout_marginTop="@dimen/xy10dp"
+                android:background="#FFFFFF"
+                android:gravity="center|left"
+                android:paddingBottom="@dimen/xy10dp"
+                android:paddingLeft="@dimen/xy20dp"
+                android:paddingRight="@dimen/xy20dp"
+                android:paddingTop="@dimen/xy10dp"
+                android:text="检查更新"
+                android:textSize="@dimen/xy16sp"
+                android:textColor="@color/black" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/xy1dp"
+                android:layout_marginLeft="@dimen/xy10dp"
+                android:layout_marginRight="@dimen/xy10dp"
+                android:background="@drawable/wear_1" />
+
+            <TextView
+                android:id="@+id/settingAboutUsTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/xy10dp"
+                android:layout_marginRight="@dimen/xy10dp"
+                android:background="#FFFFFF"
+                android:gravity="center|left"
+                android:paddingBottom="@dimen/xy10dp"
+                android:paddingLeft="@dimen/xy20dp"
+                android:paddingRight="@dimen/xy20dp"
+                android:paddingTop="@dimen/xy10dp"
+                android:text="关于我们"
+                android:textSize="@dimen/xy16sp"
+                android:textColor="@color/black" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/xy1dp"
+                android:layout_marginLeft="@dimen/xy10dp"
+                android:layout_marginRight="@dimen/xy10dp"
+                android:background="@drawable/wear_1" />
+
+
+            <TextView
+                android:id="@+id/settingDisclaimerTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/xy10dp"
+                android:layout_marginRight="@dimen/xy10dp"
+                android:background="#FFFFFF"
+                android:gravity="center|left"
+                android:paddingBottom="@dimen/xy10dp"
+                android:paddingLeft="@dimen/xy20dp"
+                android:paddingRight="@dimen/xy20dp"
+                android:paddingTop="@dimen/xy10dp"
+                android:text="免责声明"
+                android:textSize="@dimen/xy16sp" 
+                android:textColor="@color/black"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/xy1dp"
+                android:layout_marginLeft="@dimen/xy10dp"
+                android:layout_marginRight="@dimen/xy10dp"
+                android:background="@drawable/wear_1" />
+            <!-- =================================================== -->
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

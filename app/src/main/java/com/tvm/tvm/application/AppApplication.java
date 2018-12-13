@@ -40,7 +40,6 @@ public class AppApplication extends Application {
         // 注意：该数据库连接属于DaoMaster，所以多个 Session 指的是相同的数据库连接。
         mDaoMaster = new DaoMaster(db);
         mDaoSession = mDaoMaster.newSession();
-//        initDatabase();
     }
 
     public DaoSession getDaoSession() {
@@ -52,21 +51,5 @@ public class AppApplication extends Application {
         return db;
     }
 
-    public void initDatabase(){
-        //添加初始用户
-        UserDao userDao = mDaoSession.getUserDao();
-        List<User> users = userDao.loadAll();
-        Log.d("tvm debug",users
-                .toString());
-        if (users==null){
-            User admin = new User();
-            admin.setUserName("admin");
-            admin.setPassword("admin");
-            User manager = new User();
-            manager.setUserName("manager");
-            manager.setPassword("manager123");
-            userDao.insert(admin);
-            userDao.insert(manager);
-        }
-    }
+
 }

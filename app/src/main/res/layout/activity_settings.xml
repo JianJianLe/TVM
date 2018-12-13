@@ -13,7 +13,7 @@
         android:orientation="horizontal" >
 
         <ImageButton
-            android:id="@+id/settingBack"
+            android:id="@+id/ib_settings_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -48,7 +48,7 @@
 			android:layout_margin="@dimen/xy20dp">
  
             <TextView
-                android:id="@+id/settingCenter"
+                android:id="@+id/tv_settings_person_manage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/xy10dp"
@@ -68,11 +68,11 @@
                 android:layout_height="@dimen/xy1dp"
                 android:layout_marginLeft="@dimen/xy10dp"
                 android:layout_marginRight="@dimen/xy10dp"
-                android:background="@drawable/wear_1" />
+                android:background="@drawable/wear_2" />
             
             
            <TextView
-                android:id="@+id/settingAuthority"
+                android:id="@+id/tv_settings_normal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/xy10dp"
@@ -83,7 +83,7 @@
                 android:paddingLeft="@dimen/xy20dp"
                 android:paddingRight="@dimen/xy20dp"
                 android:paddingTop="@dimen/xy10dp"
-                android:text="权限设置"
+                android:text="常规设置"
                 android:textSize="@dimen/xy16sp" 
                 android:textColor="@color/black"/>
 
@@ -92,10 +92,10 @@
                 android:layout_height="@dimen/xy1dp"
                 android:layout_marginLeft="@dimen/xy10dp"
                 android:layout_marginRight="@dimen/xy10dp"
-                android:background="@drawable/wear_1" />
+                android:background="@drawable/wear_2" />
             
              <TextView
-                android:id="@+id/settingSystem"
+                android:id="@+id/tv_settings_ticket"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/xy10dp"
@@ -106,7 +106,7 @@
                 android:paddingLeft="@dimen/xy20dp"
                 android:paddingRight="@dimen/xy20dp"
                 android:paddingTop="@dimen/xy10dp"
-                android:text="系统设置"
+                android:text="票价设置"
                 android:textSize="@dimen/xy16sp" 
                 android:textColor="@color/black"/>
 
@@ -118,7 +118,7 @@
                 android:background="@drawable/wear_1" />
             
             <TextView
-                android:id="@+id/settingWechat"
+                android:id="@+id/tv_settings_bill"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/xy10dp"
@@ -138,117 +138,13 @@
                 android:layout_height="@dimen/xy1dp"
                 android:layout_marginLeft="@dimen/xy10dp"
                 android:layout_marginRight="@dimen/xy10dp"
-                android:background="@drawable/wear_1" />
+                android:background="@drawable/wear_2" />
             
-            <!-- 图片、视频 -->
-			<!-- =================================================== -->
-            <TextView
-                android:id="@+id/settingImage"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/xy10dp"
-                android:layout_marginRight="@dimen/xy10dp"
-                android:layout_marginTop="@dimen/xy10dp"
-                android:background="#FFFFFF"
-                android:gravity="center|left"
-                android:paddingBottom="@dimen/xy10dp"
-                android:paddingLeft="@dimen/xy20dp"
-                android:paddingRight="@dimen/xy20dp"
-                android:paddingTop="@dimen/xy10dp"
-                android:text="图片"
-                android:textSize="@dimen/xy16sp"
-                android:textColor="@color/black" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/xy1dp"
-                android:layout_marginLeft="@dimen/xy10dp"
-                android:layout_marginRight="@dimen/xy10dp"
-                android:background="@drawable/wear_1" />
-			
-            <!-- 视频上传：指定分店播放 -->
-            <TextView
-                android:id="@+id/settingVideo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/xy10dp"
-                android:layout_marginRight="@dimen/xy10dp"
-                android:background="#FFFFFF"
-                android:gravity="center|left"
-                android:paddingBottom="@dimen/xy10dp"
-                android:paddingLeft="@dimen/xy20dp"
-                android:paddingRight="@dimen/xy20dp"
-                android:paddingTop="@dimen/xy10dp"
-                android:text="视频"
-                android:textSize="@dimen/xy16sp" 
-                android:textColor="@color/black"/>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/xy1dp"
-                android:layout_marginLeft="@dimen/xy10dp"
-                android:layout_marginRight="@dimen/xy10dp"
-                android:background="@drawable/wear_1" />
-            
-            
-            <!-- 文字提示设置 -->
-            <TextView
-                android:id="@+id/settingChars"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/xy10dp"
-                android:layout_marginRight="@dimen/xy10dp"
-                android:background="#FFFFFF"
-                android:gravity="center|left"
-                android:paddingBottom="@dimen/xy10dp"
-                android:paddingLeft="@dimen/xy20dp"
-                android:paddingRight="@dimen/xy20dp"
-                android:paddingTop="@dimen/xy10dp"
-                android:text="文字"
-                android:textSize="@dimen/xy16sp" 
-                android:textColor="@color/black"/>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/xy1dp"
-                android:layout_marginLeft="@dimen/xy10dp"
-                android:layout_marginRight="@dimen/xy10dp"
-                android:background="@drawable/wear_1" />
-			<!-- =================================================== -->
-			
-			
-			<!-- =================================================== -->  
-			<TextView
-                android:id="@+id/commonSet"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/xy10dp"
-                android:layout_marginRight="@dimen/xy10dp"
-                android:layout_marginTop="@dimen/xy10dp"
-                android:background="#FFFFFF"
-                android:gravity="center|left"
-                android:paddingBottom="@dimen/xy10dp"
-                android:paddingLeft="@dimen/xy20dp"
-                android:paddingRight="@dimen/xy20dp"
-                android:paddingTop="@dimen/xy10dp"
-                android:text="常规设置"
-                android:textSize="@dimen/xy16sp"
-                android:textColor="@color/black" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/xy1dp"
-                android:layout_marginLeft="@dimen/xy10dp"
-                android:layout_marginRight="@dimen/xy10dp"
-                android:background="@drawable/wear_1" />
-            <!-- =================================================== -->  
-            
-            
-            
             <!-- 查询分为账单查询、异常查询 -->
             <!-- =================================================== -->            
             <TextView
-                android:id="@+id/billSearch"
+                android:id="@+id/tv_settings_bill_query"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/xy10dp"
@@ -264,7 +160,7 @@
                 android:textSize="@dimen/xy16sp"
                 android:textColor="@color/black" />
             <TextView
-                android:id="@+id/exceptionSearch"
+                android:id="@+id/tv_settings_exception_query"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/xy10dp"
@@ -284,37 +180,11 @@
                 android:layout_height="@dimen/xy1dp"
                 android:layout_marginLeft="@dimen/xy10dp"
                 android:layout_marginRight="@dimen/xy10dp"
-                android:background="@drawable/wear_1" />
-            <!-- =================================================== -->
-            
-			<!-- 其他  -->
-			<!-- =================================================== -->
-            <TextView
-                android:id="@+id/settingUpdateVersion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/xy10dp"
-                android:layout_marginRight="@dimen/xy10dp"
-                android:layout_marginTop="@dimen/xy10dp"
-                android:background="#FFFFFF"
-                android:gravity="center|left"
-                android:paddingBottom="@dimen/xy10dp"
-                android:paddingLeft="@dimen/xy20dp"
-                android:paddingRight="@dimen/xy20dp"
-                android:paddingTop="@dimen/xy10dp"
-                android:text="检查更新"
-                android:textSize="@dimen/xy16sp"
-                android:textColor="@color/black" />
+                android:background="@drawable/wear_2" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/xy1dp"
-                android:layout_marginLeft="@dimen/xy10dp"
-                android:layout_marginRight="@dimen/xy10dp"
-                android:background="@drawable/wear_1" />
 
             <TextView
-                android:id="@+id/settingAboutUsTextView"
+                android:id="@+id/tv_settings_about"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/xy10dp"
@@ -338,7 +208,7 @@
 
 
             <TextView
-                android:id="@+id/settingDisclaimerTextView"
+                android:id="@+id/tv_setting_disclaimer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/xy10dp"
@@ -359,7 +229,7 @@
                 android:layout_marginLeft="@dimen/xy10dp"
                 android:layout_marginRight="@dimen/xy10dp"
                 android:background="@drawable/wear_1" />
-            <!-- =================================================== -->
+
         </LinearLayout>
     </ScrollView>
 

@@ -19,4 +19,8 @@
 
     <string name="admin">修改admin密码</string>
     <string name="manager">修改manager密码</string>
+
+    <string name="password">请输入密码</string>
+    <string name="password_again">请重复输入密码</string>
+    <string name="change_password">修改密码</string>
 </resources>

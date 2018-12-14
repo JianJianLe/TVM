@@ -21,6 +21,12 @@ public class BaseActivity extends Activity {
         this.startActivity(intent);
     }
 
+    public void startActivity(Context context,Intent intent,Class cls){
+        intent.setClass(this,cls);
+        overridePendingTransition(R.anim.slide_right_in,R.anim.slide_left_out);
+        this.startActivity(intent);
+    }
+
     public void showToastLong(Context context,String msg){
         Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
     }

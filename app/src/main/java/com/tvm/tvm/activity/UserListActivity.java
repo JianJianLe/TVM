@@ -1,5 +1,6 @@
 package com.tvm.tvm.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -14,7 +15,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * - @Description:  $desc$
+ * - @Description:  修改密码用户列表
  * - @Author:  Jat
  * - @Date:  2018/12/14
  * - @Time： 23:39
@@ -46,12 +47,23 @@ public class UserListActivity extends BaseActivity {
     public void onClick(View v){
         switch (v.getId()){
             case R.id.tv_user_list_admin:
+                change();
                 break;
             case R.id.tv_user_list_manager:
+                change();
                 break;
             case R.id.ib_user_list_back:
                 this.finish();
                 break;
         }
+    }
+
+    /**
+     * 跳转修改密码页
+     */
+    public void change(){
+        Intent intent = new Intent();
+        intent.putExtra("userName",SharedPrefsUtil.getValue(getApplicationContext(),PreConfig.USER,""));
+        startActivity(this,intent,ChangePasswordActivity.class);
     }
 }

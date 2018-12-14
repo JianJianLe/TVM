@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -49,15 +50,23 @@ public class LoginActivity extends BaseActivity {
         userDao = AppApplication.getApplication().getDaoSession().getUserDao();
     }
 
-    @OnClick(R.id.ib_login_back)
-    public void back(){
-        this.finish();
+    @OnClick({R.id.bt_login_login,R.id.ib_login_back})
+    public void login(View view){
+        switch (view.getId()){
+            case R.id.bt_login_login:
+                loginLogic();
+                break;
+            case R.id.ib_login_back:
+                this.finish();
+                break;
+        }
     }
 
-    @OnClick(R.id.bt_login_login)
-    public void login(){
+    /**
+     * 登录操作
+     */
+    public void loginLogic(){
         if ("".equals(et_login_username.getText().toString().trim())){
-//            Toast.makeText(TAG,"用户名不能为空",Toast.LENGTH_LONG).show();
             showToastLong(TAG,StringUtils.USER_NAME_EMPTY);
             return;
         }

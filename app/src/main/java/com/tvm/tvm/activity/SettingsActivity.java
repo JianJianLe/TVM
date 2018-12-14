@@ -1,6 +1,7 @@
 package com.tvm.tvm.activity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -34,8 +35,8 @@ public class SettingsActivity extends BaseActivity {
     TextView tv_settings_exception_query;
     @BindView(R.id.tv_settings_about)
     TextView tv_settings_about;
-    @BindView(R.id.tv_setting_disclaimer)
-    TextView tv_setting_disclaimer;
+    @BindView(R.id.tv_settings_disclaimer)
+    TextView tv_settings_disclaimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,14 +45,31 @@ public class SettingsActivity extends BaseActivity {
         ButterKnife.bind(this);
     }
 
-    @OnClick(R.id.ib_settings_back)
-    public void back(){
-        this.finish();
-    }
 
-    @OnClick(R.id.tv_settings_person_manage)
-    public void personal(){
-
+    @OnClick({R.id.tv_settings_person_manage,R.id.tv_settings_normal,R.id.tv_settings_ticket,R.id.tv_settings_bill
+    ,R.id.tv_settings_bill_query,R.id.tv_settings_exception_query,R.id.tv_settings_about,R.id.tv_setting_disclaimer,R.id.ib_settings_back})
+    public void onClick(View view){
+        switch (view.getId()){
+            case R.id.ib_settings_back:
+                this.finish();
+                break;
+            case R.id.tv_settings_person_manage:
+                break;
+            case R.id.tv_settings_normal:
+                break;
+            case R.id.tv_settings_ticket:
+                break;
+            case R.id.tv_settings_bill:
+                break;
+            case R.id.tv_settings_bill_query:
+                break;
+            case R.id.tv_settings_exception_query:
+                break;
+            case R.id.tv_settings_about:
+                break;
+            case R.id.tv_settings_disclaimer:
+                break;
+        }
     }
 
 

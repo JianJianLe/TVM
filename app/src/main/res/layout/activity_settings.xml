@@ -208,7 +208,7 @@
 
 
             <TextView
-                android:id="@+id/tv_setting_disclaimer"
+                android:id="@+id/tv_settings_disclaimer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/xy10dp"

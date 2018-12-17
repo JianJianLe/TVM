@@ -104,7 +104,7 @@ public class LoginActivity extends BaseActivity {
             if (passWord.equals(user.getPassword())){
                 return true;
             }else {
-                showToastLong(TAG,StringUtils.WRONG_PASS_WORD);
+                ToastUtils.showText(TAG,StringUtils.WRONG_PASS_WORD);
                 return false;
             }
         }

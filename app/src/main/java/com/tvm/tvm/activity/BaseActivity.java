@@ -12,6 +12,9 @@ import android.widget.Toast;
 
 import com.tvm.tvm.R;
 
+/**
+ * activity基类
+ */
 public class BaseActivity extends Activity {
 
     public void startActivity(Context context,Class cls){
@@ -27,11 +30,4 @@ public class BaseActivity extends Activity {
         this.startActivity(intent);
     }
 
-    public void showToastLong(Context context,String msg){
-        Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
-    }
-
-    public void showToastShort(Context context,String msg){
-        Toast.makeText(context,msg,Toast.LENGTH_SHORT).show();
-    }
 }

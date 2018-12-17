@@ -47,10 +47,10 @@ public class UserListActivity extends BaseActivity {
     public void onClick(View v){
         switch (v.getId()){
             case R.id.tv_user_list_admin:
-                change();
+                change(1);
                 break;
             case R.id.tv_user_list_manager:
-                change();
+                change(2);
                 break;
             case R.id.ib_user_list_back:
                 this.finish();
@@ -61,9 +61,13 @@ public class UserListActivity extends BaseActivity {
     /**
      * 跳转修改密码页
      */
-    public void change(){
+    public void change(int user){
         Intent intent = new Intent();
-        intent.putExtra("userName",SharedPrefsUtil.getValue(getApplicationContext(),PreConfig.USER,""));
+        if (user == 1){
+            intent.putExtra("userName","admin");
+        }else {
+            intent.putExtra("userName","manager");
+        }
         startActivity(this,intent,ChangePasswordActivity.class);
     }
 }

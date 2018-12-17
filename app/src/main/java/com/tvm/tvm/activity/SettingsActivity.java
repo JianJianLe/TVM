@@ -6,8 +6,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.tvm.tvm.R;
-import com.tvm.tvm.util.PreConfig;
-import com.tvm.tvm.util.SharedPrefsUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

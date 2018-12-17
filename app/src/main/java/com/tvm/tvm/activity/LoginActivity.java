@@ -2,9 +2,6 @@ package com.tvm.tvm.activity;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,14 +14,14 @@ import com.tvm.tvm.bean.User;
 import com.tvm.tvm.bean.dao.UserDao;
 import com.tvm.tvm.util.PreConfig;
 import com.tvm.tvm.util.SharedPrefsUtil;
-import com.tvm.tvm.util.StringUtils;
+import com.tvm.tvm.util.constant.StringUtils;
+import com.tvm.tvm.util.view.ToastUtils;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import freemarker.template.utility.StringUtil;
 
 public class LoginActivity extends BaseActivity {
 
@@ -67,11 +64,11 @@ public class LoginActivity extends BaseActivity {
      */
     public void loginLogic(){
         if ("".equals(et_login_username.getText().toString().trim())){
-            showToastLong(TAG,StringUtils.USER_NAME_EMPTY);
+            ToastUtils.showText(TAG,StringUtils.USER_NAME_EMPTY);
             return;
         }
         if ("".equals(et_login_password.getText().toString().trim())){
-            showToastLong(TAG,StringUtils.PASS_WORD_EMPTY);
+            ToastUtils.showText(TAG,StringUtils.PASS_WORD_EMPTY);
             return;
         }
 
@@ -99,8 +96,7 @@ public class LoginActivity extends BaseActivity {
             if (userList==null||userList.size()==0){
                 initDatabase();
                 userList = userDao.loadAll();
-                Toast.makeText(TAG,userList.toString(),Toast.LENGTH_LONG).show();
-                showToastShort(TAG,StringUtils.TRY_AGAIN);
+                ToastUtils.showText(TAG,StringUtils.TRY_AGAIN,Toast.LENGTH_SHORT);
                 return false;
             }
         }else {
@@ -119,7 +115,7 @@ public class LoginActivity extends BaseActivity {
      * 初始化用户
      */
     public void initDatabase(){
-        showToastShort(TAG,StringUtils.INIT_SYSTEM);
+        ToastUtils.showText(TAG,StringUtils.INIT_SYSTEM,Toast.LENGTH_SHORT);
         //添加初始用户
         User admin = new User();
         admin.setUserName("admin");

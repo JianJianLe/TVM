@@ -133,7 +133,7 @@
             android:layout_marginTop="@dimen/xy20dp"
             android:orientation="horizontal" >
             <TextView
-                android:id="@+id/tv_main_desc_desc"
+                android:id="@+id/tv_main_pay_desc"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textSize="@dimen/xy13sp"

@@ -12,7 +12,7 @@ import com.tvm.tvm.R;
 import com.tvm.tvm.application.AppApplication;
 import com.tvm.tvm.bean.User;
 import com.tvm.tvm.bean.dao.UserDao;
-import com.tvm.tvm.util.PreConfig;
+import com.tvm.tvm.util.constant.PreConfig;
 import com.tvm.tvm.util.SharedPrefsUtil;
 import com.tvm.tvm.util.constant.StringUtils;
 import com.tvm.tvm.util.view.ToastUtils;
@@ -74,7 +74,7 @@ public class LoginActivity extends BaseActivity {
 
         if (proccessLogin(et_login_username.getText().toString().trim(),et_login_password.getText().toString().trim())){
             if ("superManager".equals(et_login_username.getText().toString().trim())){
-                initDatabase();
+                initUser();
             }else {
                 startActivity(TAG,SettingsActivity.class);
                 SharedPrefsUtil.putValue(getApplicationContext(),PreConfig.USER,et_login_username.getText().toString().trim());
@@ -92,13 +92,7 @@ public class LoginActivity extends BaseActivity {
     private boolean proccessLogin(String userName , String passWord){
         List<User> userList = userDao.queryBuilder().where(UserDao.Properties.UserName.eq(userName)).list();
         if (userList==null||userList.size()==0){
-            userList = userDao.loadAll();
-            if (userList==null||userList.size()==0){
-                initDatabase();
-                userList = userDao.loadAll();
-                ToastUtils.showText(TAG,StringUtils.TRY_AGAIN,Toast.LENGTH_SHORT);
-                return false;
-            }
+            ToastUtils.showText(TAG,StringUtils.NO_USER,Toast.LENGTH_SHORT);
         }else {
             User user = userList.get(0);
             if (passWord.equals(user.getPassword())){
@@ -110,12 +104,11 @@ public class LoginActivity extends BaseActivity {
         }
         return false;
     }
-
     /**
      * 初始化用户
      */
-    public void initDatabase(){
-        ToastUtils.showText(TAG,StringUtils.INIT_SYSTEM,Toast.LENGTH_SHORT);
+    public void initUser(){
+        ToastUtils.showText(this,StringUtils.INIT_USER,Toast.LENGTH_SHORT);
         //添加初始用户
         User admin = new User();
         admin.setUserName("admin");
@@ -123,11 +116,9 @@ public class LoginActivity extends BaseActivity {
         User manager = new User();
         manager.setUserName("manager");
         manager.setPassword("manager123");
-        User superManager = new User();
-        superManager.setUserName("superManager");
-        superManager.setPassword("star2config");
-        userDao.save(admin);
-        userDao.save(manager);
-        userDao.save(superManager);
+        userDao.update(admin);
+        userDao.update(manager);
+        ToastUtils.showText(this,StringUtils.INIT_FINISH,Toast.LENGTH_SHORT);
     }
+
 }

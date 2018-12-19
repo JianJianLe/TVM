@@ -8,6 +8,10 @@ public class StringUtils {
 
     public static String INIT_SYSTEM = "初始化系统中...";
 
+    public static String INIT_USER = "初始化用户";
+
+    public static String INIT_FINISH = "初始化完成";
+
     public static String WRONG_PASS_WORD = "密码错误";
 
     public static String TRY_AGAIN = "请重试！";
@@ -21,5 +25,13 @@ public class StringUtils {
     public static String NO_USER = "找不到对应用户！";
 
     public static String UPDATE_PASSWORD_SUCCESS = "修改密码成功";
+
+    public static String EMPTY_COMPANY_NAME = "公司名不能为空";
+
+    public static String EMPTY_PAY_DESC = "指导购买标语不能为空";
+
+    public static String EMPTY_TIME_OUT = "时间不能为0或者空";
+
+    public static String UPDATE_SUCCESS = "更新成功";
 
 }

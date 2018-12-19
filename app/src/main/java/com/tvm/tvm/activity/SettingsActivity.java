@@ -57,6 +57,7 @@ public class SettingsActivity extends BaseActivity {
                 startActivity(this,UserListActivity.class);
                 break;
             case R.id.tv_settings_normal:
+                startActivity(this,NormalSettingActivity.class);
                 break;
             case R.id.tv_settings_ticket:
                 break;

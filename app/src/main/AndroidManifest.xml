@@ -21,6 +21,7 @@
         <activity android:name=".activity.SettingsActivity"></activity>
         <activity android:name=".activity.UserListActivity"></activity>
         <activity android:name=".activity.ChangePasswordActivity"></activity>
+        <activity android:name=".activity.NormalSettingActivity"></activity>
     </application>
 
 </manifest>

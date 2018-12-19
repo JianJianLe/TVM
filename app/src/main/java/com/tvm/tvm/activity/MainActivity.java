@@ -1,10 +1,10 @@
 package com.tvm.tvm.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
 import com.tvm.tvm.R;
+import com.tvm.tvm.util.FirstInitApp;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,6 +29,8 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        //检查数据库，看是否是第一次安装
+        FirstInitApp.initDatabase(getApplicationContext());
     }
 
     @OnLongClick(R.id.tv_main_comany_name)

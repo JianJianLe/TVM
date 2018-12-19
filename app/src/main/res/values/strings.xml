@@ -23,4 +23,6 @@
     <string name="password">请输入密码</string>
     <string name="password_again">请重复输入密码</string>
     <string name="change_password">修改密码</string>
+
+    <string name="save">保存</string>
 </resources>

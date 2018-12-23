@@ -118,7 +118,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-//        setTicketNum();
+        setTicketNum();
     }
 
     //关掉延迟服务

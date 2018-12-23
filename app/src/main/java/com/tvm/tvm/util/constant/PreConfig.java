@@ -19,4 +19,6 @@ public class PreConfig {
     public static String PRINT_TIME_OUT = "printTimeOut";
     //支付描述
     public static String PAY_DESC = "payDesc";
+
+    public final static String USB_FOLDER="/mnt/usb_storage/";
 }

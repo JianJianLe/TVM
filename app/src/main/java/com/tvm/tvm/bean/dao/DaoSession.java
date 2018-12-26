@@ -8,10 +8,12 @@ import org.greenrobot.greendao.database.Database;
 import org.greenrobot.greendao.identityscope.IdentityScopeType;
 import org.greenrobot.greendao.internal.DaoConfig;
 
+import com.tvm.tvm.bean.PaymentRecord;
 import com.tvm.tvm.bean.PriceList;
 import com.tvm.tvm.bean.TicketSummary;
 import com.tvm.tvm.bean.User;
 
+import com.tvm.tvm.bean.dao.PaymentRecordDao;
 import com.tvm.tvm.bean.dao.PriceListDao;
 import com.tvm.tvm.bean.dao.TicketSummaryDao;
 import com.tvm.tvm.bean.dao.UserDao;
@@ -25,10 +27,12 @@ import com.tvm.tvm.bean.dao.UserDao;
  */
 public class DaoSession extends AbstractDaoSession {
 
+    private final DaoConfig paymentRecordDaoConfig;
     private final DaoConfig priceListDaoConfig;
     private final DaoConfig ticketSummaryDaoConfig;
     private final DaoConfig userDaoConfig;
 
+    private final PaymentRecordDao paymentRecordDao;
     private final PriceListDao priceListDao;
     private final TicketSummaryDao ticketSummaryDao;
     private final UserDao userDao;
@@ -36,6 +40,9 @@ public class DaoSession extends AbstractDaoSession {
     public DaoSession(Database db, IdentityScopeType type, Map<Class<? extends AbstractDao<?, ?>>, DaoConfig>
             daoConfigMap) {
         super(db);
+
+        paymentRecordDaoConfig = daoConfigMap.get(PaymentRecordDao.class).clone();
+        paymentRecordDaoConfig.initIdentityScope(type);
 
         priceListDaoConfig = daoConfigMap.get(PriceListDao.class).clone();
         priceListDaoConfig.initIdentityScope(type);
@@ -46,19 +53,26 @@ public class DaoSession extends AbstractDaoSession {
         userDaoConfig = daoConfigMap.get(UserDao.class).clone();
         userDaoConfig.initIdentityScope(type);
 
+        paymentRecordDao = new PaymentRecordDao(paymentRecordDaoConfig, this);
         priceListDao = new PriceListDao(priceListDaoConfig, this);
         ticketSummaryDao = new TicketSummaryDao(ticketSummaryDaoConfig, this);
         userDao = new UserDao(userDaoConfig, this);
 
+        registerDao(PaymentRecord.class, paymentRecordDao);
         registerDao(PriceList.class, priceListDao);
         registerDao(TicketSummary.class, ticketSummaryDao);
         registerDao(User.class, userDao);
     }
     
     public void clear() {
+        paymentRecordDaoConfig.clearIdentityScope();
         priceListDaoConfig.clearIdentityScope();
         ticketSummaryDaoConfig.clearIdentityScope();
         userDaoConfig.clearIdentityScope();
+    }
+
+    public PaymentRecordDao getPaymentRecordDao() {
+        return paymentRecordDao;
     }
 
     public PriceListDao getPriceListDao() {

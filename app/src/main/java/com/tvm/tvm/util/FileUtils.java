@@ -15,7 +15,7 @@ import java.io.IOException;
 public class FileUtils {
 
 	public static String SDPATH = Environment.getExternalStorageDirectory()
-			+ "/Photo_LJ/";
+			+ "/TVM/";
 
 	public static void saveBitmap(Bitmap bm, String picName) {
 		try {

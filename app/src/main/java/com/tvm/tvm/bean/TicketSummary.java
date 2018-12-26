@@ -5,7 +5,7 @@ import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
 
 /**
- * - @Description:  $desc$
+ * - @Description:  首页票数
  * - @Author:  Jat
  * - @Date:  2018/12/19
  * - @Time： 22:32

@@ -3,7 +3,12 @@ package com.tvm.tvm.bean;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
-
+/**
+ - @Description:  用户
+ - @Author:  Jat
+ - @Date:  ${DATE}
+ - @Time： ${TIME}
+ */
 @Entity
 public class User {
 

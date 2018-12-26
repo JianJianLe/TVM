@@ -4,6 +4,9 @@ import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
 
+/**
+ * 价格列表
+ */
 @Entity
 public class PriceList {
 

@@ -97,9 +97,9 @@ public class MainActivity extends BaseActivity {
         TicketSummaryDao ticketSummaryDao = daoSession.getTicketSummaryDao();
         List<TicketSummary> ticketSummaryList = ticketSummaryDao.queryBuilder().where(TicketSummaryDao.Properties.Date.eq(dateFormat.format(new Date()))).list();
         if (ticketSummaryList.size()==0){
-            tv_main_header_ticket_num.setText(0);
+            tv_main_header_ticket_num.setText("0");
         }else {
-            tv_main_header_ticket_num.setText(ticketSummaryList.get(0).getNum());
+            tv_main_header_ticket_num.setText(ticketSummaryList.get(0).getNum()+"");
         }
     }
 
@@ -112,12 +112,14 @@ public class MainActivity extends BaseActivity {
         scheduledExecutorService.scheduleWithFixedDelay(new TimeTask(), 1, 1 ,TimeUnit.SECONDS);
         tv_main_comany_name.setText(SharedPrefsUtil.getValue(getApplicationContext(),PreConfig.COMPANY_NAME,""));
         tv_main_pay_desc.setText(SharedPrefsUtil.getValue(getApplicationContext(),PreConfig.PAY_DESC,""));
+
         Log.i("Test","MainActivity onStart scheduledExecutorService open!");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        //设置票数
         setTicketNum();
     }
 

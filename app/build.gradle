@@ -17,7 +17,7 @@ android {
         }
     }
     greendao{
-        schemaVersion 1
+        schemaVersion 4
         daoPackage'com.tvm.tvm.bean.dao'
         targetGenDir'src/main/java'
     }

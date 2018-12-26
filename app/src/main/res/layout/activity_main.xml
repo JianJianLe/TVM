@@ -96,12 +96,33 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="5"
-            android:background="@color/red"
             android:layout_marginTop="@dimen/xy5dp"
-            android:layout_marginLeft="@dimen/xy5dp"
-            android:layout_marginRight="@dimen/xy5dp"
-            android:orientation="horizontal" >
+            android:orientation="vertical" >
+            <SurfaceView
+                android:id="@+id/sv_main_video"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone" >
+            </SurfaceView>
 
+            <FrameLayout
+                android:id="@+id/fl_main_ads"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent" >
+
+                <LinearLayout
+                    android:id="@+id/ll_main_fvp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:orientation="vertical" >
+
+                    <android.support.v4.view.ViewPager
+                        android:id="@+id/vp_main_ads"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent" />
+                </LinearLayout>
+
+            </FrameLayout>
         </LinearLayout>
 
         <LinearLayout

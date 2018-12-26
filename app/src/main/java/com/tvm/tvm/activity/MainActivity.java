@@ -3,7 +3,11 @@ package com.tvm.tvm.activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.Surface;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.tvm.tvm.R;
@@ -16,6 +20,7 @@ import com.tvm.tvm.util.SharedPrefsUtil;
 import com.tvm.tvm.util.constant.PreConfig;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -42,6 +47,23 @@ public class MainActivity extends BaseActivity {
 
     @BindView(R.id.tv_main_pay_desc)
     TextView tv_main_pay_desc;
+
+    @BindView(R.id.sv_main_video)
+    Surface sv_main_video;
+
+    @BindView(R.id.fl_main_ads)
+    FrameLayout fl_main_ads;
+
+    @BindView(R.id.ll_main_fvp)
+    LinearLayout ll_main_fvp;
+
+    @BindView(R.id.vp_main_ads)
+    ViewPager vp_main_ads;
+
+    //广告类型，0：不设置 1：视频 2：广告 3：视频广告一起
+    private int type = 0;
+
+    private List<String> videos = new ArrayList<>();
 
     private DaoSession daoSession;
 
@@ -81,7 +103,18 @@ public class MainActivity extends BaseActivity {
     }
 
     /**
-     * 时间任务
+     - @Description:  获取机器内存，检索是否有广告视频
+     - @Author:  Jat
+     - @Date:  ${DATE}
+     - @Time： ${TIME}
+     */
+    public void initAds(){
+
+    }
+
+
+    /**
+     * 时间任务 时间更新
      * @author Administrator
      *
      */
@@ -109,7 +142,9 @@ public class MainActivity extends BaseActivity {
         // TODO Auto-generated method stub
         super.onStart();
         scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+        //时间更新，一分钟刷新一次
         scheduledExecutorService.scheduleWithFixedDelay(new TimeTask(), 1, 1 ,TimeUnit.SECONDS);
+        //设置公司名和购买指引
         tv_main_comany_name.setText(SharedPrefsUtil.getValue(getApplicationContext(),PreConfig.COMPANY_NAME,""));
         tv_main_pay_desc.setText(SharedPrefsUtil.getValue(getApplicationContext(),PreConfig.PAY_DESC,""));
 

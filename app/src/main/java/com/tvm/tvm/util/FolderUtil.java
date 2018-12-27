@@ -14,12 +14,12 @@ public class FolderUtil {
 	public static String getImagePath(){
 		String imagePath=null; 
 		//----------
-		String usbPath=getUSBJJLfolder();
+		String usbPath= getUSBfolder();
 		imagePath=getTargetImagePath(usbPath);
 		
 		//-----------
 		if(imagePath==null){
-			String sdcardPath=getSDCardJJLfolder();
+			String sdcardPath= getSDCardfolder();
 			imagePath=getTargetImagePath(sdcardPath);
 		}
 		
@@ -47,12 +47,12 @@ public class FolderUtil {
 		String videoPath=null;
 		
 		//----
-		String usbPath=getUSBJJLfolder();
+		String usbPath= getUSBfolder();
 		videoPath=getTargetVideoPath(usbPath);
 		
 		//-----
 		if(videoPath==null){
-			String sdcardPath=getSDCardJJLfolder();
+			String sdcardPath= getSDCardfolder();
 			videoPath=getTargetVideoPath(sdcardPath);
 		}
 		//----
@@ -103,8 +103,8 @@ public class FolderUtil {
 		return flag;
 	}
 	
-	public static String getUSBJJLfolder(){
-		return PreConfig.USB_FOLDER+File.separator+"JJL";
+	public static String getUSBfolder(){
+		return PreConfig.USB_FOLDER+File.separator+"TVM";
 	}
 	 
 	
@@ -124,12 +124,12 @@ public class FolderUtil {
 		return flag;
 	}
 	
-	public static String getSDCardJJLfolder(){
+	public static String getSDCardfolder(){
 		String path=null;
 		String extSdcardPath=getExtSdcardPath();
 		
 		if(extSdcardPath!=null){
-			String tempPath=extSdcardPath +File.separator+ "JJL"; 
+			String tempPath=extSdcardPath +File.separator+ "TVM";
 			if(isFolderExisted(tempPath)){
 				path=tempPath;
 			}
@@ -164,7 +164,7 @@ public class FolderUtil {
 	
 	public static String getDefaultVideoPath(){ 
 		File file=Environment.getExternalStorageDirectory();
-		String VideoPath=file.getAbsolutePath()+File.separator+"JJL"+File.separator+"Video";
+		String VideoPath=file.getAbsolutePath()+File.separator+"TVM"+File.separator+"Video";
 		file=new File(VideoPath);
 		if(!file.exists()){
 			file.mkdirs();

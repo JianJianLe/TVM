@@ -5,7 +5,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.Surface;
+import android.view.SurfaceView;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -16,6 +17,7 @@ import com.tvm.tvm.bean.TicketSummary;
 import com.tvm.tvm.bean.dao.DaoSession;
 import com.tvm.tvm.bean.dao.TicketSummaryDao;
 import com.tvm.tvm.util.FirstInitApp;
+import com.tvm.tvm.util.FolderUtil;
 import com.tvm.tvm.util.SharedPrefsUtil;
 import com.tvm.tvm.util.constant.PreConfig;
 
@@ -32,6 +34,10 @@ import butterknife.ButterKnife;
 import butterknife.OnLongClick;
 
 public class MainActivity extends BaseActivity {
+    //显示视频
+    private final int VIDEO_SHOW = 0;
+    //显示轮播图
+    private final int PICTURE_SHOW = 1;
 
     @BindView(R.id.tv_main_header_time_date)
     TextView tv_main_header_time_date;//日期
@@ -49,7 +55,7 @@ public class MainActivity extends BaseActivity {
     TextView tv_main_pay_desc;
 
     @BindView(R.id.sv_main_video)
-    Surface sv_main_video;
+    SurfaceView sv_main_video;
 
     @BindView(R.id.fl_main_ads)
     FrameLayout fl_main_ads;
@@ -64,6 +70,11 @@ public class MainActivity extends BaseActivity {
     private int type = 0;
 
     private List<String> videos = new ArrayList<>();
+
+    private List<String> pictures = new ArrayList<>();
+
+    //当前播放的哪个视频
+    private int indexVideo = 0;
 
     private DaoSession daoSession;
 
@@ -89,8 +100,16 @@ public class MainActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case 0:
+                    //更新时间
                     tv_main_header_time_date.setText(dateFormat.format(new Date()));
                     tv_main_header_time_time.setText(format.format(new Date()));
+                    break;
+                case 1://播放广告
+
+                    break;
+                case 2:
+                    break;
+                case 3:
                     break;
             }
         }
@@ -102,6 +121,21 @@ public class MainActivity extends BaseActivity {
         return true;
     }
 
+//    private void set
+
+    private void setAdsLayout(int flag){
+        switch (flag){
+            case VIDEO_SHOW:
+                sv_main_video.setVisibility(View.VISIBLE);
+                fl_main_ads.setVisibility(View.GONE);
+                break;
+            case PICTURE_SHOW:
+                sv_main_video.setVisibility(View.GONE);
+                fl_main_ads.setVisibility(View.VISIBLE);
+                break;
+        }
+    }
+
     /**
      - @Description:  获取机器内存，检索是否有广告视频
      - @Author:  Jat
@@ -109,7 +143,32 @@ public class MainActivity extends BaseActivity {
      - @Time： ${TIME}
      */
     public void initAds(){
+        // 清空list
+        videos.clear();
+        pictures.clear();
 
+        //视频文件
+        String videoPath = FolderUtil.getVideoPath();
+        videos = FolderUtil.getFolderFiles(videoPath);
+        //图片文件
+        String picturePath = FolderUtil.getImagePath();
+        pictures = FolderUtil.getFolderFiles(picturePath);
+
+        //判断播放广告方式
+        if (videos.size()>0 && pictures.size()>0){
+            //视频与广告图片一起轮播
+            type = 3;
+        }else if (videos.size()== 0 && pictures.size()>0){
+            //图片轮播
+            type = 2;
+        }else {
+            //播放视频
+            type = 2;
+        }
+        //发送消息播放广告
+        Message message = new Message();
+        message.what = 1;
+        handler.sendMessage(message);
     }
 
 

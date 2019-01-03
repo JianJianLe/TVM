@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:orientation="vertical">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/xy40dp"
+        android:background="@color/light_gray"
+        android:orientation="horizontal" >
+
+        <ImageButton
+            android:id="@+id/ib_bill_query_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="@dimen/xy10dp"
+            android:background="@null"
+            android:clickable="true"
+            android:src="@drawable/left_back" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/bill_query"
+            android:textColor="@color/black"
+            android:textSize="@dimen/xy18sp" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/tv_bill_query_start_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/xy5dp"
+            android:layout_marginLeft="@dimen/xy15dp"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
+            android:text="开始时间："
+            android:textSize="@dimen/xy15sp" />
+        <TextView
+            android:id="@+id/tv_bill_query_start_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="@dimen/xy5dp"
+            android:layout_marginLeft="@dimen/xy5dp"
+            android:text="2019-01-01"
+            android:textSize="@dimen/xy15sp" />
+
+        <Button
+            android:id="@+id/btn_bill_query_start_date"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/xy30dp"
+            android:layout_marginTop="@dimen/xy8dp"
+            android:layout_marginLeft="@dimen/xy15dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="@dimen/xy5dp"
+            android:text="选择开始时间"
+            android:background="@drawable/btn_back"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/tv_bill_query_end_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/xy5dp"
+            android:layout_marginLeft="@dimen/xy15dp"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
+            android:text="结束时间："
+            android:textSize="@dimen/xy15sp" />
+        <TextView
+            android:id="@+id/tv_bill_query_end_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="@dimen/xy5dp"
+            android:layout_marginLeft="@dimen/xy5dp"
+            android:text="2019-01-01"
+            android:textSize="@dimen/xy15sp" />
+
+        <Button
+            android:id="@+id/btn_bill_query_end_date"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/xy30dp"
+            android:layout_marginTop="@dimen/xy8dp"
+            android:layout_marginLeft="@dimen/xy15dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="@dimen/xy5dp"
+            android:text="选择结束时间"
+            android:background="@drawable/btn_back"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal">
+
+        <Button
+            android:id="@+id/btn_bill_query_query"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_query_back"
+            android:text="@string/query"/>
+    </LinearLayout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_bill_query_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+</LinearLayout>

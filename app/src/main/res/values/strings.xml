@@ -25,4 +25,5 @@
     <string name="change_password">修改密码</string>
 
     <string name="save">保存</string>
+    <string name="query">查询</string>
 </resources>

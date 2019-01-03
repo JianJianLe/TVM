@@ -64,6 +64,7 @@ public class SettingsActivity extends BaseActivity {
             case R.id.tv_settings_bill:
                 break;
             case R.id.tv_settings_bill_query:
+                startActivity(this,BillQueryActivity.class);
                 break;
             case R.id.tv_settings_exception_query:
                 break;

@@ -95,7 +95,7 @@
                 android:background="@drawable/wear_2" />
             
              <TextView
-                android:id="@+id/tv_settings_ticket"
+                android:id="@+id/tv_settings_ticket_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/xy10dp"

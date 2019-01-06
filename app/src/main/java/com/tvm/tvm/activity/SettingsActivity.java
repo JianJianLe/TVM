@@ -25,8 +25,8 @@ public class SettingsActivity extends BaseActivity {
     TextView tv_settings_person_manage;
     @BindView(R.id.tv_settings_normal)
     TextView tv_settings_normal;
-    @BindView(R.id.tv_settings_ticket)
-    TextView tv_settings_ticket;
+    @BindView(R.id.tv_settings_ticket_list)
+    TextView tv_settings_ticket_list;
     @BindView(R.id.tv_settings_bill)
     TextView tv_settings_bill;
     @BindView(R.id.tv_settings_bill_query)
@@ -46,7 +46,7 @@ public class SettingsActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.tv_settings_person_manage,R.id.tv_settings_normal,R.id.tv_settings_ticket,R.id.tv_settings_bill
+    @OnClick({R.id.tv_settings_person_manage,R.id.tv_settings_normal,R.id.tv_settings_ticket_list,R.id.tv_settings_bill
             ,R.id.tv_settings_bill_query,R.id.tv_settings_exception_query,R.id.tv_settings_about,R.id.tv_settings_disclaimer,R.id.ib_settings_back})
     public void onClick(View view){
         switch (view.getId()){
@@ -59,7 +59,8 @@ public class SettingsActivity extends BaseActivity {
             case R.id.tv_settings_normal:
                 startActivity(this,NormalSettingActivity.class);
                 break;
-            case R.id.tv_settings_ticket:
+            case R.id.tv_settings_ticket_list:
+                startActivity(this,TicketListActivity.class);
                 break;
             case R.id.tv_settings_bill:
                 break;

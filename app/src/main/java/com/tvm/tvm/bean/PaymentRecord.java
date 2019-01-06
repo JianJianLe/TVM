@@ -22,6 +22,11 @@ public class PaymentRecord {
 
     private int num;
 
+    /**
+     * 0--支付宝
+     * 1--微信
+     * 2--现金
+     */
     private int type;
 
     private Date payTime;
@@ -36,6 +41,16 @@ public class PaymentRecord {
 
     public int getType() {
         return this.type;
+    }
+
+    public String getTypeStr() {
+        if (type==0){
+            return "支付宝";
+        }else if (type==1){
+            return "微信";
+        }else{
+            return "现金";
+        }
     }
 
     public void setType(int type) {

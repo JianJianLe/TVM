@@ -3,29 +3,43 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/xy40dp"
         android:background="@color/light_gray"
         android:orientation="horizontal" >
 
         <ImageButton
-            android:id="@+id/ib_ticket_back"
-            android:layout_width="wrap_content"
+            android:id="@+id/ib_ticket_list_back"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_margin="@dimen/xy10dp"
             android:background="@null"
             android:clickable="true"
+            android:layout_weight="1"
             android:src="@drawable/left_back" />
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_weight="6"
+            android:gravity="center"
             android:text="@string/bill_query"
             android:textColor="@color/black"
             android:textSize="@dimen/xy18sp" />
-    </FrameLayout>
+        <ImageButton
+            android:id="@+id/ib_ticket_list_add"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="@dimen/xy10dp"
+            android:layout_marginRight="@dimen/xy10dp"
+            android:background="@null"
+            android:clickable="true"
+            android:src="@drawable/app_add" />
+    </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_ticket_list_list"

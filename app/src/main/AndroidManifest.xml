@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.tvm.tvm">
 
+    <!--网络-->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!--外存-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
     <application
         android:name=".application.AppApplication"
         android:allowBackup="true"
@@ -24,6 +30,7 @@
         <activity android:name=".activity.NormalSettingActivity"></activity>
         <activity android:name=".activity.BillQueryActivity"></activity>
         <activity android:name=".activity.TicketListActivity"></activity>
+        <activity android:name=".activity.TicketEditActivity"></activity>
     </application>
 
 </manifest>

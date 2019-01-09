@@ -8,10 +8,17 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.tvm.tvm.R;
 
 import java.io.File;
+
+import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * - @Description:  $desc$
@@ -19,21 +26,54 @@ import java.io.File;
  * - @Date:  2019/1/6
  * - @Time： 21:32
  */
-public class TicketEditActivity extends BaseActivity {
+public class PriceEditActivity extends BaseActivity {
 
     // 拍照成功，读取相册成功，裁减成功
     private final int  ALBUM_OK = 1, CAMERA_OK = 2,CUT_OK = 3;
 
     private File file;
 
+    @BindView(R.id.ib_price_edit_back)
+    ImageButton ib_price_edit_back;
+
+    @BindView(R.id.iv_price_edit_icon)
+    ImageView iv_price_edit_icon;
+
+    @BindView(R.id.et_price_edit_title)
+    EditText et_price_edit_title;
+
+    @BindView(R.id.et_price_edit_price)
+    EditText et_price_edit_price;
+
+    @BindView(R.id.et_price_edit_desc)
+    EditText et_price_edit_desc;
+
+    @BindView(R.id.btn_price_edit_save)
+    EditText btn_price_edit_save;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_price_edit);
+    }
+
+    @OnClick({R.id.ib_price_edit_back,R.id.iv_price_edit_icon,R.id.btn_price_edit_save})
+    public void onClick(View view){
+        switch (view.getId()){
+            case R.id.ib_price_edit_back:
+                this.finish();
+                break;
+            case R.id.iv_price_edit_icon:
+
+                break;
+            case R.id.btn_price_edit_save:
+                break;
+        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         getMenuInflater().inflate(R.menu.menu_album, menu);
         return true;
     }

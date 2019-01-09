@@ -9,11 +9,10 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import com.tvm.tvm.R;
-import com.tvm.tvm.adapter.TicketListAdapter;
+import com.tvm.tvm.adapter.PriceListAdapter;
 import com.tvm.tvm.application.AppApplication;
 import com.tvm.tvm.bean.PriceList;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -26,7 +25,7 @@ import butterknife.OnClick;
  * - @Date:  2019/1/6
  * - @Time： 10:14
  */
-public class TicketListActivity extends BaseActivity {
+public class PriceListActivity extends BaseActivity {
 
     @BindView(R.id.rv_ticket_list_list)
     RecyclerView rv_ticket_list_list;
@@ -42,7 +41,7 @@ public class TicketListActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ticket_list);
+        setContentView(R.layout.activity_price_list);
         ButterKnife.bind(this);
         getList();
         initLayout();
@@ -56,7 +55,7 @@ public class TicketListActivity extends BaseActivity {
         GridLayoutManager layoutManager = new GridLayoutManager(this,3);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rv_ticket_list_list.setLayoutManager(layoutManager);
-        rv_ticket_list_list.setAdapter(new TicketListAdapter(this,priceLists));
+        rv_ticket_list_list.setAdapter(new PriceListAdapter(this,priceLists));
         rv_ticket_list_list.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
         rv_ticket_list_list.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.HORIZONTAL));
     }
@@ -68,7 +67,7 @@ public class TicketListActivity extends BaseActivity {
                 this.finish();
                 break;
             case R.id.ib_ticket_list_add:
-                startActivity(this,TicketEditActivity.class);
+                startActivity(this,PriceEditActivity.class);
                 break;
         }
     }

@@ -60,7 +60,7 @@ public class SettingsActivity extends BaseActivity {
                 startActivity(this,NormalSettingActivity.class);
                 break;
             case R.id.tv_settings_ticket_list:
-                startActivity(this,TicketListActivity.class);
+                startActivity(this,PriceListActivity.class);
                 break;
             case R.id.tv_settings_bill:
                 break;

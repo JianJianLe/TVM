@@ -29,8 +29,8 @@
         <activity android:name=".activity.ChangePasswordActivity"></activity>
         <activity android:name=".activity.NormalSettingActivity"></activity>
         <activity android:name=".activity.BillQueryActivity"></activity>
-        <activity android:name=".activity.TicketListActivity"></activity>
-        <activity android:name=".activity.TicketEditActivity"></activity>
+        <activity android:name=".activity.PriceListActivity"></activity>
+        <activity android:name=".activity.PriceEditActivity"></activity>
     </application>
 
 </manifest>

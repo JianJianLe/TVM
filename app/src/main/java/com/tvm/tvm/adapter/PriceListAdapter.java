@@ -1,6 +1,5 @@
 package com.tvm.tvm.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -12,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tvm.tvm.R;
-import com.tvm.tvm.activity.TicketEditActivity;
+import com.tvm.tvm.activity.PriceEditActivity;
 import com.tvm.tvm.bean.PriceList;
 
 import java.util.List;
@@ -23,13 +22,13 @@ import java.util.List;
  * - @Date:  2019/1/6
  * - @Time： 20:18
  */
-public class TicketListAdapter extends RecyclerView.Adapter {
+public class PriceListAdapter extends RecyclerView.Adapter {
 
     private Context context;
 
     List<PriceList> priceLists;
 
-    public TicketListAdapter(Context context,List<PriceList> priceLists){
+    public PriceListAdapter(Context context, List<PriceList> priceLists){
         this.context = context;
         this.priceLists = priceLists;
     }
@@ -42,7 +41,7 @@ public class TicketListAdapter extends RecyclerView.Adapter {
             @Override
             public void onItemClick(View view, int position) {
                 PriceList item = priceLists.get(position+1);
-                Intent intent = new Intent(context,TicketEditActivity.class);
+                Intent intent = new Intent(context,PriceEditActivity.class);
                 intent.putExtra("id",item.getId());
                 context.startActivity(intent);
             }

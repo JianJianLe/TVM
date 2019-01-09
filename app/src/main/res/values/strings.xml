@@ -26,4 +26,10 @@
 
     <string name="save">保存</string>
     <string name="query">查询</string>
+
+    <string name="price_edit">修改价格</string>
+
+    <string name="title">标题</string>
+    <string name="price">价格</string>
+    <string name="desc">描述</string>
 </resources>

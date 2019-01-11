@@ -20,6 +20,7 @@ import com.tvm.tvm.util.FirstInitApp;
 import com.tvm.tvm.util.FolderUtil;
 import com.tvm.tvm.util.SharedPrefsUtil;
 import com.tvm.tvm.util.constant.PreConfig;
+import com.tvm.tvm.util.device.PrinterUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -84,6 +85,10 @@ public class MainActivity extends BaseActivity {
 
     private ScheduledExecutorService scheduledExecutorService;
 
+//    static {
+//        System.loadLibrary("printer_lib");
+//    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,6 +98,9 @@ public class MainActivity extends BaseActivity {
         FirstInitApp.initDatabase(getApplicationContext());
         //获取数据库
         daoSession = AppApplication.getApplication().getDaoSession();
+
+        //Test tv_main_title_title
+        //((TextView) findViewById(R.id.tv_main_title_title)).setText(PrinterUtil.getMessageFromJNI());
     }
 
     private Handler handler = new Handler(){

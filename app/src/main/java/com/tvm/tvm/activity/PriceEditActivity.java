@@ -1,23 +1,30 @@
 package com.tvm.tvm.activity;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.tvm.tvm.R;
+import com.tvm.tvm.util.CropUtils;
+import com.tvm.tvm.util.FileUtil;
+import com.tvm.tvm.util.view.ButtomDialogView;
+import com.tvm.tvm.util.view.ToastUtils;
 
 import java.io.File;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -29,9 +36,11 @@ import butterknife.OnClick;
 public class PriceEditActivity extends BaseActivity {
 
     // 拍照成功，读取相册成功，裁减成功
-    private final int  ALBUM_OK = 1, CAMERA_OK = 2,CUT_OK = 3;
+    private final int  REQUEST_CODE_ALBUM = 1, REQUEST_CODE_TAKE_PHOTO = 2,REQUEST_CODE_CROUP_PHOTO = 3;
 
     private File file;
+
+    private Uri uri;
 
     @BindView(R.id.ib_price_edit_back)
     ImageButton ib_price_edit_back;
@@ -49,13 +58,15 @@ public class PriceEditActivity extends BaseActivity {
     EditText et_price_edit_desc;
 
     @BindView(R.id.btn_price_edit_save)
-    EditText btn_price_edit_save;
+    Button btn_price_edit_save;
 
+    String mTempPhotoPath = Environment.getExternalStorageDirectory() + File.separator + "photo.jpeg";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_price_edit);
+        ButterKnife.bind(this);
     }
 
     @OnClick({R.id.ib_price_edit_back,R.id.iv_price_edit_icon,R.id.btn_price_edit_save})
@@ -65,111 +76,121 @@ public class PriceEditActivity extends BaseActivity {
                 this.finish();
                 break;
             case R.id.iv_price_edit_icon:
-
+                showButtomDialog();
                 break;
             case R.id.btn_price_edit_save:
                 break;
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_album, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-
-        switch (id)
-        {
-            case R.id.menu_openCameral:
-
-                //这里被注掉的，是在6.0中进行权限判断的，大家可以根据情况，自行加上
-                /*if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        != PackageManager.PERMISSION_GRANTED) {
-                    //申请WRITE_EXTERNAL_STORAGE权限
-                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                            123);
-                    Log.e("Album","我没有权限啊");
-                }else {
-                    Log.e("Album","我有权限啊");
-                }*/
-
+    public void showButtomDialog(){
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_icon_select,null);
+        final ButtomDialogView buttomDialogView = new ButtomDialogView(this,view,false,false);
+        buttomDialogView.show();
+        TextView tv_dialog_icon_select_take_photo = view.findViewById(R.id.tv_dialog_icon_select_take_photo);
+        tv_dialog_icon_select_take_photo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 // 来自相机
-                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                buttomDialogView.dismiss();
+                Intent takeIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 // 下面这句指定调用相机拍照后的照片存储的路径
-                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
-                startActivityForResult(cameraIntent, CAMERA_OK);// CAMERA_OK是用作判断返回结果的标识
-                break;
-            case R.id.menu_openAlbum:
-                // 来自相册
-                Intent albumIntent = new Intent(Intent.ACTION_PICK, null);
-                /**
-                 * 下面这句话，与其它方式写是一样的效果，如果：
-                 * intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                 * intent.setType(""image/*");设置数据类型
-                 * 要限制上传到服务器的图片类型时可以直接写如："image/jpeg 、 image/png等的类型"
-                 */
-                albumIntent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-                startActivityForResult(albumIntent, ALBUM_OK);
-                break;
-        }
+                takeIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(mTempPhotoPath)));
+                startActivityForResult(takeIntent, REQUEST_CODE_TAKE_PHOTO);
+            }
+        });
 
-        return super.onOptionsItemSelected(item);
+        TextView tv_dialog_icon_select_choose_photo = view.findViewById(R.id.tv_dialog_icon_select_choose_photo);
+        tv_dialog_icon_select_choose_photo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // "从相册选择"按钮被点击了
+                buttomDialogView.dismiss();
+                Intent pickIntent = new Intent(Intent.ACTION_PICK, null);
+                // 如果限制上传到服务器的图片类型时可以直接写如："image/jpeg 、 image/png等的类型"
+                pickIntent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+                startActivityForResult(pickIntent, REQUEST_CODE_ALBUM);
+            }
+        });
+
+        //取消按钮
+        TextView tv_dialog_icon_select_cancel = view.findViewById(R.id.tv_dialog_icon_select_cancel);
+        tv_dialog_icon_select_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                buttomDialogView.dismiss();
+            }
+        });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d("result code",resultCode+"");
+        if (resultCode != -1) {
+            return;
+        }
+        if (requestCode == REQUEST_CODE_TAKE_PHOTO && data != null) {
+            Uri newUri;
+            Log.d("result uri",uri.toString()+"");
+            //android7.0和7.0以下的不同的uri
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                newUri = Uri.parse("file:///" + CropUtils.getPath(this, data.getData()));
+            } else {
+                newUri = data.getData();
+            }
+            if (newUri != null) {
+                startPhotoZoom(newUri);
+            } else {
+                ToastUtils.showText(this, "没有得到相册图片");
+            }
+        } else if (requestCode == REQUEST_CODE_TAKE_PHOTO) {
+            //调用系统裁剪方法进行裁剪
+            startPhotoZoom(uri);
+        } else if (requestCode == REQUEST_CODE_CROUP_PHOTO) {
+            //获取图片路径进行设置
+            compressAndUploadAvatar(file.getPath());
+        }
+    }
 
     /**
-     * 裁剪图片方法实现
-     * @param uri          图片uri
-     * @param type         类别：相机，相册
+     * 裁剪方法
+     *
+     * @param uri
      */
-    public void clipPhoto(Uri uri, int type) {
-
-
+    public void startPhotoZoom(Uri uri) {
         Intent intent = new Intent("com.android.camera.action.CROP");
         intent.setDataAndType(uri, "image/*");
-        // 下面这个crop = true是设置在开启的Intent中设置显示的VIEW可裁剪
-        intent.putExtra("crop", "true");
-        // aspectX aspectY 是宽高的比例，这里设置的是正方形（长宽比为1:1）
-        intent.putExtra("aspectX", 1);
-        intent.putExtra("aspectY", 1);
-        // outputX outputY 是裁剪图片宽高
-        intent.putExtra("outputX", 200);
-        intent.putExtra("outputY", 200);
-        intent.putExtra("return-data", false);
-
-        /**
-         * 此处做一个判断
-         * １，相机取到的照片，我们把它做放到了定义的目录下。就是file
-         * ２，相册取到的照片，这里注意了，因为相册照片本身有一个位置，我们进行了裁剪后，要给一个裁剪后的位置，
-         * 　　不然onActivityResult方法中，data一直是null
-         */
-        if(type==CAMERA_OK)
-        {
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-        }else {
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
-        }
-        startActivityForResult(intent, CUT_OK);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.putExtra("crop", "true");// crop=true 有这句才能出来最后的裁剪页面.
+        intent.putExtra("aspectX", 1);// 这两项为裁剪框的比例.
+        intent.putExtra("aspectY", 1);// x:y=1:1
+        // intent.putExtra("outputX", Constants.USER_AVATAR_MAX_SIZE);//图片输出大小,可以不需要
+        //intent.putExtra("outputY", Constants.USER_AVATAR_MAX_SIZE);
+        //注意这里的输出的是上面的文件路径的Uri格式，这样在才能获取图片
+        intent.putExtra("output", Uri.fromFile(file));
+        intent.putExtra("outputFormat", "JPEG");// 返回格式
+        startActivityForResult(intent, REQUEST_CODE_CROUP_PHOTO);
+    }
+    private void compressAndUploadAvatar(String fileSrc) {
+        //压缩图片
+        final File cover = FileUtil.getSmallBitmap(this, fileSrc);
+        //利用Fresco进行缓存图片和设置圆形图片
+//        GenericDraweeHierarchyBuilder builder = new GenericDraweeHierarchyBuilder(getResources());
+//        GenericDraweeHierarchy hierarchy = builder
+//                .setDesiredAspectRatio(1.0f)
+//                .setFailureImage(R.mipmap.user_avatar_bg)//失败设置的图片
+//                .setRoundingParams(RoundingParams.fromCornersRadius(100f))
+//                .build();
+//
+//        //加载本地图片，设置头像
+//        Uri uri = Uri.fromFile(cover);
+//        DraweeController controller = Fresco.newDraweeControllerBuilder()
+//                .setOldController(mSimpleDraweeView.getController())
+//                .setUri(uri)
+//                .build();
+//        mSimpleDraweeView.setHierarchy(hierarchy);
+//        mSimpleDraweeView.setController(controller);
     }
 
-    /**
-     * 保存裁剪之后的图片数据 将图片设置到imageview中
-     *
-     * @param picdata　　　　　　　　　　资源
-     */
-    private void setPicToView(Intent picdata) {
-
-        try {
-            Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(picdata.getData()));
-//            img_album.setImageBitmap(bitmap);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
-    }
 }

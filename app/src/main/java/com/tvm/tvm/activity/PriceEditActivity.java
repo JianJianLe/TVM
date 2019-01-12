@@ -2,7 +2,6 @@ package com.tvm.tvm.activity;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -67,6 +66,9 @@ public class PriceEditActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_price_edit);
         ButterKnife.bind(this);
+        //保证图片路径存在
+        file = new File(mTempPhotoPath);
+        file.delete();
     }
 
     @OnClick({R.id.ib_price_edit_back,R.id.iv_price_edit_icon,R.id.btn_price_edit_save})
@@ -95,7 +97,7 @@ public class PriceEditActivity extends BaseActivity {
                 buttomDialogView.dismiss();
                 Intent takeIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 // 下面这句指定调用相机拍照后的照片存储的路径
-                takeIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(mTempPhotoPath)));
+                takeIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
                 startActivityForResult(takeIntent, REQUEST_CODE_TAKE_PHOTO);
             }
         });
@@ -127,26 +129,11 @@ public class PriceEditActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Log.d("result code",resultCode+"");
-        if (resultCode != -1) {
-            return;
-        }
-        if (requestCode == REQUEST_CODE_TAKE_PHOTO && data != null) {
-            Uri newUri;
-            Log.d("result uri",uri.toString()+"");
-            //android7.0和7.0以下的不同的uri
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-                newUri = Uri.parse("file:///" + CropUtils.getPath(this, data.getData()));
-            } else {
-                newUri = data.getData();
-            }
-            if (newUri != null) {
-                startPhotoZoom(newUri);
-            } else {
-                ToastUtils.showText(this, "没有得到相册图片");
-            }
-        } else if (requestCode == REQUEST_CODE_TAKE_PHOTO) {
+        if (requestCode == REQUEST_CODE_TAKE_PHOTO) {
+            startPhotoZoom(Uri.fromFile(file));
+        } else if (requestCode == REQUEST_CODE_ALBUM) {
             //调用系统裁剪方法进行裁剪
-            startPhotoZoom(uri);
+            startPhotoZoom(data.getData());
         } else if (requestCode == REQUEST_CODE_CROUP_PHOTO) {
             //获取图片路径进行设置
             compressAndUploadAvatar(file.getPath());
@@ -175,22 +162,9 @@ public class PriceEditActivity extends BaseActivity {
     private void compressAndUploadAvatar(String fileSrc) {
         //压缩图片
         final File cover = FileUtil.getSmallBitmap(this, fileSrc);
-        //利用Fresco进行缓存图片和设置圆形图片
-//        GenericDraweeHierarchyBuilder builder = new GenericDraweeHierarchyBuilder(getResources());
-//        GenericDraweeHierarchy hierarchy = builder
-//                .setDesiredAspectRatio(1.0f)
-//                .setFailureImage(R.mipmap.user_avatar_bg)//失败设置的图片
-//                .setRoundingParams(RoundingParams.fromCornersRadius(100f))
-//                .build();
-//
-//        //加载本地图片，设置头像
-//        Uri uri = Uri.fromFile(cover);
-//        DraweeController controller = Fresco.newDraweeControllerBuilder()
-//                .setOldController(mSimpleDraweeView.getController())
-//                .setUri(uri)
-//                .build();
-//        mSimpleDraweeView.setHierarchy(hierarchy);
-//        mSimpleDraweeView.setController(controller);
+        iv_price_edit_icon.setImageURI(Uri.fromFile(cover));
     }
+
+
 
 }

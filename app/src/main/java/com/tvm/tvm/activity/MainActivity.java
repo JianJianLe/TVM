@@ -20,7 +20,6 @@ import com.tvm.tvm.util.FirstInitApp;
 import com.tvm.tvm.util.FolderUtil;
 import com.tvm.tvm.util.SharedPrefsUtil;
 import com.tvm.tvm.util.constant.PreConfig;
-import com.tvm.tvm.util.device.PrinterUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

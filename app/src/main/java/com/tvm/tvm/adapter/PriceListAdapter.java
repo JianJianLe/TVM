@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.tvm.tvm.R;
 import com.tvm.tvm.activity.PriceEditActivity;
-import com.tvm.tvm.bean.PriceList;
+import com.tvm.tvm.bean.Price;
 
 import java.util.List;
 
@@ -26,9 +26,9 @@ public class PriceListAdapter extends RecyclerView.Adapter {
 
     private Context context;
 
-    List<PriceList> priceLists;
+    List<Price> priceLists;
 
-    public PriceListAdapter(Context context, List<PriceList> priceLists){
+    public PriceListAdapter(Context context, List<Price> priceLists){
         this.context = context;
         this.priceLists = priceLists;
     }
@@ -40,7 +40,7 @@ public class PriceListAdapter extends RecyclerView.Adapter {
         return new TicketItemViewHolder(v, new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                PriceList item = priceLists.get(position+1);
+                Price item = priceLists.get(position+1);
                 Intent intent = new Intent(context,PriceEditActivity.class);
                 intent.putExtra("id",item.getId());
                 context.startActivity(intent);

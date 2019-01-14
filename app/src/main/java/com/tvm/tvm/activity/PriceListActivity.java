@@ -11,7 +11,7 @@ import android.widget.ImageButton;
 import com.tvm.tvm.R;
 import com.tvm.tvm.adapter.PriceListAdapter;
 import com.tvm.tvm.application.AppApplication;
-import com.tvm.tvm.bean.PriceList;
+import com.tvm.tvm.bean.Price;
 
 import java.util.List;
 
@@ -36,7 +36,7 @@ public class PriceListActivity extends BaseActivity {
     @BindView(R.id.ib_ticket_list_back)
     ImageButton ib_ticket_list_back;
 
-    private List<PriceList> priceLists;
+    private List<Price> priceLists;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +48,7 @@ public class PriceListActivity extends BaseActivity {
     }
 
     public void getList(){
-        priceLists = AppApplication.getApplication().getDaoSession().getPriceListDao().queryBuilder().list();
+        priceLists = AppApplication.getApplication().getDaoSession().getPriceDao().queryBuilder().list();
     }
 
     private void initLayout(){

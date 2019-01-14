@@ -15,10 +15,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tvm.tvm.R;
-import com.tvm.tvm.util.CropUtils;
+import com.tvm.tvm.application.AppApplication;
+import com.tvm.tvm.bean.Price;
+import com.tvm.tvm.bean.dao.DaoSession;
+import com.tvm.tvm.bean.dao.PriceDao;
 import com.tvm.tvm.util.FileUtil;
 import com.tvm.tvm.util.view.ButtomDialogView;
-import com.tvm.tvm.util.view.ToastUtils;
 
 import java.io.File;
 
@@ -41,6 +43,8 @@ public class PriceEditActivity extends BaseActivity {
 
     private Uri uri;
 
+    private  File cover;
+
     @BindView(R.id.ib_price_edit_back)
     ImageButton ib_price_edit_back;
 
@@ -59,17 +63,40 @@ public class PriceEditActivity extends BaseActivity {
     @BindView(R.id.btn_price_edit_save)
     Button btn_price_edit_save;
 
+    Long priceId = null;
+
     String mTempPhotoPath = Environment.getExternalStorageDirectory() + File.separator + "photo.jpeg";
+
+    private DaoSession daoSession;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_price_edit);
         ButterKnife.bind(this);
+        Intent intent = getIntent();
+        priceId = intent.getLongExtra("priceId",0l);
         //保证图片路径存在
         file = new File(mTempPhotoPath);
         file.delete();
     }
+
+    private void getData(){
+        if (priceId != null){
+            daoSession = AppApplication.getApplication().getDaoSession();
+            Price price = daoSession.getPriceDao().queryBuilder().where(PriceDao.Properties.Id.eq(priceId)).unique();
+            if (price != null){
+                init(price);
+            }
+        }
+    }
+
+    private void init(Price price){
+        et_price_edit_desc.setText(price.getDescription());
+        et_price_edit_price.setText(String.valueOf(price.getPrice()));
+        et_price_edit_title.setText(price.getTitle());
+    }
+
 
     @OnClick({R.id.ib_price_edit_back,R.id.iv_price_edit_icon,R.id.btn_price_edit_save})
     public void onClick(View view){
@@ -142,7 +169,6 @@ public class PriceEditActivity extends BaseActivity {
 
     /**
      * 裁剪方法
-     *
      * @param uri
      */
     public void startPhotoZoom(Uri uri) {
@@ -161,10 +187,8 @@ public class PriceEditActivity extends BaseActivity {
     }
     private void compressAndUploadAvatar(String fileSrc) {
         //压缩图片
-        final File cover = FileUtil.getSmallBitmap(this, fileSrc);
+        cover = FileUtil.getSmallBitmap(this, fileSrc);
         iv_price_edit_icon.setImageURI(Uri.fromFile(cover));
     }
-
-
 
 }

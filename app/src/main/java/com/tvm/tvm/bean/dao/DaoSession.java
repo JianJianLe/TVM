@@ -9,12 +9,12 @@ import org.greenrobot.greendao.identityscope.IdentityScopeType;
 import org.greenrobot.greendao.internal.DaoConfig;
 
 import com.tvm.tvm.bean.PaymentRecord;
-import com.tvm.tvm.bean.PriceList;
+import com.tvm.tvm.bean.Price;
 import com.tvm.tvm.bean.TicketSummary;
 import com.tvm.tvm.bean.User;
 
 import com.tvm.tvm.bean.dao.PaymentRecordDao;
-import com.tvm.tvm.bean.dao.PriceListDao;
+import com.tvm.tvm.bean.dao.PriceDao;
 import com.tvm.tvm.bean.dao.TicketSummaryDao;
 import com.tvm.tvm.bean.dao.UserDao;
 
@@ -28,12 +28,12 @@ import com.tvm.tvm.bean.dao.UserDao;
 public class DaoSession extends AbstractDaoSession {
 
     private final DaoConfig paymentRecordDaoConfig;
-    private final DaoConfig priceListDaoConfig;
+    private final DaoConfig priceDaoConfig;
     private final DaoConfig ticketSummaryDaoConfig;
     private final DaoConfig userDaoConfig;
 
     private final PaymentRecordDao paymentRecordDao;
-    private final PriceListDao priceListDao;
+    private final PriceDao priceDao;
     private final TicketSummaryDao ticketSummaryDao;
     private final UserDao userDao;
 
@@ -44,8 +44,8 @@ public class DaoSession extends AbstractDaoSession {
         paymentRecordDaoConfig = daoConfigMap.get(PaymentRecordDao.class).clone();
         paymentRecordDaoConfig.initIdentityScope(type);
 
-        priceListDaoConfig = daoConfigMap.get(PriceListDao.class).clone();
-        priceListDaoConfig.initIdentityScope(type);
+        priceDaoConfig = daoConfigMap.get(PriceDao.class).clone();
+        priceDaoConfig.initIdentityScope(type);
 
         ticketSummaryDaoConfig = daoConfigMap.get(TicketSummaryDao.class).clone();
         ticketSummaryDaoConfig.initIdentityScope(type);
@@ -54,19 +54,19 @@ public class DaoSession extends AbstractDaoSession {
         userDaoConfig.initIdentityScope(type);
 
         paymentRecordDao = new PaymentRecordDao(paymentRecordDaoConfig, this);
-        priceListDao = new PriceListDao(priceListDaoConfig, this);
+        priceDao = new PriceDao(priceDaoConfig, this);
         ticketSummaryDao = new TicketSummaryDao(ticketSummaryDaoConfig, this);
         userDao = new UserDao(userDaoConfig, this);
 
         registerDao(PaymentRecord.class, paymentRecordDao);
-        registerDao(PriceList.class, priceListDao);
+        registerDao(Price.class, priceDao);
         registerDao(TicketSummary.class, ticketSummaryDao);
         registerDao(User.class, userDao);
     }
     
     public void clear() {
         paymentRecordDaoConfig.clearIdentityScope();
-        priceListDaoConfig.clearIdentityScope();
+        priceDaoConfig.clearIdentityScope();
         ticketSummaryDaoConfig.clearIdentityScope();
         userDaoConfig.clearIdentityScope();
     }
@@ -75,8 +75,8 @@ public class DaoSession extends AbstractDaoSession {
         return paymentRecordDao;
     }
 
-    public PriceListDao getPriceListDao() {
-        return priceListDao;
+    public PriceDao getPriceDao() {
+        return priceDao;
     }
 
     public TicketSummaryDao getTicketSummaryDao() {

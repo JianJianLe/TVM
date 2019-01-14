@@ -8,7 +8,7 @@ import org.greenrobot.greendao.annotation.Id;
  * 价格列表
  */
 @Entity
-public class PriceList {
+public class Price {
 
     @Id(autoincrement = true)
     private Long id;
@@ -61,8 +61,8 @@ public class PriceList {
         this.id = id;
     }
 
-    @Generated(hash = 670365187)
-    public PriceList(Long id, double price, String title, String description,
+    @Generated(hash = 404374086)
+    public Price(Long id, double price, String title, String description,
             int isDelete) {
         this.id = id;
         this.price = price;
@@ -71,9 +71,8 @@ public class PriceList {
         this.isDelete = isDelete;
     }
 
-    @Generated(hash = 2042841242)
-    public PriceList() {
+    @Generated(hash = 812905808)
+    public Price() {
     }
-
 
 }

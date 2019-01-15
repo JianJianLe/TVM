@@ -20,6 +20,7 @@ import com.tvm.tvm.bean.TicketSummary;
 import com.tvm.tvm.bean.dao.DaoSession;
 import com.tvm.tvm.bean.dao.PriceDao;
 import com.tvm.tvm.bean.dao.TicketSummaryDao;
+import com.tvm.tvm.util.BitmapUtils;
 import com.tvm.tvm.util.FirstInitApp;
 import com.tvm.tvm.util.FolderUtil;
 import com.tvm.tvm.util.SharedPrefsUtil;
@@ -73,6 +74,9 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.ll_main_ticke_list)
     LinearLayout ll_main_ticke_list;
 
+    @BindView(R.id.ll_main_ticket_list_2)
+    LinearLayout ll_main_ticket_list_2;
+
     @BindView(R.id.tv_main_ticke_list_null)
     TextView tv_main_ticke_list_null;
 
@@ -87,6 +91,19 @@ public class MainActivity extends BaseActivity {
 
     @BindView(R.id.tv_main_ticke_list_desc)
     TextView tv_main_ticke_list_desc;
+
+
+    @BindView(R.id.iv_main_ticke_list_icon2)
+    ImageView iv_main_ticke_list_icon2;
+
+    @BindView(R.id.tv_main_ticke_list_title2)
+    TextView tv_main_ticke_list_title2;
+
+    @BindView(R.id.tv_main_ticke_list_price2)
+    TextView tv_main_ticke_list_price2;
+
+    @BindView(R.id.tv_main_ticke_list_desc2)
+    TextView tv_main_ticke_list_desc2;
 
     @BindView(R.id.vp_main_ads)
     ViewPager vp_main_ads;
@@ -165,11 +182,25 @@ public class MainActivity extends BaseActivity {
             ll_main_click.setVisibility(View.VISIBLE);
         }
         if (priceList.size()==1){
-
+            tv_main_ticke_list_null.setVisibility(View.GONE);
+            ll_main_ticket_list_2.setVisibility(View.GONE);
+            tv_main_ticke_list_desc.setText(priceList.get(0).getDescription());
+            tv_main_ticke_list_price.setText(priceList.get(0).getPrice()+"");
+            tv_main_ticke_list_title.setText(priceList.get(0).getTitle());
+            iv_main_ticke_list_icon.setImageBitmap(BitmapUtils.byte2Bitmap(priceList.get(0).getPic()));
         }
 
         if (priceList.size()==2){
+            tv_main_ticke_list_desc.setText(priceList.get(0).getDescription());
+            tv_main_ticke_list_price.setText(priceList.get(0).getPrice()+"");
+            tv_main_ticke_list_title.setText(priceList.get(0).getTitle());
+            iv_main_ticke_list_icon.setImageBitmap(BitmapUtils.byte2Bitmap(priceList.get(0).getPic()));
 
+
+            tv_main_ticke_list_desc2.setText(priceList.get(1).getDescription());
+            tv_main_ticke_list_price2.setText(priceList.get(1).getPrice()+"");
+            tv_main_ticke_list_title2.setText(priceList.get(1).getTitle());
+            iv_main_ticke_list_icon2.setImageBitmap(BitmapUtils.byte2Bitmap(priceList.get(1).getPic()));
         }
     }
 
@@ -265,6 +296,8 @@ public class MainActivity extends BaseActivity {
         super.onResume();
         //设置票数
         setTicketNum();
+
+        getTicketList();
     }
 
     //关掉延迟服务

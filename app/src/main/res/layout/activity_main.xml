@@ -130,6 +130,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="3"
+            android:visibility="gone"
             android:gravity="center"
             android:orientation="horizontal" >
             <TextView
@@ -150,18 +151,19 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="3"
-            android:visibility="gone"
             android:layout_marginTop="@dimen/xy10dp"
             android:gravity="center_horizontal"
             android:orientation="horizontal" >
             <LinearLayout
                 android:background="@color/white"
-                android:layout_width="@dimen/xy80dp"
+                android:layout_width="@dimen/xy100dp"
                 android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/xy10dp"
                 android:orientation="vertical">
 
                 <ImageView
                     android:id="@+id/iv_main_ticke_list_icon"
+                    android:layout_marginTop="@dimen/xy10dp"
                     android:layout_width="@dimen/xy64dp"
                     android:layout_height="@dimen/xy64dp"
                     android:gravity="center_horizontal"
@@ -178,19 +180,23 @@
                         android:id="@+id/tv_main_ticke_list_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textSize="@dimen/xy10sp"
                         android:text="成人票"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textSize="@dimen/xy10sp"
                         android:text="："/>
                     <TextView
                         android:id="@+id/tv_main_ticke_list_price"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textSize="@dimen/xy10sp"
                         android:text="20"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textSize="@dimen/xy10sp"
                         android:text="元"/>
                 </LinearLayout>
                 <TextView
@@ -200,6 +206,7 @@
                     android:layout_marginTop="@dimen/xy5dp"
                     android:gravity="center_horizontal"
                     android:layout_gravity="center_horizontal"
+                    android:textSize="@dimen/xy10sp"
                     android:text="男女不限"/>
 
             </LinearLayout>
@@ -208,12 +215,15 @@
                 android:layout_width="@dimen/xy30dp"
                 android:layout_height="wrap_content" />
             <LinearLayout
-                android:layout_width="@dimen/xy80dp"
+                android:id="@+id/ll_main_ticket_list_2"
+                android:layout_width="@dimen/xy100dp"
                 android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/xy10dp"
                 android:background="@color/white"
                 android:orientation="vertical">
 
                 <ImageView
+                    android:layout_marginTop="@dimen/xy10dp"
                     android:id="@+id/iv_main_ticke_list_icon2"
                     android:layout_width="@dimen/xy64dp"
                     android:layout_height="@dimen/xy64dp"
@@ -231,6 +241,7 @@
                         android:id="@+id/tv_main_ticke_list_title2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textSize="@dimen/xy10sp"
                         android:text="成人票"/>
                     <TextView
                         android:layout_width="wrap_content"
@@ -240,10 +251,12 @@
                         android:id="@+id/tv_main_ticke_list_price2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textSize="@dimen/xy10sp"
                         android:text="20"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textSize="@dimen/xy10sp"
                         android:text="元"/>
                 </LinearLayout>
                 <TextView
@@ -253,6 +266,7 @@
                     android:layout_marginTop="@dimen/xy5dp"
                     android:gravity="center_horizontal"
                     android:layout_gravity="center_horizontal"
+                    android:textSize="@dimen/xy10sp"
                     android:text="男女不限"/>
 
             </LinearLayout>

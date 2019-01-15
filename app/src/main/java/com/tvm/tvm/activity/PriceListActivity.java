@@ -1,5 +1,7 @@
 package com.tvm.tvm.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
@@ -12,6 +14,10 @@ import com.tvm.tvm.R;
 import com.tvm.tvm.adapter.PriceListAdapter;
 import com.tvm.tvm.application.AppApplication;
 import com.tvm.tvm.bean.Price;
+import com.tvm.tvm.bean.dao.PriceDao;
+import com.tvm.tvm.util.constant.StringUtils;
+import com.tvm.tvm.util.view.ConfirmDialogUtils;
+import com.tvm.tvm.util.view.ToastUtils;
 
 import java.util.List;
 
@@ -38,11 +44,20 @@ public class PriceListActivity extends BaseActivity {
 
     private List<Price> priceLists;
 
+    private PriceListAdapter priceListAdapter;
+
+    private Context context = PriceListActivity.this;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_price_list);
         ButterKnife.bind(this);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         getList();
         initLayout();
     }
@@ -55,9 +70,44 @@ public class PriceListActivity extends BaseActivity {
         GridLayoutManager layoutManager = new GridLayoutManager(this,3);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rv_ticket_list_list.setLayoutManager(layoutManager);
-        rv_ticket_list_list.setAdapter(new PriceListAdapter(this,priceLists));
+        PriceListAdapter.OnItemClickListener onItemClickListener =  new PriceListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Price item = priceLists.get(position+1);
+                Intent intent = new Intent(context,PriceEditActivity.class);
+                intent.putExtra("id",item.getId());
+                context.startActivity(intent);
+            }
+
+            @Override
+            public void onLongClick(View view, final int position) {
+                final ConfirmDialogUtils confirmDialogUtils = new ConfirmDialogUtils(context,"删除价格","请确认是否删除价格【"+priceLists.get(position).getTitle()+"】");
+                confirmDialogUtils.show();
+                confirmDialogUtils.setOnDialogClickListener(new ConfirmDialogUtils.OnDialogClickListener() {
+                    @Override
+                    public void onOKClick() {
+                        deletePrice(priceLists.get(position).getId());
+                        ToastUtils.showText(context,StringUtils.DELETE_SUCCESS);
+                        confirmDialogUtils.dismiss();
+                    }
+
+                    @Override
+                    public void onCancelClick() {
+                        confirmDialogUtils.dismiss();
+                    }
+                });
+            }
+        };
+        priceListAdapter = new PriceListAdapter(context,priceLists,onItemClickListener);
+        rv_ticket_list_list.setAdapter(priceListAdapter);
         rv_ticket_list_list.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
         rv_ticket_list_list.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.HORIZONTAL));
+    }
+
+
+    private void deletePrice(Long priceId){
+        PriceDao priceDao = AppApplication.getApplication().getDaoSession().getPriceDao();
+        priceDao.deleteByKey(priceId);
     }
 
     @OnClick({R.id.ib_ticket_list_add,R.id.ib_ticket_list_back})

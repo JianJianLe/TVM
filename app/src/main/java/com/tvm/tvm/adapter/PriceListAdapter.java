@@ -32,51 +32,23 @@ public class PriceListAdapter extends RecyclerView.Adapter<PriceListAdapter.Tick
 
     private Context context;
 
-    List<Price> priceLists;
+    private List<Price> priceLists;
 
-    public PriceListAdapter(Context context, List<Price> priceLists){
+    private OnItemClickListener onItemClickListener;
+
+    public PriceListAdapter(Context context, List<Price> priceLists ,OnItemClickListener onItemClickListener){
         this.context = context;
         this.priceLists = priceLists;
+        this.onItemClickListener = onItemClickListener;
     }
 
     @NonNull
     @Override
     public TicketItemViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(context).inflate(R.layout.item_ticket,null);
-        return new TicketItemViewHolder(v, new OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                Price item = priceLists.get(position+1);
-                Intent intent = new Intent(context,PriceEditActivity.class);
-                intent.putExtra("id",item.getId());
-                context.startActivity(intent);
-            }
-
-            @Override
-            public void onLongClick(View view, final int position) {
-                final ConfirmDialogUtils confirmDialogUtils = new ConfirmDialogUtils(context,"删除价格","请确认是否删除价格【"+priceLists.get(position).getTitle()+"】");
-                confirmDialogUtils.show();
-                confirmDialogUtils.setOnDialogClickListener(new ConfirmDialogUtils.OnDialogClickListener() {
-                    @Override
-                    public void onOKClick() {
-                        deletePrice(priceLists.get(position).getId());
-                        ToastUtils.showText(context,StringUtils.DELETE_SUCCESS);
-                        confirmDialogUtils.dismiss();
-                    }
-
-                    @Override
-                    public void onCancelClick() {
-                        confirmDialogUtils.dismiss();
-                    }
-                });
-            }
-        });
+        return new TicketItemViewHolder(v, onItemClickListener);
     }
 
-    private void deletePrice(Long priceId){
-        PriceDao priceDao = AppApplication.getApplication().getDaoSession().getPriceDao();
-        priceDao.deleteByKey(priceId);
-    }
 
     @Override
     public void onBindViewHolder(TicketItemViewHolder viewHolder, int i) {

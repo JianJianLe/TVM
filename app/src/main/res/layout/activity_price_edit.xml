@@ -82,7 +82,6 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="@dimen/xy30dp"
         android:layout_marginLeft="@dimen/xy30dp"
-        android:inputType="number"
         android:hint="@string/desc"
         android:maxLength="20"/>
 

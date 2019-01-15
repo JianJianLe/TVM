@@ -6,8 +6,8 @@
 
     <ImageView
         android:id="@+id/iv_item_ticket_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/xy64dp"
+        android:layout_height="@dimen/xy64dp"
         android:gravity="center_horizontal"
         android:layout_gravity="center_horizontal"
         android:src="@drawable/ticket"

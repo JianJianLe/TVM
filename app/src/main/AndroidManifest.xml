@@ -33,6 +33,7 @@
         <activity android:name=".activity.BillQueryActivity"></activity>
         <activity android:name=".activity.PriceListActivity"></activity>
         <activity android:name=".activity.PriceEditActivity"></activity>
+        <activity android:name=".activity.SelectPriceActivity"></activity>
     </application>
 
 </manifest>

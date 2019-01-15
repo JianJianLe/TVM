@@ -3,6 +3,7 @@
 
     <string name="app_name">TVM</string>
     <string name="tvm_title">自助售票</string>
+    <string name="tvm_buy_title">自助购票</string>
     <string name="tvm_support">本机支持现金 微信 支付宝 支付</string>
 
     <string name="setting">设置</string>

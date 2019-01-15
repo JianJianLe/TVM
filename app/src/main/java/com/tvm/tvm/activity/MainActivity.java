@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -36,6 +35,7 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.OnLongClick;
 
 public class MainActivity extends BaseActivity {
@@ -105,6 +105,9 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.tv_main_ticke_list_desc2)
     TextView tv_main_ticke_list_desc2;
 
+    @BindView(R.id.tv_main_click_buy)
+    TextView tv_main_click_buy;
+
     @BindView(R.id.vp_main_ads)
     ViewPager vp_main_ads;
 
@@ -173,7 +176,16 @@ public class MainActivity extends BaseActivity {
         return true;
     }
 
-    private void getTicketList(){
+    @OnClick({R.id.tv_main_click_buy})
+    public void onClick(View view){
+        switch (view.getId()){
+            case R.id.tv_main_click_buy:
+                startActivity(this,SelectPriceActivity.class);
+                break;
+        }
+    }
+
+    private void getPriceList(){
         //获取价格列表
         PriceDao priceDao = daoSession.getPriceDao();
         priceList = priceDao.queryBuilder().list();
@@ -297,7 +309,7 @@ public class MainActivity extends BaseActivity {
         //设置票数
         setTicketNum();
 
-        getTicketList();
+        getPriceList();
     }
 
     //关掉延迟服务

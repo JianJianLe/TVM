@@ -8,13 +8,17 @@ import android.util.Log;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.tvm.tvm.R;
 import com.tvm.tvm.application.AppApplication;
+import com.tvm.tvm.bean.Price;
 import com.tvm.tvm.bean.TicketSummary;
 import com.tvm.tvm.bean.dao.DaoSession;
+import com.tvm.tvm.bean.dao.PriceDao;
 import com.tvm.tvm.bean.dao.TicketSummaryDao;
 import com.tvm.tvm.util.FirstInitApp;
 import com.tvm.tvm.util.FolderUtil;
@@ -63,6 +67,27 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.ll_main_fvp)
     LinearLayout ll_main_fvp;
 
+    @BindView(R.id.ll_main_click)
+    LinearLayout ll_main_click;
+
+    @BindView(R.id.ll_main_ticke_list)
+    LinearLayout ll_main_ticke_list;
+
+    @BindView(R.id.tv_main_ticke_list_null)
+    TextView tv_main_ticke_list_null;
+
+    @BindView(R.id.iv_main_ticke_list_icon)
+    ImageView iv_main_ticke_list_icon;
+
+    @BindView(R.id.tv_main_ticke_list_title)
+    TextView tv_main_ticke_list_title;
+
+    @BindView(R.id.tv_main_ticke_list_price)
+    TextView tv_main_ticke_list_price;
+
+    @BindView(R.id.tv_main_ticke_list_desc)
+    TextView tv_main_ticke_list_desc;
+
     @BindView(R.id.vp_main_ads)
     ViewPager vp_main_ads;
 
@@ -77,6 +102,9 @@ public class MainActivity extends BaseActivity {
     private int indexVideo = 0;
 
     private DaoSession daoSession;
+
+    //票价列表
+    List<Price> priceList = new ArrayList<>();
 
     //格式化当前时间
     private SimpleDateFormat format = new SimpleDateFormat("HH:mm");
@@ -128,7 +156,22 @@ public class MainActivity extends BaseActivity {
         return true;
     }
 
-//    private void set
+    private void getTicketList(){
+        //获取价格列表
+        PriceDao priceDao = daoSession.getPriceDao();
+        priceList = priceDao.queryBuilder().list();
+        if (priceList==null || priceList.size()>2 || priceList.size()==0){
+            ll_main_ticke_list.setVisibility(View.GONE);
+            ll_main_click.setVisibility(View.VISIBLE);
+        }
+        if (priceList.size()==1){
+
+        }
+
+        if (priceList.size()==2){
+
+        }
+    }
 
     private void setAdsLayout(int flag){
         switch (flag){

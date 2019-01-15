@@ -12,8 +12,13 @@ import android.widget.TextView;
 
 import com.tvm.tvm.R;
 import com.tvm.tvm.activity.PriceEditActivity;
+import com.tvm.tvm.application.AppApplication;
 import com.tvm.tvm.bean.Price;
+import com.tvm.tvm.bean.dao.PriceDao;
 import com.tvm.tvm.util.BitmapUtils;
+import com.tvm.tvm.util.constant.StringUtils;
+import com.tvm.tvm.util.view.ConfirmDialogUtils;
+import com.tvm.tvm.util.view.ToastUtils;
 
 import java.util.List;
 
@@ -46,7 +51,31 @@ public class PriceListAdapter extends RecyclerView.Adapter<PriceListAdapter.Tick
                 intent.putExtra("id",item.getId());
                 context.startActivity(intent);
             }
+
+            @Override
+            public void onLongClick(View view, final int position) {
+                final ConfirmDialogUtils confirmDialogUtils = new ConfirmDialogUtils(context,"删除价格","请确认是否删除价格【"+priceLists.get(position).getTitle()+"】");
+                confirmDialogUtils.show();
+                confirmDialogUtils.setOnDialogClickListener(new ConfirmDialogUtils.OnDialogClickListener() {
+                    @Override
+                    public void onOKClick() {
+                        deletePrice(priceLists.get(position).getId());
+                        ToastUtils.showText(context,StringUtils.DELETE_SUCCESS);
+                        confirmDialogUtils.dismiss();
+                    }
+
+                    @Override
+                    public void onCancelClick() {
+                        confirmDialogUtils.dismiss();
+                    }
+                });
+            }
         });
+    }
+
+    private void deletePrice(Long priceId){
+        PriceDao priceDao = AppApplication.getApplication().getDaoSession().getPriceDao();
+        priceDao.deleteByKey(priceId);
     }
 
     @Override
@@ -66,7 +95,7 @@ public class PriceListAdapter extends RecyclerView.Adapter<PriceListAdapter.Tick
         }
     }
 
-    class TicketItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class TicketItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,View.OnLongClickListener {
 
         public TextView tv_item_ticket_title;
 
@@ -91,9 +120,17 @@ public class PriceListAdapter extends RecyclerView.Adapter<PriceListAdapter.Tick
         public void onClick(View v) {
             onItemClickListener.onItemClick(v,getPosition());
         }
+
+
+        @Override
+        public boolean onLongClick(View v) {
+            onItemClickListener.onLongClick(v,getPosition());
+            return false;
+        }
     }
 
     public  static interface OnItemClickListener{
         void onItemClick(View view,int position);
+        void onLongClick(View view,int position);
     }
 }

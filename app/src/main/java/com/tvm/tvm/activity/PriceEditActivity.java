@@ -123,7 +123,7 @@ public class PriceEditActivity extends BaseActivity {
             }
             daoSession.getPriceDao().save(price);
             //保存成功返回列表
-            ToastUtils.showText(this,StringUtils.PRICE_NOT_NULL);
+            ToastUtils.showText(this,StringUtils.SAVE_SUCCESS);
             this.finish();
         }
     }

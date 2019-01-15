@@ -41,4 +41,6 @@ public class StringUtils {
     public static String DESC_NOT_NULL = "描述不能为空";
 
     public static String SAVE_SUCCESS = "保存成功";
+
+    public static String DELETE_SUCCESS = "删除成功";
 }

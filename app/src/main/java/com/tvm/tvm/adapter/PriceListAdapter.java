@@ -13,16 +13,17 @@ import android.widget.TextView;
 import com.tvm.tvm.R;
 import com.tvm.tvm.activity.PriceEditActivity;
 import com.tvm.tvm.bean.Price;
+import com.tvm.tvm.util.BitmapUtils;
 
 import java.util.List;
 
 /**
- * - @Description:  $desc$
+ * - @Description:  价格列表
  * - @Author:  Jat
  * - @Date:  2019/1/6
  * - @Time： 20:18
  */
-public class PriceListAdapter extends RecyclerView.Adapter {
+public class PriceListAdapter extends RecyclerView.Adapter<PriceListAdapter.TicketItemViewHolder> {
 
     private Context context;
 
@@ -35,7 +36,7 @@ public class PriceListAdapter extends RecyclerView.Adapter {
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public TicketItemViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(context).inflate(R.layout.item_ticket,null);
         return new TicketItemViewHolder(v, new OnItemClickListener() {
             @Override
@@ -49,24 +50,31 @@ public class PriceListAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-
+    public void onBindViewHolder(TicketItemViewHolder viewHolder, int i) {
+        viewHolder.tv_item_ticket_desc.setText(priceLists.get(i).getDescription());
+        viewHolder.tv_item_ticket_title.setText(priceLists.get(i).getTitle());
+        viewHolder.tv_item_ticket_price.setText(priceLists.get(i).getPrice()+"");
+        viewHolder.iv_item_ticket_icon.setImageBitmap(BitmapUtils.byte2Bitmap(priceLists.get(i).getPic()));
     }
 
     @Override
     public int getItemCount() {
-        return 15;
+        if (priceLists!=null){
+            return priceLists.size();
+        }else {
+            return 0;
+        }
     }
 
     class TicketItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private TextView tv_item_ticket_title;
+        public TextView tv_item_ticket_title;
 
-        private TextView tv_item_ticket_price;
+        public TextView tv_item_ticket_price;
 
-        private TextView tv_item_ticket_desc;
+        public TextView tv_item_ticket_desc;
 
-        private ImageView iv_item_ticket_icon;
+        public ImageView iv_item_ticket_icon;
 
         private OnItemClickListener onItemClickListener;
 

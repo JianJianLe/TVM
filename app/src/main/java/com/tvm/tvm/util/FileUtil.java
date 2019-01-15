@@ -45,6 +45,23 @@ public class FileUtil {
         saveBitmap2File(img, filename);
         return new File(filename);
     }
+
+    /* 压缩图片方法
+     *
+     * @param context
+     * @param fileSrc
+     * @return
+     */
+    public static Bitmap getSmallBitmapFromFile(Context context, String fileSrc) {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(fileSrc, options);
+        options.inSampleSize = calculateInSampleSize(options, 480, 800);
+        options.inJustDecodeBounds = false;
+        Bitmap img = BitmapFactory.decodeFile(fileSrc, options);
+        return img;
+    }
+
     /**
      * 设置压缩的图片的大小设置的参数
      *

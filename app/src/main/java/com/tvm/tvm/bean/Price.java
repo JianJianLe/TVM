@@ -13,6 +13,8 @@ public class Price {
     @Id(autoincrement = true)
     private Long id;
 
+    private byte[] pic;
+
     private double price;
 
     private String title;
@@ -61,10 +63,19 @@ public class Price {
         this.id = id;
     }
 
-    @Generated(hash = 404374086)
-    public Price(Long id, double price, String title, String description,
-            int isDelete) {
+    public byte[] getPic() {
+        return this.pic;
+    }
+
+    public void setPic(byte[] pic) {
+        this.pic = pic;
+    }
+
+    @Generated(hash = 1173672343)
+    public Price(Long id, byte[] pic, double price, String title,
+            String description, int isDelete) {
         this.id = id;
+        this.pic = pic;
         this.price = price;
         this.title = title;
         this.description = description;

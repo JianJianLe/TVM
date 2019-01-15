@@ -34,4 +34,11 @@ public class StringUtils {
 
     public static String UPDATE_SUCCESS = "更新成功";
 
+    public static String TITLE_NOT_NULL = "标题不能为空";
+
+    public static String PRICE_NOT_NULL = "金额不能为空";
+
+    public static String DESC_NOT_NULL = "描述不能为空";
+
+    public static String SAVE_SUCCESS = "保存成功";
 }

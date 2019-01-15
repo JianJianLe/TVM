@@ -1,10 +1,13 @@
 package com.tvm.tvm.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,8 +22,11 @@ import com.tvm.tvm.application.AppApplication;
 import com.tvm.tvm.bean.Price;
 import com.tvm.tvm.bean.dao.DaoSession;
 import com.tvm.tvm.bean.dao.PriceDao;
+import com.tvm.tvm.util.BitmapUtils;
 import com.tvm.tvm.util.FileUtil;
+import com.tvm.tvm.util.constant.StringUtils;
 import com.tvm.tvm.util.view.ButtomDialogView;
+import com.tvm.tvm.util.view.ToastUtils;
 
 import java.io.File;
 
@@ -41,9 +47,7 @@ public class PriceEditActivity extends BaseActivity {
 
     private File file;
 
-    private Uri uri;
-
-    private  File cover;
+    private Bitmap bitmap;
 
     @BindView(R.id.ib_price_edit_back)
     ImageButton ib_price_edit_back;
@@ -69,6 +73,8 @@ public class PriceEditActivity extends BaseActivity {
 
     private DaoSession daoSession;
 
+    Price price;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,15 +82,17 @@ public class PriceEditActivity extends BaseActivity {
         ButterKnife.bind(this);
         Intent intent = getIntent();
         priceId = intent.getLongExtra("priceId",0l);
+        bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.ticket);
         //保证图片路径存在
         file = new File(mTempPhotoPath);
         file.delete();
+        getData();
     }
 
     private void getData(){
         if (priceId != null){
             daoSession = AppApplication.getApplication().getDaoSession();
-            Price price = daoSession.getPriceDao().queryBuilder().where(PriceDao.Properties.Id.eq(priceId)).unique();
+            price = daoSession.getPriceDao().queryBuilder().where(PriceDao.Properties.Id.eq(priceId)).unique();
             if (price != null){
                 init(price);
             }
@@ -95,6 +103,45 @@ public class PriceEditActivity extends BaseActivity {
         et_price_edit_desc.setText(price.getDescription());
         et_price_edit_price.setText(String.valueOf(price.getPrice()));
         et_price_edit_title.setText(price.getTitle());
+        bitmap = BitmapUtils.byte2Bitmap(price.getPic());
+        iv_price_edit_icon.setImageBitmap(bitmap);
+    }
+
+    private void save(){
+        if (check()){
+            if (price !=null ){
+                price.setTitle(et_price_edit_title.getText().toString().trim());
+                price.setDescription(et_price_edit_desc.getText().toString().trim());
+                price.setPrice(Double.valueOf(et_price_edit_price.getText().toString().trim()));
+                price.setPic(BitmapUtils.bitmap2Byte(bitmap));
+            }else {
+                price = new Price();
+                price.setTitle(et_price_edit_title.getText().toString().trim());
+                price.setDescription(et_price_edit_desc.getText().toString().trim());
+                price.setPrice(Double.valueOf(et_price_edit_price.getText().toString().trim()));
+                price.setPic(BitmapUtils.bitmap2Byte(bitmap));
+            }
+            daoSession.getPriceDao().save(price);
+            //保存成功返回列表
+            ToastUtils.showText(this,StringUtils.PRICE_NOT_NULL);
+            this.finish();
+        }
+    }
+
+    private boolean check(){
+        if ( TextUtils.isEmpty(et_price_edit_title.getText().toString().trim())){
+            ToastUtils.showText(this,StringUtils.TITLE_NOT_NULL);
+            return false;
+        }
+        if ( TextUtils.isEmpty(et_price_edit_desc.getText().toString().trim())){
+            ToastUtils.showText(this,StringUtils.DESC_NOT_NULL);
+            return false;
+        }
+        if ( TextUtils.isEmpty(et_price_edit_price.getText().toString().trim())){
+            ToastUtils.showText(this,StringUtils.PRICE_NOT_NULL);
+            return false;
+        }
+        return true;
     }
 
 
@@ -108,6 +155,7 @@ public class PriceEditActivity extends BaseActivity {
                 showButtomDialog();
                 break;
             case R.id.btn_price_edit_save:
+                save();
                 break;
         }
     }
@@ -185,10 +233,14 @@ public class PriceEditActivity extends BaseActivity {
         intent.putExtra("outputFormat", "JPEG");// 返回格式
         startActivityForResult(intent, REQUEST_CODE_CROUP_PHOTO);
     }
+
+    /**
+     * 压缩图片
+     */
     private void compressAndUploadAvatar(String fileSrc) {
         //压缩图片
-        cover = FileUtil.getSmallBitmap(this, fileSrc);
-        iv_price_edit_icon.setImageURI(Uri.fromFile(cover));
+        bitmap = FileUtil.getSmallBitmapFromFile(this, fileSrc);
+        iv_price_edit_icon.setImageBitmap(BitmapUtils.file2Bitmap(file));
     }
 
 }

@@ -33,4 +33,7 @@
     <string name="title">标题</string>
     <string name="price">价格</string>
     <string name="desc">描述</string>
+
+    <string name="pay">请支付</string>
+    <string name="buy_num">购买数量：</string>
 </resources>

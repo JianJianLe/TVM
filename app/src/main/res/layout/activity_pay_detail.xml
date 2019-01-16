@@ -3,6 +3,134 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg"
     android:orientation="vertical">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/pay"
+        android:textSize="@dimen/xy25sp"
+        android:gravity="center"
+        android:textColor="@color/red"
+        android:layout_marginTop="@dimen/xy10dp"
+        android:layout_gravity="center"/>
+
+    <ImageView
+        android:layout_gravity="center"
+        android:layout_width="@dimen/xy100dp"
+        android:layout_height="@dimen/xy100dp"
+        android:layout_marginTop="@dimen/xy10dp"
+        android:src="@drawable/ticket"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/xy10dp"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="@dimen/xy32dp"
+            android:layout_height="@dimen/xy32dp"
+            android:src="@drawable/wechat"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/xy10dp"
+            android:text="微信支付"
+            android:textStyle="bold"
+            android:textColor="@color/green"/>
+
+        <ImageView
+            android:layout_width="@dimen/xy32dp"
+            android:layout_height="@dimen/xy32dp"
+            android:layout_marginLeft="@dimen/xy30dp"
+            android:src="@drawable/ali"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/xy10dp"
+            android:text="支付宝支付"
+            android:textStyle="bold"
+            android:textColor="@color/blue"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/xy250dp"
+        android:layout_marginLeft="@dimen/xy10dp"
+        android:layout_marginRight="@dimen/xy10dp"
+        android:orientation="vertical"
+        android:background="@drawable/pay_detail">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/xy30dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/red"
+                android:textSize="@dimen/xy18sp"
+                android:text="@string/buy_num"/>
+
+            <ImageView
+                android:layout_width="@dimen/xy25dp"
+                android:layout_height="@dimen/xy25dp"
+                android:layout_marginLeft="@dimen/xy10dp"
+                android:src="@drawable/crease"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/xy18sp"
+                android:layout_marginLeft="@dimen/xy30dp"
+                android:layout_marginRight="@dimen/xy30dp"
+                android:text="2"/>
+
+            <ImageView
+                android:layout_width="@dimen/xy25dp"
+                android:layout_height="@dimen/xy25dp"
+                android:layout_marginRight="@dimen/xy10dp"
+                android:src="@drawable/add"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/red"
+                android:textSize="@dimen/xy18sp"
+                android:text="张"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/red"
+        android:textStyle="bold"
+        android:layout_marginTop="@dimen/xy10dp"
+        android:gravity="center"
+        android:text="本机只接收5元、10元、20元 不设找零"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:layout_marginTop="@dimen/xy10dp"
+        android:gravity="center"
+        android:text="本机支持现金、微信、支付宝支付"/>
+
+    <ImageView
+        android:layout_marginTop="@dimen/xy10dp"
+        android:layout_marginLeft="@dimen/xy10dp"
+        android:layout_width="@dimen/xy50dp"
+        android:layout_height="@dimen/xy20dp"
+        android:src="@drawable/last_page"/>
 </LinearLayout>

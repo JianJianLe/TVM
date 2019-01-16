@@ -43,4 +43,6 @@ public class StringUtils {
     public static String SAVE_SUCCESS = "保存成功";
 
     public static String DELETE_SUCCESS = "删除成功";
+
+    public static String EMPTY_PRICE_LIST = "价格列表为空，请先添加价格！！！";
 }

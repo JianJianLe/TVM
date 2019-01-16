@@ -24,6 +24,8 @@ import com.tvm.tvm.util.FirstInitApp;
 import com.tvm.tvm.util.FolderUtil;
 import com.tvm.tvm.util.SharedPrefsUtil;
 import com.tvm.tvm.util.constant.PreConfig;
+import com.tvm.tvm.util.constant.StringUtils;
+import com.tvm.tvm.util.view.ToastUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -180,7 +182,12 @@ public class MainActivity extends BaseActivity {
     public void onClick(View view){
         switch (view.getId()){
             case R.id.tv_main_click_buy:
-                startActivity(this,SelectPriceActivity.class);
+                //选择价格，价格列表为空的话不能购票
+                if (priceList==null || priceList.size() == 0){
+                    ToastUtils.showText(this,StringUtils.EMPTY_PRICE_LIST);
+                }else {
+                    startActivity(this,SelectPriceActivity.class);
+                }
                 break;
         }
     }

@@ -17,6 +17,7 @@
         android:layout_gravity="center"/>
 
     <ImageView
+        android:id="@+id/iv_pay_detail_qr_code"
         android:layout_gravity="center"
         android:layout_width="@dimen/xy100dp"
         android:layout_height="@dimen/xy100dp"
@@ -70,47 +71,191 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/xy30dp"
             android:layout_gravity="center"
+            android:paddingBottom="@dimen/xy15dp"
+            android:paddingTop="@dimen/xy15dp"
             android:gravity="center"
             android:orientation="horizontal">
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="2"
                 android:layout_height="wrap_content"
                 android:textColor="@color/red"
-                android:textSize="@dimen/xy18sp"
+                android:gravity="right"
+                android:textSize="@dimen/xy20sp"
+                android:textStyle="bold"
                 android:text="@string/buy_num"/>
-
-            <ImageView
-                android:layout_width="@dimen/xy25dp"
-                android:layout_height="@dimen/xy25dp"
-                android:layout_marginLeft="@dimen/xy10dp"
-                android:src="@drawable/crease"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:gravity="center"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/xy18sp"
-                android:layout_marginLeft="@dimen/xy30dp"
-                android:layout_marginRight="@dimen/xy30dp"
-                android:text="2"/>
+                android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="@dimen/xy25dp"
-                android:layout_height="@dimen/xy25dp"
-                android:layout_marginRight="@dimen/xy10dp"
-                android:src="@drawable/add"
-                />
+                <ImageView
+                    android:id="@+id/iv_pay_detail_decrease"
+                    android:layout_width="@dimen/xy25dp"
+                    android:layout_height="@dimen/xy25dp"
+                    android:layout_marginLeft="@dimen/xy10dp"
+                    android:src="@drawable/crease"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_pay_detail_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/xy30dp"
+                    android:layout_marginRight="@dimen/xy30dp"
+                    android:text="0"
+                    android:textSize="@dimen/xy20sp"
+                    android:textStyle="bold" />
+                <ImageView
+                    android:id="@+id/iv_pay_detail_increase"
+                    android:layout_width="@dimen/xy25dp"
+                    android:layout_height="@dimen/xy25dp"
+                    android:layout_marginRight="@dimen/xy10dp"
+                    android:src="@drawable/add"
+                    />
+            </LinearLayout>
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textColor="@color/red"
+                android:textSize="@dimen/xy20sp"
+                android:textStyle="bold"
+                android:text="张"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingBottom="@dimen/xy15dp"
+            android:paddingTop="@dimen/xy15dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:textColor="@color/red"
+                android:gravity="right"
+                android:textSize="@dimen/xy18sp"
+                android:text="@string/pay_amount"/>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_pay_detail_pay_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/xy30dp"
+                    android:layout_marginRight="@dimen/xy30dp"
+                    android:text="0"
+                    android:textSize="@dimen/xy18sp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:textColor="@color/red"
                 android:textSize="@dimen/xy18sp"
-                android:text="张"/>
+                android:text="@string/yuan"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingBottom="@dimen/xy15dp"
+            android:paddingTop="@dimen/xy15dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:textColor="@color/red"
+                android:gravity="right"
+                android:textSize="@dimen/xy18sp"
+                android:text="@string/receieve_amount"/>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_pay_detail_receieve_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/xy30dp"
+                    android:layout_marginRight="@dimen/xy30dp"
+                    android:text="0"
+                    android:textSize="@dimen/xy18sp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textColor="@color/red"
+                android:textSize="@dimen/xy18sp"
+                android:text="@string/yuan"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingBottom="@dimen/xy15dp"
+            android:paddingTop="@dimen/xy15dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:textColor="@color/red"
+                android:gravity="right"
+                android:textSize="@dimen/xy18sp"
+                android:text="@string/left_amount"/>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_pay_detail_left_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/xy30dp"
+                    android:layout_marginRight="@dimen/xy30dp"
+                    android:text="0"
+                    android:textSize="@dimen/xy18sp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textColor="@color/red"
+                android:textSize="@dimen/xy18sp"
+                android:text="@string/yuan"/>
         </LinearLayout>
     </LinearLayout>
 
     <TextView
+        android:id="@+id/tv_pay_detail_desc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/red"
@@ -128,6 +273,7 @@
         android:text="本机支持现金、微信、支付宝支付"/>
 
     <ImageView
+        android:id="@+id/iv_pay_detail_back"
         android:layout_marginTop="@dimen/xy10dp"
         android:layout_marginLeft="@dimen/xy10dp"
         android:layout_width="@dimen/xy50dp"

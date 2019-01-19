@@ -34,6 +34,7 @@
         <activity android:name=".activity.PriceListActivity"></activity>
         <activity android:name=".activity.PriceEditActivity"></activity>
         <activity android:name=".activity.SelectPriceActivity"></activity>
+        <activity android:name=".activity.PayDetailActivity"></activity>
     </application>
 
 </manifest>

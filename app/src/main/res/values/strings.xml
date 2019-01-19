@@ -36,4 +36,8 @@
 
     <string name="pay">请支付</string>
     <string name="buy_num">购买数量：</string>
+    <string name="pay_amount">支付金额：</string>
+    <string name="receieve_amount">已收金额：</string>
+    <string name="left_amount">未收金额：</string>
+    <string name="yuan">元</string>
 </resources>

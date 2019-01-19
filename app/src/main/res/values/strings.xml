@@ -40,4 +40,7 @@
     <string name="receieve_amount">已收金额：</string>
     <string name="left_amount">未收金额：</string>
     <string name="yuan">元</string>
+    <string name="pay_success">支付成功</string>
+    <string name="get_ticket">请取走你的小票</string>
+    <string name="wait_please">耐心等候</string>
 </resources>

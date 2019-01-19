@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/bg"
+    android:gravity="center_horizontal">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/xy50dp"
+        android:text="@string/pay_success"
+        android:textColor="@color/red"
+        android:textSize="@dimen/xy40sp"
+        android:gravity="center"/>
+
+    <ImageView
+        android:layout_width="@dimen/xy100dp"
+        android:layout_height="@dimen/xy100dp"
+        android:layout_marginTop="@dimen/xy30dp"
+        android:src="@drawable/pay_success"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/xy25sp"
+        android:layout_marginTop="@dimen/xy60dp"
+        android:textColor="@color/red"
+        android:text="@string/get_ticket"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/xy25sp"
+        android:layout_marginTop="@dimen/xy5dp"
+        android:textColor="@color/red"
+        android:text="@string/wait_please"/>
+
+    <TextView
+        android:id="@+id/tv_pay_success_company_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/xy120dp"
+        android:textSize="@dimen/xy15sp"
+        android:text="广州市亿儿美有限公司"/>
+</LinearLayout>

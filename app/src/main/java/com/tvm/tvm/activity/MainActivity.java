@@ -1,5 +1,7 @@
 package com.tvm.tvm.activity;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -13,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.tvm.tvm.R;
+import com.tvm.tvm.adapter.ViewpagerDotsAdapter;
 import com.tvm.tvm.application.AppApplication;
 import com.tvm.tvm.bean.Price;
 import com.tvm.tvm.bean.TicketSummary;
@@ -25,6 +28,9 @@ import com.tvm.tvm.util.FolderUtil;
 import com.tvm.tvm.util.SharedPrefsUtil;
 import com.tvm.tvm.util.constant.PreConfig;
 import com.tvm.tvm.util.constant.StringUtils;
+import com.tvm.tvm.util.player.MPlayer;
+import com.tvm.tvm.util.player.MPlayerException;
+import com.tvm.tvm.util.player.PlayerCallback;
 import com.tvm.tvm.util.view.ToastUtils;
 
 import java.text.SimpleDateFormat;
@@ -41,10 +47,6 @@ import butterknife.OnClick;
 import butterknife.OnLongClick;
 
 public class MainActivity extends BaseActivity {
-    //显示视频
-    private final int VIDEO_SHOW = 0;
-    //显示轮播图
-    private final int PICTURE_SHOW = 1;
 
     @BindView(R.id.tv_main_header_time_date)
     TextView tv_main_header_time_date;//日期
@@ -113,12 +115,27 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.vp_main_ads)
     ViewPager vp_main_ads;
 
-    //广告类型，0：不设置 1：视频 2：广告 3：视频广告一起
-    private int type = 0;
+
+    private MPlayer player;
+
+    //显示视频
+    private final int VIDEO_SHOW = 0;
+    //显示轮播图
+    private final int PICTURE_SHOW = 1;
+
+    //当前轮播图
+    private int currentItem = -1;
+
+    //装载动态轮播图
+    private List<View> dots = new ArrayList<View>();
+    private List<ImageView> list_img = new ArrayList<ImageView>();
 
     private List<String> videos = new ArrayList<>();
 
     private List<String> pictures = new ArrayList<>();
+
+    //广告类型，0：不设置 1：视频 2：广告 3：视频广告一起
+    private int type = 0;
 
     //当前播放的哪个视频
     private int indexVideo = 0;
@@ -134,6 +151,9 @@ public class MainActivity extends BaseActivity {
 
     private ScheduledExecutorService scheduledExecutorService;
 
+    private int imageShowTime=3;//图片播放时间
+
+    private int timeFlag=-1;
 //    static {
 //        System.loadLibrary("printer_lib");
 //    }
@@ -148,6 +168,8 @@ public class MainActivity extends BaseActivity {
         //获取数据库
         daoSession = AppApplication.getApplication().getDaoSession();
 
+//        type=2;
+//        initAds();
         //Test tv_main_title_title
         //((TextView) findViewById(R.id.tv_main_title_title)).setText(PrinterUtil.getMessageFromJNI());
     }
@@ -160,17 +182,65 @@ public class MainActivity extends BaseActivity {
                     //更新时间
                     tv_main_header_time_date.setText(dateFormat.format(new Date()));
                     tv_main_header_time_time.setText(format.format(new Date()));
-                    break;
-                case 1://播放广告
+
+//                    //切换轮播图
+//                    if(timeFlag==imageShowTime || timeFlag==-1){
+//                        timeFlag=0;
+//                        int flag= SetCurrentImage();
+//                        if(flag==0){
+//                            //切换轮播图，并且更新时间
+//                            vp_main_ads.setCurrentItem(currentItem);
+//                        }else if(flag==1){
+//                            MediaSetting(1);//视频
+//                            Log.d("Test", "Video start");
+//                        }
+//                    }
+//                    //=============
+//                    timeFlag++;
 
                     break;
+                case 1://播放广告
+                    setAdsLayout(PICTURE_SHOW);
+                    break;
                 case 2:
+                    setAdsLayout(VIDEO_SHOW);
                     break;
                 case 3:
                     break;
             }
         }
     };
+
+//    public void setVideo(){
+//        //如果vedio可见，播放视频,播放一个视频
+//        if (sv_main_video.getVisibility()==View.VISIBLE) {
+//
+//            String temppath=FolderUtil.getVideoPath();
+//
+//            if (videos!=null && videos.size()>0) {
+//                try {
+//                    if (type==1) {
+//                        player.setSource(videos,true);
+//                        player.setCallback(new PlayerCallback() {
+//
+//                            @Override
+//                            public void complete() {
+//                                // TODO Auto-generated method stub
+//                                MediaSetting(0);//图片
+//                            }
+//                        });
+//                    }else {
+//                        player.setSource(video_link,false);
+//                    }
+//                    player.play();
+//                } catch (MPlayerException e) {
+//                    // TODO Auto-generated catch block
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//        }
+//    }
 
     @OnLongClick(R.id.tv_main_comany_name)
     public boolean login(){
@@ -191,6 +261,28 @@ public class MainActivity extends BaseActivity {
                 break;
         }
     }
+
+//    private int SetCurrentImage(){
+//        int flag=0;
+//
+//        //currentItem = (currentItem + 1) % list_img.size();
+//        if(currentItem==list_img.size()){
+//            currentItem=-1;
+//        }
+//
+//        currentItem++;
+//
+//        //Log.d("Test","currentItem:"+currentItem);
+//
+//        if(currentMedia==2 && currentItem==list_img.size() && isShowImage==true){
+//            flag=1;//播放视频： 当且仅当currentMedia=2(视频播放) currentItem=-1(图片播放到最后一张) isShowImage=True(设置了图片播放)
+//        }else if(type == 2 && isShowImage==false){
+//            currentItem=-1;
+//        }else{
+//            flag=0;//播放图片
+//        }
+//        return flag;
+//    }
 
     private void getPriceList(){
         //获取价格列表
@@ -254,6 +346,12 @@ public class MainActivity extends BaseActivity {
         String picturePath = FolderUtil.getImagePath();
         pictures = FolderUtil.getFolderFiles(picturePath);
 
+        if (pictures!=null){
+            for(String path:pictures){
+                getBanner();
+            }
+        }
+
         //判断播放广告方式
         if (videos.size()>0 && pictures.size()>0){
             //视频与广告图片一起轮播
@@ -263,7 +361,7 @@ public class MainActivity extends BaseActivity {
             type = 2;
         }else {
             //播放视频
-            type = 2;
+            type = 1;
         }
         //发送消息播放广告
         Message message = new Message();
@@ -327,4 +425,35 @@ public class MainActivity extends BaseActivity {
         scheduledExecutorService.shutdown();
         Log.i("Test","MainActvity onDestroy scheduledExecutorService shutdown");
     }
+
+    public void getBanner(){
+        //动态设置轮播图数量
+        list_img.clear();
+//        for (int i = 0; i < pictures.size(); i++) {
+//            int m=400;
+//            int h=300;
+//            ImageView iv = new ImageView(MainActivity.this);
+//            iv.setScaleType(ImageView.ScaleType.FIT_XY);
+//            File f=new File(pictures.get(i));
+//            Picasso.with(MainActivity.this)
+//                    .load(f)
+//                    .resize(m, h)
+//                    .centerCrop()
+//                    .into(iv);
+//            list_img.add(iv);
+//            iv=null;
+//            //View dot = inflater.inflate(R.layout.item_dots, null);
+//            //dots.add(dot);
+//            //ll_dots.addView(dot);
+//        }
+
+        ImageView iv = new ImageView(MainActivity.this);
+        iv.setScaleType(ImageView.ScaleType.FIT_XY);
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.ticket);
+        iv.setImageBitmap(bitmap);
+        list_img.add(iv);
+        //设置轮播图
+        vp_main_ads.setAdapter(new ViewpagerDotsAdapter(MainActivity.this, list_img));
+    }
+
 }

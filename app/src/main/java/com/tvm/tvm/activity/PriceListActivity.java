@@ -73,9 +73,9 @@ public class PriceListActivity extends BaseActivity {
         PriceListAdapter.OnItemClickListener onItemClickListener =  new PriceListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Price item = priceLists.get(position+1);
+                Price item = priceLists.get(position);
                 Intent intent = new Intent(context,PriceEditActivity.class);
-                intent.putExtra("id",item.getId());
+                intent.putExtra("priceId",item.getId());
                 context.startActivity(intent);
             }
 
@@ -87,6 +87,8 @@ public class PriceListActivity extends BaseActivity {
                     @Override
                     public void onOKClick() {
                         deletePrice(priceLists.get(position).getId());
+                        priceLists.remove(position);
+                        priceListAdapter.notifyDataSetChanged();
                         ToastUtils.showText(context,StringUtils.DELETE_SUCCESS);
                         confirmDialogUtils.dismiss();
                     }

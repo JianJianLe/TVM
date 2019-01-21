@@ -44,8 +44,21 @@ public class PriceListAdapter extends RecyclerView.Adapter<PriceListAdapter.Tick
 
     @NonNull
     @Override
-    public TicketItemViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public TicketItemViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, final int i) {
         View v = LayoutInflater.from(context).inflate(R.layout.item_ticket,null);
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onItemClickListener.onItemClick(v,i);
+            }
+        });
+        v.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                onItemClickListener.onLongClick(v,i);
+                return false;
+            }
+        });
         return new TicketItemViewHolder(v, onItemClickListener);
     }
 

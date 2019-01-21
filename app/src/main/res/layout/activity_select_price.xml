@@ -88,10 +88,12 @@
                 android:text="@string/tvm_buy_title"/>
         </LinearLayout>
 
-        <android.support.v7.widget.RecyclerView
+        <GridView
+            android:id="@+id/gv_select_price_list"
             android:layout_weight="8"
             android:layout_width="match_parent"
-            android:layout_height="0dp"></android.support.v7.widget.RecyclerView>
+            android:numColumns="3"
+            android:layout_height="0dp"></GridView>
     </LinearLayout>
 
 </LinearLayout>

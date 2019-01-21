@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.tvm.tvm.R;
 import com.tvm.tvm.adapter.ViewpagerDotsAdapter;
 import com.tvm.tvm.application.AppApplication;
@@ -33,6 +34,7 @@ import com.tvm.tvm.util.player.MPlayerException;
 import com.tvm.tvm.util.player.PlayerCallback;
 import com.tvm.tvm.util.view.ToastUtils;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -115,16 +117,7 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.vp_main_ads)
     ViewPager vp_main_ads;
 
-
-    private MPlayer player;
-
-    //显示视频
-    private final int VIDEO_SHOW = 0;
-    //显示轮播图
-    private final int PICTURE_SHOW = 1;
-
-    //当前轮播图
-    private int currentItem = -1;
+    private DaoSession daoSession;
 
     //装载动态轮播图
     private List<View> dots = new ArrayList<View>();
@@ -134,26 +127,41 @@ public class MainActivity extends BaseActivity {
 
     private List<String> pictures = new ArrayList<>();
 
+    //格式化当前时间
+    private SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy年M月d日");
+
+    private MPlayer player;
+
+    //显示视频
+    private final int VIDEO_SHOW = 0;
+
+    //显示轮播图
+    private final int PICTURE_SHOW = 1;
+
+    //当前轮播图
+    private int currentItem = -1;
+    //票价列表
+    List<Price> priceList = new ArrayList<>();
+
+    private ScheduledExecutorService scheduledExecutorService;
+
     //广告类型，0：不设置 1：视频 2：广告 3：视频广告一起
     private int type = 0;
 
     //当前播放的哪个视频
     private int indexVideo = 0;
+    //图片播放时间
+    private int imageShowTime=3;
+    //设置了图片播放
+    private boolean isShowImage = true;
 
-    private DaoSession daoSession;
+    //当前播放视频还是广告，0：广告 1：视频
+    private int whatShow = 0;
 
-    //票价列表
-    List<Price> priceList = new ArrayList<>();
-
-    //格式化当前时间
-    private SimpleDateFormat format = new SimpleDateFormat("HH:mm");
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy年M月d日");
-
-    private ScheduledExecutorService scheduledExecutorService;
-
-    private int imageShowTime=3;//图片播放时间
-
+    //时间
     private int timeFlag=-1;
+
 //    static {
 //        System.loadLibrary("printer_lib");
 //    }
@@ -168,8 +176,8 @@ public class MainActivity extends BaseActivity {
         //获取数据库
         daoSession = AppApplication.getApplication().getDaoSession();
 
-//        type=2;
-//        initAds();
+        type=2;
+        initAds();
         //Test tv_main_title_title
         //((TextView) findViewById(R.id.tv_main_title_title)).setText(PrinterUtil.getMessageFromJNI());
     }
@@ -183,20 +191,27 @@ public class MainActivity extends BaseActivity {
                     tv_main_header_time_date.setText(dateFormat.format(new Date()));
                     tv_main_header_time_time.setText(format.format(new Date()));
 
-//                    //切换轮播图
-//                    if(timeFlag==imageShowTime || timeFlag==-1){
-//                        timeFlag=0;
-//                        int flag= SetCurrentImage();
-//                        if(flag==0){
-//                            //切换轮播图，并且更新时间
-//                            vp_main_ads.setCurrentItem(currentItem);
-//                        }else if(flag==1){
-//                            MediaSetting(1);//视频
-//                            Log.d("Test", "Video start");
-//                        }
-//                    }
-//                    //=============
-//                    timeFlag++;
+                    //切换轮播图
+                    //播放广告或者混合播放的时候而且正在播放广告图片才切换轮播图
+                    if ((type==2 || type==3) && whatShow==0){
+                        //开始轮播或者时间到了改切换，才去切换
+                        if(timeFlag==imageShowTime || timeFlag==-1){
+                            //时间置0，重新算时间
+                            timeFlag=0;
+                            int flag= SetCurrentImage();
+                            if(flag==0){
+                                //切换轮播图，并且更新时间
+                                vp_main_ads.setCurrentItem(currentItem);
+                            }else if(flag==1){
+                                setAdsLayout(VIDEO_SHOW);//视频
+                                whatShow = 1;
+                                setVideo();
+                                Log.d("Test", "Video start");
+                            }
+                        }
+                        //=============
+                        timeFlag++;
+                    }
 
                     break;
                 case 1://播放广告
@@ -211,36 +226,35 @@ public class MainActivity extends BaseActivity {
         }
     };
 
-//    public void setVideo(){
-//        //如果vedio可见，播放视频,播放一个视频
-//        if (sv_main_video.getVisibility()==View.VISIBLE) {
-//
-//            String temppath=FolderUtil.getVideoPath();
-//
-//            if (videos!=null && videos.size()>0) {
-//                try {
-//                    if (type==1) {
-//                        player.setSource(videos,true);
-//                        player.setCallback(new PlayerCallback() {
-//
-//                            @Override
-//                            public void complete() {
-//                                // TODO Auto-generated method stub
-//                                MediaSetting(0);//图片
-//                            }
-//                        });
-//                    }else {
-//                        player.setSource(video_link,false);
-//                    }
-//                    player.play();
-//                } catch (MPlayerException e) {
-//                    // TODO Auto-generated catch block
-//                    e.printStackTrace();
-//                }
-//            }
-//
-//        }
-//    }
+    public void setVideo(){
+        //如果vedio可见，播放视频,播放一个视频
+        if (sv_main_video.getVisibility()==View.VISIBLE) {
+
+            if (videos!=null && videos.size()>0) {
+                try {
+                    if (type==1) {
+                        player.setSource((ArrayList<String>) videos,true);
+                        player.setCallback(new PlayerCallback() {
+
+                            @Override
+                            public void complete() {
+                                // TODO Auto-generated method stub
+                                setAdsLayout(PICTURE_SHOW);//图片
+                                whatShow = 0;
+                            }
+                        });
+                    }else {
+                        player.setSource((ArrayList<String>) videos,false);
+                    }
+                    player.play();
+                } catch (MPlayerException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+
+        }
+    }
 
     @OnLongClick(R.id.tv_main_comany_name)
     public boolean login(){
@@ -262,27 +276,28 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-//    private int SetCurrentImage(){
-//        int flag=0;
-//
-//        //currentItem = (currentItem + 1) % list_img.size();
-//        if(currentItem==list_img.size()){
-//            currentItem=-1;
-//        }
-//
-//        currentItem++;
-//
-//        //Log.d("Test","currentItem:"+currentItem);
-//
-//        if(currentMedia==2 && currentItem==list_img.size() && isShowImage==true){
-//            flag=1;//播放视频： 当且仅当currentMedia=2(视频播放) currentItem=-1(图片播放到最后一张) isShowImage=True(设置了图片播放)
-//        }else if(type == 2 && isShowImage==false){
-//            currentItem=-1;
-//        }else{
-//            flag=0;//播放图片
-//        }
-//        return flag;
-//    }
+    private int SetCurrentImage(){
+        int flag=0;
+
+        currentItem++;
+        //播完之后切换0
+        if(currentItem==list_img.size()){
+            currentItem=-1;
+        }
+
+        //Log.d("Test","currentItem:"+currentItem);
+
+        if(type == 3 && currentItem == list_img.size()-1 && isShowImage==true){
+            currentItem=-1;
+            flag=1;//播放视频： 当且仅当currentMedia=2(视频播放) currentItem=-1(图片播放到最后一张) isShowImage=True(设置了图片播放)
+        }else{
+            if (currentItem==-1){
+                currentItem = 0 ;
+            }
+            flag=0;//播放图片
+        }
+        return flag;
+    }
 
     private void getPriceList(){
         //获取价格列表
@@ -347,21 +362,22 @@ public class MainActivity extends BaseActivity {
         pictures = FolderUtil.getFolderFiles(picturePath);
 
         if (pictures!=null){
-            for(String path:pictures){
-                getBanner();
-            }
+            getBanner();
         }
 
         //判断播放广告方式
         if (videos.size()>0 && pictures.size()>0){
             //视频与广告图片一起轮播
             type = 3;
+            whatShow=0;
         }else if (videos.size()== 0 && pictures.size()>0){
             //图片轮播
             type = 2;
+            whatShow=0;
         }else {
             //播放视频
             type = 1;
+            whatShow=1;
         }
         //发送消息播放广告
         Message message = new Message();
@@ -429,29 +445,21 @@ public class MainActivity extends BaseActivity {
     public void getBanner(){
         //动态设置轮播图数量
         list_img.clear();
-//        for (int i = 0; i < pictures.size(); i++) {
-//            int m=400;
-//            int h=300;
-//            ImageView iv = new ImageView(MainActivity.this);
-//            iv.setScaleType(ImageView.ScaleType.FIT_XY);
-//            File f=new File(pictures.get(i));
-//            Picasso.with(MainActivity.this)
-//                    .load(f)
-//                    .resize(m, h)
-//                    .centerCrop()
-//                    .into(iv);
-//            list_img.add(iv);
-//            iv=null;
-//            //View dot = inflater.inflate(R.layout.item_dots, null);
-//            //dots.add(dot);
-//            //ll_dots.addView(dot);
-//        }
+        for (int i = 0; i < pictures.size(); i++) {
+            int m=400;
+            int h=300;
+            ImageView iv = new ImageView(MainActivity.this);
+            iv.setScaleType(ImageView.ScaleType.FIT_XY);
+            File f=new File(pictures.get(i));
+            Picasso.with(MainActivity.this)
+                    .load(f)
+                    .resize(m, h)
+                    .centerCrop()
+                    .into(iv);
+            list_img.add(iv);
+            iv=null;
+        }
 
-        ImageView iv = new ImageView(MainActivity.this);
-        iv.setScaleType(ImageView.ScaleType.FIT_XY);
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.ticket);
-        iv.setImageBitmap(bitmap);
-        list_img.add(iv);
         //设置轮播图
         vp_main_ads.setAdapter(new ViewpagerDotsAdapter(MainActivity.this, list_img));
     }

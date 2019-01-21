@@ -1,5 +1,6 @@
 package com.tvm.tvm.activity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -82,6 +83,9 @@ public class MainActivity extends BaseActivity {
 
     @BindView(R.id.ll_main_ticket_list_2)
     LinearLayout ll_main_ticket_list_2;
+
+    @BindView(R.id.ll_main_ticket_list_1)
+    LinearLayout ll_main_ticket_list_1;
 
     @BindView(R.id.tv_main_ticke_list_null)
     TextView tv_main_ticke_list_null;
@@ -262,8 +266,9 @@ public class MainActivity extends BaseActivity {
         return true;
     }
 
-    @OnClick({R.id.tv_main_click_buy})
+    @OnClick({R.id.tv_main_click_buy,R.id.ll_main_ticket_list_1,R.id.ll_main_ticket_list_2})
     public void onClick(View view){
+        Long priceId;
         switch (view.getId()){
             case R.id.tv_main_click_buy:
                 //选择价格，价格列表为空的话不能购票
@@ -272,6 +277,18 @@ public class MainActivity extends BaseActivity {
                 }else {
                     startActivity(this,SelectPriceActivity.class);
                 }
+                break;
+            case R.id.ll_main_ticket_list_1:
+                priceId = priceList.get(0).getId();
+                Intent intent = new Intent();
+                intent.putExtra("priceId",priceId);
+                startActivity(this,intent,PayDetailActivity.class);
+                break;
+            case R.id.ll_main_ticket_list_2:
+                priceId = priceList.get(1).getId();
+                Intent intent2 = new Intent();
+                intent2.putExtra("priceId",priceId);
+                startActivity(this,intent2,PayDetailActivity.class);
                 break;
         }
     }

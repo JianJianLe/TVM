@@ -1,15 +1,23 @@
 package com.tvm.tvm.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.TextView;
 
 import com.tvm.tvm.R;
+import com.tvm.tvm.adapter.SelectPriceAdapter;
 import com.tvm.tvm.application.AppApplication;
+import com.tvm.tvm.bean.Price;
 import com.tvm.tvm.bean.TicketSummary;
 import com.tvm.tvm.bean.dao.DaoSession;
+import com.tvm.tvm.bean.dao.PriceDao;
 import com.tvm.tvm.bean.dao.TicketSummaryDao;
 import com.tvm.tvm.util.SharedPrefsUtil;
 import com.tvm.tvm.util.constant.PreConfig;
@@ -32,6 +40,8 @@ import butterknife.ButterKnife;
  */
 public class SelectPriceActivity extends BaseActivity {
 
+    private Context TAG = SelectPriceActivity.this;
+
     @BindView(R.id.tv_select_price_header_time_date)
     TextView tv_select_price_header_time_date;//日期
 
@@ -40,9 +50,17 @@ public class SelectPriceActivity extends BaseActivity {
 
     @BindView(R.id.tv_select_price_header_ticket_num)
     TextView tv_select_price_header_ticket_num;//票数
+
+    @BindView(R.id.gv_select_price_list)
+    GridView gv_select_price_list;
+
+    private SelectPriceAdapter adapter;
+
     //格式化当前时间
     private SimpleDateFormat format = new SimpleDateFormat("HH:mm");
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy年M月d日");
+
+    private List<Price> priceList;
 
     private DaoSession daoSession;
 
@@ -57,13 +75,6 @@ public class SelectPriceActivity extends BaseActivity {
                     tv_select_price_header_time_date.setText(dateFormat.format(new Date()));
                     tv_select_price_header_time_time.setText(format.format(new Date()));
                     break;
-                case 1://播放广告
-
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    break;
             }
         }
     };
@@ -74,6 +85,7 @@ public class SelectPriceActivity extends BaseActivity {
         setContentView(R.layout.activity_select_price);
         ButterKnife.bind(this);
         daoSession = AppApplication.getApplication().getDaoSession();
+        setPrice();
     }
 
     @Override
@@ -106,6 +118,23 @@ public class SelectPriceActivity extends BaseActivity {
             message.what = 0;
             handler.sendMessage(message);
         }
+    }
+
+    private void setPrice(){
+        PriceDao priceDao = daoSession.getPriceDao();
+        priceList = priceDao.queryBuilder().list();
+        adapter = new SelectPriceAdapter(this,priceList);
+        gv_select_price_list.setAdapter(adapter);
+        gv_select_price_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Long priceId = priceList.get(0).getId();
+                Intent intent = new Intent();
+                intent.putExtra("priceId",priceId);
+                startActivity(TAG,intent,PayDetailActivity.class);
+                SelectPriceActivity.this.finish();
+            }
+        });
     }
 
     private void setTicketNum(){

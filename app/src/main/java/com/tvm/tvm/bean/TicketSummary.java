@@ -16,8 +16,14 @@ public class TicketSummary {
     @Id(autoincrement = true)
     private Long id;
 
+    /**
+     * 日期
+     * 每天统计，新的一天自动创建一个新记录
+     */
     private String date;
-
+    /**
+     * 票数
+     */
     private int num;
 
     public int getNum() {

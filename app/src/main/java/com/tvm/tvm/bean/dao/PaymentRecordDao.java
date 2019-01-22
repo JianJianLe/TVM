@@ -27,8 +27,9 @@ public class PaymentRecordDao extends AbstractDao<PaymentRecord, Long> {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property Amount = new Property(1, int.class, "amount", false, "AMOUNT");
         public final static Property Num = new Property(2, int.class, "num", false, "NUM");
-        public final static Property Type = new Property(3, int.class, "type", false, "TYPE");
-        public final static Property PayTime = new Property(4, java.util.Date.class, "payTime", false, "PAY_TIME");
+        public final static Property Price = new Property(3, Double.class, "price", false, "PRICE");
+        public final static Property Type = new Property(4, int.class, "type", false, "TYPE");
+        public final static Property PayTime = new Property(5, java.util.Date.class, "payTime", false, "PAY_TIME");
     }
 
 
@@ -47,8 +48,9 @@ public class PaymentRecordDao extends AbstractDao<PaymentRecord, Long> {
                 "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
                 "\"AMOUNT\" INTEGER NOT NULL ," + // 1: amount
                 "\"NUM\" INTEGER NOT NULL ," + // 2: num
-                "\"TYPE\" INTEGER NOT NULL ," + // 3: type
-                "\"PAY_TIME\" INTEGER);"); // 4: payTime
+                "\"PRICE\" REAL," + // 3: price
+                "\"TYPE\" INTEGER NOT NULL ," + // 4: type
+                "\"PAY_TIME\" INTEGER);"); // 5: payTime
     }
 
     /** Drops the underlying database table. */
@@ -67,11 +69,16 @@ public class PaymentRecordDao extends AbstractDao<PaymentRecord, Long> {
         }
         stmt.bindLong(2, entity.getAmount());
         stmt.bindLong(3, entity.getNum());
-        stmt.bindLong(4, entity.getType());
+ 
+        Double price = entity.getPrice();
+        if (price != null) {
+            stmt.bindDouble(4, price);
+        }
+        stmt.bindLong(5, entity.getType());
  
         java.util.Date payTime = entity.getPayTime();
         if (payTime != null) {
-            stmt.bindLong(5, payTime.getTime());
+            stmt.bindLong(6, payTime.getTime());
         }
     }
 
@@ -85,11 +92,16 @@ public class PaymentRecordDao extends AbstractDao<PaymentRecord, Long> {
         }
         stmt.bindLong(2, entity.getAmount());
         stmt.bindLong(3, entity.getNum());
-        stmt.bindLong(4, entity.getType());
+ 
+        Double price = entity.getPrice();
+        if (price != null) {
+            stmt.bindDouble(4, price);
+        }
+        stmt.bindLong(5, entity.getType());
  
         java.util.Date payTime = entity.getPayTime();
         if (payTime != null) {
-            stmt.bindLong(5, payTime.getTime());
+            stmt.bindLong(6, payTime.getTime());
         }
     }
 
@@ -104,8 +116,9 @@ public class PaymentRecordDao extends AbstractDao<PaymentRecord, Long> {
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.getInt(offset + 1), // amount
             cursor.getInt(offset + 2), // num
-            cursor.getInt(offset + 3), // type
-            cursor.isNull(offset + 4) ? null : new java.util.Date(cursor.getLong(offset + 4)) // payTime
+            cursor.isNull(offset + 3) ? null : cursor.getDouble(offset + 3), // price
+            cursor.getInt(offset + 4), // type
+            cursor.isNull(offset + 5) ? null : new java.util.Date(cursor.getLong(offset + 5)) // payTime
         );
         return entity;
     }
@@ -115,8 +128,9 @@ public class PaymentRecordDao extends AbstractDao<PaymentRecord, Long> {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setAmount(cursor.getInt(offset + 1));
         entity.setNum(cursor.getInt(offset + 2));
-        entity.setType(cursor.getInt(offset + 3));
-        entity.setPayTime(cursor.isNull(offset + 4) ? null : new java.util.Date(cursor.getLong(offset + 4)));
+        entity.setPrice(cursor.isNull(offset + 3) ? null : cursor.getDouble(offset + 3));
+        entity.setType(cursor.getInt(offset + 4));
+        entity.setPayTime(cursor.isNull(offset + 5) ? null : new java.util.Date(cursor.getLong(offset + 5)));
      }
     
     @Override

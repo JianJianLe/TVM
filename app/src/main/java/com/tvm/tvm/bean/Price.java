@@ -12,13 +12,21 @@ public class Price {
 
     @Id(autoincrement = true)
     private Long id;
-
+    /**
+     * 图片字节码
+     */
     private byte[] pic;
-
+    /**
+     * 价格
+     */
     private double price;
-
+    /**
+     * 标题
+     */
     private String title;
-
+    /**
+     * 描述
+     */
     private String description;
 
     private int isDelete;

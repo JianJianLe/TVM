@@ -125,7 +125,6 @@ public class PayDetailActivity extends BaseActivity{
      - @Time： ${TIME}
      */
     public void updateAmount(){
-        num = Integer.getInteger(tv_pay_detail_num.getText().toString().trim());
         tv_pay_detail_num.setText(String.valueOf(num));
         tv_pay_detail_pay_amount.setText(String.valueOf(ticketPrice*num));
         leftAmount = ticketPrice* num - receieveAmount;

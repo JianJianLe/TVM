@@ -17,18 +17,28 @@ public class PaymentRecord {
 
     @Id(autoincrement = true)
     private Long id;
-
+    /**
+     * 总金额
+     */
     private int amount;
-
+    /**
+     * 数量
+     */
     private int num;
 
+    /**
+     * 价格
+     */
+    private Double price;
     /**
      * 0--支付宝
      * 1--微信
      * 2--现金
      */
     private int type;
-
+    /**
+     * 支付时间
+     */
     private Date payTime;
 
     public Date getPayTime() {
@@ -81,11 +91,21 @@ public class PaymentRecord {
         this.id = id;
     }
 
-    @Generated(hash = 1393729170)
-    public PaymentRecord(Long id, int amount, int num, int type, Date payTime) {
+    public Double getPrice() {
+        return this.price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    @Generated(hash = 513474166)
+    public PaymentRecord(Long id, int amount, int num, Double price, int type,
+            Date payTime) {
         this.id = id;
         this.amount = amount;
         this.num = num;
+        this.price = price;
         this.type = type;
         this.payTime = payTime;
     }

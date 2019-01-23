@@ -114,11 +114,14 @@ public class BillQueryActivity extends BaseActivity{
                 //将选择的日期显示到TextView中,因为之前获取month直接使用，所以不需要+1，这个地方需要显示，所以+1
                 if (type==0){
                     tv_bill_query_start_date.setText(year+"-"+(++month)+"-"+day);
+                    datePickerDialog.dismiss();
                 }else {
                     tv_bill_query_end_date.setText(year+"-"+(++month)+"-"+day);
+                    datePickerDialog.dismiss();
                 }
             }
         },year,month,day);
+        datePickerDialog.show();
     }
 
     public void query(){

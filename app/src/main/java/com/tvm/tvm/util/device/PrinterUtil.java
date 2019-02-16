@@ -76,7 +76,7 @@ public class PrinterUtil {
         printData=printData.replace("[Title]", msg.getTitle());
         printData=printData.replace("[Title Description]", msg.getTitleDesc());
         printData=printData.replace("[ShopNumber]", msg.getShopNumber());
-        printData=printData.replace("[TicketType]", msg.getTicketType());
+        printData=printData.replace("[TicketType]", msg.getTicketName());
         printData=printData.replace("[Price]", msg.getPrice());
         printData=printData.replace("[TicketNumber]", msg.getTicketNumber());
         printData=printData.replace("[PayType]", msg.getPayType());

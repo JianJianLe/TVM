@@ -107,7 +107,6 @@ public class TimeUtil {
         return flag;
     }
 
-
     public static void delay(int second){
         try{
             Thread.currentThread();

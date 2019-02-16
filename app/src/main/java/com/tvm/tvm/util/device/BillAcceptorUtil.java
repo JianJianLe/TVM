@@ -42,6 +42,15 @@ public class BillAcceptorUtil {
 
     //String printString;
 
+    private static BillAcceptorUtil instance;
+
+    public synchronized static BillAcceptorUtil getInstance(){
+        if (instance==null) {
+            instance = new BillAcceptorUtil();
+        }
+        return instance;
+    }
+
     // 接收投币器数据的定时器
     private class ReadThread extends Thread {
 
@@ -68,10 +77,6 @@ public class BillAcceptorUtil {
 
     void onDataReceived(final byte[] buffer, final int size) {
 
-//        String printString = bytes2HexString(buffer);
-//        Log.i("Test", printString);
-        //Log.i("Test", "Size="+size);
-
         try {
             for(int i=0;i<size;i++){
                 dataCheck(buffer[i]);
@@ -86,7 +91,6 @@ public class BillAcceptorUtil {
     private int moneySureFlag = 0;
 
     private void dataCheck(final byte buffer) throws IOException {
-        //Log.i("Test",  Integer.toHexString(buffer & 0xFF));
         if (buffer == (byte) 0x80) {
             Log.i("Test", "come in 0x80");
             responseFlag = 1;

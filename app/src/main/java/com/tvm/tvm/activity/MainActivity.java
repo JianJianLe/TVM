@@ -30,6 +30,8 @@ import com.tvm.tvm.util.FolderUtil;
 import com.tvm.tvm.util.SharedPrefsUtil;
 import com.tvm.tvm.util.constant.PreConfig;
 import com.tvm.tvm.util.constant.StringUtils;
+import com.tvm.tvm.util.device.BillAcceptorUtil;
+import com.tvm.tvm.util.device.PrinterCase;
 import com.tvm.tvm.util.player.MPlayer;
 import com.tvm.tvm.util.player.MPlayerException;
 import com.tvm.tvm.util.player.PlayerCallback;
@@ -166,9 +168,10 @@ public class MainActivity extends BaseActivity {
     //时间
     private int timeFlag=-1;
 
-//    static {
-//        System.loadLibrary("printer_lib");
-//    }
+    static {
+        System.loadLibrary("printer");
+        System.loadLibrary("serial_port");
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -182,8 +185,21 @@ public class MainActivity extends BaseActivity {
 
         type=2;
         initAds();
+
+        initBillAcceptor();
+        /******Test******/
         //Test tv_main_title_title
         //((TextView) findViewById(R.id.tv_main_title_title)).setText(PrinterUtil.getMessageFromJNI());
+        //PrinterCase.getInstance().printerCaseTest();
+        /******Test******/
+
+    }
+
+    public void initBillAcceptor(){
+        //纸钞机初始化
+        BillAcceptorUtil.getInstance().billAcceptorCmdInit();
+        BillAcceptorUtil.getInstance().billAcceptorDeviceInit();
+        BillAcceptorUtil.getInstance().ba_Disable();
     }
 
     private Handler handler = new Handler(){
@@ -328,20 +344,20 @@ public class MainActivity extends BaseActivity {
             tv_main_ticke_list_null.setVisibility(View.GONE);
             ll_main_ticket_list_2.setVisibility(View.GONE);
             tv_main_ticke_list_desc.setText(priceList.get(0).getDescription());
-            tv_main_ticke_list_price.setText(priceList.get(0).getPrice()+"");
+            tv_main_ticke_list_price.setText((int)priceList.get(0).getPrice()+"");
             tv_main_ticke_list_title.setText(priceList.get(0).getTitle());
             iv_main_ticke_list_icon.setImageBitmap(BitmapUtils.byte2Bitmap(priceList.get(0).getPic()));
         }
 
         if (priceList.size()==2){
             tv_main_ticke_list_desc.setText(priceList.get(0).getDescription());
-            tv_main_ticke_list_price.setText(priceList.get(0).getPrice()+"");
+            tv_main_ticke_list_price.setText((int)priceList.get(0).getPrice()+"");
             tv_main_ticke_list_title.setText(priceList.get(0).getTitle());
             iv_main_ticke_list_icon.setImageBitmap(BitmapUtils.byte2Bitmap(priceList.get(0).getPic()));
 
 
             tv_main_ticke_list_desc2.setText(priceList.get(1).getDescription());
-            tv_main_ticke_list_price2.setText(priceList.get(1).getPrice()+"");
+            tv_main_ticke_list_price2.setText((int)priceList.get(1).getPrice()+"");
             tv_main_ticke_list_title2.setText(priceList.get(1).getTitle());
             iv_main_ticke_list_icon2.setImageBitmap(BitmapUtils.byte2Bitmap(priceList.get(1).getPic()));
         }
@@ -429,7 +445,6 @@ public class MainActivity extends BaseActivity {
     //开启时执行延迟服务
     @Override
     protected void onStart() {
-        // TODO Auto-generated method stub
         super.onStart();
         scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
         //时间更新，一分钟刷新一次
@@ -453,7 +468,6 @@ public class MainActivity extends BaseActivity {
     //关掉延迟服务
     @Override
     public void onDestroy(){
-        // TODO Auto-generated method stub
         super.onDestroy();
         scheduledExecutorService.shutdown();
         Log.i("Test","MainActvity onDestroy scheduledExecutorService shutdown");

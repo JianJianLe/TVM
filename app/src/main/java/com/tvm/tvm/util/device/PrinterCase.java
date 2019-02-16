@@ -6,9 +6,12 @@ import java.util.Date;
 
 public class PrinterCase {
 
-    private PrinterKeys keys;
+    public double amountRecord=0;//总共多少金额
+    public double balanceRecord=0;//余额
+    public int numRecord=0;//一共打印多少张票
+    public int ticketNumRecord=0;
 
-    String ticketDesc="" +
+    public String ticketDesc="" +
             "[LeftSmall]>1.此凭条为儿童（身高1.4米以下）\n" +
             "[LeftSmall]>  剪发专用凭证；\n" +
             "[LeftSmall]>2.凭此凭条可以在本店享受专业剪\n" +
@@ -21,12 +24,15 @@ public class PrinterCase {
             "[LeftSmall]>6.本公司可能在法律允许范围内对\n" +
             "[LeftSmall]>  此细则作出适当调整。";
 
-    public PrinterCase(){
+    public PrinterMessage msg = new PrinterMessage();
 
-    }
+    private static PrinterCase instance;
 
-    public PrinterCase(PrinterKeys keys){
-        this.keys =keys;
+    public synchronized static PrinterCase getInstance(){
+        if (instance==null) {
+            instance = new PrinterCase();
+        }
+        return instance;
     }
 
     public void printerCaseTest(){
@@ -34,7 +40,7 @@ public class PrinterCase {
         msg.setTitle("快剪");
         msg.setTitleDesc("欢迎光临快剪专营店");
         msg.setShopNumber("0001");
-        msg.setTicketType("儿童票");
+        msg.setTicketName("儿童票");
         msg.setPrice("10");
         msg.setTicketNumber("001");
         msg.setPayType("现金");
@@ -45,17 +51,16 @@ public class PrinterCase {
         printerUtil.PrintTicket(msg);
     }
 
-    public void printerCase(){
-        PrinterMessage msg = new PrinterMessage();
+    public void print(){
         msg.setTitle("快剪");
         msg.setTitleDesc("欢迎光临快剪专营店");
-        msg.setShopNumber(keys.getShopNumber());
-        msg.setTicketType(keys.getTicketType());
-        msg.setPrice(keys.getPrice());
-        msg.setTicketNumber(keys.getTicketNumber());
-        msg.setPayType(keys.getPayType());
-        msg.setDateStr(keys.getDateStr());
-        msg.setTicketDesc(ticketDesc);
+//        msg.setShopNumber(keys.getShopNumber());
+//        msg.setTicketName(keys.getTicketName());
+//        msg.setPrice(keys.getPrice());
+//        msg.setTicketNumber(keys.getTicketNumber());
+//        msg.setPayType(keys.getPayType());
+//        msg.setDateStr(keys.getDateStr());
+//        msg.setTicketDesc(ticketDesc);
         PrinterUtil printerUtil=new PrinterUtil();
         printerUtil.PrintTicket(msg);
     }

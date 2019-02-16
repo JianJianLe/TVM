@@ -44,7 +44,7 @@ public class PrinterUtil {
     private String printTemplate = "[Large]>[Title]\n" +
             "[Small]>[Title Description]\n" +
             "[Small]>本店编号：[ShopNumber]\n" +
-            "[Large]>[TicketType]\n" +
+            "[Large]>[TicketName]\n" +
             "[Large]>价格：[Price]元\n" +
             "[Large]>[TicketNumber]\n" +
             "[Small]>支付方式：[PayType]\n" +
@@ -76,7 +76,7 @@ public class PrinterUtil {
         printData=printData.replace("[Title]", msg.getTitle());
         printData=printData.replace("[Title Description]", msg.getTitleDesc());
         printData=printData.replace("[ShopNumber]", msg.getShopNumber());
-        printData=printData.replace("[TicketType]", msg.getTicketName());
+        printData=printData.replace("[TicketName]", msg.getTicketName());
         printData=printData.replace("[Price]", msg.getPrice());
         printData=printData.replace("[TicketNumber]", msg.getTicketNumber());
         printData=printData.replace("[PayType]", msg.getPayType());

@@ -27,8 +27,8 @@ public class TimeUtil {
 
     public static int compareDate(String strDate1,String strDate2){
         int flag=0;
-        Date date1=getDateFromString(strDate1);
-        Date date2=getDateFromString(strDate2);
+        Date date1=getDate(strDate1);
+        Date date2=getDate(strDate2);
         if(date1.getTime()>date2.getTime()){
             flag=1;//date1>date2
         }else if(date1.getTime()<date2.getTime()){
@@ -75,9 +75,9 @@ public class TimeUtil {
         return flag;
     }
 
-    public static Date getDateFromString(String s){
+    public static Date getDate(String dateStr){
         try {
-            returnDate=dateFormat.parse(s);
+            returnDate=dateFormat.parse(dateStr);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -93,7 +93,7 @@ public class TimeUtil {
     }
     public static String FormatDateStr(String dateStr){
         String str=null;
-        str=dateFormat.format(getDateFromString(dateStr));
+        str=dateFormat.format(getDate(dateStr));
         return str;
     }
 

@@ -19,6 +19,8 @@ import com.tvm.tvm.util.device.PrinterCase;
 import com.tvm.tvm.util.device.PrinterKeys;
 import com.tvm.tvm.util.device.TimeUtil;
 
+import java.text.ParseException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -39,6 +41,7 @@ public class PaySuccessActivity extends BaseActivity {
     //传递过来得票价id
     private Long priceId;
     private DaoSession daoSession;
+    private List<TicketSummary> ticketSummaryList;
 
     @Override
     protected void onCreate( Bundle savedInstanceState) {
@@ -95,20 +98,30 @@ public class PaySuccessActivity extends BaseActivity {
     }
 
     private String getTicketNumber(String currentTime){
-        int orderNum=getPreTickerNumber();
+        int orderNum=getPreTicketNumber();
         orderNum++;
         saveTicketInfo(currentTime,orderNum);
         return PrinterCase.getInstance().OrderDispose(orderNum) ;
     }
 
-    private int getPreTickerNumber(){
+    private int getPreTicketNumber(){
         TicketSummaryDao ticketSummaryDao = daoSession.getTicketSummaryDao();
-        List<TicketSummary> ticketSummaryList = ticketSummaryDao.queryBuilder().list();
+        ticketSummaryList = ticketSummaryDao.queryBuilder().list();
         if (ticketSummaryList.size()==0){
             return 0;
         }else {
-            return ticketSummaryList.get(ticketSummaryList.size()-1).getNum();
+            return getNumByTime();
         }
+    }
+
+    //如果是新的一天，则TicketNumber清零
+    private int getNumByTime(){
+        TicketSummary ticket = ticketSummaryList.get(ticketSummaryList.size()-1);
+        String ticketTime=ticket.getDate();
+        if(isToday(ticketTime))
+            return ticket.getNum();
+        else
+            return 0;
     }
 
     private void saveTicketInfo(String currentTime, int orderNum){
@@ -129,4 +142,20 @@ public class PaySuccessActivity extends BaseActivity {
         this.finish();
     }
 
+    private boolean isToday(String dateStr) {
+        Calendar c1 = Calendar.getInstance();
+        c1.setTime(TimeUtil.getDate(dateStr));
+        int year1 = c1.get(Calendar.YEAR);
+        int month1 = c1.get(Calendar.MONTH)+1;
+        int day1 = c1.get(Calendar.DAY_OF_MONTH);
+        Calendar c2 = Calendar.getInstance();
+        c2.setTime(new Date());
+        int year2 = c2.get(Calendar.YEAR);
+        int month2 = c2.get(Calendar.MONTH)+1;
+        int day2 = c2.get(Calendar.DAY_OF_MONTH);
+        if(year1 == year2 && month1 == month2 && day1 == day2){
+            return true;
+        }
+        return false;
+    }
 }

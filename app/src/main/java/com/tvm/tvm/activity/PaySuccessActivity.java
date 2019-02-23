@@ -16,7 +16,7 @@ import com.tvm.tvm.bean.dao.TicketSummaryDao;
 import com.tvm.tvm.util.SharedPrefsUtil;
 import com.tvm.tvm.util.constant.PreConfig;
 import com.tvm.tvm.util.device.PrinterCase;
-import com.tvm.tvm.util.device.PrinterMessage;
+import com.tvm.tvm.util.device.PrinterKeys;
 import com.tvm.tvm.util.device.TimeUtil;
 
 import java.util.Date;
@@ -87,12 +87,11 @@ public class PaySuccessActivity extends BaseActivity {
 
     private void ticketSettings(){
         String currentTime =TimeUtil.dateFormat.format(new Date());
-        PrinterMessage msg = PrinterCase.getInstance().msg;
-        msg.setShopNumber("000001");
+        PrinterKeys msg = PrinterCase.getInstance().msg;
+        msg.setDeviceNumber("000001");
         msg.setTicketName(getTicketName());
         msg.setTicketNumber(getTicketNumber(currentTime));
         msg.setDateStr(currentTime);
-        msg.setTicketDesc(PrinterCase.getInstance().ticketDesc);
     }
 
     private String getTicketNumber(String currentTime){

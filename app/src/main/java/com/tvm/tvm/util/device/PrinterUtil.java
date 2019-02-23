@@ -41,16 +41,26 @@ public class PrinterUtil {
     //[Large]: 居中大字符
     //[Small]: 居中正常字符
     //[LeftSmall]: 左对齐正常字符
-    private String printTemplate = "[Large]>[Title]\n" +
-            "[Small]>[Title Description]\n" +
-            "[Small]>本店编号：[ShopNumber]\n" +
-            "[Large]>[TicketName]\n" +
-            "[Large]>价格：[Price]元\n" +
-            "[Large]>[TicketNumber]\n" +
-            "[Small]>支付方式：[PayType]\n" +
-            "[Small]>[Date]\n" +
+    private String printTemplate = "[CenterLarge]->快剪\n" +
+            "[CenterSmall]->欢迎光临快剪专营店\n" +
+            "[CenterSmall]->本店编号：[DeviceNumber]\n" +
+            "[CenterLarge]->[TicketName]\n" +
+            "[CenterLarge]->价格：[Price]元\n" +
+            "[CenterLarge]->[TicketNumber]\n" +
+            "[CenterSmall]->支付方式：[PayType]\n" +
+            "[CenterSmall]->[DateTime]\n" +
             "[SplitLine]\n" +
-            "[Description]\n" +
+            "[LeftSmall]->1.此凭条为儿童（身高1.4米以下）\n" +
+            "[LeftSmall]->  剪发专用凭证；\n" +
+            "[LeftSmall]->2.凭此凭条可以在本店享受专业剪\n" +
+            "[LeftSmall]->  发一次，复印无效；\n" +
+            "[LeftSmall]->3.本凭条仅可在购买本店使用；\n" +
+            "[LeftSmall]->4.此凭条不记名，不挂失，不能兑\n" +
+            "[LeftSmall]->  换现金，用完即止；\n" +
+            "[LeftSmall]->5.此凭条从购买之日起，有效期为\n" +
+            "[LeftSmall]->  当天，过期作废；\n" +
+            "[LeftSmall]->6.本公司可能在法律允许范围内对\n" +
+            "[LeftSmall]->  此细则作出适当调整。\n" +
             "[Enter]\n" +
             "[Enter]\n" +
             "[Enter]";
@@ -64,38 +74,35 @@ public class PrinterUtil {
         }
     }
 
-    public void PrintTicket(PrinterMessage msg){
+    public void PrintTicket(PrinterKeys msg){
         printerInit();
         parsePrintMessage(initPrintMessage(msg));
     }
 
     /***********************************************************************************/
 
-    private String initPrintMessage(PrinterMessage msg){
+    private String initPrintMessage(PrinterKeys msg){
         String printData = printTemplate;
-        printData=printData.replace("[Title]", msg.getTitle());
-        printData=printData.replace("[Title Description]", msg.getTitleDesc());
-        printData=printData.replace("[ShopNumber]", msg.getShopNumber());
+        printData=printData.replace("[DeviceNumber]", msg.getDeviceNumber());
         printData=printData.replace("[TicketName]", msg.getTicketName());
         printData=printData.replace("[Price]", msg.getPrice());
         printData=printData.replace("[TicketNumber]", msg.getTicketNumber());
         printData=printData.replace("[PayType]", msg.getPayType());
-        printData=printData.replace("[Date]", msg.getDateStr());
-        printData=printData.replace("[Description]", msg.getTicketDesc());
+        printData=printData.replace("[DateTime]", msg.getDateStr());
         return printData;
     }
 
     private void parsePrintMessage(String printData){
         String[] msgArray = printData.split("\n");
         for(int i=0; i<msgArray.length;i++){
-            String[] tempMsg=msgArray[i].split(">");
+            String[] tempMsg=msgArray[i].split("->");
             if(tempMsg.length>1){
                 switch (tempMsg[0]){
-                    case "[Large]":
+                    case "[CenterLarge]":
                         if(tempMsg[1].length()!=0)
                             printLargeCN(tempMsg[1]);
                         break;
-                    case "[Small]":
+                    case "[CenterSmall]":
                         if(tempMsg[1].length()!=0)
                             printNormalCN(tempMsg[1]);
                         break;

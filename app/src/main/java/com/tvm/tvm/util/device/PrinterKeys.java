@@ -4,7 +4,7 @@ import java.io.InputStream;
 
 public class PrinterKeys {
 
-    private String shopNumber;
+    private String deviceNumber;
     private String ticketName; //成人票，儿童票
     private String payType; //现金,支付宝，微信
     private String ticketNumber;
@@ -18,7 +18,7 @@ public class PrinterKeys {
     }
 
     public String getPrice() { return price; }
-    public String getShopNumber() { return shopNumber; }
+    public String getDeviceNumber() { return deviceNumber; }
     public String getPayType() { return payType; }
     public String getTicketNumber() { return ticketNumber; }
     public InputStream getQrData() { return qrData; }
@@ -27,7 +27,7 @@ public class PrinterKeys {
     public String getDateStr() { return dateStr; }
 
     public void setPrice(String price) { this.price = price; }
-    public void setShopNumber(String shopNumber) { this.shopNumber = shopNumber; }
+    public void setDeviceNumber(String deviceNumber) { this.deviceNumber = deviceNumber; }
     public void setPayType(String payType) { this.payType = payType; }
     public void setTicketNumber(String ticketNumber) { this.ticketNumber = ticketNumber; }
     public void setQrData(InputStream qrData) { this.qrData = qrData; }

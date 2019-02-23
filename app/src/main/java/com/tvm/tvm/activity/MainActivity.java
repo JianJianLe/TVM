@@ -434,11 +434,12 @@ public class MainActivity extends BaseActivity {
 
     private void setTicketNum(){
         TicketSummaryDao ticketSummaryDao = daoSession.getTicketSummaryDao();
-        List<TicketSummary> ticketSummaryList = ticketSummaryDao.queryBuilder().where(TicketSummaryDao.Properties.Date.eq(dateFormat.format(new Date()))).list();
+        List<TicketSummary> ticketSummaryList = ticketSummaryDao.queryBuilder().list();
         if (ticketSummaryList.size()==0){
-            tv_main_header_ticket_num.setText("0");
+            tv_main_header_ticket_num.setText("001");
         }else {
-            tv_main_header_ticket_num.setText(ticketSummaryList.get(0).getNum()+"");
+            tv_main_header_ticket_num.setText(PrinterCase.getInstance().OrderDispose(
+                    ticketSummaryList.get(ticketSummaryList.size()-1).getNum()));
         }
     }
 

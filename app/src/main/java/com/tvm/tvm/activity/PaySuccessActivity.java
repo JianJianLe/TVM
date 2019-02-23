@@ -9,16 +9,18 @@ import android.widget.TextView;
 import com.tvm.tvm.R;
 import com.tvm.tvm.application.AppApplication;
 import com.tvm.tvm.bean.Price;
+import com.tvm.tvm.bean.TicketSummary;
 import com.tvm.tvm.bean.dao.DaoSession;
 import com.tvm.tvm.bean.dao.PriceDao;
+import com.tvm.tvm.bean.dao.TicketSummaryDao;
 import com.tvm.tvm.util.SharedPrefsUtil;
 import com.tvm.tvm.util.constant.PreConfig;
 import com.tvm.tvm.util.device.PrinterCase;
 import com.tvm.tvm.util.device.PrinterMessage;
 import com.tvm.tvm.util.device.TimeUtil;
-import com.tvm.tvm.util.view.ToastUtils;
 
 import java.util.Date;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -84,19 +86,37 @@ public class PaySuccessActivity extends BaseActivity {
     }
 
     private void ticketSettings(){
+        String currentTime =TimeUtil.dateFormat.format(new Date());
         PrinterMessage msg = PrinterCase.getInstance().msg;
         msg.setShopNumber("000001");
-        msg.setTicketNumber(getTicketNumber());
         msg.setTicketName(getTicketName());
-        msg.setDateStr(TimeUtil.dateFormat.format(new Date()));
+        msg.setTicketNumber(getTicketNumber(currentTime));
+        msg.setDateStr(currentTime);
         msg.setTicketDesc(PrinterCase.getInstance().ticketDesc);
     }
 
-    private String getTicketNumber(){
-        int orderNum=PrinterCase.getInstance().ticketNumRecord;
+    private String getTicketNumber(String currentTime){
+        int orderNum=getPreTickerNumber();
         orderNum++;
-        PrinterCase.getInstance().ticketNumRecord=orderNum;
-        return OrderDispose(orderNum) ;
+        saveTicketInfo(currentTime,orderNum);
+        return PrinterCase.getInstance().OrderDispose(orderNum) ;
+    }
+
+    private int getPreTickerNumber(){
+        TicketSummaryDao ticketSummaryDao = daoSession.getTicketSummaryDao();
+        List<TicketSummary> ticketSummaryList = ticketSummaryDao.queryBuilder().list();
+        if (ticketSummaryList.size()==0){
+            return 0;
+        }else {
+            return ticketSummaryList.get(ticketSummaryList.size()-1).getNum();
+        }
+    }
+
+    private void saveTicketInfo(String currentTime, int orderNum){
+        TicketSummary ticketSummary=new TicketSummary();
+        ticketSummary.setDate(currentTime);
+        ticketSummary.setNum(orderNum);
+        daoSession.getTicketSummaryDao().save(ticketSummary);
     }
 
     private String getTicketName(){
@@ -110,21 +130,4 @@ public class PaySuccessActivity extends BaseActivity {
         this.finish();
     }
 
-    // 处理顺序号，只支持1000以内
-    private String OrderDispose(int OrderData) {
-        String reOrder = "";
-        if (OrderData < 10) {
-            String s = String.valueOf(OrderData);
-            reOrder = "0" + "0" + s;
-        }
-        if ((OrderData >= 10) && (OrderData < 100)) {
-            String s = String.valueOf(OrderData);
-            reOrder ="0" + s;
-        }
-        if(OrderData >=100) {
-            String s = String.valueOf(OrderData);
-            reOrder=s;
-        }
-        return reOrder;
-    }
 }

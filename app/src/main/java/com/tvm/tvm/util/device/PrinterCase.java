@@ -9,7 +9,6 @@ public class PrinterCase {
     public double amountRecord=0;//总共多少金额
     public double balanceRecord=0;//余额
     public int numRecord=0;//一共打印多少张票
-    public int ticketNumRecord=0;
 
     public String ticketDesc="" +
             "[LeftSmall]>1.此凭条为儿童（身高1.4米以下）\n" +
@@ -54,15 +53,25 @@ public class PrinterCase {
     public void print(){
         msg.setTitle("快剪");
         msg.setTitleDesc("欢迎光临快剪专营店");
-//        msg.setShopNumber(keys.getShopNumber());
-//        msg.setTicketName(keys.getTicketName());
-//        msg.setPrice(keys.getPrice());
-//        msg.setTicketNumber(keys.getTicketNumber());
-//        msg.setPayType(keys.getPayType());
-//        msg.setDateStr(keys.getDateStr());
-//        msg.setTicketDesc(ticketDesc);
         PrinterUtil printerUtil=new PrinterUtil();
         printerUtil.PrintTicket(msg);
     }
 
+    // 处理顺序号，只支持1000以内
+    public String OrderDispose(int OrderData) {
+        String reOrder = "";
+        if (OrderData < 10) {
+            String s = String.valueOf(OrderData);
+            reOrder = "0" + "0" + s;
+        }
+        if ((OrderData >= 10) && (OrderData < 100)) {
+            String s = String.valueOf(OrderData);
+            reOrder ="0" + s;
+        }
+        if(OrderData >=100) {
+            String s = String.valueOf(OrderData);
+            reOrder=s;
+        }
+        return reOrder;
+    }
 }

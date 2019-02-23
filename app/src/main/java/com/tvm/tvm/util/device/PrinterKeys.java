@@ -10,7 +10,6 @@ public class PrinterKeys {
     private String ticketNumber;
     private String price;
     private InputStream qrData;
-    private String timeData;
     private String dateStr;
 
     public PrinterKeys(){
@@ -23,7 +22,6 @@ public class PrinterKeys {
     public String getTicketNumber() { return ticketNumber; }
     public InputStream getQrData() { return qrData; }
     public String getTicketName() { return ticketName; }
-    public String getTimeData() { return timeData; }
     public String getDateStr() { return dateStr; }
 
     public void setPrice(String price) { this.price = price; }
@@ -32,7 +30,6 @@ public class PrinterKeys {
     public void setTicketNumber(String ticketNumber) { this.ticketNumber = ticketNumber; }
     public void setQrData(InputStream qrData) { this.qrData = qrData; }
     public void setTicketName(String ticketName) { this.ticketName = ticketName; }
-    public void setTimeData(String timeData) { this.timeData = timeData; }
     public void setDateStr(String dateStr) { this.dateStr = dateStr; }
 
 }

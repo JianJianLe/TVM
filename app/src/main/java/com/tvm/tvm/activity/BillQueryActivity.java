@@ -98,6 +98,7 @@ public class BillQueryActivity extends BaseActivity{
                 showDateDialog(1);
                 break;
             case R.id.btn_bill_query_query:
+                query();
                 break;
         }
     }
@@ -111,12 +112,16 @@ public class BillQueryActivity extends BaseActivity{
         datePickerDialog = new DatePickerDialog(this, 0, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                String monthStr = ++month +"";
+                if (monthStr.length()==1){
+                    monthStr = "0"+monthStr;
+                }
                 //将选择的日期显示到TextView中,因为之前获取month直接使用，所以不需要+1，这个地方需要显示，所以+1
                 if (type==0){
-                    tv_bill_query_start_date.setText(year+"-"+(++month)+"-"+day);
+                    tv_bill_query_start_date.setText(year+"-"+monthStr+"-"+dayOfMonth);
                     datePickerDialog.dismiss();
                 }else {
-                    tv_bill_query_end_date.setText(year+"-"+(++month)+"-"+day);
+                    tv_bill_query_end_date.setText(year+"-"+monthStr+"-"+dayOfMonth);
                     datePickerDialog.dismiss();
                 }
             }
@@ -136,6 +141,7 @@ public class BillQueryActivity extends BaseActivity{
 
     public boolean checkMandatery(){
         boolean canQuery = true;
+        ToastUtils.showText(this,DateUtils.compare2Date(tv_bill_query_start_date.getText().toString().trim(),tv_bill_query_end_date.getText().toString().trim())+"");
         if (DateUtils.compare2Date(tv_bill_query_start_date.getText().toString().trim(),tv_bill_query_end_date.getText().toString().trim())<0){
             canQuery = false;
             return canQuery;

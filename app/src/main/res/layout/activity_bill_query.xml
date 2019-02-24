@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:orientation="vertical">
+    android:layout_height="match_parent" android:orientation="vertical"
+    android:background="@drawable/bg">
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/xy40dp"
@@ -53,6 +54,8 @@
         <Button
             android:id="@+id/btn_bill_query_start_date"
             android:layout_width="wrap_content"
+            android:paddingRight="@dimen/xy10dp"
+            android:paddingLeft="@dimen/xy10dp"
             android:layout_height="@dimen/xy30dp"
             android:layout_marginTop="@dimen/xy8dp"
             android:layout_marginLeft="@dimen/xy15dp"
@@ -90,6 +93,8 @@
             android:id="@+id/btn_bill_query_end_date"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/xy30dp"
+            android:paddingRight="@dimen/xy10dp"
+            android:paddingLeft="@dimen/xy10dp"
             android:layout_marginTop="@dimen/xy8dp"
             android:layout_marginLeft="@dimen/xy15dp"
             android:layout_gravity="center_vertical"
@@ -104,6 +109,7 @@
 
         <Button
             android:id="@+id/btn_bill_query_query"
+            android:padding="@dimen/xy10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/btn_query_back"

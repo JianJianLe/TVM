@@ -1,8 +1,6 @@
 package com.tvm.tvm.activity;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -20,9 +18,11 @@ import com.tvm.tvm.R;
 import com.tvm.tvm.adapter.ViewpagerDotsAdapter;
 import com.tvm.tvm.application.AppApplication;
 import com.tvm.tvm.bean.Price;
+import com.tvm.tvm.bean.Setting;
 import com.tvm.tvm.bean.TicketSummary;
 import com.tvm.tvm.bean.dao.DaoSession;
 import com.tvm.tvm.bean.dao.PriceDao;
+import com.tvm.tvm.bean.dao.SettingDao;
 import com.tvm.tvm.bean.dao.TicketSummaryDao;
 import com.tvm.tvm.util.BitmapUtils;
 import com.tvm.tvm.util.FirstInitApp;
@@ -451,8 +451,12 @@ public class MainActivity extends BaseActivity {
         //时间更新，一分钟刷新一次
         scheduledExecutorService.scheduleWithFixedDelay(new TimeTask(), 1, 1 ,TimeUnit.SECONDS);
         //设置公司名和购买指引
-        tv_main_comany_name.setText(SharedPrefsUtil.getValue(getApplicationContext(),PreConfig.COMPANY_NAME,""));
-        tv_main_pay_desc.setText(SharedPrefsUtil.getValue(getApplicationContext(),PreConfig.PAY_DESC,""));
+        SettingDao settingDao = daoSession.getSettingDao();
+        Setting setting = settingDao.queryBuilder().where(SettingDao.Properties.Id.eq(1)).unique();
+        if (setting!=null){
+            tv_main_comany_name.setText(setting.getShopName());
+            tv_main_pay_desc.setText(setting.getPayDesc());
+        }
 
         Log.i("Test","MainActivity onStart scheduledExecutorService open!");
     }

@@ -25,7 +25,7 @@ public class PaymentRecordDao extends AbstractDao<PaymentRecord, Long> {
      */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property Amount = new Property(1, int.class, "amount", false, "AMOUNT");
+        public final static Property Amount = new Property(1, double.class, "amount", false, "AMOUNT");
         public final static Property Num = new Property(2, int.class, "num", false, "NUM");
         public final static Property Price = new Property(3, Double.class, "price", false, "PRICE");
         public final static Property Type = new Property(4, int.class, "type", false, "TYPE");
@@ -46,7 +46,7 @@ public class PaymentRecordDao extends AbstractDao<PaymentRecord, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"PAYMENT_RECORD\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
-                "\"AMOUNT\" INTEGER NOT NULL ," + // 1: amount
+                "\"AMOUNT\" REAL NOT NULL ," + // 1: amount
                 "\"NUM\" INTEGER NOT NULL ," + // 2: num
                 "\"PRICE\" REAL," + // 3: price
                 "\"TYPE\" INTEGER NOT NULL ," + // 4: type
@@ -67,7 +67,7 @@ public class PaymentRecordDao extends AbstractDao<PaymentRecord, Long> {
         if (id != null) {
             stmt.bindLong(1, id);
         }
-        stmt.bindLong(2, entity.getAmount());
+        stmt.bindDouble(2, entity.getAmount());
         stmt.bindLong(3, entity.getNum());
  
         Double price = entity.getPrice();
@@ -90,7 +90,7 @@ public class PaymentRecordDao extends AbstractDao<PaymentRecord, Long> {
         if (id != null) {
             stmt.bindLong(1, id);
         }
-        stmt.bindLong(2, entity.getAmount());
+        stmt.bindDouble(2, entity.getAmount());
         stmt.bindLong(3, entity.getNum());
  
         Double price = entity.getPrice();
@@ -114,7 +114,7 @@ public class PaymentRecordDao extends AbstractDao<PaymentRecord, Long> {
     public PaymentRecord readEntity(Cursor cursor, int offset) {
         PaymentRecord entity = new PaymentRecord( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.getInt(offset + 1), // amount
+            cursor.getDouble(offset + 1), // amount
             cursor.getInt(offset + 2), // num
             cursor.isNull(offset + 3) ? null : cursor.getDouble(offset + 3), // price
             cursor.getInt(offset + 4), // type
@@ -126,7 +126,7 @@ public class PaymentRecordDao extends AbstractDao<PaymentRecord, Long> {
     @Override
     public void readEntity(Cursor cursor, PaymentRecord entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setAmount(cursor.getInt(offset + 1));
+        entity.setAmount(cursor.getDouble(offset + 1));
         entity.setNum(cursor.getInt(offset + 2));
         entity.setPrice(cursor.isNull(offset + 3) ? null : cursor.getDouble(offset + 3));
         entity.setType(cursor.getInt(offset + 4));

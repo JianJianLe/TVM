@@ -8,11 +8,18 @@ import android.widget.ImageButton;
 
 import com.tvm.tvm.R;
 import com.tvm.tvm.application.AppApplication;
+import com.tvm.tvm.bean.Setting;
 import com.tvm.tvm.bean.dao.DaoSession;
+import com.tvm.tvm.bean.dao.SettingDao;
 import com.tvm.tvm.util.SharedPrefsUtil;
 import com.tvm.tvm.util.constant.PreConfig;
 import com.tvm.tvm.util.constant.StringUtils;
 import com.tvm.tvm.util.view.ToastUtils;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,6 +51,12 @@ public class NormalSettingActivity extends BaseActivity {
     @BindView(R.id.et_normal_setting_pay_desc)
     EditText et_normal_setting_pay_desc;
 
+    @BindView(R.id.et_normal_setting_device_no)
+    EditText et_normal_setting_device_no;
+
+    @BindView(R.id.et_normal_setting_md5_key)
+    EditText et_normal_setting_md5_key;
+
     private DaoSession daoSession;
 
 
@@ -52,6 +65,8 @@ public class NormalSettingActivity extends BaseActivity {
     int payTimeOut ;
     int printTimeOut ;
     String payDesc ;
+    String deviceNo;
+    String md5Key;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,17 +79,24 @@ public class NormalSettingActivity extends BaseActivity {
     }
 
     private void initView(){
-        et_normal_setting_company_name.setText(SharedPrefsUtil.getValue(getApplicationContext(),PreConfig.COMPANY_NAME,""));
-        et_normal_setting_time_out.setText(SharedPrefsUtil.getValue(getApplicationContext(),PreConfig.SELECT_TIME_OUT,0)+"");
-        et_normal_setting_pay_time_out.setText(SharedPrefsUtil.getValue(getApplicationContext(),PreConfig.PAY_TIME_OUT,0)+"");
-        et_normal_setting_print_time_out.setText(SharedPrefsUtil.getValue(getApplicationContext(),PreConfig.PRINT_TIME_OUT,0)+"");
-        et_normal_setting_pay_desc.setText(SharedPrefsUtil.getValue(getApplicationContext(),PreConfig.PAY_DESC,""));
+        SettingDao settingDao = daoSession.getSettingDao();
+        Setting setting = settingDao.queryBuilder().where(SettingDao.Properties.Id.eq(1l)).unique();
+        if (setting!=null){
+            et_normal_setting_company_name.setText(setting.getShopName());
+            et_normal_setting_time_out.setText(setting.getSelectTimeOut()+"");
+            et_normal_setting_pay_time_out.setText(setting.getPayTimeOut()+"");
+            et_normal_setting_print_time_out.setText(setting.getPrintTimeOut()+"");
+            et_normal_setting_pay_desc.setText(setting.getPayDesc());
+            et_normal_setting_device_no.setText(setting.getDeviceNo());
+            et_normal_setting_md5_key.setText(setting.getMd5Key());
+        }
     }
 
     private void setListener(){
         et_normal_setting_pay_time_out.setKeyListener(DigitsKeyListener.getInstance("1234567890"));
         et_normal_setting_time_out.setKeyListener(DigitsKeyListener.getInstance("1234567890"));
         et_normal_setting_print_time_out.setKeyListener(DigitsKeyListener.getInstance("1234567890"));
+        et_normal_setting_device_no.setKeyListener(DigitsKeyListener.getInstance("1234567890"));
     }
 
     private boolean checkSubmit(){
@@ -84,6 +106,21 @@ public class NormalSettingActivity extends BaseActivity {
         payTimeOut =Integer.valueOf(et_normal_setting_pay_time_out.getText().toString().trim().equals("")? "0" : et_normal_setting_pay_time_out.getText().toString().trim());
         printTimeOut =Integer.valueOf(et_normal_setting_print_time_out.getText().toString().trim().equals("")? "0" : et_normal_setting_print_time_out.getText().toString().trim());
         payDesc = et_normal_setting_pay_desc.getText().toString().trim();
+        deviceNo = et_normal_setting_device_no.getText().toString().trim();
+        md5Key = et_normal_setting_md5_key.getText().toString().trim();
+        if (deviceNo.length()!=5){
+            ToastUtils.showText(this,StringUtils.WRONG_DEVICE_NO);
+            return false;
+        }
+        if (!isContainChinese(md5Key)){//不含中文字符
+            if (md5Key.length()!=32){
+                ToastUtils.showText(this,StringUtils.WRONG_MD5_KEY);
+                return false;
+            }
+        }else {
+            ToastUtils.showText(this,StringUtils.CONTAIN_CHINESE_IN_MD5);
+            return false;
+        }
         if (payDesc==null || payDesc.equals("")){
             ToastUtils.showText(this,StringUtils.EMPTY_PAY_DESC);
             return false;
@@ -99,13 +136,40 @@ public class NormalSettingActivity extends BaseActivity {
         return isOk;
     }
 
+    /**
+     * 检测是否含有中文
+     * @param str
+     * @return
+     * @throws UnsupportedEncodingException
+     */
+    public static boolean isContainChinese(String str) {
+
+        Pattern p = Pattern.compile("[\u4e00-\u9fa5]");
+        Matcher m = p.matcher(str);
+        if (m.find()) {
+            return true;
+        }
+        return false;
+    }
+
     private void updateSetting(){
         if(checkSubmit()){
-            SharedPrefsUtil.putValue(getApplicationContext(),PreConfig.COMPANY_NAME,compayName);
-            SharedPrefsUtil.putValue(getApplicationContext(),PreConfig.PAY_DESC,payDesc);
-            SharedPrefsUtil.putValue(getApplicationContext(),PreConfig.SELECT_TIME_OUT,timeOut);
-            SharedPrefsUtil.putValue(getApplicationContext(),PreConfig.PAY_TIME_OUT,payTimeOut);
-            SharedPrefsUtil.putValue(getApplicationContext(),PreConfig.PRINT_TIME_OUT,printTimeOut);
+            SettingDao settingDao = daoSession.getSettingDao();
+            Setting setting = new Setting();
+            setting.setId(1l);
+            setting.setSelectTimeOut(timeOut);
+            setting.setPayTimeOut(payTimeOut);
+            setting.setPrintTimeOut(printTimeOut);
+            setting.setDeviceNo(deviceNo);
+            setting.setShopName(compayName);
+            setting.setPayDesc(payDesc);
+            setting.setMd5Key(md5Key);
+            settingDao.update(setting);
+//            SharedPrefsUtil.putValue(getApplicationContext(),PreConfig.COMPANY_NAME,compayName);
+//            SharedPrefsUtil.putValue(getApplicationContext(),PreConfig.PAY_DESC,payDesc);
+//            SharedPrefsUtil.putValue(getApplicationContext(),PreConfig.SELECT_TIME_OUT,timeOut);
+//            SharedPrefsUtil.putValue(getApplicationContext(),PreConfig.PAY_TIME_OUT,payTimeOut);
+//            SharedPrefsUtil.putValue(getApplicationContext(),PreConfig.PRINT_TIME_OUT,printTimeOut);
             ToastUtils.showText(getApplicationContext(),StringUtils.UPDATE_SUCCESS,true);
         }
     }

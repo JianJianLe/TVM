@@ -3,10 +3,17 @@ package com.tvm.tvm.util;
 import android.content.Context;
 
 import com.tvm.tvm.application.AppApplication;
+import com.tvm.tvm.bean.PaymentRecord;
+import com.tvm.tvm.bean.Setting;
 import com.tvm.tvm.bean.User;
 import com.tvm.tvm.bean.dao.DaoSession;
+import com.tvm.tvm.bean.dao.PaymentRecordDao;
+import com.tvm.tvm.bean.dao.SettingDao;
 import com.tvm.tvm.bean.dao.UserDao;
 import com.tvm.tvm.util.constant.PreConfig;
+import com.tvm.tvm.util.view.ToastUtils;
+
+import java.util.Date;
 
 /**
  * - @Description:  初始化系统
@@ -56,10 +63,28 @@ public class FirstInitApp {
     }
 
     private static void initNormalSetting(){
-        SharedPrefsUtil.putValue(context,PreConfig.COMPANY_NAME,"广州市亿儿美有限公司");
-        SharedPrefsUtil.putValue(context,PreConfig.PAY_DESC,"本机只接收5元、10元、20元，不设找零");
-        SharedPrefsUtil.putValue(context,PreConfig.SELECT_TIME_OUT,15);
-        SharedPrefsUtil.putValue(context,PreConfig.PAY_TIME_OUT,15);
-        SharedPrefsUtil.putValue(context,PreConfig.PRINT_TIME_OUT,15);
+        SettingDao settingDao = daoSession.getSettingDao();
+        Setting setting = new Setting();
+        setting.setDeviceNo("00001");
+        setting.setShopName("广州市亿儿美有限公司");
+        setting.setPayDesc("本机只接收5元、10元、20元，不设找零");
+        setting.setPayTimeOut(15);
+        setting.setPrintTimeOut(15);
+        setting.setSelectTimeOut(15);
+        settingDao.save(setting);
+    }
+
+    public static void addData(){
+        PaymentRecordDao paymentRecordDao = daoSession.getPaymentRecordDao();
+
+        for (int i = 0 ; i < 10 ; i++){
+            PaymentRecord paymentRecord = new PaymentRecord();
+            paymentRecord.setAmount(10*(i+1));
+            paymentRecord.setNum(i+1);
+            paymentRecord.setPrice(10d);
+            paymentRecord.setPayTime(new Date());
+            paymentRecord.setType(2);
+            paymentRecordDao.save(paymentRecord);
+        }
     }
 }

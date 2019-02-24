@@ -56,6 +56,34 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/xy18sp"
+                android:text="本店编号："/>
+            <EditText
+                android:id="@+id/et_normal_setting_device_no"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="@dimen/xy5dp"
+                android:gravity="center_vertical"
+                android:hint="本店编号"
+                android:cursorVisible="true"
+                android:singleLine="true"
+                android:maxLength="5"
+                android:inputType="number"
+                android:textColor="#666666"
+                android:textSize="@dimen/xy18dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="@dimen/xy10dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/xy5dp"
+            android:layout_marginRight="@dimen/xy5dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/xy18sp"
                 android:text="店名："/>
             <EditText
                 android:id="@+id/et_normal_setting_company_name"
@@ -66,11 +94,36 @@
                 android:hint="店名"
                 android:cursorVisible="true"
                 android:singleLine="true"
-                android:text="广州市亿儿美有限公司"
                 android:textColor="#666666"
                 android:textSize="@dimen/xy18dp" />
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_marginTop="@dimen/xy10dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/xy5dp"
+            android:layout_marginRight="@dimen/xy5dp"
+            android:gravity="center_vertical"
+            android:orientation="vertical" >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/xy18sp"
+                android:text="MD5 Key："/>
+            <EditText
+                android:id="@+id/et_normal_setting_md5_key"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/xy60dp"
+                android:drawablePadding="@dimen/xy5dp"
+                android:gravity="center_vertical"
+                android:hint="MD5 Key"
+                android:cursorVisible="true"
+                android:singleLine="true"
+                android:maxLength="32"
+                android:textColor="#666666"
+                android:textSize="@dimen/xy18dp" />
+        </LinearLayout>
         <LinearLayout
             android:layout_marginTop="@dimen/xy10dp"
             android:layout_width="fill_parent"

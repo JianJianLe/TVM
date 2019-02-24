@@ -20,7 +20,7 @@ public class PaymentRecord {
     /**
      * 总金额
      */
-    private int amount;
+    private double amount;
     /**
      * 数量
      */
@@ -40,6 +40,21 @@ public class PaymentRecord {
      * 支付时间
      */
     private Date payTime;
+
+    @Generated(hash = 743864590)
+    public PaymentRecord(Long id, double amount, int num, Double price, int type,
+            Date payTime) {
+        this.id = id;
+        this.amount = amount;
+        this.num = num;
+        this.price = price;
+        this.type = type;
+        this.payTime = payTime;
+    }
+
+    @Generated(hash = 473776023)
+    public PaymentRecord() {
+    }
 
     public Date getPayTime() {
         return this.payTime;
@@ -75,11 +90,11 @@ public class PaymentRecord {
         this.num = num;
     }
 
-    public int getAmount() {
+    public double getAmount() {
         return this.amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 
@@ -99,19 +114,5 @@ public class PaymentRecord {
         this.price = price;
     }
 
-    @Generated(hash = 513474166)
-    public PaymentRecord(Long id, int amount, int num, Double price, int type,
-            Date payTime) {
-        this.id = id;
-        this.amount = amount;
-        this.num = num;
-        this.price = price;
-        this.type = type;
-        this.payTime = payTime;
-    }
-
-    @Generated(hash = 473776023)
-    public PaymentRecord() {
-    }
 
 }

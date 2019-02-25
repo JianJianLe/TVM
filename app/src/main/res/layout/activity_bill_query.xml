@@ -115,8 +115,8 @@
             android:background="@drawable/btn_query_back"
             android:text="@string/query"/>
     </LinearLayout>
-    <android.support.v7.widget.RecyclerView
+    <ListView
         android:id="@+id/rv_bill_query_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+        android:layout_height="match_parent"></ListView>
 </LinearLayout>

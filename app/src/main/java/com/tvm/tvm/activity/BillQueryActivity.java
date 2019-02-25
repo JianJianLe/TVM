@@ -8,9 +8,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.tvm.tvm.R;
+import com.tvm.tvm.adapter.PayRecordAdpter;
 import com.tvm.tvm.adapter.PaymentListAdapter;
 import com.tvm.tvm.application.AppApplication;
 import com.tvm.tvm.bean.PaymentRecord;
@@ -48,7 +50,7 @@ public class BillQueryActivity extends BaseActivity{
     Button btn_bill_query_query;
 
     @BindView(R.id.rv_bill_query_list)
-    RecyclerView rv_bill_query_list;
+    ListView rv_bill_query_list;
 
     //时间选择器弹出框
     private DatePickerDialog datePickerDialog;
@@ -57,7 +59,7 @@ public class BillQueryActivity extends BaseActivity{
     //当前年月日
     private int year,month,day;
 
-    private PaymentListAdapter listAdapter;
+    private PayRecordAdpter listAdapter;
 
     private DaoSession daoSession;
 
@@ -132,7 +134,7 @@ public class BillQueryActivity extends BaseActivity{
     public void query(){
         if (checkMandatery()){
             List<PaymentRecord> recordList = daoSession.getPaymentRecordDao().queryBuilder().where(PaymentRecordDao.Properties.PayTime.between(DateUtils.formatDate(tv_bill_query_start_date.getText().toString().trim(),0),DateUtils.formatDate(tv_bill_query_end_date.getText().toString().trim(),1))).list();
-            listAdapter = new PaymentListAdapter(this,recordList);
+            listAdapter = new PayRecordAdpter(this,recordList);
             rv_bill_query_list.setAdapter(listAdapter);
         }else {
             ToastUtils.showText(this,"开始时间必须大于结束时间，请重新选择再查询！！！");
@@ -141,7 +143,6 @@ public class BillQueryActivity extends BaseActivity{
 
     public boolean checkMandatery(){
         boolean canQuery = true;
-        ToastUtils.showText(this,DateUtils.compare2Date(tv_bill_query_start_date.getText().toString().trim(),tv_bill_query_end_date.getText().toString().trim())+"");
         if (DateUtils.compare2Date(tv_bill_query_start_date.getText().toString().trim(),tv_bill_query_end_date.getText().toString().trim())<0){
             canQuery = false;
             return canQuery;

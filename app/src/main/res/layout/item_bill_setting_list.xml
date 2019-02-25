@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="@dimen/xy60dp"
+    android:orientation="horizontal">
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_weight="2"
+        android:text="票据编号"/>
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_weight="6"
+        android:text="票据名称"/>
+    <Button
+        android:layout_width="0dp"
+        android:layout_height="@dimen/xy40dp"
+        android:layout_marginRight="@dimen/xy20dp"
+        android:text="详情"
+        android:layout_weight="2"/>
+
+    <Button
+        android:layout_width="0dp"
+        android:layout_height="@dimen/xy40dp"
+        android:layout_marginRight="@dimen/xy20dp"
+        android:text="删除"
+        android:layout_weight="2"/>
+</LinearLayout>

@@ -43,4 +43,6 @@
     <string name="pay_success">支付成功</string>
     <string name="get_ticket">请取走你的小票</string>
     <string name="wait_please">耐心等候</string>
+
+    <string name="bill_setting_list">票据列表</string>
 </resources>

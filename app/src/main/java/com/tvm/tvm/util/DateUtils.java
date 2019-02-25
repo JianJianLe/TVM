@@ -1,5 +1,7 @@
 package com.tvm.tvm.util;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -11,6 +13,10 @@ public class DateUtils {
     private static String DATE_FORMAT = "yyyy-MM-dd";
 
     private static String TIME_FORMAT = "yyyy-MM-dd hh:mm:ss";
+
+    static DateFormat df = new SimpleDateFormat(DATE_FORMAT);
+
+    static DateFormat df1 = new SimpleDateFormat(TIME_FORMAT);
 
     /**
      * 日期转换日期字符串
@@ -34,9 +40,14 @@ public class DateUtils {
         if (isStart==0){
             dateStr = dateStr + " 00:00:00";
         }else {
-            dateStr = dateStr + " 13:59:59";
+            dateStr = dateStr + " 23:59:59";
         }
-        Date date = new Date(dateStr);
+        Date date = null;
+        try {
+            date = df1.parse(dateStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         return date;
     }
 
@@ -47,9 +58,14 @@ public class DateUtils {
      * @return
      */
     public static int compare2Date(String startDate,String endDate){
-        Date start = new Date(startDate);
-        Date end = new Date(endDate);
-        return end.compareTo(start);
+        try {
+            Date start = df.parse(startDate);
+            Date end = df.parse(endDate);
+            return end.compareTo(start);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
 }

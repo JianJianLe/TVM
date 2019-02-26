@@ -37,6 +37,7 @@
         <activity android:name=".activity.SelectPriceActivity"></activity>
         <activity android:name=".activity.PayDetailActivity"></activity>
         <activity android:name=".activity.PaySuccessActivity"></activity>
+        <activity android:name=".activity.BillSettingListActivity"></activity>
     </application>
 
 </manifest>

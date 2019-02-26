@@ -8,12 +8,14 @@ import org.greenrobot.greendao.database.Database;
 import org.greenrobot.greendao.identityscope.IdentityScopeType;
 import org.greenrobot.greendao.internal.DaoConfig;
 
+import com.tvm.tvm.bean.BillSetting;
 import com.tvm.tvm.bean.PaymentRecord;
 import com.tvm.tvm.bean.Price;
 import com.tvm.tvm.bean.Setting;
 import com.tvm.tvm.bean.TicketSummary;
 import com.tvm.tvm.bean.User;
 
+import com.tvm.tvm.bean.dao.BillSettingDao;
 import com.tvm.tvm.bean.dao.PaymentRecordDao;
 import com.tvm.tvm.bean.dao.PriceDao;
 import com.tvm.tvm.bean.dao.SettingDao;
@@ -29,12 +31,14 @@ import com.tvm.tvm.bean.dao.UserDao;
  */
 public class DaoSession extends AbstractDaoSession {
 
+    private final DaoConfig billSettingDaoConfig;
     private final DaoConfig paymentRecordDaoConfig;
     private final DaoConfig priceDaoConfig;
     private final DaoConfig settingDaoConfig;
     private final DaoConfig ticketSummaryDaoConfig;
     private final DaoConfig userDaoConfig;
 
+    private final BillSettingDao billSettingDao;
     private final PaymentRecordDao paymentRecordDao;
     private final PriceDao priceDao;
     private final SettingDao settingDao;
@@ -44,6 +48,9 @@ public class DaoSession extends AbstractDaoSession {
     public DaoSession(Database db, IdentityScopeType type, Map<Class<? extends AbstractDao<?, ?>>, DaoConfig>
             daoConfigMap) {
         super(db);
+
+        billSettingDaoConfig = daoConfigMap.get(BillSettingDao.class).clone();
+        billSettingDaoConfig.initIdentityScope(type);
 
         paymentRecordDaoConfig = daoConfigMap.get(PaymentRecordDao.class).clone();
         paymentRecordDaoConfig.initIdentityScope(type);
@@ -60,12 +67,14 @@ public class DaoSession extends AbstractDaoSession {
         userDaoConfig = daoConfigMap.get(UserDao.class).clone();
         userDaoConfig.initIdentityScope(type);
 
+        billSettingDao = new BillSettingDao(billSettingDaoConfig, this);
         paymentRecordDao = new PaymentRecordDao(paymentRecordDaoConfig, this);
         priceDao = new PriceDao(priceDaoConfig, this);
         settingDao = new SettingDao(settingDaoConfig, this);
         ticketSummaryDao = new TicketSummaryDao(ticketSummaryDaoConfig, this);
         userDao = new UserDao(userDaoConfig, this);
 
+        registerDao(BillSetting.class, billSettingDao);
         registerDao(PaymentRecord.class, paymentRecordDao);
         registerDao(Price.class, priceDao);
         registerDao(Setting.class, settingDao);
@@ -74,11 +83,16 @@ public class DaoSession extends AbstractDaoSession {
     }
     
     public void clear() {
+        billSettingDaoConfig.clearIdentityScope();
         paymentRecordDaoConfig.clearIdentityScope();
         priceDaoConfig.clearIdentityScope();
         settingDaoConfig.clearIdentityScope();
         ticketSummaryDaoConfig.clearIdentityScope();
         userDaoConfig.clearIdentityScope();
+    }
+
+    public BillSettingDao getBillSettingDao() {
+        return billSettingDao;
     }
 
     public PaymentRecordDao getPaymentRecordDao() {

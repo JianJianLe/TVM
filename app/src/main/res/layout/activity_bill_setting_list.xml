@@ -29,6 +29,8 @@
     </FrameLayout>
 
     <ListView
+        android:id="@+id/lv_bill_setting_list_data"
+        android:padding="@dimen/xy10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"></ListView>
 </LinearLayout>

@@ -2,6 +2,7 @@ package com.tvm.tvm.util;
 
 import android.content.Context;
 
+import com.tvm.tvm.R;
 import com.tvm.tvm.application.AppApplication;
 import com.tvm.tvm.bean.PaymentRecord;
 import com.tvm.tvm.bean.Setting;
@@ -13,6 +14,7 @@ import com.tvm.tvm.bean.dao.UserDao;
 import com.tvm.tvm.util.constant.PreConfig;
 import com.tvm.tvm.util.view.ToastUtils;
 
+import java.io.File;
 import java.util.Date;
 
 /**
@@ -38,6 +40,8 @@ public class FirstInitApp {
         if (userDao.queryBuilder().list().size()==0){
             initUser();
             initNormalSetting();
+            addData();
+            initBillSettings();
         }
 
     }
@@ -87,4 +91,20 @@ public class FirstInitApp {
             paymentRecordDao.save(paymentRecord);
         }
     }
+
+    public static void initBillSettings(){
+        String path = FileUtil.getBillSettingsPath(context);
+        File file = new File(path);
+        if (!file.exists()){
+            file.mkdirs();
+        }
+        String fileName = "/billSetting";
+        String ticketName = "[TicketName]=儿童票";
+        String templateNum = "[TemplateNumber]=";
+        for (int i = 1; i<6 ; i++){
+            String content = templateNum+i+"/n"+ticketName+i+"/n"+R.string.content;
+            TxtUtils.writeToFile1(path+fileName+i+".txt",content,"UTF-8");
+        }
+    }
+
 }

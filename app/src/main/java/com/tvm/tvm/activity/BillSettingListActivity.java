@@ -2,6 +2,7 @@ package com.tvm.tvm.activity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
@@ -11,6 +12,9 @@ import com.tvm.tvm.application.AppApplication;
 import com.tvm.tvm.bean.BillSetting;
 import com.tvm.tvm.bean.dao.BillSettingDao;
 import com.tvm.tvm.bean.dao.DaoSession;
+import com.tvm.tvm.util.FileUtil;
+import com.tvm.tvm.util.TxtUtils;
+import com.tvm.tvm.util.view.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +30,9 @@ public class BillSettingListActivity extends BaseActivity {
 
     @BindView(R.id.lv_bill_setting_list_data)
     ListView lv_bill_setting_list_data;
+
+    @BindView(R.id.btn_bill_setting_list_refresh)
+    Button btn_bill_setting_list_refresh;
 
     List<BillSetting> billSettingList = new ArrayList<>();
 
@@ -48,15 +55,19 @@ public class BillSettingListActivity extends BaseActivity {
     public void initData(){
         BillSettingDao billSettingDao = daoSession.getBillSettingDao();
         billSettingList = billSettingDao.queryBuilder().list();
+        ToastUtils.showText(BillSettingListActivity.this,billSettingList.size()+"");
         billSettingListAdapter = new BillSettingListAdapter(this,billSettingList);
         lv_bill_setting_list_data.setAdapter(billSettingListAdapter);
     }
 
-    @OnClick({R.id.ib_bill_setting_list_back})
+    @OnClick({R.id.ib_bill_setting_list_back,R.id.btn_bill_setting_list_refresh})
     public void onClick(View view){
         switch (view.getId()){
             case R.id.ib_bill_setting_list_back:
                 this.finish();
+                break;
+            case R.id.btn_bill_setting_list_refresh:
+                TxtUtils.readFile(FileUtil.getBillSettingsPath(this),"UTF-8");
                 break;
         }
     }

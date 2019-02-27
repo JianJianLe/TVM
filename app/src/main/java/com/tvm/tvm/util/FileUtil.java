@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
 
+import com.tvm.tvm.util.constant.PreConfig;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -26,6 +28,11 @@ public class FileUtil {
             cachePath = context.getCacheDir().getPath();
         }
         return cachePath;
+    }
+
+    public static String getBillSettingsPath(Context context){
+        String path = getCachePath(context)+ PreConfig.BILL_SETTING_PATH;
+        return path;
     }
 
     /* 压缩图片方法

@@ -46,13 +46,13 @@ public class BillSettingListActivity extends BaseActivity {
         setContentView(R.layout.activity_bill_setting_list);
         ButterKnife.bind(this);
         daoSession = AppApplication.getApplication().getDaoSession();
-        initData();
+        getData();
     }
 
     /**
      * 初始化数据
      */
-    public void initData(){
+    public void getData(){
         BillSettingDao billSettingDao = daoSession.getBillSettingDao();
         billSettingList = billSettingDao.queryBuilder().list();
         ToastUtils.showText(BillSettingListActivity.this,billSettingList.size()+"");
@@ -68,6 +68,7 @@ public class BillSettingListActivity extends BaseActivity {
                 break;
             case R.id.btn_bill_setting_list_refresh:
                 TxtUtils.readFile(FileUtil.getBillSettingsPath(this),"UTF-8");
+                getData();
                 break;
         }
     }

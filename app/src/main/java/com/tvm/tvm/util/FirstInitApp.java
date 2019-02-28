@@ -12,6 +12,7 @@ import com.tvm.tvm.bean.dao.PaymentRecordDao;
 import com.tvm.tvm.bean.dao.SettingDao;
 import com.tvm.tvm.bean.dao.UserDao;
 import com.tvm.tvm.util.constant.PreConfig;
+import com.tvm.tvm.util.constant.StringUtils;
 import com.tvm.tvm.util.view.ToastUtils;
 
 import java.io.File;
@@ -102,7 +103,7 @@ public class FirstInitApp {
         String ticketName = "[TicketName]=儿童票";
         String templateNum = "[TemplateNumber]=";
         for (int i = 1; i<6 ; i++){
-            String content = templateNum+i+"/n"+ticketName+i+"/n"+R.string.content;
+            String content = templateNum+i+"/r/n"+ticketName+i+"/r/n"+StringUtils.billContext;
             TxtUtils.writeToFile1(path+fileName+i+".txt",content,"UTF-8");
         }
     }

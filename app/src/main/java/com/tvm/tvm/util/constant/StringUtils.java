@@ -51,4 +51,28 @@ public class StringUtils {
     public static String CONTAIN_CHINESE_IN_MD5 = "MD5 Key中不能含有中文字符，请校对后再提交！";
 
     public static String WRONG_MD5_KEY = "MD5 KEY 长度必须为32位，请校对后再提交！";
+
+    public static String billContext = "[CenterLarge]->快剪\n" +
+            "        [CenterSmall]->欢迎光临快剪专营店\n" +
+            "        [CenterSmall]->本店编号：[DeviceNumber]\n" +
+            "        [CenterLarge]->[TicketName]\n" +
+            "        [CenterLarge]->价格：[Price]元\n" +
+            "        [CenterLarge]->[TicketNumber]\n" +
+            "        [CenterSmall]->支付方式：[PayType]\n" +
+            "        [CenterSmall]->[DateTime]\n" +
+            "        [SplitLine]\n" +
+            "        [LeftSmall]->1.此凭条为儿童（身高1.4米以下）\n" +
+            "        [LeftSmall]->  剪发专用凭证；\n" +
+            "        [LeftSmall]->2.凭此凭条可以在本店享受专业剪\n" +
+            "        [LeftSmall]->  发一次，复印无效；\n" +
+            "        [LeftSmall]->3.本凭条仅可在购买本店使用；\n" +
+            "        [LeftSmall]->4.此凭条不记名，不挂失，不能兑\n" +
+            "        [LeftSmall]->  换现金，用完即止；\n" +
+            "        [LeftSmall]->5.此凭条从购买之日起，有效期为\n" +
+            "        [LeftSmall]->  当天，过期作废；\n" +
+            "        [LeftSmall]->6.本公司可能在法律允许范围内对\n" +
+            "        [LeftSmall]->  此细则作出适当调整。\n" +
+            "        [Enter]\n" +
+            "        [Enter]\n" +
+            "        [Enter]";
 }

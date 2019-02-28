@@ -25,7 +25,7 @@
             android:layout_weight="6"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="@string/bill_setting_list"
+            android:text="@string/ticket_setting_list"
             android:textColor="@color/black"
             android:textSize="@dimen/xy18sp" />
         <Button

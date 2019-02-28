@@ -46,13 +46,14 @@ public class TxtUtils {
                     String templateNum = "";
                     int i = 0;
                     while((text = bufferedReader.readLine()) != null){
-                        i++;
                         if (i==0){
                             templateNum = text.split("[TemplateNumber]=")[0];
                         }else if (i==1){
                             ticketName = text.split("[TicketName]=")[0];
+                        }else{
+                            sb.append(text);
                         }
-                        sb.append(text);
+                        i++;
                     }
 
                     BillSettingDao billSettingDao = AppApplication.getApplication().getDaoSession().getBillSettingDao();

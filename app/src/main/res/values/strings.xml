@@ -44,7 +44,7 @@
     <string name="get_ticket">请取走你的小票</string>
     <string name="wait_please">耐心等候</string>
 
-    <string name="bill_setting_list">票据列表</string>
+    <string name="ticket_setting_list">票据列表</string>
 
     <string name="content">
         [CenterLarge]->快剪

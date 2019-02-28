@@ -42,7 +42,7 @@ public class FirstInitApp {
             initUser();
             initNormalSetting();
             addData();
-            initBillSettings();
+//            initBillSettings();
         }
 
     }

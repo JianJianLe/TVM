@@ -22,7 +22,7 @@
         android:id="@+id/btn_item_bill_setting_detail"
         android:layout_width="0dp"
         android:layout_height="@dimen/xy40dp"
-        android:layout_marginRight="@dimen/xy20dp"
+        android:layout_marginRight="@dimen/xy5dp"
         android:text="详情"
         android:layout_weight="2"/>
 
@@ -30,7 +30,7 @@
         android:id="@+id/btn_item_bill_setting_delete"
         android:layout_width="0dp"
         android:layout_height="@dimen/xy40dp"
-        android:layout_marginRight="@dimen/xy20dp"
+        android:layout_marginRight="@dimen/xy5dp"
         android:text="删除"
         android:layout_weight="2"/>
 </LinearLayout>

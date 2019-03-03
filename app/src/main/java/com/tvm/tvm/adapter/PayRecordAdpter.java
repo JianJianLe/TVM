@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.tvm.tvm.R;
 import com.tvm.tvm.bean.PaymentRecord;
+import com.tvm.tvm.util.device.TimeUtil;
 
 import java.util.List;
 
@@ -56,7 +57,7 @@ public class PayRecordAdpter extends BaseAdapter {
         tv_item_payment_amount.setText(paymentRecordList.get(position).getAmount()+"");
         tv_item_payment_num.setText(paymentRecordList.get(position).getNum()+"");
         tv_item_payment_type.setText(paymentRecordList.get(position).getTypeStr());
-        tv_item_payment_time.setText(paymentRecordList.get(position).getPayTime()+"");
+        tv_item_payment_time.setText(TimeUtil.dateFormat.format(paymentRecordList.get(position).getPayTime()));
         return convertView;
     }
 }

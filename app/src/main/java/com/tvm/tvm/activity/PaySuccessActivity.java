@@ -8,10 +8,14 @@ import android.widget.TextView;
 
 import com.tvm.tvm.R;
 import com.tvm.tvm.application.AppApplication;
+import com.tvm.tvm.bean.PaymentRecord;
 import com.tvm.tvm.bean.Price;
+import com.tvm.tvm.bean.Setting;
 import com.tvm.tvm.bean.TicketSummary;
 import com.tvm.tvm.bean.dao.DaoSession;
+import com.tvm.tvm.bean.dao.PaymentRecordDao;
 import com.tvm.tvm.bean.dao.PriceDao;
+import com.tvm.tvm.bean.dao.SettingDao;
 import com.tvm.tvm.bean.dao.TicketSummaryDao;
 import com.tvm.tvm.util.SharedPrefsUtil;
 import com.tvm.tvm.util.constant.PreConfig;
@@ -75,12 +79,23 @@ public class PaySuccessActivity extends BaseActivity {
     private void printTicket(){
         new Thread(){
             public void run() {
+
+                initMsg();
+                savePayment(PrinterCase.getInstance().msg);
+                //票据
                 int num =PrinterCase.getInstance().numRecord;
                 for(int i=0;i<num;i++){
                     ticketSettings();
                     PrinterCase.getInstance().print();
                     TimeUtil.delay(3000);
                 }
+                //余额
+                int balance=(int)PrinterCase.getInstance().balanceRecord;
+                if (balance!=0){
+                    balanceTicketSettings(balance);
+                    PrinterCase.getInstance().print();
+                }
+
                 Message message = new Message();
                 message.what = 0;
                 handler.sendMessage(message);
@@ -88,13 +103,49 @@ public class PaySuccessActivity extends BaseActivity {
         }.start();
     }
 
+    private String getDeviceNO(){
+        SettingDao settingDao = daoSession.getSettingDao();
+        Setting setting = settingDao.queryBuilder().where(SettingDao.Properties.Id.eq(1l)).unique();
+        if(setting==null)
+            return "NULL";
+        else
+            return setting.getDeviceNo();
+    }
+
     private void ticketSettings(){
         String currentTime =TimeUtil.dateFormat.format(new Date());
         PrinterKeys msg = PrinterCase.getInstance().msg;
-        msg.setDeviceNumber("000001");
-        msg.setTicketName(getTicketName());
         msg.setTicketNumber(getTicketNumber(currentTime));
+        //msg.setDateStr(currentTime);
+
+    }
+
+    private void initMsg(){
+        PrinterKeys msg = PrinterCase.getInstance().msg;
+        String currentTime =TimeUtil.dateFormat.format(new Date());
+        msg.setDeviceNumber(getDeviceNO());
+        msg.setTicketName(getTicketName());
         msg.setDateStr(currentTime);
+    }
+
+    private void balanceTicketSettings(int balance){
+        String currentTime =TimeUtil.dateFormat.format(new Date());
+        PrinterKeys balanceMsg = PrinterCase.getInstance().msg;
+        balanceMsg.setPrice(balance +"");
+        balanceMsg.setTicketName("余额票");
+        balanceMsg.setDateStr(currentTime);
+    }
+
+    private void savePayment(PrinterKeys msg){
+        int num =PrinterCase.getInstance().numRecord;
+        PaymentRecordDao paymentRecordDao=daoSession.getPaymentRecordDao();
+        PaymentRecord paymentRecord=new PaymentRecord();
+        paymentRecord.setAmount(num * Double.valueOf(msg.getPrice()));
+        paymentRecord.setNum(num);
+        paymentRecord.setPrice(Double.valueOf(msg.getPrice()));
+        paymentRecord.setPayTime(TimeUtil.getDate(msg.getDateStr()));
+        paymentRecord.setType(paymentRecord.getTypeNumber(msg.getPayType()));
+        paymentRecordDao.save(paymentRecord);
     }
 
     private String getTicketNumber(String currentTime){

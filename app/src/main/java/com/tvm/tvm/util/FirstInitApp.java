@@ -41,7 +41,7 @@ public class FirstInitApp {
         if (userDao.queryBuilder().list().size()==0){
             initUser();
             initNormalSetting();
-            addData();
+//            addData();
 //            initBillSettings();
         }
 
@@ -79,6 +79,7 @@ public class FirstInitApp {
         settingDao.save(setting);
     }
 
+    //测试数据
     public static void addData(){
         PaymentRecordDao paymentRecordDao = daoSession.getPaymentRecordDao();
 

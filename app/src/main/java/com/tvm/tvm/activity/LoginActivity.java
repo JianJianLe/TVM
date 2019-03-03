@@ -63,6 +63,10 @@ public class LoginActivity extends BaseActivity {
      * 登录操作
      */
     public void loginLogic(){
+
+        et_login_username.setText("admin");
+        et_login_password.setText("admin");
+
         if ("".equals(et_login_username.getText().toString().trim())){
             ToastUtils.showText(TAG,StringUtils.USER_NAME_EMPTY);
             return;

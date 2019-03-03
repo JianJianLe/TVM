@@ -78,6 +78,17 @@ public class PaymentRecord {
         }
     }
 
+    public int getTypeNumber(String type){
+        if(type.equals("支付宝")){
+            return 0;
+        }else if(type.equals("微信")){
+            return 1;
+        }else{
+            return 2;
+        }
+
+    }
+
     public void setType(int type) {
         this.type = type;
     }

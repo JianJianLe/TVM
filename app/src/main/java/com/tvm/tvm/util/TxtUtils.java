@@ -51,7 +51,7 @@ public class TxtUtils {
                         }else if (i==1){
                             ticketName = text.split("[TicketName]=")[0];
                         }else{
-                            sb.append(text);
+                            sb.append(text + "\n");
                         }
                         i++;
                     }

@@ -22,5 +22,5 @@ public class PreConfig {
 
     public final static String USB_FOLDER="/mnt/usb_storage/";
 
-    public final static String BILL_SETTING_PATH = "/sdcard/TVM/TicketTemplate";
+    //public final static String BILL_SETTING_PATH = "/sdcard/TVM/TicketTemplate";
 }

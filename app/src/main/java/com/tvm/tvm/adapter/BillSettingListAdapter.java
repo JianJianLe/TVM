@@ -1,15 +1,21 @@
 package com.tvm.tvm.adapter;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.tvm.tvm.R;
+import com.tvm.tvm.application.AppApplication;
 import com.tvm.tvm.bean.BillSetting;
+import com.tvm.tvm.bean.dao.BillSettingDao;
 import com.tvm.tvm.util.view.ConfirmDialogUtils;
 import com.tvm.tvm.util.view.ToastUtils;
 
@@ -63,7 +69,17 @@ public class BillSettingListAdapter extends BaseAdapter {
         viewHolder.btn_item_bill_setting_detail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String msg=billSettingList.get(position).getTicketBody();
 
+                Dialog dialog=new AlertDialog.Builder(context).setTitle("详情")
+                .setMessage(billSettingList.get(position).getTicketBody())
+                .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).create();
+                dialog.show();
             }
         });
         viewHolder.btn_item_bill_setting_delete.setOnClickListener(new View.OnClickListener() {
@@ -75,6 +91,7 @@ public class BillSettingListAdapter extends BaseAdapter {
                     @Override
                     public void onOKClick() {
                         confirmDialogUtils.dismiss();
+                        deleteBillSettingDaoItem(position);
                         billSettingList.remove(position);
                         BillSettingListAdapter.this.notifyDataSetChanged();
                     }
@@ -90,6 +107,13 @@ public class BillSettingListAdapter extends BaseAdapter {
         });
         return convertView;
     }
+
+    private void deleteBillSettingDaoItem(int position){
+        BillSettingDao billSettingDao = AppApplication.getApplication().getDaoSession().getBillSettingDao();
+        BillSetting billSetting=billSettingList.get(position);
+        billSettingDao.delete(billSetting);
+    }
+
 
     private class BillSettingItemViewHolder{
         TextView tv_item_bill_setting_template_num;

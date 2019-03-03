@@ -32,7 +32,7 @@ public class FileUtil {
 
     public static String getBillSettingsPath(Context context){
         //String path = getCachePath(context)+ PreConfig.BILL_SETTING_PATH;
-        return PreConfig.BILL_SETTING_PATH;
+        return FolderUtil.getTicketTemplatePath();
     }
 
     /* 压缩图片方法

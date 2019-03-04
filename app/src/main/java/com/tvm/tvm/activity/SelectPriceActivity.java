@@ -151,7 +151,7 @@ public class SelectPriceActivity extends BaseActivity {
 
     private void setTicketNum(){
         TicketSummaryDao ticketSummaryDao = daoSession.getTicketSummaryDao();
-        List<TicketSummary> ticketSummaryList = ticketSummaryDao.queryBuilder().where(TicketSummaryDao.Properties.Date.eq(dateFormat.format(new Date()))).list();
+        List<TicketSummary> ticketSummaryList = ticketSummaryDao.queryBuilder().list();
         if (ticketSummaryList.size()==0){
             tv_select_price_header_ticket_num.setText("001");
         }else {

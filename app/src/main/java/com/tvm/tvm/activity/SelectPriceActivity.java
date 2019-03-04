@@ -21,6 +21,7 @@ import com.tvm.tvm.bean.dao.PriceDao;
 import com.tvm.tvm.bean.dao.TicketSummaryDao;
 import com.tvm.tvm.util.SharedPrefsUtil;
 import com.tvm.tvm.util.constant.PreConfig;
+import com.tvm.tvm.util.device.PrinterCase;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -86,6 +87,9 @@ public class SelectPriceActivity extends BaseActivity {
         ButterKnife.bind(this);
         daoSession = AppApplication.getApplication().getDaoSession();
         setPrice();
+        //初始时间
+        tv_select_price_header_time_date.setText(dateFormat.format(new Date()));
+        tv_select_price_header_time_time.setText(format.format(new Date()));
     }
 
     @Override
@@ -105,6 +109,14 @@ public class SelectPriceActivity extends BaseActivity {
         scheduledExecutorService.scheduleWithFixedDelay(new TimeTask(), 1, 1 ,TimeUnit.SECONDS);
 
         Log.i("Test","Select price onStart scheduledExecutorService open!");
+    }
+
+    //关掉延迟服务
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        scheduledExecutorService.shutdown();
+        Log.i("Test","onDestroy scheduledExecutorService shutdown");
     }
 
     /**
@@ -128,7 +140,7 @@ public class SelectPriceActivity extends BaseActivity {
         gv_select_price_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Long priceId = priceList.get(0).getId();
+                Long priceId = priceList.get(position).getId();
                 Intent intent = new Intent();
                 intent.putExtra("priceId",priceId);
                 startActivity(TAG,intent,PayDetailActivity.class);
@@ -141,9 +153,10 @@ public class SelectPriceActivity extends BaseActivity {
         TicketSummaryDao ticketSummaryDao = daoSession.getTicketSummaryDao();
         List<TicketSummary> ticketSummaryList = ticketSummaryDao.queryBuilder().where(TicketSummaryDao.Properties.Date.eq(dateFormat.format(new Date()))).list();
         if (ticketSummaryList.size()==0){
-            tv_select_price_header_ticket_num.setText("0");
+            tv_select_price_header_ticket_num.setText("001");
         }else {
-            tv_select_price_header_ticket_num.setText(ticketSummaryList.get(0).getNum()+"");
+            tv_select_price_header_ticket_num.setText(PrinterCase.getInstance().OrderDispose(
+                    ticketSummaryList.get(ticketSummaryList.size()-1).getNum()));
         }
     }
 }

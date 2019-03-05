@@ -17,6 +17,7 @@
     <string name="exception_query">异常查询</string>
     <string name="about">关于我们</string>
     <string name="mianze">免责声明</string>
+    <string name="summary">统计</string>
 
     <string name="admin">修改admin密码</string>
     <string name="manager">修改manager密码</string>

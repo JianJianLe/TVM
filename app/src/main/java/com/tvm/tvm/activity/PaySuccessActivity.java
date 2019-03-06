@@ -46,6 +46,7 @@ public class PaySuccessActivity extends BaseActivity {
     private Long priceId;
     private DaoSession daoSession;
     private List<TicketSummary> ticketSummaryList;
+    Price price;
 
     @Override
     protected void onCreate( Bundle savedInstanceState) {
@@ -53,6 +54,7 @@ public class PaySuccessActivity extends BaseActivity {
         setContentView(R.layout.activity_pay_success);
         ButterKnife.bind(this);
         daoSession = AppApplication.getApplication().getDaoSession();
+        getTicketName();
         priceId = getIntent().getLongExtra("priceId",0l);
         initData();
         printTicket();
@@ -143,6 +145,8 @@ public class PaySuccessActivity extends BaseActivity {
         paymentRecord.setAmount(num * Double.valueOf(msg.getPrice()));
         paymentRecord.setNum(num);
         paymentRecord.setPrice(Double.valueOf(msg.getPrice()));
+        paymentRecord.setPriceId(priceId);
+        paymentRecord.setTitle(price.getTitle());
         paymentRecord.setPayTime(TimeUtil.getDate(msg.getDateStr()));
         paymentRecord.setType(paymentRecord.getTypeNumber(msg.getPayType()));
         paymentRecordDao.save(paymentRecord);
@@ -184,7 +188,7 @@ public class PaySuccessActivity extends BaseActivity {
 
     private String getTicketName(){
         PriceDao priceDao = daoSession.getPriceDao();
-        Price price=priceDao.queryBuilder().where(PriceDao.Properties.Id.eq(priceId)).unique();
+        price=priceDao.queryBuilder().where(PriceDao.Properties.Id.eq(priceId)).unique();
         return price.getTitle();
     }
 

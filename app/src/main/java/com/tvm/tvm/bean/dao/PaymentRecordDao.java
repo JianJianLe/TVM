@@ -27,9 +27,11 @@ public class PaymentRecordDao extends AbstractDao<PaymentRecord, Long> {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property Amount = new Property(1, double.class, "amount", false, "AMOUNT");
         public final static Property Num = new Property(2, int.class, "num", false, "NUM");
-        public final static Property Price = new Property(3, Double.class, "price", false, "PRICE");
-        public final static Property Type = new Property(4, int.class, "type", false, "TYPE");
-        public final static Property PayTime = new Property(5, java.util.Date.class, "payTime", false, "PAY_TIME");
+        public final static Property PriceId = new Property(3, Long.class, "priceId", false, "PRICE_ID");
+        public final static Property Title = new Property(4, String.class, "title", false, "TITLE");
+        public final static Property Price = new Property(5, Double.class, "price", false, "PRICE");
+        public final static Property Type = new Property(6, int.class, "type", false, "TYPE");
+        public final static Property PayTime = new Property(7, java.util.Date.class, "payTime", false, "PAY_TIME");
     }
 
 
@@ -48,9 +50,11 @@ public class PaymentRecordDao extends AbstractDao<PaymentRecord, Long> {
                 "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
                 "\"AMOUNT\" REAL NOT NULL ," + // 1: amount
                 "\"NUM\" INTEGER NOT NULL ," + // 2: num
-                "\"PRICE\" REAL," + // 3: price
-                "\"TYPE\" INTEGER NOT NULL ," + // 4: type
-                "\"PAY_TIME\" INTEGER);"); // 5: payTime
+                "\"PRICE_ID\" INTEGER," + // 3: priceId
+                "\"TITLE\" TEXT," + // 4: title
+                "\"PRICE\" REAL," + // 5: price
+                "\"TYPE\" INTEGER NOT NULL ," + // 6: type
+                "\"PAY_TIME\" INTEGER);"); // 7: payTime
     }
 
     /** Drops the underlying database table. */
@@ -70,15 +74,25 @@ public class PaymentRecordDao extends AbstractDao<PaymentRecord, Long> {
         stmt.bindDouble(2, entity.getAmount());
         stmt.bindLong(3, entity.getNum());
  
+        Long priceId = entity.getPriceId();
+        if (priceId != null) {
+            stmt.bindLong(4, priceId);
+        }
+ 
+        String title = entity.getTitle();
+        if (title != null) {
+            stmt.bindString(5, title);
+        }
+ 
         Double price = entity.getPrice();
         if (price != null) {
-            stmt.bindDouble(4, price);
+            stmt.bindDouble(6, price);
         }
-        stmt.bindLong(5, entity.getType());
+        stmt.bindLong(7, entity.getType());
  
         java.util.Date payTime = entity.getPayTime();
         if (payTime != null) {
-            stmt.bindLong(6, payTime.getTime());
+            stmt.bindLong(8, payTime.getTime());
         }
     }
 
@@ -93,15 +107,25 @@ public class PaymentRecordDao extends AbstractDao<PaymentRecord, Long> {
         stmt.bindDouble(2, entity.getAmount());
         stmt.bindLong(3, entity.getNum());
  
+        Long priceId = entity.getPriceId();
+        if (priceId != null) {
+            stmt.bindLong(4, priceId);
+        }
+ 
+        String title = entity.getTitle();
+        if (title != null) {
+            stmt.bindString(5, title);
+        }
+ 
         Double price = entity.getPrice();
         if (price != null) {
-            stmt.bindDouble(4, price);
+            stmt.bindDouble(6, price);
         }
-        stmt.bindLong(5, entity.getType());
+        stmt.bindLong(7, entity.getType());
  
         java.util.Date payTime = entity.getPayTime();
         if (payTime != null) {
-            stmt.bindLong(6, payTime.getTime());
+            stmt.bindLong(8, payTime.getTime());
         }
     }
 
@@ -116,9 +140,11 @@ public class PaymentRecordDao extends AbstractDao<PaymentRecord, Long> {
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.getDouble(offset + 1), // amount
             cursor.getInt(offset + 2), // num
-            cursor.isNull(offset + 3) ? null : cursor.getDouble(offset + 3), // price
-            cursor.getInt(offset + 4), // type
-            cursor.isNull(offset + 5) ? null : new java.util.Date(cursor.getLong(offset + 5)) // payTime
+            cursor.isNull(offset + 3) ? null : cursor.getLong(offset + 3), // priceId
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // title
+            cursor.isNull(offset + 5) ? null : cursor.getDouble(offset + 5), // price
+            cursor.getInt(offset + 6), // type
+            cursor.isNull(offset + 7) ? null : new java.util.Date(cursor.getLong(offset + 7)) // payTime
         );
         return entity;
     }
@@ -128,9 +154,11 @@ public class PaymentRecordDao extends AbstractDao<PaymentRecord, Long> {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setAmount(cursor.getDouble(offset + 1));
         entity.setNum(cursor.getInt(offset + 2));
-        entity.setPrice(cursor.isNull(offset + 3) ? null : cursor.getDouble(offset + 3));
-        entity.setType(cursor.getInt(offset + 4));
-        entity.setPayTime(cursor.isNull(offset + 5) ? null : new java.util.Date(cursor.getLong(offset + 5)));
+        entity.setPriceId(cursor.isNull(offset + 3) ? null : cursor.getLong(offset + 3));
+        entity.setTitle(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setPrice(cursor.isNull(offset + 5) ? null : cursor.getDouble(offset + 5));
+        entity.setType(cursor.getInt(offset + 6));
+        entity.setPayTime(cursor.isNull(offset + 7) ? null : new java.util.Date(cursor.getLong(offset + 7)));
      }
     
     @Override

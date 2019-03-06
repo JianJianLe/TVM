@@ -19,12 +19,12 @@ import java.util.List;
  * - @Date:  2019/2/25
  * - @Time： 23:09
  */
-public class PayRecordAdpter extends BaseAdapter {
+public class BillListAdpter extends BaseAdapter {
 
     private Context context;
     private List<PaymentRecord> paymentRecordList;
 
-    public PayRecordAdpter(Context context, List<PaymentRecord> paymentRecordList){
+    public BillListAdpter(Context context, List<PaymentRecord> paymentRecordList){
         this.context = context;
         this.paymentRecordList = paymentRecordList;
     }

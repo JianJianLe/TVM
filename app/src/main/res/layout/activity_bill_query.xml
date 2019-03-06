@@ -2,6 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent" android:orientation="vertical"
+    android:gravity="center_horizontal"
     android:background="@drawable/bg">
     <FrameLayout
         android:layout_width="match_parent"
@@ -102,21 +103,26 @@
             android:text="选择结束时间"
             android:background="@drawable/btn_back"/>
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal">
 
-        <Button
-            android:id="@+id/btn_bill_query_query"
-            android:padding="@dimen/xy10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/btn_query_back"
-            android:text="@string/query"/>
-    </LinearLayout>
-    <ListView
-        android:id="@+id/rv_bill_query_list"
+    <Button
+        android:id="@+id/btn_bill_query_query"
+        android:padding="@dimen/xy10dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></ListView>
+        android:layout_marginRight="@dimen/xy30dp"
+        android:layout_marginLeft="@dimen/xy30dp"
+        android:layout_marginTop="@dimen/xy20dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_query_back"
+        android:text="@string/query"/>
+    <Button
+        android:id="@+id/btn_bill_query_summary"
+        android:padding="@dimen/xy10dp"
+        android:layout_width="match_parent"
+        android:layout_marginRight="@dimen/xy30dp"
+        android:layout_marginLeft="@dimen/xy30dp"
+        android:layout_marginTop="@dimen/xy15dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_query_back"
+        android:text="@string/summary"/>
+
 </LinearLayout>

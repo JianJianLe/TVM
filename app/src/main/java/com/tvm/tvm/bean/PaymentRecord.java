@@ -27,6 +27,16 @@ public class PaymentRecord {
     private int num;
 
     /**
+     * 票ID
+     */
+    private Long priceId;
+
+    /**
+     * 票标题
+     */
+    private String title;
+
+    /**
      * 价格
      */
     private Double price;
@@ -41,12 +51,14 @@ public class PaymentRecord {
      */
     private Date payTime;
 
-    @Generated(hash = 743864590)
-    public PaymentRecord(Long id, double amount, int num, Double price, int type,
-            Date payTime) {
+    @Generated(hash = 828805517)
+    public PaymentRecord(Long id, double amount, int num, Long priceId,
+            String title, Double price, int type, Date payTime) {
         this.id = id;
         this.amount = amount;
         this.num = num;
+        this.priceId = priceId;
+        this.title = title;
         this.price = price;
         this.type = type;
         this.payTime = payTime;
@@ -123,6 +135,22 @@ public class PaymentRecord {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public String getTitle() {
+        return this.title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Long getPriceId() {
+        return this.priceId;
+    }
+
+    public void setPriceId(Long priceId) {
+        this.priceId = priceId;
     }
 
 

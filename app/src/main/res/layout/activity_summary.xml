@@ -55,7 +55,7 @@
             android:textColor="@color/black" />
 
         <TextView
-            android:id="@+id/tv_summary_bill_total"
+            android:id="@+id/tv_summary_cash_total"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:singleLine="true"
@@ -164,6 +164,11 @@
             android:textColor="@color/black"
             android:layout_weight="1"/>
     </LinearLayout>
+
+    <ListView
+        android:id="@+id/lv_summary_group_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></ListView>
 
     <View
         android:layout_width="match_parent"

@@ -3,6 +3,8 @@ package com.tvm.tvm.activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.tvm.tvm.R;
@@ -15,6 +17,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * - @Description:  统计
@@ -23,6 +26,9 @@ import butterknife.ButterKnife;
  * - @Time： 22:51
  */
 public class SummaryActivity extends BaseActivity{
+
+    @BindView(R.id.ib_summary_back)
+    ImageButton ib_summary_back;
 
     @BindView(R.id.tv_summary_cash_total)
     TextView tv_summary_cash_total;
@@ -53,6 +59,15 @@ public class SummaryActivity extends BaseActivity{
         Intent intent = getIntent();
         startTime = intent.getStringExtra("startTime");
         endTime = intent.getStringExtra("endTime");
+    }
+
+    @OnClick({R.id.ib_summary_back})
+    public void onClick(View view){
+        switch (view.getId()){
+            case R.id.ib_summary_back:
+                this.finish();
+                break;
+        }
     }
 
     public void initData(){

@@ -2,6 +2,8 @@ package com.tvm.tvm.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.tvm.tvm.R;
@@ -16,6 +18,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * - @Description:  $desc$
@@ -27,6 +30,9 @@ public class BillListActivity extends BaseActivity {
 
     @BindView(R.id.lv_bill_list_list)
     ListView lv_bill_list_list;
+
+    @BindView(R.id.ib_bill_list_back)
+    ImageButton ib_bill_list_back;
 
     private DaoSession daoSession;
 
@@ -45,6 +51,15 @@ public class BillListActivity extends BaseActivity {
         Intent intent = getIntent();
         startTime = intent.getStringExtra("startTime");
         endTime = intent.getStringExtra("endTime");
+    }
+
+    @OnClick({R.id.ib_bill_list_back})
+    public void onClick(View view){
+        switch (view.getId()){
+            case R.id.ib_bill_list_back:
+                this.finish();
+                break;
+        }
     }
 
     public void query(){

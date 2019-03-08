@@ -41,7 +41,7 @@ public class FirstInitApp {
         if (userDao.queryBuilder().list().size()==0){
             initUser();
             initNormalSetting();
-//            addData();
+            addData();
 //            initBillSettings();
         }
 
@@ -83,6 +83,16 @@ public class FirstInitApp {
     public static void addData(){
         PaymentRecordDao paymentRecordDao = daoSession.getPaymentRecordDao();
 
+        PaymentRecord paymentRecord1 = new PaymentRecord();
+        paymentRecord1.setAmount(10*(1));
+        paymentRecord1.setNum(1);
+        paymentRecord1.setPrice(10d);
+        paymentRecord1.setPayTime(new Date());
+        paymentRecord1.setType(2);
+        paymentRecord1.setTitle("票据1");
+        paymentRecord1.setPriceId(2l);
+        paymentRecordDao.save(paymentRecord1);
+
         for (int i = 0 ; i < 10 ; i++){
             PaymentRecord paymentRecord = new PaymentRecord();
             paymentRecord.setAmount(10*(i+1));
@@ -90,6 +100,8 @@ public class FirstInitApp {
             paymentRecord.setPrice(10d);
             paymentRecord.setPayTime(new Date());
             paymentRecord.setType(2);
+            paymentRecord.setTitle("票据"+i);
+            paymentRecord.setPriceId(2l);
             paymentRecordDao.save(paymentRecord);
         }
     }

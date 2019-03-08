@@ -51,6 +51,7 @@ public class BillListActivity extends BaseActivity {
         Intent intent = getIntent();
         startTime = intent.getStringExtra("startTime");
         endTime = intent.getStringExtra("endTime");
+        query();
     }
 
     @OnClick({R.id.ib_bill_list_back})

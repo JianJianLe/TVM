@@ -15,6 +15,9 @@ import com.tvm.tvm.bean.Summary;
 import com.tvm.tvm.bean.dao.DaoSession;
 import com.tvm.tvm.util.DateUtils;
 
+import org.greenrobot.greendao.query.Query;
+import org.greenrobot.greendao.query.WhereCondition;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -98,12 +101,13 @@ public class SummaryActivity extends BaseActivity{
 
     public double getAmount(){
         double sum = 0;
-        String sql = "SELECT sum(amount) from payment_record WHERE payTime>'"+DateUtils.formatDate(startTime,0)+"' and payTime<'"+DateUtils.formatDate(endTime,1)+"'";
-        Cursor cursor = daoSession.getPaymentRecordDao().getDatabase().rawQuery("",null);
+        String sql = "SELECT sum(amount) as sum from payment_record WHERE pay_time>'"+DateUtils.formatDateStr(startTime,0)+"' and pay_time<'"+DateUtils.formatDateStr(endTime,1)+"'";
+        Cursor cursor = daoSession.getPaymentRecordDao().getDatabase().rawQuery(sql,new String[0]);
         try {
             if (cursor.moveToFirst()) {
                 do {
-                    sum = cursor.getDouble(0);
+                    int index = cursor.getColumnIndex("sum");
+                    sum = cursor.getDouble(index);
                 } while (cursor.moveToNext());
             }
         }catch (Exception e){
@@ -116,12 +120,13 @@ public class SummaryActivity extends BaseActivity{
 
     public double getClassify(int type){
         double sum = 0;
-        String sql = "SELECT sum(amount) from payment_record WHERE payTime>'"+DateUtils.formatDate(startTime,0)+"' and payTime<'"+DateUtils.formatDate(endTime,1)+"' and type = "+type;
-        Cursor cursor = daoSession.getPaymentRecordDao().getDatabase().rawQuery("",null);
+        String sql = "SELECT sum(amount) as sum from payment_record WHERE pay_time>'"+DateUtils.formatDateStr(startTime,0)+"' and pay_time<'"+DateUtils.formatDateStr(endTime,1)+"' and type = "+type;
+        Cursor cursor = daoSession.getPaymentRecordDao().getDatabase().rawQuery(sql,new String[0]);
         try {
             if (cursor.moveToFirst()) {
                 do {
-                    sum = cursor.getDouble(0);
+                    int index = cursor.getColumnIndex("sum");
+                    sum = cursor.getDouble(index);
                 } while (cursor.moveToNext());
             }
         }catch (Exception e){
@@ -133,8 +138,8 @@ public class SummaryActivity extends BaseActivity{
     }
 
     public void groupBy(){
-        String sql = "SELECT sum(amount) from payment_record WHERE payTime>'"+DateUtils.formatDate(startTime,0)+"' and payTime<'"+DateUtils.formatDate(endTime,1)+"' GROUP BY title";
-        Cursor cursor = daoSession.getPaymentRecordDao().getDatabase().rawQuery("",null);
+        String sql = "SELECT title,sum(amount) from payment_record WHERE pay_time>'"+DateUtils.formatDateStr(startTime,0)+"' and pay_time<'"+DateUtils.formatDateStr(endTime,1)+"' GROUP BY title";
+        Cursor cursor = daoSession.getPaymentRecordDao().getDatabase().rawQuery(sql,new String[0]);
         try {
             if (cursor.moveToFirst()) {
                 do {

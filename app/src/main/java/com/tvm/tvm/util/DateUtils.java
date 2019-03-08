@@ -52,6 +52,21 @@ public class DateUtils {
     }
 
     /**
+     * 获取开始或者结束时间
+     * @param dateStr
+     * @param isStart
+     * @return
+     */
+    public static String formatDateStr(String dateStr,int isStart){
+        if (isStart==0){
+            dateStr = dateStr + " 00:00:00";
+        }else {
+            dateStr = dateStr + " 23:59:59";
+        }
+        return dateStr;
+    }
+
+    /**
      * 比较两个时间，返回大于等于0即开始时间大于等于结束时间
      * @param startDate
      * @param endDate

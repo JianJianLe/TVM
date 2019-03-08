@@ -5,6 +5,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import com.tvm.tvm.bean.Summary;
+
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,16 +20,16 @@ public class GroupListAdapter extends BaseAdapter {
 
     private Context context;
 
-    private Map<String,Double> map;
+    private List<Summary> summaryList;
 
-    public GroupListAdapter(Context context,Map<String,Double> map){
+    public GroupListAdapter(Context context,List<Summary> summaryList){
         this.context = context;
-        this.map = map;
+        this.summaryList = summaryList;
     }
 
     @Override
     public int getCount() {
-        return map.size();
+        return summaryList.size();
     }
 
     @Override

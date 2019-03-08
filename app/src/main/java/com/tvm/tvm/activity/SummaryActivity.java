@@ -5,14 +5,19 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.tvm.tvm.R;
+import com.tvm.tvm.adapter.GroupListAdapter;
 import com.tvm.tvm.application.AppApplication;
+import com.tvm.tvm.bean.Summary;
 import com.tvm.tvm.bean.dao.DaoSession;
 import com.tvm.tvm.util.DateUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -42,13 +47,18 @@ public class SummaryActivity extends BaseActivity{
     @BindView(R.id.tv_summary_bill_summary)
     TextView tv_summary_bill_summary;
 
+    @BindView(R.id.lv_summary_group_list)
+    ListView lv_summary_group_list;
+
     private DaoSession daoSession;
 
     String startTime;
 
     String endTime;
 
-    Map<String,Double> group = new HashMap<>();
+    private List<Summary> summaryList = new ArrayList<>();
+
+    private GroupListAdapter groupListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +69,7 @@ public class SummaryActivity extends BaseActivity{
         Intent intent = getIntent();
         startTime = intent.getStringExtra("startTime");
         endTime = intent.getStringExtra("endTime");
+        initData();
     }
 
     @OnClick({R.id.ib_summary_back})
@@ -80,7 +91,9 @@ public class SummaryActivity extends BaseActivity{
         //cash
         tv_summary_cash_total.setText(String.valueOf(getClassify(2)));
         //group
-
+        groupBy();
+        groupListAdapter = new GroupListAdapter(this,summaryList);
+        lv_summary_group_list.setAdapter(groupListAdapter);
     }
 
     public double getAmount(){
@@ -125,7 +138,10 @@ public class SummaryActivity extends BaseActivity{
         try {
             if (cursor.moveToFirst()) {
                 do {
-                    group.put(cursor.getString(0),cursor.getDouble(1));
+                    Summary summary = new Summary();
+                    summary.setTitle(cursor.getString(0));
+                    summary.setAmount(cursor.getDouble(1));
+                    summaryList.add(summary);
                 } while (cursor.moveToNext());
             }
         }catch (Exception e){

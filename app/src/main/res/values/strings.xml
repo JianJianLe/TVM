@@ -48,29 +48,5 @@
 
     <string name="ticket_setting_list">票据列表</string>
 
-    <string name="content">
-        [CenterLarge]->快剪
-        [CenterSmall]->欢迎光临快剪专营店
-        [CenterSmall]->本店编号：[DeviceNumber]
-        [CenterLarge]->[TicketName]
-        [CenterLarge]->价格：[Price]元
-        [CenterLarge]->[TicketNumber]
-        [CenterSmall]->支付方式：[PayType]
-        [CenterSmall]->[DateTime]
-        [SplitLine]
-        [LeftSmall]->1.此凭条为儿童（身高1.4米以下）
-        [LeftSmall]->  剪发专用凭证；
-        [LeftSmall]->2.凭此凭条可以在本店享受专业剪
-        [LeftSmall]->  发一次，复印无效；
-        [LeftSmall]->3.本凭条仅可在购买本店使用；
-        [LeftSmall]->4.此凭条不记名，不挂失，不能兑
-        [LeftSmall]->  换现金，用完即止；
-        [LeftSmall]->5.此凭条从购买之日起，有效期为
-        [LeftSmall]->  当天，过期作废；
-        [LeftSmall]->6.本公司可能在法律允许范围内对
-        [LeftSmall]->  此细则作出适当调整。
-        [Enter]
-        [Enter]
-        [Enter]
-    </string>
+    <string name="print">打印</string>
 </resources>

@@ -11,8 +11,10 @@ import android.widget.TextView;
 import com.tvm.tvm.R;
 import com.tvm.tvm.adapter.GroupListAdapter;
 import com.tvm.tvm.application.AppApplication;
+import com.tvm.tvm.bean.PaymentRecord;
 import com.tvm.tvm.bean.Summary;
 import com.tvm.tvm.bean.dao.DaoSession;
+import com.tvm.tvm.bean.dao.PaymentRecordDao;
 import com.tvm.tvm.util.DateUtils;
 
 import org.greenrobot.greendao.query.Query;
@@ -53,6 +55,9 @@ public class SummaryActivity extends BaseActivity{
     @BindView(R.id.lv_summary_group_list)
     ListView lv_summary_group_list;
 
+    @BindView(R.id.tv_summary_print)
+    TextView tv_summary_print;
+
     private DaoSession daoSession;
 
     String startTime;
@@ -75,11 +80,13 @@ public class SummaryActivity extends BaseActivity{
         initData();
     }
 
-    @OnClick({R.id.ib_summary_back})
+    @OnClick({R.id.ib_summary_back,R.id.tv_summary_print})
     public void onClick(View view){
         switch (view.getId()){
             case R.id.ib_summary_back:
                 this.finish();
+                break;
+            case R.id.tv_summary_print:
                 break;
         }
     }
@@ -101,7 +108,8 @@ public class SummaryActivity extends BaseActivity{
 
     public double getAmount(){
         double sum = 0;
-        String sql = "SELECT sum(amount) as sum from payment_record WHERE pay_time>'"+DateUtils.formatDateStr(startTime,0)+"' and pay_time<'"+DateUtils.formatDateStr(endTime,1)+"'";
+        String sql = "SELECT sum(amount) as sum from "+PaymentRecordDao.TABLENAME+" WHERE "+PaymentRecordDao.Properties.PayTime.columnName
+                +"   BETWEEN  "+DateUtils.formatDate(startTime,0).getTime()+" AND "+DateUtils.formatDate(endTime,1).getTime();
         Cursor cursor = daoSession.getPaymentRecordDao().getDatabase().rawQuery(sql,new String[0]);
         try {
             if (cursor.moveToFirst()) {
@@ -120,7 +128,8 @@ public class SummaryActivity extends BaseActivity{
 
     public double getClassify(int type){
         double sum = 0;
-        String sql = "SELECT sum(amount) as sum from payment_record WHERE pay_time>'"+DateUtils.formatDateStr(startTime,0)+"' and pay_time<'"+DateUtils.formatDateStr(endTime,1)+"' and type = "+type;
+        String sql = "SELECT sum(amount) as sum from "+PaymentRecordDao.TABLENAME+" WHERE "+PaymentRecordDao.Properties.PayTime.columnName
+                +"   BETWEEN  "+DateUtils.formatDate(startTime,0).getTime()+" AND "+DateUtils.formatDate(endTime,1).getTime()+" and type = "+type;
         Cursor cursor = daoSession.getPaymentRecordDao().getDatabase().rawQuery(sql,new String[0]);
         try {
             if (cursor.moveToFirst()) {
@@ -138,7 +147,8 @@ public class SummaryActivity extends BaseActivity{
     }
 
     public void groupBy(){
-        String sql = "SELECT title,sum(amount) from payment_record WHERE pay_time>'"+DateUtils.formatDateStr(startTime,0)+"' and pay_time<'"+DateUtils.formatDateStr(endTime,1)+"' GROUP BY title";
+        String sql = "SELECT title,sum(amount) from "+PaymentRecordDao.TABLENAME+" WHERE "+PaymentRecordDao.Properties.PayTime.columnName
+                +"   BETWEEN  "+DateUtils.formatDate(startTime,0).getTime()+" AND "+DateUtils.formatDate(endTime,1).getTime()+" GROUP BY title";
         Cursor cursor = daoSession.getPaymentRecordDao().getDatabase().rawQuery(sql,new String[0]);
         try {
             if (cursor.moveToFirst()) {

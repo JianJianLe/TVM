@@ -26,11 +26,20 @@
             android:text="@string/summary"
             android:textColor="@color/black"
             android:textSize="@dimen/xy18sp" />
+        <TextView
+            android:id="@+id/tv_summary_print"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|right"
+            android:text="@string/print"
+            android:paddingRight="@dimen/xy20dp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/xy18sp" />
     </FrameLayout>
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/xy1dp"
-        android:layout_marginTop="@dimen/xy100dp"
+        android:layout_marginTop="@dimen/xy20dp"
         android:layout_marginBottom="@dimen/xy10dp"
         android:layout_marginLeft="@dimen/xy10dp"
         android:layout_marginRight="@dimen/xy10dp"
@@ -178,33 +187,5 @@
         android:layout_marginLeft="@dimen/xy10dp"
         android:layout_marginRight="@dimen/xy10dp"
         android:background="@drawable/wear_1" />
-    <Button
-        android:id="@+id/print_btn"
-        android:layout_width="fill_parent"
-        android:layout_height="@dimen/xy40dp"
-        android:layout_below="@+id/linearLayout6"
-        android:layout_marginBottom="@dimen/xy8dp"
-        android:layout_marginLeft="@dimen/xy20dp"
-        android:layout_marginRight="@dimen/xy20dp"
-        android:layout_marginTop="@dimen/xy30dp"
-        android:background="@drawable/confirm_dialog_back"
-        android:gravity="center"
-        android:text="打印"
-        android:textColor="#ffffff"
-        android:textSize="@dimen/xy16sp" />
 
-    <Button
-        android:id="@+id/quit_btn"
-        android:layout_width="fill_parent"
-        android:layout_height="@dimen/xy40dp"
-        android:layout_below="@+id/center_changepwd_btn"
-        android:layout_marginBottom="@dimen/xy8dp"
-        android:layout_marginLeft="@dimen/xy20dp"
-        android:layout_marginRight="@dimen/xy20dp"
-        android:layout_marginTop="@dimen/xy5dp"
-        android:background="@drawable/confirm_dialog_back"
-        android:gravity="center"
-        android:text="返回"
-        android:textColor="#ffffff"
-        android:textSize="@dimen/xy16sp" />
 </LinearLayout>

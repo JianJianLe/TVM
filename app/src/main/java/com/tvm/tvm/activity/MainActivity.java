@@ -34,6 +34,7 @@ import com.tvm.tvm.util.device.BillAcceptorUtil;
 import com.tvm.tvm.util.device.PrinterCase;
 import com.tvm.tvm.util.player.MPlayer;
 import com.tvm.tvm.util.player.MPlayerException;
+import com.tvm.tvm.util.player.MinimalDisplay;
 import com.tvm.tvm.util.player.PlayerCallback;
 import com.tvm.tvm.util.view.ToastUtils;
 
@@ -186,6 +187,10 @@ public class MainActivity extends BaseActivity {
         type=2;
         initAds();
 
+        //初始化时间
+        tv_main_header_time_date.setText(dateFormat.format(new Date()));
+        tv_main_header_time_time.setText(format.format(new Date()));
+
         initBillAcceptor();
         /******Test******/
         //Test tv_main_title_title
@@ -221,8 +226,10 @@ public class MainActivity extends BaseActivity {
                             int flag= SetCurrentImage();
                             if(flag==0){
                                 //切换轮播图，并且更新时间
+                                Log.d("Test","CurrentItem = " + currentItem);
                                 vp_main_ads.setCurrentItem(currentItem);
                             }else if(flag==1){
+                                //当是视频图片轮播时，判断是否图片的最后一张，当flag=1时，表示为最后一张图片
                                 setAdsLayout(VIDEO_SHOW);//视频
                                 whatShow = 1;
                                 setVideo();
@@ -252,13 +259,14 @@ public class MainActivity extends BaseActivity {
 
             if (videos!=null && videos.size()>0) {
                 try {
-                    if (type==1) {
+                    if (type==3) {
                         player.setSource((ArrayList<String>) videos,true);
                         player.setCallback(new PlayerCallback() {
 
                             @Override
                             public void complete() {
                                 // TODO Auto-generated method stub
+                                Log.d("Test", "Video completed");
                                 setAdsLayout(PICTURE_SHOW);//图片
                                 whatShow = 0;
                             }
@@ -311,22 +319,23 @@ public class MainActivity extends BaseActivity {
 
     private int SetCurrentImage(){
         int flag=0;
-
-        currentItem++;
         //播完之后切换0
-        if(currentItem==list_img.size()){
+        if(currentItem==list_img.size()-1){
             currentItem=-1;
         }
 
+        currentItem++;
         //Log.d("Test","currentItem:"+currentItem);
-
-        if(type == 3 && currentItem == list_img.size()-1 && isShowImage==true){
+        if(type==3 && currentItem == list_img.size()-1 && isShowImage==true){
+            // 图片视频轮播，当播放到最后一张图片后，开始播放视频，即设置flag=1。
+            // （list_img.size()-1）(图片播放到最后一张)
+            // isShowImage=True(设置了图片播放)
+            flag=1;
+        }else if(type==3 && isShowImage==false){
+            //当在播放视频的时候，设置currentItem = -1;
+            //这样当切换回图片时，可以显示第一张图片
             currentItem=-1;
-            flag=1;//播放视频： 当且仅当currentMedia=2(视频播放) currentItem=-1(图片播放到最后一张) isShowImage=True(设置了图片播放)
         }else{
-            if (currentItem==-1){
-                currentItem = 0 ;
-            }
             flag=0;//播放图片
         }
         return flag;
@@ -366,10 +375,13 @@ public class MainActivity extends BaseActivity {
     private void setAdsLayout(int flag){
         switch (flag){
             case VIDEO_SHOW:
+                isShowImage=false;
                 sv_main_video.setVisibility(View.VISIBLE);
                 fl_main_ads.setVisibility(View.GONE);
                 break;
             case PICTURE_SHOW:
+                currentItem=-1;
+                isShowImage=true;
                 sv_main_video.setVisibility(View.GONE);
                 fl_main_ads.setVisibility(View.VISIBLE);
                 break;
@@ -383,6 +395,10 @@ public class MainActivity extends BaseActivity {
      - @Time： ${TIME}
      */
     public void initAds(){
+
+        player = new MPlayer();
+        player.setDisplay(new MinimalDisplay(sv_main_video));
+
         // 清空list
         videos.clear();
         pictures.clear();
@@ -418,6 +434,27 @@ public class MainActivity extends BaseActivity {
         handler.sendMessage(message);
     }
 
+    private void getBanner(){
+        //动态设置轮播图数量
+        list_img.clear();
+        for (int i = 0; i < pictures.size(); i++) {
+            int m=400;
+            int h=300;
+            ImageView iv = new ImageView(MainActivity.this);
+            iv.setScaleType(ImageView.ScaleType.FIT_XY);
+            File f=new File(pictures.get(i));
+            Picasso.with(MainActivity.this)
+                    .load(f)
+                    .resize(m, h)
+                    .centerCrop()
+                    .into(iv);
+            list_img.add(iv);
+            iv=null;
+        }
+
+        //设置轮播图
+        vp_main_ads.setAdapter(new ViewpagerDotsAdapter(MainActivity.this, list_img));
+    }
 
     /**
      * 时间任务 时间更新
@@ -466,7 +503,6 @@ public class MainActivity extends BaseActivity {
         super.onResume();
         //设置票数
         setTicketNum();
-
         getPriceList();
     }
 
@@ -476,28 +512,6 @@ public class MainActivity extends BaseActivity {
         super.onDestroy();
         scheduledExecutorService.shutdown();
         Log.i("Test","MainActvity onDestroy scheduledExecutorService shutdown");
-    }
-
-    public void getBanner(){
-        //动态设置轮播图数量
-        list_img.clear();
-        for (int i = 0; i < pictures.size(); i++) {
-            int m=400;
-            int h=300;
-            ImageView iv = new ImageView(MainActivity.this);
-            iv.setScaleType(ImageView.ScaleType.FIT_XY);
-            File f=new File(pictures.get(i));
-            Picasso.with(MainActivity.this)
-                    .load(f)
-                    .resize(m, h)
-                    .centerCrop()
-                    .into(iv);
-            list_img.add(iv);
-            iv=null;
-        }
-
-        //设置轮播图
-        vp_main_ads.setAdapter(new ViewpagerDotsAdapter(MainActivity.this, list_img));
     }
 
 }

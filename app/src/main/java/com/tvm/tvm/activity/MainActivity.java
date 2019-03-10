@@ -237,6 +237,7 @@ public class MainActivity extends BaseActivity {
                             }
                         }
                         //=============
+                        Log.d("Test","timeFlag = " + timeFlag);
                         timeFlag++;
                     }
 
@@ -295,6 +296,7 @@ public class MainActivity extends BaseActivity {
         Long priceId;
         switch (view.getId()){
             case R.id.tv_main_click_buy:
+                shutDownScheduledExecutorService();
                 //选择价格，价格列表为空的话不能购票
                 if (priceList==null || priceList.size() == 0){
                     ToastUtils.showText(this,StringUtils.EMPTY_PRICE_LIST);
@@ -303,12 +305,14 @@ public class MainActivity extends BaseActivity {
                 }
                 break;
             case R.id.ll_main_ticket_list_1:
+                shutDownScheduledExecutorService();
                 priceId = priceList.get(0).getId();
                 Intent intent = new Intent();
                 intent.putExtra("priceId",priceId);
                 startActivity(this,intent,PayDetailActivity.class);
                 break;
             case R.id.ll_main_ticket_list_2:
+                shutDownScheduledExecutorService();
                 priceId = priceList.get(1).getId();
                 Intent intent2 = new Intent();
                 intent2.putExtra("priceId",priceId);
@@ -510,8 +514,13 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onDestroy(){
         super.onDestroy();
-        scheduledExecutorService.shutdown();
+        shutDownScheduledExecutorService();
         Log.i("Test","MainActvity onDestroy scheduledExecutorService shutdown");
+    }
+
+    private  void shutDownScheduledExecutorService(){
+        if(!scheduledExecutorService.isShutdown())
+            scheduledExecutorService.shutdown();
     }
 
 }

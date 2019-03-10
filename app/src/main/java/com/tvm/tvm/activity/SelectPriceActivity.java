@@ -115,8 +115,8 @@ public class SelectPriceActivity extends BaseActivity {
     @Override
     public void onDestroy(){
         super.onDestroy();
-        scheduledExecutorService.shutdown();
-        Log.i("Test","onDestroy scheduledExecutorService shutdown");
+        shutDownScheduledExecutorService();
+        Log.i("Test","SelectPrice Activity onDestroy scheduledExecutorService shutdown");
     }
 
     /**
@@ -158,5 +158,10 @@ public class SelectPriceActivity extends BaseActivity {
             tv_select_price_header_ticket_num.setText(PrinterCase.getInstance().OrderDispose(
                     ticketSummaryList.get(ticketSummaryList.size()-1).getNum()));
         }
+    }
+
+    private  void shutDownScheduledExecutorService(){
+        if(!scheduledExecutorService.isShutdown())
+            scheduledExecutorService.shutdown();
     }
 }

@@ -168,8 +168,6 @@ public class MPlayer implements IMPlayer,MediaPlayer.OnBufferingUpdateListener,
         createPlayerIfNeed();
         isMediaPrepared=false;
         isVideoSizeMeasured=false;
-//        currentVideoWidth=0;
-//        currentVideoHeight=0;
         player.reset();
         try {
             player.setDataSource(urlList.get(position));
@@ -184,8 +182,6 @@ public class MPlayer implements IMPlayer,MediaPlayer.OnBufferingUpdateListener,
         createPlayerIfNeed();
         isMediaPrepared=false;
         isVideoSizeMeasured=false;
-//        currentVideoWidth=0;
-//        currentVideoHeight=0;
         player.reset();
         try {
             player.setDataSource(url);
@@ -246,15 +242,13 @@ public class MPlayer implements IMPlayer,MediaPlayer.OnBufferingUpdateListener,
 
     @Override
     public void onCompletion(MediaPlayer mp) {
-//        display.onComplete(this);
-//        if(mPlayListener!=null){
-//            mPlayListener.onComplete(this);
-//        }
+        Log.d("Test","MPlayer onCompleteion function");
     	if (urlList.size()>0) {
     		if (position<(urlList.size()-1)) {
 				position++;
 			}else if(position == (urlList.size()-1)){
 				if (flag) {
+				    Log.d("Test", "Complete the video");
 					callback.complete();
 					return;
 				}
@@ -278,12 +272,13 @@ public class MPlayer implements IMPlayer,MediaPlayer.OnBufferingUpdateListener,
     @Override
     public void onPrepared(MediaPlayer mp) {
         isMediaPrepared=true;
+        Log.d("Test","Media Prepared");
         playStart();
     }
 
     @Override
     public void onVideoSizeChanged(MediaPlayer mp, int width, int height) {
-        log("视频原宽高->"+width+"/"+height);
+        Log.d("Test","视频原宽高->"+width+"/"+height);
         if(width>0&&height>0){
             this.currentVideoWidth=width;
             this.currentVideoHeight=height;
@@ -300,6 +295,7 @@ public class MPlayer implements IMPlayer,MediaPlayer.OnBufferingUpdateListener,
 
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra) {
+        Log.d("Test", "onError = " + what);
         return false;
     }
 
@@ -324,9 +320,5 @@ public class MPlayer implements IMPlayer,MediaPlayer.OnBufferingUpdateListener,
         if(display!=null&&holder==display.getHolder()){
             isSurfaceCreated=false;
         }
-    }
-
-    private void log(String content){
-        Log.d("MPlayer",content);
     }
 }

@@ -162,6 +162,8 @@ public class MainActivity extends BaseActivity {
     private int imageShowTime=3;
     //设置了图片播放
     private boolean isShowImage = true;
+    //当轮播的时候，判断是否可以播放视频
+    private int mediaFlag =0;
 
     //当前播放视频还是广告，0：广告 1：视频
     private int whatShow = 0;
@@ -223,17 +225,18 @@ public class MainActivity extends BaseActivity {
                         if(timeFlag==imageShowTime || timeFlag==-1){
                             //时间置0，重新算时间
                             timeFlag=0;
-                            int flag= SetCurrentImage();
-                            if(flag==0){
-                                //切换轮播图，并且更新时间
-                                Log.d("Test","CurrentItem = " + currentItem);
-                                vp_main_ads.setCurrentItem(currentItem);
-                            }else if(flag==1){
+                            mediaFlag= SetCurrentImage();
+                            if(mediaFlag==2){
                                 //当是视频图片轮播时，判断是否图片的最后一张，当flag=1时，表示为最后一张图片
                                 setAdsLayout(VIDEO_SHOW);//视频
                                 whatShow = 1;
+                                Log.d("Test","The Image is completed,Show video and Set Video");
                                 setVideo();
                                 Log.d("Test", "Video start");
+                            }else{
+                                //切换轮播图，并且更新时间
+                                Log.d("Test","CurrentItem = " + currentItem);
+                                vp_main_ads.setCurrentItem(currentItem);
                             }
                         }
                         //=============
@@ -245,7 +248,7 @@ public class MainActivity extends BaseActivity {
                 case 1://播放广告
                     setAdsLayout(PICTURE_SHOW);
                     break;
-                case 2:
+                case 2://播放视频
                     setAdsLayout(VIDEO_SHOW);
                     break;
                 case 3:
@@ -267,7 +270,7 @@ public class MainActivity extends BaseActivity {
                             @Override
                             public void complete() {
                                 // TODO Auto-generated method stub
-                                Log.d("Test", "Video completed");
+                                Log.d("Test", "Video completed，show Picture");
                                 setAdsLayout(PICTURE_SHOW);//图片
                                 whatShow = 0;
                             }
@@ -322,25 +325,30 @@ public class MainActivity extends BaseActivity {
     }
 
     private int SetCurrentImage(){
-        int flag=0;
+        Log.d("Test","SetCurrentImage currentItem = " + currentItem);
+        int flag=mediaFlag;
         //播完之后切换0
         if(currentItem==list_img.size()-1){
             currentItem=-1;
         }
 
         currentItem++;
-        //Log.d("Test","currentItem:"+currentItem);
-        if(type==3 && currentItem == list_img.size()-1 && isShowImage==true){
-            // 图片视频轮播，当播放到最后一张图片后，开始播放视频，即设置flag=1。
-            // （list_img.size()-1）(图片播放到最后一张)
-            // isShowImage=True(设置了图片播放)
-            flag=1;
-        }else if(type==3 && isShowImage==false){
-            //当在播放视频的时候，设置currentItem = -1;
-            //这样当切换回图片时，可以显示第一张图片
-            currentItem=-1;
+
+        if(flag==1){
+            flag=2;
         }else{
-            flag=0;//播放图片
+            if(type==3 && currentItem == list_img.size()-1 && isShowImage==true){
+                // 图片视频轮播，当播放到最后一张图片后，开始播放视频，即设置flag=1。
+                // （list_img.size()-1）(图片播放到最后一张)
+                // isShowImage=True(设置了图片播放)
+                flag=1;
+            }else if(type==3 && isShowImage==false){
+                //当在播放视频的时候，设置currentItem = -1;
+                //这样当切换回图片时，可以显示第一张图片
+                currentItem=0;
+            }else{
+                flag=0;//播放图片
+            }
         }
         return flag;
     }
@@ -508,12 +516,20 @@ public class MainActivity extends BaseActivity {
         //设置票数
         setTicketNum();
         getPriceList();
+        player.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        player.onPause();
     }
 
     //关掉延迟服务
     @Override
     public void onDestroy(){
         super.onDestroy();
+        player.onDestroy();
         shutDownScheduledExecutorService();
         Log.i("Test","MainActvity onDestroy scheduledExecutorService shutdown");
     }

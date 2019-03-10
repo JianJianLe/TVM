@@ -280,7 +280,9 @@ public class BillAcceptorUtil {
         switch (moneyCode) {
 
             case 0x40:
-                moneyReject();
+                moneyAccept();
+                tMoney = 1;
+                Log.d("Test", "---MoneyAccept=1");
                 break;
             case 0x41:
                 moneyAccept();
@@ -300,7 +302,15 @@ public class BillAcceptorUtil {
                 break;
 
             case 0x44:
-                moneyReject();
+                moneyAccept();
+                tMoney = 50;
+                Log.d("Test", "---MoneyAccept=50");
+                break;
+
+            case 0x45:
+                moneyAccept();
+                tMoney = 100;
+                Log.d("Test", "---MoneyAccept=100");
                 break;
 
             default:

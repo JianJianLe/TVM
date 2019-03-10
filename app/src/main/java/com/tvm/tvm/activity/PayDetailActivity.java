@@ -240,6 +240,7 @@ public class PayDetailActivity extends BaseActivity{
     @Override
     public void onDestroy(){
         super.onDestroy();
+        PrinterCase.getInstance().amountRecord=0;//when the activity is finished, the amountRecord should be 0.
         scheduledExecutorService.shutdown();
         BillAcceptorUtil.getInstance().ba_Disable();//@Star Feb16
         Log.i("Test","PayDetailActivity onDestroy scheduledExecutorService shutdown");

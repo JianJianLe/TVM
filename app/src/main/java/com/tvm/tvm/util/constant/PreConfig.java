@@ -20,7 +20,7 @@ public class PreConfig {
     //支付描述
     public static String PAY_DESC = "payDesc";
 
-    public final static String USB_FOLDER="/mnt/usb_storage/";
+    public final static String USB_FOLDER="/mnt/usb_storage";
 
     //public final static String BILL_SETTING_PATH = "/sdcard/TVM/TicketTemplate";
 }

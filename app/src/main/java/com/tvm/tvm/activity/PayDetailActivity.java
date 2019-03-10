@@ -164,6 +164,7 @@ public class PayDetailActivity extends BaseActivity{
     public void onClick(View view){
         switch (view.getId()){
             case R.id.iv_pay_detail_back:
+                PrinterCase.getInstance().amountRecord=0;//when the activity is finished, the amountRecord should be 0.
                 this.finish();
                 break;
             case R.id.iv_pay_detail_decrease:
@@ -240,7 +241,6 @@ public class PayDetailActivity extends BaseActivity{
     @Override
     public void onDestroy(){
         super.onDestroy();
-        PrinterCase.getInstance().amountRecord=0;//when the activity is finished, the amountRecord should be 0.
         scheduledExecutorService.shutdown();
         BillAcceptorUtil.getInstance().ba_Disable();//@Star Feb16
         Log.i("Test","PayDetailActivity onDestroy scheduledExecutorService shutdown");

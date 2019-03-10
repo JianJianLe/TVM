@@ -158,7 +158,20 @@ public class FolderUtil {
 	}
 
 	private String getExtSdcardPath(){
-		return System.getenv("SECONDARY_STORAGE");
+		//return System.getenv("SECONDARY_STORAGE");
+		String folder = getSDPath();
+		return folder;
+	}
+
+	public String getSDPath(){
+		File sdDir = null;
+		boolean sdCardExist = Environment.getExternalStorageState()
+				.equals(android.os.Environment.MEDIA_MOUNTED);//判断sd卡是否存在
+		if(sdCardExist)
+		{
+			sdDir = Environment.getExternalStorageDirectory();//获取跟目录
+		}
+		return sdDir.toString();
 	}
 
 	private String getSDCardfolder(){

@@ -54,8 +54,8 @@ public class PaySuccessActivity extends BaseActivity {
         setContentView(R.layout.activity_pay_success);
         ButterKnife.bind(this);
         daoSession = AppApplication.getApplication().getDaoSession();
-        getTicketName();
         priceId = getIntent().getLongExtra("priceId",0l);
+        getTicketName();
         initData();
         printTicket();
     }

@@ -72,7 +72,8 @@ public class PriceListActivity extends BaseActivity {
         rv_ticket_list_list.setLayoutManager(layoutManager);
         PriceListAdapter.OnItemClickListener onItemClickListener =  new PriceListAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(View view, int position) {
+            public void onItemClick(View view) {
+                int position = (int) view.getTag();
                 Price item = priceLists.get(position);
                 Intent intent = new Intent(context,PriceEditActivity.class);
                 intent.putExtra("priceId",item.getId());
@@ -80,7 +81,8 @@ public class PriceListActivity extends BaseActivity {
             }
 
             @Override
-            public void onLongClick(View view, final int position) {
+            public void onLongClick(final View view) {
+                final int position = (int) view.getTag();
                 final ConfirmDialogUtils confirmDialogUtils = new ConfirmDialogUtils(context,"删除价格","请确认是否删除价格【"+priceLists.get(position).getTitle()+"】");
                 confirmDialogUtils.show();
                 confirmDialogUtils.setOnDialogClickListener(new ConfirmDialogUtils.OnDialogClickListener() {

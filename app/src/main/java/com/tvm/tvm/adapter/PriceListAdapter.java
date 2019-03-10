@@ -49,13 +49,13 @@ public class PriceListAdapter extends RecyclerView.Adapter<PriceListAdapter.Tick
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onItemClickListener.onItemClick(v,i);
+                onItemClickListener.onItemClick(v);
             }
         });
         v.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                onItemClickListener.onLongClick(v,i);
+                onItemClickListener.onLongClick(v);
                 return false;
             }
         });
@@ -69,6 +69,7 @@ public class PriceListAdapter extends RecyclerView.Adapter<PriceListAdapter.Tick
         viewHolder.tv_item_ticket_title.setText(priceLists.get(i).getTitle());
         viewHolder.tv_item_ticket_price.setText(priceLists.get(i).getPrice()+"");
         viewHolder.iv_item_ticket_icon.setImageBitmap(BitmapUtils.byte2Bitmap(priceLists.get(i).getPic()));
+        viewHolder.itemView.setTag(i);
     }
 
     @Override
@@ -103,19 +104,19 @@ public class PriceListAdapter extends RecyclerView.Adapter<PriceListAdapter.Tick
 
         @Override
         public void onClick(View v) {
-            onItemClickListener.onItemClick(v,getPosition());
+            onItemClickListener.onItemClick(v);
         }
 
 
         @Override
         public boolean onLongClick(View v) {
-            onItemClickListener.onLongClick(v,getPosition());
+            onItemClickListener.onLongClick(v);
             return false;
         }
     }
 
     public  static interface OnItemClickListener{
-        void onItemClick(View view,int position);
-        void onLongClick(View view,int position);
+        void onItemClick(View view);
+        void onLongClick(View view);
     }
 }

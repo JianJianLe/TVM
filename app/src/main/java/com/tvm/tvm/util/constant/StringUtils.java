@@ -38,6 +38,8 @@ public class StringUtils {
 
     public static String PRICE_NOT_NULL = "金额不能为空";
 
+    public static String HAD_TITLE = "已有对应标题票价，请重新命名标题";
+
     public static String DESC_NOT_NULL = "描述不能为空";
 
     public static String SAVE_SUCCESS = "保存成功";

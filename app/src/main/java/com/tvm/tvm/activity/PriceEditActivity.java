@@ -82,7 +82,7 @@ public class PriceEditActivity extends BaseActivity {
         setContentView(R.layout.activity_price_edit);
         ButterKnife.bind(this);
         Intent intent = getIntent();
-        priceId = intent.getLongExtra("priceId",0l);
+        priceId = intent.getLongExtra("priceId",-1l);
         bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.ticket);
         //保证图片路径存在
         file = new File(mTempPhotoPath);
@@ -108,7 +108,11 @@ public class PriceEditActivity extends BaseActivity {
         iv_price_edit_icon.setImageBitmap(bitmap);
     }
 
+    /**
+     * 保存
+     */
     private void save(){
+        //检查对应值是否正确
         if (check()){
             if (price !=null ){
                 price.setTitle(et_price_edit_title.getText().toString().trim());
@@ -129,18 +133,34 @@ public class PriceEditActivity extends BaseActivity {
         }
     }
 
+    /**
+     * 检查对应column是否正确
+     * @return
+     */
     private boolean check(){
+        //标题是否为空
         if ( TextUtils.isEmpty(et_price_edit_title.getText().toString().trim())){
             ToastUtils.showText(this,StringUtils.TITLE_NOT_NULL);
             return false;
         }
+        //描述是否为空
         if ( TextUtils.isEmpty(et_price_edit_desc.getText().toString().trim())){
             ToastUtils.showText(this,StringUtils.DESC_NOT_NULL);
             return false;
         }
+        //价格是否为空
         if ( TextUtils.isEmpty(et_price_edit_price.getText().toString().trim())){
             ToastUtils.showText(this,StringUtils.PRICE_NOT_NULL);
             return false;
+        }
+        Price dbPrice = daoSession.getPriceDao().queryBuilder().where(PriceDao.Properties.Title.eq(et_price_edit_title.getText().toString().trim()),PriceDao.Properties.IsDelete.eq(0)).unique();
+        if (dbPrice!=null){
+            if (price!=null && price.getTitle().equals(et_price_edit_title.getText().toString().trim())){
+
+            }else {
+                ToastUtils.showText(this,StringUtils.HAD_TITLE);
+                return false;
+            }
         }
         return true;
     }

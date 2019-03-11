@@ -63,7 +63,7 @@ public class FileUtil {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(fileSrc, options);
-        options.inSampleSize = calculateInSampleSize(options, 480, 800);
+        options.inSampleSize = calculateInSampleSize(options, 120, 200);
         options.inJustDecodeBounds = false;
         Bitmap img = BitmapFactory.decodeFile(fileSrc, options);
         return img;

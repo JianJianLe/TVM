@@ -52,6 +52,21 @@ public class DateUtils {
     }
 
     /**
+     * 日期转换 for yyyy-MM-dd hh:mm:ss
+     * @param dateStr
+     * @return
+     */
+    public static Date formatDate(String dateStr){
+        Date date = null;
+        try {
+            date = df1.parse(dateStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
+
+    /**
      * 获取开始或者结束时间
      * @param dateStr
      * @param isStart

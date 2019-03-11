@@ -64,7 +64,7 @@ public class BillListActivity extends BaseActivity {
     }
 
     public void query(){
-        List<PaymentRecord> recordList = daoSession.getPaymentRecordDao().queryBuilder().where(PaymentRecordDao.Properties.PayTime.between(DateUtils.formatDate(startTime,0),DateUtils.formatDate(endTime,1))).list();
+        List<PaymentRecord> recordList = daoSession.getPaymentRecordDao().queryBuilder().where(PaymentRecordDao.Properties.PayTime.between(DateUtils.formatDate(startTime),DateUtils.formatDate(endTime))).list();
         billListAdpter = new BillListAdpter(this,recordList);
         lv_bill_list_list.setAdapter(billListAdpter);
     }

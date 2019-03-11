@@ -1,7 +1,9 @@
 package com.tvm.tvm.activity;
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.tvm.tvm.R;
 import com.tvm.tvm.adapter.BillListAdpter;
@@ -53,19 +56,26 @@ public class BillQueryActivity extends BaseActivity{
 
     //时间选择器弹出框
     private DatePickerDialog datePickerDialog;
+    //时间选择器
+    private TimePickerDialog timePickerDialog;
     //日历
     private Calendar cal;
     //当前年月日
     private int year,month,day;
 
+    List<String> ticketTitleList;
+
     String startTime;
     String endTime;
+
+    private DaoSession daoSession;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bill_query);
         ButterKnife.bind(this);
+        daoSession = AppApplication.getApplication().getDaoSession();
         initView();
         getNowDate();
     }
@@ -118,9 +128,28 @@ public class BillQueryActivity extends BaseActivity{
         }
     }
 
+    public void getDistinctTickectTitle(){
+        PaymentRecordDao paymentRecordDao = daoSession.getPaymentRecordDao();
+        String sql = "SELECT DISTINCT "+PaymentRecordDao.Properties.Title.columnName + " FROM " +paymentRecordDao.TABLENAME;
+        Cursor cursor = daoSession.getPaymentRecordDao().getDatabase().rawQuery(sql,null);
+        try {
+            if (cursor.moveToFirst()) {
+                do {
+                    int index = cursor.getColumnIndex(PaymentRecordDao.Properties.Title.columnName);
+                    String title = cursor.getString(index);
+                    ticketTitleList.add(title);
+                } while (cursor.moveToNext());
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            cursor.close();
+        }
+    }
+
 
     /**
-     * 显示时间选择框
+     * 显示日期选择框
      * @param type 类型：开始还是结束时间 0-开始 1-结束
      */
     public void showDateDialog(final int type){
@@ -139,9 +168,38 @@ public class BillQueryActivity extends BaseActivity{
                     tv_bill_query_end_date.setText(year+"-"+monthStr+"-"+dayOfMonth);
                     datePickerDialog.dismiss();
                 }
+                showTimeDialog(type);
             }
         },year,month,day);
         datePickerDialog.show();
+    }
+
+    /**
+     * 显示时间选择框
+     * @param type
+     */
+    public void showTimeDialog(final int type){
+        int hourOfDay , minuteOfDay;
+        if (type==0){
+            hourOfDay = 0;
+            minuteOfDay = 0;
+        }else {
+            hourOfDay = 23;
+            minuteOfDay = 59;
+        }
+        timePickerDialog = new TimePickerDialog(this, 0, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                if (type==0){
+                    tv_bill_query_start_date.setText(tv_bill_query_start_date.getText().toString().trim()+" "+hourOfDay+":"+minute+":00");
+                    timePickerDialog.dismiss();
+                }else {
+                    tv_bill_query_end_date.setText(tv_bill_query_end_date.getText().toString().trim()+" "+hourOfDay+":"+minute+":59");
+                    timePickerDialog.dismiss();
+                }
+            }
+        },hourOfDay,minuteOfDay,true);
+        timePickerDialog.show();
     }
 
     public boolean query(){

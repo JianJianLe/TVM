@@ -63,7 +63,7 @@ public class PriceListActivity extends BaseActivity {
     }
 
     public void getList(){
-        priceLists = AppApplication.getApplication().getDaoSession().getPriceDao().queryBuilder().list();
+        priceLists = AppApplication.getApplication().getDaoSession().getPriceDao().queryBuilder().where(PriceDao.Properties.IsDelete.eq(0)).list();
     }
 
     private void initLayout(){
@@ -111,7 +111,11 @@ public class PriceListActivity extends BaseActivity {
 
     private void deletePrice(Long priceId){
         PriceDao priceDao = AppApplication.getApplication().getDaoSession().getPriceDao();
-        priceDao.deleteByKey(priceId);
+        Price price = priceDao.queryBuilder().where(PriceDao.Properties.Id.eq(priceId)).unique();
+        if (price!=null){
+            price.setIsDelete(1);
+            priceDao.update(price);
+        }
     }
 
     @OnClick({R.id.ib_ticket_list_add,R.id.ib_ticket_list_back})

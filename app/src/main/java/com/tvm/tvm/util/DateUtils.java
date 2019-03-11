@@ -87,15 +87,15 @@ public class DateUtils {
      * @param endDate
      * @return
      */
-    public static int compare2Date(String startDate,String endDate){
+    public static boolean compare2Date(String startDate,String endDate){
         try {
-            Date start = df.parse(startDate);
-            Date end = df.parse(endDate);
-            return end.compareTo(start);
+            Date start = df1.parse(startDate);
+            Date end = df1.parse(endDate);
+            return start.before(end);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return 0;
+        return false;
     }
 
 }

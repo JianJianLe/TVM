@@ -356,7 +356,7 @@ public class MainActivity extends BaseActivity {
     private void getPriceList(){
         //获取价格列表
         PriceDao priceDao = daoSession.getPriceDao();
-        priceList = priceDao.queryBuilder().list();
+        priceList = priceDao.queryBuilder().where(PriceDao.Properties.IsDelete.eq(0)).list();
         if (priceList==null || priceList.size()>2 || priceList.size()==0){
             ll_main_ticke_list.setVisibility(View.GONE);
             ll_main_click.setVisibility(View.VISIBLE);

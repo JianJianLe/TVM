@@ -81,8 +81,8 @@ public class BillQueryActivity extends BaseActivity{
     }
 
     private void initView(){
-        tv_bill_query_start_date.setText(DateUtils.formatDate(new Date()));
-        tv_bill_query_end_date.setText(DateUtils.formatDate(new Date()));
+        tv_bill_query_start_date.setText(DateUtils.formatDate(new Date())+" 00:00:00");
+        tv_bill_query_end_date.setText(DateUtils.formatDate(new Date())+" 23:59:59");
     }
 
     private void getNowDate(){
@@ -160,12 +160,16 @@ public class BillQueryActivity extends BaseActivity{
                 if (monthStr.length()==1){
                     monthStr = "0"+monthStr;
                 }
+                String dayStr = String.valueOf(dayOfMonth);
+                if (dayStr.length()==1){
+                    dayStr = "0"+dayStr;
+                }
                 //将选择的日期显示到TextView中,因为之前获取month直接使用，所以不需要+1，这个地方需要显示，所以+1
                 if (type==0){
-                    tv_bill_query_start_date.setText(year+"-"+monthStr+"-"+dayOfMonth);
+                    tv_bill_query_start_date.setText(year+"-"+monthStr+"-"+dayStr+" "+tv_bill_query_start_date.getText().toString().split(" ")[1]);
                     datePickerDialog.dismiss();
                 }else {
-                    tv_bill_query_end_date.setText(year+"-"+monthStr+"-"+dayOfMonth);
+                    tv_bill_query_end_date.setText(year+"-"+monthStr+"-"+dayStr+" "+tv_bill_query_end_date.getText().toString().split(" ")[1]);
                     datePickerDialog.dismiss();
                 }
                 showTimeDialog(type);
@@ -190,11 +194,16 @@ public class BillQueryActivity extends BaseActivity{
         timePickerDialog = new TimePickerDialog(this, 0, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+
+                String hour = String.valueOf(hourOfDay).length()==1 ? "0"+String.valueOf(hourOfDay):String.valueOf(hourOfDay);
+
+                String minuteStr = String.valueOf(minute).length()==1 ? "0"+String.valueOf(minute):String.valueOf(minute);
+
                 if (type==0){
-                    tv_bill_query_start_date.setText(tv_bill_query_start_date.getText().toString().trim()+" "+hourOfDay+":"+minute+":00");
+                    tv_bill_query_start_date.setText(tv_bill_query_start_date.getText().toString().split(" ")[0]+" "+hour+":"+minuteStr+":00");
                     timePickerDialog.dismiss();
                 }else {
-                    tv_bill_query_end_date.setText(tv_bill_query_end_date.getText().toString().trim()+" "+hourOfDay+":"+minute+":59");
+                    tv_bill_query_end_date.setText(tv_bill_query_end_date.getText().toString().split(" ")[0]+" "+hour+":"+minuteStr+":59");
                     timePickerDialog.dismiss();
                 }
             }
@@ -215,9 +224,10 @@ public class BillQueryActivity extends BaseActivity{
 
     public boolean checkMandatery(){
         boolean canQuery = true;
-        if (DateUtils.compare2Date(tv_bill_query_start_date.getText().toString().trim(),tv_bill_query_end_date.getText().toString().trim())<0){
+        if (DateUtils.compare2Date(tv_bill_query_start_date.getText().toString(),tv_bill_query_end_date.getText().toString())){
+
+        }else {
             canQuery = false;
-            return canQuery;
         }
         return canQuery;
     }

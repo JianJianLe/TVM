@@ -134,7 +134,7 @@ public class SelectPriceActivity extends BaseActivity {
 
     private void setPrice(){
         PriceDao priceDao = daoSession.getPriceDao();
-        priceList = priceDao.queryBuilder().list();
+        priceList = priceDao.queryBuilder().where(PriceDao.Properties.IsDelete.eq(0)).list();
         adapter = new SelectPriceAdapter(this,priceList);
         gv_select_price_list.setAdapter(adapter);
         gv_select_price_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {

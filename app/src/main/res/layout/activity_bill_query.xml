@@ -104,6 +104,12 @@
             android:background="@drawable/btn_back"/>
     </LinearLayout>
 
+    <Spinner
+        android:id="@+id/sp_bill_query_title_drop_down_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:tooltipText="@string/select_please"></Spinner>
+
     <Button
         android:id="@+id/btn_bill_query_query"
         android:padding="@dimen/xy10dp"

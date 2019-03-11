@@ -7,15 +7,18 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.tvm.tvm.R;
 import com.tvm.tvm.adapter.BillListAdpter;
+import com.tvm.tvm.adapter.TitleSpinnerAdapter;
 import com.tvm.tvm.application.AppApplication;
 import com.tvm.tvm.bean.PaymentRecord;
 import com.tvm.tvm.bean.dao.DaoSession;
@@ -23,6 +26,7 @@ import com.tvm.tvm.bean.dao.PaymentRecordDao;
 import com.tvm.tvm.util.DateUtils;
 import com.tvm.tvm.util.view.ToastUtils;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -54,6 +58,9 @@ public class BillQueryActivity extends BaseActivity{
     @BindView(R.id.btn_bill_query_summary)
     Button btn_bill_query_summary;
 
+    @BindView(R.id.sp_bill_query_title_drop_down_list)
+    Spinner sp_bill_query_title_drop_down_list;
+
     //时间选择器弹出框
     private DatePickerDialog datePickerDialog;
     //时间选择器
@@ -63,7 +70,9 @@ public class BillQueryActivity extends BaseActivity{
     //当前年月日
     private int year,month,day;
 
-    List<String> ticketTitleList;
+    List<String> ticketTitleList = new ArrayList<>();
+
+    TitleSpinnerAdapter spinnerAdapter;
 
     String startTime;
     String endTime;
@@ -76,13 +85,17 @@ public class BillQueryActivity extends BaseActivity{
         setContentView(R.layout.activity_bill_query);
         ButterKnife.bind(this);
         daoSession = AppApplication.getApplication().getDaoSession();
-        initView();
         getNowDate();
+        getDistinctTickectTitle();
+        initView();
     }
 
     private void initView(){
         tv_bill_query_start_date.setText(DateUtils.formatDate(new Date())+" 00:00:00");
         tv_bill_query_end_date.setText(DateUtils.formatDate(new Date())+" 23:59:59");
+
+        spinnerAdapter = new TitleSpinnerAdapter(this,ticketTitleList);
+        sp_bill_query_title_drop_down_list.setAdapter(spinnerAdapter);
     }
 
     private void getNowDate(){
@@ -132,6 +145,7 @@ public class BillQueryActivity extends BaseActivity{
         PaymentRecordDao paymentRecordDao = daoSession.getPaymentRecordDao();
         String sql = "SELECT DISTINCT "+PaymentRecordDao.Properties.Title.columnName + " FROM " +paymentRecordDao.TABLENAME;
         Cursor cursor = daoSession.getPaymentRecordDao().getDatabase().rawQuery(sql,null);
+        ticketTitleList.add("请选择");
         try {
             if (cursor.moveToFirst()) {
                 do {

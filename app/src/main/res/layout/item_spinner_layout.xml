@@ -3,6 +3,7 @@
     android:gravity="center" android:layout_gravity="center"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <TextView android:id="@+id/tv_item_spinner_title"
+        android:layout_margin="@dimen/xy5dp"
         android:layout_width="match_parent" android:layout_height="match_parent">
 
     </TextView>

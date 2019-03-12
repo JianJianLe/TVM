@@ -127,7 +127,6 @@ public class BillQueryActivity extends BaseActivity{
                     intent.putExtra("startTime",startTime);
                     intent.putExtra("endTime",endTime);
                     String title = (String) sp_bill_query_title_drop_down_list.getSelectedItem();
-                    ToastUtils.showText(this,title);
                     intent.putExtra("title",title);
                     startActivity(BillQueryActivity.this,intent,BillListActivity.class);
                 }
@@ -139,7 +138,6 @@ public class BillQueryActivity extends BaseActivity{
                     intent.putExtra("startTime",startTime);
                     intent.putExtra("endTime",endTime);
                     String title = (String) sp_bill_query_title_drop_down_list.getSelectedItem();
-                    ToastUtils.showText(this,title);
                     intent.putExtra("title",title);
                     startActivity(BillQueryActivity.this,intent,SummaryActivity.class);
                 }

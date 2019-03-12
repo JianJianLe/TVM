@@ -107,11 +107,23 @@ public class SummaryActivity extends BaseActivity{
         //aoumt
         tv_summary_bill_summary.setText(String.valueOf(getAmount()));
         //wechat
-        tv_summary_wechat_total.setText(String.valueOf(getClassify(1)));
+        List<Double> wechatList = getClassify(1);
+        if (wechatList!=null && wechatList.size()>0){
+            tv_summary_wechat_total.setText(String.valueOf(wechatList.get(0)));
+            tv_summary_wechat_count.setText(String.valueOf(wechatList.get(1)));
+        }
         //alipay
-        tv_summary_alipay_total.setText(String.valueOf(getClassify(0)));
+        List<Double> aliPayList = getClassify(0);
+        if (aliPayList!=null && aliPayList.size()>0){
+            tv_summary_alipay_total.setText(String.valueOf(aliPayList.get(0)));
+            tv_summary_alipay_count.setText(String.valueOf(aliPayList.get(1)));
+        }
         //cash
-        tv_summary_cash_total.setText(String.valueOf(getClassify(2)));
+        List<Double> cashList = getClassify(2);
+        if (cashList!=null && cashList.size()>0){
+            tv_summary_cash_total.setText(String.valueOf(cashList.get(0)));
+            tv_summary_cash_count.setText(String.valueOf(cashList.get(1)));
+        }
         //group
 //        groupBy();
 //        groupListAdapter = new GroupListAdapter(this,summaryList);
@@ -124,7 +136,7 @@ public class SummaryActivity extends BaseActivity{
                 +"   BETWEEN  "+DateUtils.formatDate(startTime,0).getTime()+" AND "+DateUtils.formatDate(endTime,1).getTime();
         if (title!=null){
             if (!title.equals("所有")){
-                sql = sql + " AND " + PaymentRecordDao.Properties.Title.columnName + " = " + title;
+                sql = sql + " AND " + PaymentRecordDao.Properties.Title.columnName + " = '" + title+"'";
             }
         }
         Cursor cursor = daoSession.getPaymentRecordDao().getDatabase().rawQuery(sql,new String[0]);
@@ -143,13 +155,15 @@ public class SummaryActivity extends BaseActivity{
         return sum;
     }
 
-    public double getClassify(int type){
+    public List<Double> getClassify(int type){
+        List<Double> list = new ArrayList<>();
         double sum = 0;
-        String sql = "SELECT sum(amount) as sum from "+PaymentRecordDao.TABLENAME+" WHERE "+PaymentRecordDao.Properties.PayTime.columnName
+        double num = 0;
+        String sql = "SELECT sum(amount) as sum,sum(num) as num  from "+PaymentRecordDao.TABLENAME+" WHERE "+PaymentRecordDao.Properties.PayTime.columnName
                 +"   BETWEEN  "+DateUtils.formatDate(startTime,0).getTime()+" AND "+DateUtils.formatDate(endTime,1).getTime()+" and type = "+type;
         if (title!=null){
             if (!title.equals("所有")){
-                sql = sql + " AND " + PaymentRecordDao.Properties.Title.columnName + " = " + title;
+                sql = sql + " AND " + PaymentRecordDao.Properties.Title.columnName + " = '" + title+"'";
             }
         }
         Cursor cursor = daoSession.getPaymentRecordDao().getDatabase().rawQuery(sql,new String[0]);
@@ -158,6 +172,10 @@ public class SummaryActivity extends BaseActivity{
                 do {
                     int index = cursor.getColumnIndex("sum");
                     sum = cursor.getDouble(index);
+                    list.add(sum);
+                    index = cursor.getColumnIndex("num");
+                    num = cursor.getDouble(index);
+                    list.add(num);
                 } while (cursor.moveToNext());
             }
         }catch (Exception e){
@@ -165,7 +183,7 @@ public class SummaryActivity extends BaseActivity{
         }finally {
             cursor.close();
         }
-        return  sum;
+        return list;
     }
 
     /**

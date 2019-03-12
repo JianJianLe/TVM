@@ -49,11 +49,20 @@ public class SummaryActivity extends BaseActivity{
     @BindView(R.id.tv_summary_alipay_total)
     TextView tv_summary_alipay_total;
 
+    @BindView(R.id.tv_summary_cash_count)
+    TextView tv_summary_cash_count;
+
+    @BindView(R.id.tv_summary_wechat_count)
+    TextView tv_summary_wechat_count;
+
+    @BindView(R.id.tv_summary_alipay_count)
+    TextView tv_summary_alipay_count;
+
     @BindView(R.id.tv_summary_bill_summary)
     TextView tv_summary_bill_summary;
 
-    @BindView(R.id.lv_summary_group_list)
-    ListView lv_summary_group_list;
+//    @BindView(R.id.lv_summary_group_list)
+//    ListView lv_summary_group_list;
 
     @BindView(R.id.tv_summary_print)
     TextView tv_summary_print;
@@ -63,6 +72,8 @@ public class SummaryActivity extends BaseActivity{
     String startTime;
 
     String endTime;
+
+    String title;
 
     private List<Summary> summaryList = new ArrayList<>();
 
@@ -77,6 +88,7 @@ public class SummaryActivity extends BaseActivity{
         Intent intent = getIntent();
         startTime = intent.getStringExtra("startTime");
         endTime = intent.getStringExtra("endTime");
+        title = intent.getStringExtra("title");
         initData();
     }
 
@@ -101,15 +113,20 @@ public class SummaryActivity extends BaseActivity{
         //cash
         tv_summary_cash_total.setText(String.valueOf(getClassify(2)));
         //group
-        groupBy();
-        groupListAdapter = new GroupListAdapter(this,summaryList);
-        lv_summary_group_list.setAdapter(groupListAdapter);
+//        groupBy();
+//        groupListAdapter = new GroupListAdapter(this,summaryList);
+//        lv_summary_group_list.setAdapter(groupListAdapter);
     }
 
     public double getAmount(){
         double sum = 0;
         String sql = "SELECT sum(amount) as sum from "+PaymentRecordDao.TABLENAME+" WHERE "+PaymentRecordDao.Properties.PayTime.columnName
                 +"   BETWEEN  "+DateUtils.formatDate(startTime,0).getTime()+" AND "+DateUtils.formatDate(endTime,1).getTime();
+        if (title!=null){
+            if (!title.equals("所有")){
+                sql = sql + " AND " + PaymentRecordDao.Properties.Title.columnName + " = " + title;
+            }
+        }
         Cursor cursor = daoSession.getPaymentRecordDao().getDatabase().rawQuery(sql,new String[0]);
         try {
             if (cursor.moveToFirst()) {
@@ -130,6 +147,11 @@ public class SummaryActivity extends BaseActivity{
         double sum = 0;
         String sql = "SELECT sum(amount) as sum from "+PaymentRecordDao.TABLENAME+" WHERE "+PaymentRecordDao.Properties.PayTime.columnName
                 +"   BETWEEN  "+DateUtils.formatDate(startTime,0).getTime()+" AND "+DateUtils.formatDate(endTime,1).getTime()+" and type = "+type;
+        if (title!=null){
+            if (!title.equals("所有")){
+                sql = sql + " AND " + PaymentRecordDao.Properties.Title.columnName + " = " + title;
+            }
+        }
         Cursor cursor = daoSession.getPaymentRecordDao().getDatabase().rawQuery(sql,new String[0]);
         try {
             if (cursor.moveToFirst()) {
@@ -146,24 +168,27 @@ public class SummaryActivity extends BaseActivity{
         return  sum;
     }
 
-    public void groupBy(){
-        String sql = "SELECT title,sum(amount) from "+PaymentRecordDao.TABLENAME+" WHERE "+PaymentRecordDao.Properties.PayTime.columnName
-                +"   BETWEEN  "+DateUtils.formatDate(startTime,0).getTime()+" AND "+DateUtils.formatDate(endTime,1).getTime()+" GROUP BY title";
-        Cursor cursor = daoSession.getPaymentRecordDao().getDatabase().rawQuery(sql,new String[0]);
-        try {
-            if (cursor.moveToFirst()) {
-                do {
-                    Summary summary = new Summary();
-                    summary.setTitle(cursor.getString(0));
-                    summary.setAmount(cursor.getDouble(1));
-                    summaryList.add(summary);
-                } while (cursor.moveToNext());
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }finally {
-            cursor.close();
-        }
-    }
+    /**
+     * 根据票据分类统计
+     */
+//    public void groupBy(){
+//        String sql = "SELECT title,sum(amount) from "+PaymentRecordDao.TABLENAME+" WHERE "+PaymentRecordDao.Properties.PayTime.columnName
+//                +"   BETWEEN  "+DateUtils.formatDate(startTime,0).getTime()+" AND "+DateUtils.formatDate(endTime,1).getTime()+" GROUP BY title";
+//        Cursor cursor = daoSession.getPaymentRecordDao().getDatabase().rawQuery(sql,new String[0]);
+//        try {
+//            if (cursor.moveToFirst()) {
+//                do {
+//                    Summary summary = new Summary();
+//                    summary.setTitle(cursor.getString(0));
+//                    summary.setAmount(cursor.getDouble(1));
+//                    summaryList.add(summary);
+//                } while (cursor.moveToNext());
+//            }
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }finally {
+//            cursor.close();
+//        }
+//    }
 
 }

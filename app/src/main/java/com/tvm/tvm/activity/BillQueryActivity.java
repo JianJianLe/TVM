@@ -126,6 +126,9 @@ public class BillQueryActivity extends BaseActivity{
                     Intent intent = new Intent();
                     intent.putExtra("startTime",startTime);
                     intent.putExtra("endTime",endTime);
+                    String title = (String) sp_bill_query_title_drop_down_list.getSelectedItem();
+                    ToastUtils.showText(this,title);
+                    intent.putExtra("title",title);
                     startActivity(BillQueryActivity.this,intent,BillListActivity.class);
                 }
                 break;
@@ -135,6 +138,9 @@ public class BillQueryActivity extends BaseActivity{
                     Intent intent = new Intent();
                     intent.putExtra("startTime",startTime);
                     intent.putExtra("endTime",endTime);
+                    String title = (String) sp_bill_query_title_drop_down_list.getSelectedItem();
+                    ToastUtils.showText(this,title);
+                    intent.putExtra("title",title);
                     startActivity(BillQueryActivity.this,intent,SummaryActivity.class);
                 }
                 break;
@@ -145,7 +151,7 @@ public class BillQueryActivity extends BaseActivity{
         PaymentRecordDao paymentRecordDao = daoSession.getPaymentRecordDao();
         String sql = "SELECT DISTINCT "+PaymentRecordDao.Properties.Title.columnName + " FROM " +paymentRecordDao.TABLENAME;
         Cursor cursor = daoSession.getPaymentRecordDao().getDatabase().rawQuery(sql,null);
-        ticketTitleList.add("请选择");
+        ticketTitleList.add("所有");
         try {
             if (cursor.moveToFirst()) {
                 do {

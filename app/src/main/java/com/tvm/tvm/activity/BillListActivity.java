@@ -14,6 +14,7 @@ import com.tvm.tvm.bean.dao.DaoSession;
 import com.tvm.tvm.bean.dao.PaymentRecordDao;
 import com.tvm.tvm.util.DateUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -42,6 +43,8 @@ public class BillListActivity extends BaseActivity {
 
     String endTime;
 
+    String title;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +54,7 @@ public class BillListActivity extends BaseActivity {
         Intent intent = getIntent();
         startTime = intent.getStringExtra("startTime");
         endTime = intent.getStringExtra("endTime");
+        title = intent.getStringExtra("title");
         query();
     }
 
@@ -64,8 +68,15 @@ public class BillListActivity extends BaseActivity {
     }
 
     public void query(){
-        List<PaymentRecord> recordList = daoSession.getPaymentRecordDao().queryBuilder().where(PaymentRecordDao.Properties.PayTime.between(DateUtils.formatDate(startTime),DateUtils.formatDate(endTime))).list();
-        billListAdpter = new BillListAdpter(this,recordList);
+        List<PaymentRecord> recordList = new ArrayList<>();
+        if (title != null){
+            if (title.equals("所有")){
+                recordList = daoSession.getPaymentRecordDao().queryBuilder().where(PaymentRecordDao.Properties.PayTime.between(DateUtils.formatDate(startTime),DateUtils.formatDate(endTime))).list();
+            }else {
+                recordList = daoSession.getPaymentRecordDao().queryBuilder().where(PaymentRecordDao.Properties.PayTime.between(DateUtils.formatDate(startTime),DateUtils.formatDate(endTime)),PaymentRecordDao.Properties.Title.eq(title)).list();
+            }
+        }
+         billListAdpter = new BillListAdpter(this,recordList);
         lv_bill_list_list.setAdapter(billListAdpter);
     }
 

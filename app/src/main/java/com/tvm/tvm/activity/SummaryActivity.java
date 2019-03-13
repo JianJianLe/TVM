@@ -61,6 +61,9 @@ public class SummaryActivity extends BaseActivity{
     @BindView(R.id.tv_summary_bill_summary)
     TextView tv_summary_bill_summary;
 
+    @BindView(R.id.tv_summary_count_summary)
+    TextView tv_summary_count_summary;
+
 //    @BindView(R.id.lv_summary_group_list)
 //    ListView lv_summary_group_list;
 
@@ -104,26 +107,37 @@ public class SummaryActivity extends BaseActivity{
     }
 
     public void initData(){
+        int total=0;
         //aoumt
         tv_summary_bill_summary.setText(String.valueOf(getAmount()));
         //wechat
         List<Double> wechatList = getClassify(1);
         if (wechatList!=null && wechatList.size()>0){
             tv_summary_wechat_total.setText(String.valueOf(wechatList.get(0)));
-            tv_summary_wechat_count.setText(String.valueOf(wechatList.get(1)));
+            int wechatCount=new Double(wechatList.get(1)).intValue();
+            tv_summary_wechat_count.setText(wechatCount+"");
+            total = wechatCount;
         }
         //alipay
         List<Double> aliPayList = getClassify(0);
         if (aliPayList!=null && aliPayList.size()>0){
             tv_summary_alipay_total.setText(String.valueOf(aliPayList.get(0)));
-            tv_summary_alipay_count.setText(String.valueOf(aliPayList.get(1)));
+            int alipayCount=new Double(aliPayList.get(1)).intValue();
+            tv_summary_alipay_count.setText(alipayCount+"");
+            total += alipayCount;
         }
         //cash
         List<Double> cashList = getClassify(2);
         if (cashList!=null && cashList.size()>0){
             tv_summary_cash_total.setText(String.valueOf(cashList.get(0)));
-            tv_summary_cash_count.setText(String.valueOf(cashList.get(1)));
+            int cashCount=new Double(cashList.get(1)).intValue();
+            tv_summary_cash_count.setText(cashCount+"");
+            total += cashCount;
         }
+
+        //total count
+        tv_summary_count_summary.setText(total+"");
+
         //group
 //        groupBy();
 //        groupListAdapter = new GroupListAdapter(this,summaryList);

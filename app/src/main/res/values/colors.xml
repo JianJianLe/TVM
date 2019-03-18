@@ -161,4 +161,6 @@
     <color name="albumback">#E1E0DE</color>
     <color name="style_red">#ff4c41</color>
     <color name="style_divider_color">#C9C7CD</color>
+    <color name="ticket_back_1">#E1ECF1</color>
+    <color name="ticket_back_2">#F7E9EA</color>
 </resources>

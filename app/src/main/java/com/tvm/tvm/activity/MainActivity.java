@@ -171,10 +171,10 @@ public class MainActivity extends BaseActivity {
     //时间
     private int timeFlag=-1;
 
-    static {
-        System.loadLibrary("printer");
-        System.loadLibrary("serial_port");
-    }
+//    static {
+//        System.loadLibrary("printer");
+//        System.loadLibrary("serial_port");
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -193,7 +193,7 @@ public class MainActivity extends BaseActivity {
         tv_main_header_time_date.setText(dateFormat.format(new Date()));
         tv_main_header_time_time.setText(format.format(new Date()));
 
-        initBillAcceptor();
+//        initBillAcceptor();
         /******Test******/
         //Test tv_main_title_title
         //((TextView) findViewById(R.id.tv_main_title_title)).setText(PrinterUtil.getMessageFromJNI());

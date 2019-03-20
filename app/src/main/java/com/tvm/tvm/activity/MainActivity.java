@@ -78,11 +78,29 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.ll_main_fvp)
     LinearLayout ll_main_fvp;
 
+    //点击购票布局
     @BindView(R.id.ll_main_click)
     LinearLayout ll_main_click;
 
+    //购票列表布局
     @BindView(R.id.ll_main_ticke_list)
     LinearLayout ll_main_ticke_list;
+
+    //购票汇总布局
+    @BindView(R.id.ll_main_ticket_detail)
+    LinearLayout ll_main_ticket_detail;
+
+    //描述
+    @BindView(R.id.ll_main_desc)
+    LinearLayout ll_main_desc;
+
+    //图标
+    @BindView(R.id.ll_main_icon)
+    LinearLayout ll_main_icon;
+
+    //图标与描述一起
+    @BindView(R.id.ll_main_desc_and_icon)
+    LinearLayout ll_main_desc_and_icon;
 
     @BindView(R.id.ll_main_ticket_list_2)
     LinearLayout ll_main_ticket_list_2;
@@ -121,8 +139,43 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.tv_main_click_buy)
     TextView tv_main_click_buy;
 
+    //有票时点击购买按钮
+    @BindView(R.id.iv_main_ticket_buy)
+    ImageView iv_main_ticket_buy;
+
+    //有票时取消按钮按钮
+    @BindView(R.id.iv_main_ticket_cancel)
+    ImageView iv_main_ticket_cancel;
+
     @BindView(R.id.vp_main_ads)
     ViewPager vp_main_ads;
+
+    //票1加
+    @BindView(R.id.iv_main_ticket_1_add)
+    ImageView iv_main_ticket_1_add;
+    //票1减
+    @BindView(R.id.iv_main_ticket_1_sub)
+    ImageView iv_main_ticket_1_sub;
+    //票1数量
+    @BindView(R.id.tv_main_ticket_1_num)
+    TextView tv_main_ticket_1_num;
+
+    //票2加
+    @BindView(R.id.iv_main_ticket_2_add)
+    ImageView iv_main_ticket_2_add;
+    //票2减
+    @BindView(R.id.iv_main_ticket_2_sub)
+    ImageView iv_main_ticket_2_sub;
+    //票2数量
+    @BindView(R.id.tv_main_ticket_2_num)
+    TextView tv_main_ticket_2_num;
+
+    //总票数
+    @BindView(R.id.tv_main_ticket_num)
+    TextView tv_main_ticket_num;
+    //总金额
+    @BindView(R.id.tv_main_ticket_amount)
+    TextView tv_main_ticket_amount;
 
     private DaoSession daoSession;
 
@@ -294,9 +347,13 @@ public class MainActivity extends BaseActivity {
         return true;
     }
 
-    @OnClick({R.id.tv_main_click_buy,R.id.ll_main_ticket_list_1,R.id.ll_main_ticket_list_2})
+    @OnClick({R.id.tv_main_click_buy,R.id.ll_main_ticket_list_1,R.id.ll_main_ticket_list_2,
+            R.id.iv_main_ticket_cancel,R.id.iv_main_ticket_buy,
+            R.id.iv_main_ticket_1_add,R.id.iv_main_ticket_1_sub,
+            R.id.iv_main_ticket_2_add,R.id.iv_main_ticket_2_sub})
     public void onClick(View view){
         Long priceId;
+        int ticketNum = 0;
         switch (view.getId()){
             case R.id.tv_main_click_buy:
                 shutDownScheduledExecutorService();
@@ -321,9 +378,58 @@ public class MainActivity extends BaseActivity {
                 intent2.putExtra("priceId",priceId);
                 startActivity(this,intent2,PayDetailActivity.class);
                 break;
+            case R.id.iv_main_ticket_cancel:
+                //取消购买，票数价钱清零
+                break;
+            case R.id.iv_main_ticket_buy:
+                //点击购买，跳到对应购买页面
+                break;
+            case R.id.iv_main_ticket_1_add:
+                ticketNum = Integer.valueOf(tv_main_ticket_1_num.getText().toString().trim());
+                ticketNum = ticketNum+1;
+                tv_main_ticket_1_num.setText(ticketNum+"");
+                countTicketNumAndAmount();
+                break;
+            case R.id.iv_main_ticket_1_sub:
+                ticketNum = Integer.valueOf(tv_main_ticket_1_num.getText().toString().trim());
+                if (ticketNum==0){
+                    ToastUtils.showText(this,StringUtils.TICKET_NUM_LESS_ZERO);
+                }else {
+                    ticketNum = ticketNum-1;
+                    tv_main_ticket_1_num.setText(ticketNum+"");
+                    countTicketNumAndAmount();
+                }
+                break;
+            case R.id.iv_main_ticket_2_add:
+                ticketNum = Integer.valueOf(tv_main_ticket_2_num.getText().toString().trim());
+                ticketNum = ticketNum+1;
+                tv_main_ticket_2_num.setText(ticketNum+"");
+                countTicketNumAndAmount();
+                break;
+            case R.id.iv_main_ticket_2_sub:
+                ticketNum = Integer.valueOf(tv_main_ticket_2_num.getText().toString().trim());
+                if (ticketNum==0){
+                    ToastUtils.showText(this,StringUtils.TICKET_NUM_LESS_ZERO);
+                }else {
+                    ticketNum = ticketNum-1;
+                    tv_main_ticket_2_num.setText(ticketNum+"");
+                    countTicketNumAndAmount();
+                }
+                break;
         }
     }
 
+    /**
+     * 重新计算总额
+     */
+    public void countTicketNumAndAmount(){
+
+    }
+
+    /**
+     * 设置轮播图
+     * @return
+     */
     private int SetCurrentImage(){
         Log.d("Test","SetCurrentImage currentItem = " + currentItem);
         int flag=mediaFlag;
@@ -353,15 +459,37 @@ public class MainActivity extends BaseActivity {
         return flag;
     }
 
+    /**
+     * 根据票列表显示或者隐藏对应布局
+     * @param i 0:不显示票列表 1：显示票列表
+     */
+    public void setLayout(int i){
+        if (i==0){
+            ll_main_ticke_list.setVisibility(View.GONE);
+            ll_main_ticket_detail.setVisibility(View.GONE);
+            ll_main_desc_and_icon.setVisibility(View.GONE);
+            ll_main_desc.setVisibility(View.VISIBLE);
+            ll_main_icon.setVisibility(View.VISIBLE);
+            ll_main_click.setVisibility(View.VISIBLE);
+        }else {
+            ll_main_ticke_list.setVisibility(View.VISIBLE);
+            ll_main_ticket_detail.setVisibility(View.VISIBLE);
+            ll_main_desc_and_icon.setVisibility(View.VISIBLE);
+            ll_main_desc.setVisibility(View.GONE);
+            ll_main_icon.setVisibility(View.GONE);
+            ll_main_click.setVisibility(View.GONE);
+        }
+    }
+
     private void getPriceList(){
         //获取价格列表
         PriceDao priceDao = daoSession.getPriceDao();
         priceList = priceDao.queryBuilder().where(PriceDao.Properties.IsDelete.eq(0)).list();
         if (priceList==null || priceList.size()>2 || priceList.size()==0){
-            ll_main_ticke_list.setVisibility(View.GONE);
-            ll_main_click.setVisibility(View.VISIBLE);
+            setAdsLayout(0);
         }
         if (priceList.size()==1){
+            setLayout(1);
             tv_main_ticke_list_null.setVisibility(View.GONE);
             ll_main_ticket_list_2.setVisibility(View.GONE);
             tv_main_ticke_list_desc.setText(priceList.get(0).getDescription());
@@ -371,6 +499,9 @@ public class MainActivity extends BaseActivity {
         }
 
         if (priceList.size()==2){
+
+            setLayout(1);
+
             tv_main_ticke_list_desc.setText(priceList.get(0).getDescription());
             tv_main_ticke_list_price.setText((int)priceList.get(0).getPrice()+"");
             tv_main_ticke_list_title.setText(priceList.get(0).getTitle());

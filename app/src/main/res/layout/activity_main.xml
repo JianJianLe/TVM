@@ -343,7 +343,7 @@
                     android:id="@+id/iv_main_ticket_buy"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/click_buy"
+                    android:src="@drawable/confirm_bug"
                     android:layout_weight="1"/>
                 <ImageView
                     android:id="@+id/iv_main_ticket_cancel"

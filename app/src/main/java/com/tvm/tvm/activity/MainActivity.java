@@ -347,7 +347,7 @@ public class MainActivity extends BaseActivity {
         return true;
     }
 
-    @OnClick({R.id.tv_main_click_buy,R.id.ll_main_ticket_list_1,R.id.ll_main_ticket_list_2,
+    @OnClick({R.id.tv_main_click_buy,
             R.id.iv_main_ticket_cancel,R.id.iv_main_ticket_buy,
             R.id.iv_main_ticket_1_add,R.id.iv_main_ticket_1_sub,
             R.id.iv_main_ticket_2_add,R.id.iv_main_ticket_2_sub})
@@ -363,20 +363,6 @@ public class MainActivity extends BaseActivity {
                 }else {
                     startActivity(this,SelectPriceActivity.class);
                 }
-                break;
-            case R.id.ll_main_ticket_list_1:
-                shutDownScheduledExecutorService();
-                priceId = priceList.get(0).getId();
-                Intent intent = new Intent();
-                intent.putExtra("priceId",priceId);
-                startActivity(this,intent,PayDetailActivity.class);
-                break;
-            case R.id.ll_main_ticket_list_2:
-                shutDownScheduledExecutorService();
-                priceId = priceList.get(1).getId();
-                Intent intent2 = new Intent();
-                intent2.putExtra("priceId",priceId);
-                startActivity(this,intent2,PayDetailActivity.class);
                 break;
             case R.id.iv_main_ticket_cancel:
                 //取消购买，票数价钱清零
@@ -423,7 +409,12 @@ public class MainActivity extends BaseActivity {
      * 重新计算总额
      */
     public void countTicketNumAndAmount(){
-
+        //票数
+        int num = Integer.valueOf(tv_main_ticket_1_num.getText().toString().trim()) + Integer.valueOf(tv_main_ticket_2_num.getText().toString().trim());
+        tv_main_ticket_num.setText(num + "");
+        //金额
+        double amount = Integer.valueOf(tv_main_ticket_1_num.getText().toString().trim())*Double.valueOf(tv_main_ticke_list_price.getText().toString().trim()) + Integer.valueOf(tv_main_ticket_2_num.getText().toString().trim())*Double.valueOf(tv_main_ticke_list_price2.getText().toString().trim());
+        tv_main_ticket_amount.setText(amount+"");
     }
 
     /**
@@ -486,7 +477,7 @@ public class MainActivity extends BaseActivity {
         PriceDao priceDao = daoSession.getPriceDao();
         priceList = priceDao.queryBuilder().where(PriceDao.Properties.IsDelete.eq(0)).list();
         if (priceList==null || priceList.size()>2 || priceList.size()==0){
-            setAdsLayout(0);
+            setLayout(0);
         }
         if (priceList.size()==1){
             setLayout(1);
@@ -515,6 +506,10 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    /**
+     * s设置广告
+     * @param flag
+     */
     private void setAdsLayout(int flag){
         switch (flag){
             case VIDEO_SHOW:
@@ -577,6 +572,9 @@ public class MainActivity extends BaseActivity {
         handler.sendMessage(message);
     }
 
+    /**
+     * 获取轮播图
+     */
     private void getBanner(){
         //动态设置轮播图数量
         list_img.clear();
@@ -612,6 +610,9 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    /**
+     * 设置右上角的总票数
+     */
     private void setTicketNum(){
         TicketSummaryDao ticketSummaryDao = daoSession.getTicketSummaryDao();
         List<TicketSummary> ticketSummaryList = ticketSummaryDao.queryBuilder().list();
@@ -641,6 +642,18 @@ public class MainActivity extends BaseActivity {
         Log.i("Test","MainActivity onStart scheduledExecutorService open!");
     }
 
+    /**
+     * 重回页面是刷新票数量等信息
+     */
+    public void initTicket(){
+        //票数
+        tv_main_ticket_num.setText("0");
+        tv_main_ticket_1_num.setText("0");
+        tv_main_ticket_2_num.setText("0");
+        //金额
+        tv_main_ticket_amount.setText("0");
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -648,6 +661,7 @@ public class MainActivity extends BaseActivity {
         setTicketNum();
         getPriceList();
         player.onResume();
+        initTicket();
     }
 
     @Override

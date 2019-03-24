@@ -12,9 +12,9 @@ import android.util.Log;
 
 public class SerialPortUtil {
 
-    static {
-        System.loadLibrary("serial_port");
-    }
+//    static {
+//        System.loadLibrary("serial_port");
+//    }
 
     //JNI
     private native static FileDescriptor open(String path, int baudrate);

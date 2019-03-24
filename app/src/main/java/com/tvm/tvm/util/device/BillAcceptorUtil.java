@@ -58,24 +58,22 @@ public class BillAcceptorUtil {
         public void run() {
             super.run();
             while (!isInterrupted()) {
-                int size;
                 try {
-                    byte[] buffer = new byte[5];
                     if (mInputStream == null)
                         return;
-                    size = mInputStream.read(buffer);
+                    byte[] buffer = new byte[5];
+                    int size = mInputStream.read(buffer);
                     if (size > 0) {
                         onDataReceived(buffer, size);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
-                    return;
                 }
             }
         }
     }
 
-    void onDataReceived(final byte[] buffer, final int size) {
+    private void onDataReceived(final byte[] buffer, final int size) {
 
         try {
             for(int i=0;i<size;i++){
@@ -323,20 +321,6 @@ public class BillAcceptorUtil {
         }
 
         return tMoney;
-    }
-
-    //byte数组转String
-    private static String bytes2HexString(byte[] b) {
-        StringBuffer result = new StringBuffer();
-        String hex;
-        for (int i = 0; i < b.length; i++) {
-            hex = Integer.toHexString(b[i] & 0xFF);
-            if (hex.length() == 1) {
-                hex = '0' + hex;
-            }
-            result.append(hex.toUpperCase());
-        }
-        return result.toString();
     }
 
 }

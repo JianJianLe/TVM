@@ -182,18 +182,4 @@ public class PrinterUtil {
         }
         return bs;
     }
-
-    //将byte[]转换为String  [For Testing]
-    private String printHexString( byte[] b) {
-        String temp=null;
-        for (int i = 0; i < b.length; i++) {
-            String hex = Integer.toHexString(b[i] & 0xFF);
-            if (hex.length() == 1) {
-                hex = '0' + hex;
-            }
-            temp=temp + hex.toUpperCase();
-        }
-        return temp;
-    }
-
 }

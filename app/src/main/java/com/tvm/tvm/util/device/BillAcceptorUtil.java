@@ -213,8 +213,11 @@ public class BillAcceptorUtil {
         mOutputStream = (FileOutputStream) serialPort.getOutputStream();
         mInputStream = (FileInputStream) serialPort.getInputStream();
 
-        mReadThread = new ReadThread();
-        mReadThread.start();
+
+        if(mReadThread==null || !mReadThread.isAlive()){
+            mReadThread = new ReadThread();
+            mReadThread.start();
+        }
     }
 
 

@@ -27,14 +27,14 @@
         android:layout_height="wrap_content"
         android:textSize="@dimen/xy25sp"
         android:layout_marginTop="@dimen/xy60dp"
-        android:textColor="@color/red"
+        android:textColor="@color/finish_text_color"
         android:text="@string/get_ticket"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/xy25sp"
         android:layout_marginTop="@dimen/xy5dp"
-        android:textColor="@color/red"
+        android:textColor="@color/finish_text_color"
         android:text="@string/wait_please"/>
 
     <TextView

@@ -19,6 +19,7 @@ import com.tvm.tvm.adapter.ViewpagerDotsAdapter;
 import com.tvm.tvm.application.AppApplication;
 import com.tvm.tvm.bean.Price;
 import com.tvm.tvm.bean.Setting;
+import com.tvm.tvm.bean.TicketBean;
 import com.tvm.tvm.bean.TicketSummary;
 import com.tvm.tvm.bean.dao.DaoSession;
 import com.tvm.tvm.bean.dao.PriceDao;
@@ -39,6 +40,7 @@ import com.tvm.tvm.util.player.PlayerCallback;
 import com.tvm.tvm.util.view.ToastUtils;
 
 import java.io.File;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -365,10 +367,15 @@ public class MainActivity extends BaseActivity {
                 }
                 break;
             case R.id.iv_main_ticket_cancel:
+                tv_main_ticket_1_num.setText("0");
+                tv_main_ticket_2_num.setText("0");
+                tv_main_ticket_num.setText("0");
+                tv_main_ticket_amount.setText("0");
                 //取消购买，票数价钱清零
                 break;
             case R.id.iv_main_ticket_buy:
                 //点击购买，跳到对应购买页面
+                confirmPay();
                 break;
             case R.id.iv_main_ticket_1_add:
                 ticketNum = Integer.valueOf(tv_main_ticket_1_num.getText().toString().trim());
@@ -402,6 +409,34 @@ public class MainActivity extends BaseActivity {
                     countTicketNumAndAmount();
                 }
                 break;
+        }
+    }
+
+    /**
+     * 确认支付
+     * 封装传递参数
+     * 跳转对应页面
+     */
+    public void confirmPay(){
+        List<TicketBean> ticketList = new ArrayList<>();
+        if ("0".equals(tv_main_ticket_num.getText().toString().trim())){
+            ToastUtils.showText(this,StringUtils.TICKET_NUM_LESS_ZERO);
+        }else {
+            if (Integer.valueOf(tv_main_ticket_1_num.getText().toString().trim())>0){
+                TicketBean bean = new TicketBean();
+                bean.copyFromPrice(priceList.get(0));
+                bean.setNumber(Integer.valueOf(tv_main_ticket_1_num.getText().toString().trim()));
+                ticketList.add(bean);
+            }
+            if (Integer.valueOf(tv_main_ticket_2_num.getText().toString().trim())>0){
+                TicketBean bean = new TicketBean();
+                bean.copyFromPrice(priceList.get(1));
+                bean.setNumber(Integer.valueOf(tv_main_ticket_2_num.getText().toString().trim()));
+                ticketList.add(bean);
+            }
+            Intent intent = new Intent();
+            intent.putExtra("list", (Serializable) ticketList);
+            startActivity(this,intent,PayDetailActivity.class);
         }
     }
 

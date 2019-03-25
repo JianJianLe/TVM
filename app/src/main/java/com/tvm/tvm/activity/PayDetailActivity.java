@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.tvm.tvm.R;
 import com.tvm.tvm.application.AppApplication;
 import com.tvm.tvm.bean.Price;
+import com.tvm.tvm.bean.TicketBean;
 import com.tvm.tvm.bean.dao.DaoSession;
 import com.tvm.tvm.bean.dao.PriceDao;
 import com.tvm.tvm.util.device.BillAcceptorUtil;
@@ -20,6 +21,7 @@ import com.tvm.tvm.util.view.ToastUtils;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -72,11 +74,12 @@ public class PayDetailActivity extends BaseActivity{
     private double leftAmount = 0d;
     //票数
     private int num = 0;
-    //传递过来得票价id
-    private Long priceId;
+
     private DaoSession daoSession;
 
     private ScheduledExecutorService scheduledExecutorService;
+    //传递的票列表
+    private List<TicketBean> ticketList;
 
 
     @Override
@@ -85,7 +88,8 @@ public class PayDetailActivity extends BaseActivity{
         setContentView(R.layout.activity_pay_detail);
         ButterKnife.bind(this);
         daoSession = AppApplication.getApplication().getDaoSession();
-        priceId = getIntent().getLongExtra("priceId",0l);
+//        priceId = getIntent().getLongExtra("priceId",0l);
+        ticketList = (List<TicketBean>) getIntent().getSerializableExtra("list");
         initData();
     }
 
@@ -119,7 +123,7 @@ public class PayDetailActivity extends BaseActivity{
                 PrinterCase.getInstance().amountRecord=0;
                 //@Star goto Next Activity
                 Intent intent = new Intent();
-                intent.putExtra("priceId",priceId);
+//                intent.putExtra("priceId",priceId);
                 startActivity(this,intent,PaySuccessActivity.class);
                 this.finish();
             }
@@ -146,46 +150,37 @@ public class PayDetailActivity extends BaseActivity{
      - @Time： ${TIME}
      */
     public void initData(){
-        PriceDao priceDao = daoSession.getPriceDao();
-        Price price = priceDao.queryBuilder().where(PriceDao.Properties.Id.eq(priceId)).unique();
-        if (price!=null){
-            ticketPrice = price.getPrice();
-            PrinterCase.getInstance().msg.setPrice(String.valueOf((int)ticketPrice));
-        }else {
-            ToastUtils.showText(this,"找不到对应票价");
+        int num = 0;
+        double amount = 0d;
+        for (TicketBean bean:ticketList){
+            num = num+bean.getNumber();
+            amount = amount + bean.getNumber()*bean.getPrice();
         }
+
+        amount = new BigDecimal(amount).doubleValue();
+
+        tv_pay_detail_num.setText(num+"");
+        tv_pay_detail_pay_amount.setText(amount+"");
+//        PriceDao priceDao = daoSession.getPriceDao();
+//        Price price = priceDao.queryBuilder().where(PriceDao.Properties.Id.eq(priceId)).unique();
+//        if (price!=null){
+//            ticketPrice = price.getPrice();
+//            PrinterCase.getInstance().msg.setPrice(String.valueOf((int)ticketPrice));
+//        }else {
+//            ToastUtils.showText(this,"找不到对应票价");
+//        }
     }
 
     /**
      * 监听函数
      * @param view
      */
-    @OnClick({R.id.iv_pay_detail_decrease,R.id.iv_pay_detail_increase,R.id.iv_pay_detail_back})
+    @OnClick({R.id.iv_pay_detail_back})
     public void onClick(View view){
         switch (view.getId()){
             case R.id.iv_pay_detail_back:
                 PrinterCase.getInstance().amountRecord=0;//when the activity is finished, the amountRecord should be 0.
                 this.finish();
-                break;
-            case R.id.iv_pay_detail_decrease:
-                //判断票数不能小于0
-                if (num==0){
-                    ToastUtils.showText(this,"票数不能少于0");
-                    BillAcceptorUtil.getInstance().ba_Disable();//@Star 16Feb
-                }else {
-                    num--;
-                    updateAmount();
-                    if(num==0)
-                        BillAcceptorUtil.getInstance().ba_Disable();//@Star 16Feb
-                    else
-                        BillAcceptorUtil.getInstance().ba_Enable();//@Star 16Feb
-                }
-                break;
-            case R.id.iv_pay_detail_increase:
-                //更改票数和价钱
-                num++;
-                updateAmount();
-                BillAcceptorUtil.getInstance().ba_Enable();//@Star 16Feb
                 break;
         }
     }
@@ -204,15 +199,6 @@ public class PayDetailActivity extends BaseActivity{
         tv_pay_detail_left_amount.setText(String.valueOf((int)leftAmount));
     }
 
-    //##############################################
-
-    private double add(double d1,double d2){
-        BigDecimal b1=new BigDecimal(Double.toString(d1));
-        BigDecimal b2=new BigDecimal(Double.toString(d2));
-        return b1.add(b2).doubleValue();
-    }
-
-    //##############################################
 
     /**
      * 时间任务 时间更新

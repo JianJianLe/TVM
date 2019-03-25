@@ -48,13 +48,13 @@
             android:layout_height="@dimen/xy30dp"
             android:orientation="horizontal">
             <ImageView
-                android:id="@+id/iv_main_ticket_buy"
+                android:id="@+id/iv_select_price_buy"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:src="@drawable/confirm_bug"
                 android:layout_weight="1"/>
             <ImageView
-                android:id="@+id/iv_main_ticket_cancel"
+                android:id="@+id/iv_select_price_cancel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:src="@drawable/cancel"

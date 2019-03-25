@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <TextView
@@ -12,7 +12,10 @@
         android:text="@string/pay"
         android:textSize="@dimen/xy25sp"
         android:gravity="center"
-        android:textColor="@color/red"
+        android:textStyle="bold"
+        android:padding="@dimen/xy5dp"
+        android:background="@color/yellow"
+        android:textColor="@color/white"
         android:layout_marginTop="@dimen/xy10dp"
         android:layout_gravity="center"/>
 
@@ -22,82 +25,45 @@
         android:layout_width="@dimen/xy100dp"
         android:layout_height="@dimen/xy100dp"
         android:layout_marginTop="@dimen/xy10dp"
+        android:layout_marginBottom="@dimen/xy10dp"
         android:src="@drawable/ticket"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_marginTop="@dimen/xy10dp"
-        android:orientation="horizontal">
-        <ImageView
-            android:layout_width="@dimen/xy32dp"
-            android:layout_height="@dimen/xy32dp"
-            android:src="@drawable/wechat"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/xy10dp"
-            android:text="微信支付"
-            android:textStyle="bold"
-            android:textColor="@color/green"/>
-
-        <ImageView
-            android:layout_width="@dimen/xy32dp"
-            android:layout_height="@dimen/xy32dp"
-            android:layout_marginLeft="@dimen/xy30dp"
-            android:src="@drawable/ali"/>
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/xy10dp"
-            android:text="支付宝支付"
-            android:textStyle="bold"
-            android:textColor="@color/blue"/>
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/xy250dp"
         android:layout_marginLeft="@dimen/xy10dp"
         android:layout_marginRight="@dimen/xy10dp"
-        android:orientation="vertical"
-        android:background="@drawable/pay_detail">
+        android:background="@drawable/bg_pay_detail"
+        android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/xy30dp"
             android:layout_gravity="center"
-            android:paddingBottom="@dimen/xy15dp"
-            android:paddingTop="@dimen/xy15dp"
+            android:layout_marginTop="@dimen/xy10dp"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/xy15dp"
+            android:paddingBottom="@dimen/xy15dp">
+
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="2"
                 android:layout_height="wrap_content"
-                android:textColor="@color/red"
+                android:layout_weight="2"
                 android:gravity="right"
+                android:text="@string/buy_num"
+                android:textColor="@color/red"
                 android:textSize="@dimen/xy20sp"
-                android:textStyle="bold"
-                android:text="@string/buy_num"/>
+                android:textStyle="bold" />
+
             <LinearLayout
                 android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:gravity="center"
-                android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:id="@+id/iv_pay_detail_decrease"
-                    android:layout_width="@dimen/xy25dp"
-                    android:layout_height="@dimen/xy25dp"
-                    android:layout_marginLeft="@dimen/xy10dp"
-                    android:src="@drawable/crease"
-                    />
 
                 <TextView
                     android:id="@+id/tv_pay_detail_num"
@@ -108,45 +74,41 @@
                     android:text="0"
                     android:textSize="@dimen/xy20sp"
                     android:textStyle="bold" />
-                <ImageView
-                    android:id="@+id/iv_pay_detail_increase"
-                    android:layout_width="@dimen/xy25dp"
-                    android:layout_height="@dimen/xy25dp"
-                    android:layout_marginRight="@dimen/xy10dp"
-                    android:src="@drawable/add"
-                    />
             </LinearLayout>
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="张"
                 android:textColor="@color/red"
                 android:textSize="@dimen/xy20sp"
-                android:textStyle="bold"
-                android:text="张"/>
+                android:textStyle="bold" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:paddingBottom="@dimen/xy15dp"
-            android:paddingTop="@dimen/xy15dp"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/xy15dp"
+            android:paddingBottom="@dimen/xy15dp">
+
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="2"
                 android:layout_height="wrap_content"
-                android:textColor="@color/red"
+                android:layout_weight="2"
                 android:gravity="right"
-                android:textSize="@dimen/xy18sp"
-                android:text="@string/pay_amount"/>
+                android:text="@string/pay_amount"
+                android:textColor="@color/red"
+                android:textSize="@dimen/xy18sp" />
+
             <LinearLayout
                 android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:gravity="center"
-                android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
@@ -162,33 +124,36 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/yuan"
                 android:textColor="@color/red"
-                android:textSize="@dimen/xy18sp"
-                android:text="@string/yuan"/>
+                android:textSize="@dimen/xy18sp" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:paddingBottom="@dimen/xy15dp"
-            android:paddingTop="@dimen/xy15dp"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/xy15dp"
+            android:paddingBottom="@dimen/xy15dp">
+
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="2"
                 android:layout_height="wrap_content"
-                android:textColor="@color/red"
+                android:layout_weight="2"
                 android:gravity="right"
-                android:textSize="@dimen/xy18sp"
-                android:text="@string/receieve_amount"/>
+                android:text="@string/receieve_amount"
+                android:textColor="@color/red"
+                android:textSize="@dimen/xy18sp" />
+
             <LinearLayout
                 android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:gravity="center"
-                android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
@@ -204,33 +169,36 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/yuan"
                 android:textColor="@color/red"
-                android:textSize="@dimen/xy18sp"
-                android:text="@string/yuan"/>
+                android:textSize="@dimen/xy18sp" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:paddingBottom="@dimen/xy15dp"
-            android:paddingTop="@dimen/xy15dp"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/xy15dp"
+            android:paddingBottom="@dimen/xy15dp">
+
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="2"
                 android:layout_height="wrap_content"
-                android:textColor="@color/red"
+                android:layout_weight="2"
                 android:gravity="right"
-                android:textSize="@dimen/xy18sp"
-                android:text="@string/left_amount"/>
+                android:text="@string/left_amount"
+                android:textColor="@color/red"
+                android:textSize="@dimen/xy18sp" />
+
             <LinearLayout
                 android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:gravity="center"
-                android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
@@ -246,11 +214,11 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/yuan"
                 android:textColor="@color/red"
-                android:textSize="@dimen/xy18sp"
-                android:text="@string/yuan"/>
+                android:textSize="@dimen/xy18sp" />
         </LinearLayout>
     </LinearLayout>
 

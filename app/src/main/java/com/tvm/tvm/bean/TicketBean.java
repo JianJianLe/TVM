@@ -1,12 +1,14 @@
 package com.tvm.tvm.bean;
 
+import java.io.Serializable;
+
 /**
  * - @Description:  $desc$
  * - @Author:  Jat
  * - @Date:  2019/3/24
  * - @Time： 22:10
  */
-public class TicketBean {
+public class TicketBean implements Serializable {
 
     private Long id;
     /**
@@ -38,7 +40,7 @@ public class TicketBean {
         this.description = price.getDescription();
         this.isDelete = price.getIsDelete();
         this.number = 0;
-        this.pic = price.getPic();
+//        this.pic = price.getPic();
         this.price = price.getPrice();
         this.title = price.getTitle();
     }

@@ -40,12 +40,6 @@ public class PayDetailActivity extends BaseActivity{
     @BindView(R.id.iv_pay_detail_qr_code)
     ImageView iv_pay_detail_qr_code;
 
-    @BindView(R.id.iv_pay_detail_increase)
-    ImageView iv_pay_detail_increase;
-
-    @BindView(R.id.iv_pay_detail_decrease)
-    ImageView iv_pay_detail_decrease;
-
     //票数
     @BindView(R.id.tv_pay_detail_num)
     TextView tv_pay_detail_num;

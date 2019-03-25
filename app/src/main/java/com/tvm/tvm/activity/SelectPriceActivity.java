@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tvm.tvm.R;
@@ -30,6 +31,7 @@ import com.tvm.tvm.util.view.ToastUtils;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -63,10 +65,10 @@ public class SelectPriceActivity extends BaseActivity {
     TextView tv_select_price_amount;
 
     @BindView(R.id.iv_select_price_buy)
-    TextView iv_select_price_buy;
+    ImageView iv_select_price_buy;
 
     @BindView(R.id.iv_select_price_cancel)
-    TextView iv_select_price_cancel;
+    ImageView iv_select_price_cancel;
 
     private SelectPriceAdapter adapter;
 
@@ -135,10 +137,20 @@ public class SelectPriceActivity extends BaseActivity {
      * 跳转对应的页面
      */
     public void confirmPay(){
-        Intent intent = new Intent();
-        intent.putExtra("list", (Serializable) ticketList);
-        startActivity(this,intent,PayDetailActivity.class);
-        this.finish();
+        if (Integer.valueOf(tv_select_price_num.getText().toString().trim())<=0){
+            ToastUtils.showText(this,StringUtils.TICKET_NUM_LESS_ZERO);
+        }else {
+            Intent intent = new Intent();
+            List<TicketBean> beanList = new ArrayList<>();
+            Iterator<Map.Entry<Integer, TicketBean>> iterator = ticketList.entrySet().iterator();
+            while (iterator.hasNext()){
+                Map.Entry<Integer, TicketBean> entry = iterator.next();
+                beanList.add(entry.getValue());
+            }
+            intent.putExtra("list", (Serializable) beanList);
+            startActivity(this,intent,PayDetailActivity.class);
+            this.finish();
+        }
     }
 
     /**
@@ -206,6 +218,7 @@ public class SelectPriceActivity extends BaseActivity {
     @Override
     public void onDestroy(){
         super.onDestroy();
+        unregisterReceiver(receiver);
         Log.i("Test","SelectPrice Activity onDestroy scheduledExecutorService shutdown");
     }
 

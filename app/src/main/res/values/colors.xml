@@ -163,4 +163,6 @@
     <color name="style_divider_color">#C9C7CD</color>
     <color name="ticket_back_1">#E1ECF1</color>
     <color name="ticket_back_2">#F7E9EA</color>
+    <color name="thin_yellow">#F8C300</color>
+    <color name="finish_text_color">#E77844</color>
 </resources>

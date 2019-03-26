@@ -28,6 +28,7 @@ import com.tvm.tvm.bean.dao.TicketSummaryDao;
 import com.tvm.tvm.util.BitmapUtils;
 import com.tvm.tvm.util.FirstInitApp;
 import com.tvm.tvm.util.FolderUtil;
+import com.tvm.tvm.util.LongClickUtils;
 import com.tvm.tvm.util.SharedPrefsUtil;
 import com.tvm.tvm.util.constant.PreConfig;
 import com.tvm.tvm.util.constant.StringUtils;
@@ -255,6 +256,15 @@ public class MainActivity extends BaseActivity {
         //PrinterCase.getInstance().printerCaseTest();
         /******Test******/
 
+        //长按十秒公司名称，进入登录管理页面
+        LongClickUtils.setLongClick(new Handler(), tv_main_comany_name, 10000, new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                //todo:补充长按事件的处理逻辑
+                startActivity(MainActivity.this,LoginActivity.class);
+                return true;
+            }
+        });
     }
 
     public void initBillAcceptor(){
@@ -343,11 +353,6 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    @OnLongClick(R.id.tv_main_comany_name)
-    public boolean login(){
-        startActivity(this,LoginActivity.class);
-        return true;
-    }
 
     @OnClick({R.id.tv_main_click_buy,
             R.id.iv_main_ticket_cancel,R.id.iv_main_ticket_buy,

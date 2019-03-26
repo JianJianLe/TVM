@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.tvm.tvm.R;
@@ -69,6 +70,7 @@ public class PriceListAdapter extends RecyclerView.Adapter<PriceListAdapter.Tick
         viewHolder.tv_item_ticket_title.setText(priceLists.get(i).getTitle());
         viewHolder.tv_item_ticket_price.setText(priceLists.get(i).getPrice()+"");
         viewHolder.iv_item_ticket_icon.setImageBitmap(BitmapUtils.byte2Bitmap(priceLists.get(i).getPic()));
+        viewHolder.ll_item_ticket_operation.setVisibility(View.GONE);
         viewHolder.itemView.setTag(i);
     }
 
@@ -91,6 +93,8 @@ public class PriceListAdapter extends RecyclerView.Adapter<PriceListAdapter.Tick
 
         public ImageView iv_item_ticket_icon;
 
+        public LinearLayout ll_item_ticket_operation;
+
         private OnItemClickListener onItemClickListener;
 
         public TicketItemViewHolder(@NonNull View itemView,OnItemClickListener onItemClickListener) {
@@ -99,6 +103,7 @@ public class PriceListAdapter extends RecyclerView.Adapter<PriceListAdapter.Tick
             tv_item_ticket_price = itemView.findViewById(R.id.tv_item_ticket_price);
             tv_item_ticket_title = itemView.findViewById(R.id.tv_item_ticket_title);
             iv_item_ticket_icon = itemView.findViewById(R.id.iv_item_ticket_icon);
+            ll_item_ticket_operation = itemView.findViewById(R.id.ll_item_ticket_operation);
             this.onItemClickListener = onItemClickListener;
         }
 

@@ -11,6 +11,7 @@ import com.tvm.tvm.application.AppApplication;
 import com.tvm.tvm.bean.PaymentRecord;
 import com.tvm.tvm.bean.Price;
 import com.tvm.tvm.bean.Setting;
+import com.tvm.tvm.bean.TicketBean;
 import com.tvm.tvm.bean.TicketSummary;
 import com.tvm.tvm.bean.dao.DaoSession;
 import com.tvm.tvm.bean.dao.PaymentRecordDao;
@@ -46,6 +47,7 @@ public class PaySuccessActivity extends BaseActivity {
     private Long priceId;
     private DaoSession daoSession;
     private List<TicketSummary> ticketSummaryList;
+    private List<TicketBean> ticketList;
     Price price;
 
     @Override
@@ -54,8 +56,9 @@ public class PaySuccessActivity extends BaseActivity {
         setContentView(R.layout.activity_pay_success);
         ButterKnife.bind(this);
         daoSession = AppApplication.getApplication().getDaoSession();
-        priceId = getIntent().getLongExtra("priceId",0l);
-        getTicketName();
+//        priceId = getIntent().getLongExtra("priceId",0l);
+        ticketList = (List<TicketBean>) getIntent().getSerializableExtra("list");
+//        getTicketName();
         initData();
         printTicket();
     }
@@ -74,8 +77,7 @@ public class PaySuccessActivity extends BaseActivity {
     };
 
     public void initData(){
-        String companyName = SharedPrefsUtil.getValue(getApplicationContext(),PreConfig.COMPANY_NAME,"");
-        tv_pay_success_company_name.setText(companyName);
+        tv_pay_success_company_name.setText(setting.getShopName());
     }
 
     private void printTicket(){
@@ -126,7 +128,7 @@ public class PaySuccessActivity extends BaseActivity {
         PrinterKeys msg = PrinterCase.getInstance().msg;
         String currentTime =TimeUtil.dateFormat.format(new Date());
         msg.setDeviceNumber(getDeviceNO());
-        msg.setTicketName(getTicketName());
+//        msg.setTicketName(getTicketName());
         msg.setDateStr(currentTime);
     }
 
@@ -186,11 +188,11 @@ public class PaySuccessActivity extends BaseActivity {
         daoSession.getTicketSummaryDao().save(ticketSummary);
     }
 
-    private String getTicketName(){
-        PriceDao priceDao = daoSession.getPriceDao();
-        price=priceDao.queryBuilder().where(PriceDao.Properties.Id.eq(priceId)).unique();
-        return price.getTitle();
-    }
+//    private String getTicketName(){
+//        PriceDao priceDao = daoSession.getPriceDao();
+//        price=priceDao.queryBuilder().where(PriceDao.Properties.Id.eq(priceId)).unique();
+//        return price.getTitle();
+//    }
 
     private void gotoNextActivity(){
         startActivity(this,MainActivity.class);

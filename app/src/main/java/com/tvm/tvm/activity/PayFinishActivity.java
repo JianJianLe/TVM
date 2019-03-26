@@ -27,11 +27,15 @@ public class PayFinishActivity extends BaseActivity {
     @BindView(R.id.tv_pay_finish_print)
     TextView tv_pay_finish_print;
 
+    @BindView(R.id.tv_pay_finish_company_name)
+    TextView tv_pay_finish_company_name;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay_finish);
         ButterKnife.bind(this);
+        initData();
     }
 
     @OnClick({R.id.tv_pay_finish_continue,R.id.tv_pay_finish_print})
@@ -44,5 +48,9 @@ public class PayFinishActivity extends BaseActivity {
                 //打印余额
                 break;
         }
+    }
+
+    public void initData() {
+        tv_pay_finish_company_name.setText(setting.getShopName());
     }
 }

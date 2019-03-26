@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -23,6 +24,7 @@ import com.tvm.tvm.bean.TicketSummary;
 import com.tvm.tvm.bean.dao.DaoSession;
 import com.tvm.tvm.bean.dao.PriceDao;
 import com.tvm.tvm.bean.dao.TicketSummaryDao;
+import com.tvm.tvm.util.BackPrevious;
 import com.tvm.tvm.util.SharedPrefsUtil;
 import com.tvm.tvm.util.constant.PreConfig;
 import com.tvm.tvm.util.constant.StringUtils;
@@ -83,6 +85,8 @@ public class SelectPriceActivity extends BaseActivity {
     private ScheduledExecutorService scheduledExecutorService;
 
     private Map<Integer,TicketBean> ticketList = new HashMap<>();
+    //返回上一页倒计时辅助类
+    private BackPrevious backPrevious;
 
     private Handler handler = new Handler(){
         @Override
@@ -101,6 +105,8 @@ public class SelectPriceActivity extends BaseActivity {
         ButterKnife.bind(this);
         daoSession = AppApplication.getApplication().getDaoSession();
         setPrice();
+
+        backPrevious = new BackPrevious(setting.getSelectTimeOut()*1000,1000,SelectPriceActivity.this);
 
         //注册广播接受者，广播接受者更新票价总数
         receiver = new UpdateBroadcastReceiver();
@@ -203,6 +209,13 @@ public class SelectPriceActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         reset();
+        timeStart();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        backPrevious.cancel();
     }
 
     //开启时执行延迟服务
@@ -238,6 +251,37 @@ public class SelectPriceActivity extends BaseActivity {
 //                SelectPriceActivity.this.finish();
 //            }
 //        });
+    }
+
+    //region 无操作 返回上一页
+    private void timeStart() {
+        new Handler(getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                backPrevious.start();
+            }
+        });
+    }
+
+    /**
+     * 主要的方法，重写dispatchTouchEvent
+     *
+     * @param ev
+     * @return
+     */
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        switch (ev.getAction()) {
+            //获取触摸动作，如果ACTION_UP，计时开始。
+            case MotionEvent.ACTION_UP:
+                backPrevious.start();
+                break;
+            //否则其他动作计时取消
+            default:
+                backPrevious.cancel();
+                break;
+        }
+        return super.dispatchTouchEvent(ev);
     }
 
     /**

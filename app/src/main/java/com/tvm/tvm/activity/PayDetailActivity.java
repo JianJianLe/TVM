@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,10 +16,12 @@ import com.tvm.tvm.bean.Price;
 import com.tvm.tvm.bean.TicketBean;
 import com.tvm.tvm.bean.dao.DaoSession;
 import com.tvm.tvm.bean.dao.PriceDao;
+import com.tvm.tvm.util.BackPrevious;
 import com.tvm.tvm.util.device.BillAcceptorUtil;
 import com.tvm.tvm.util.device.PrinterCase;
 import com.tvm.tvm.util.view.ToastUtils;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -74,6 +77,8 @@ public class PayDetailActivity extends BaseActivity{
     private ScheduledExecutorService scheduledExecutorService;
     //传递的票列表
     private List<TicketBean> ticketList;
+    //返回上一级倒计时
+    private BackPrevious backPrevious;
 
 
     @Override
@@ -82,7 +87,6 @@ public class PayDetailActivity extends BaseActivity{
         setContentView(R.layout.activity_pay_detail);
         ButterKnife.bind(this);
         daoSession = AppApplication.getApplication().getDaoSession();
-//        priceId = getIntent().getLongExtra("priceId",0l);
         ticketList = (List<TicketBean>) getIntent().getSerializableExtra("list");
         initData();
     }
@@ -118,6 +122,7 @@ public class PayDetailActivity extends BaseActivity{
                 //@Star goto Next Activity
                 Intent intent = new Intent();
 //                intent.putExtra("priceId",priceId);
+                intent.putExtra("list", (Serializable) ticketList);
                 startActivity(this,intent,PaySuccessActivity.class);
                 this.finish();
             }
@@ -155,6 +160,10 @@ public class PayDetailActivity extends BaseActivity{
 
         tv_pay_detail_num.setText(num+"");
         tv_pay_detail_pay_amount.setText(amount+"");
+
+        tv_pay_detail_desc.setText(setting.getPayDesc());
+
+        backPrevious = new BackPrevious(setting.getPayTimeOut()*1000,1000,PayDetailActivity.this);
 //        PriceDao priceDao = daoSession.getPriceDao();
 //        Price price = priceDao.queryBuilder().where(PriceDao.Properties.Id.eq(priceId)).unique();
 //        if (price!=null){
@@ -225,4 +234,48 @@ public class PayDetailActivity extends BaseActivity{
         BillAcceptorUtil.getInstance().ba_Disable();//@Star Feb16
         Log.i("Test","PayDetailActivity onDestroy scheduledExecutorService shutdown");
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        timeStart();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        backPrevious.cancel();
+    }
+
+    //region 无操作 返回上一页
+    private void timeStart() {
+        new Handler(getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                backPrevious.start();
+            }
+        });
+    }
+
+    /**
+     * 主要的方法，重写dispatchTouchEvent
+     *
+     * @param ev
+     * @return
+     */
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        switch (ev.getAction()) {
+            //获取触摸动作，如果ACTION_UP，计时开始。
+            case MotionEvent.ACTION_UP:
+                backPrevious.start();
+                break;
+            //否则其他动作计时取消
+            default:
+                backPrevious.cancel();
+                break;
+        }
+        return super.dispatchTouchEvent(ev);
+    }
+
 }

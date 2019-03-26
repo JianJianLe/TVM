@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -12,14 +13,18 @@ import android.widget.TextView;
 import com.tvm.tvm.R;
 import com.tvm.tvm.application.AppApplication;
 import com.tvm.tvm.bean.Price;
+import com.tvm.tvm.bean.TicketBean;
 import com.tvm.tvm.bean.dao.DaoSession;
 import com.tvm.tvm.bean.dao.PriceDao;
+import com.tvm.tvm.util.BackPrevious;
 import com.tvm.tvm.util.device.BillAcceptorUtil;
 import com.tvm.tvm.util.device.PrinterCase;
 import com.tvm.tvm.util.view.ToastUtils;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -37,12 +42,6 @@ public class PayDetailActivity extends BaseActivity{
     //支付二维码
     @BindView(R.id.iv_pay_detail_qr_code)
     ImageView iv_pay_detail_qr_code;
-
-    @BindView(R.id.iv_pay_detail_increase)
-    ImageView iv_pay_detail_increase;
-
-    @BindView(R.id.iv_pay_detail_decrease)
-    ImageView iv_pay_detail_decrease;
 
     //票数
     @BindView(R.id.tv_pay_detail_num)
@@ -72,11 +71,14 @@ public class PayDetailActivity extends BaseActivity{
     private double leftAmount = 0d;
     //票数
     private int num = 0;
-    //传递过来得票价id
-    private Long priceId;
+
     private DaoSession daoSession;
 
     private ScheduledExecutorService scheduledExecutorService;
+    //传递的票列表
+    private List<TicketBean> ticketList;
+    //返回上一级倒计时
+    private BackPrevious backPrevious;
 
 
     @Override
@@ -85,7 +87,7 @@ public class PayDetailActivity extends BaseActivity{
         setContentView(R.layout.activity_pay_detail);
         ButterKnife.bind(this);
         daoSession = AppApplication.getApplication().getDaoSession();
-        priceId = getIntent().getLongExtra("priceId",0l);
+        ticketList = (List<TicketBean>) getIntent().getSerializableExtra("list");
         initData();
     }
 
@@ -119,7 +121,8 @@ public class PayDetailActivity extends BaseActivity{
                 PrinterCase.getInstance().amountRecord=0;
                 //@Star goto Next Activity
                 Intent intent = new Intent();
-                intent.putExtra("priceId",priceId);
+//                intent.putExtra("priceId",priceId);
+                intent.putExtra("list", (Serializable) ticketList);
                 startActivity(this,intent,PaySuccessActivity.class);
                 this.finish();
             }
@@ -146,46 +149,41 @@ public class PayDetailActivity extends BaseActivity{
      - @Time： ${TIME}
      */
     public void initData(){
-        PriceDao priceDao = daoSession.getPriceDao();
-        Price price = priceDao.queryBuilder().where(PriceDao.Properties.Id.eq(priceId)).unique();
-        if (price!=null){
-            ticketPrice = price.getPrice();
-            PrinterCase.getInstance().msg.setPrice(String.valueOf((int)ticketPrice));
-        }else {
-            ToastUtils.showText(this,"找不到对应票价");
+        int num = 0;
+        double amount = 0d;
+        for (TicketBean bean:ticketList){
+            num = num+bean.getNumber();
+            amount = amount + bean.getNumber()*bean.getPrice();
         }
+
+        amount = new BigDecimal(amount).doubleValue();
+
+        tv_pay_detail_num.setText(num+"");
+        tv_pay_detail_pay_amount.setText(amount+"");
+
+        tv_pay_detail_desc.setText(setting.getPayDesc());
+
+        backPrevious = new BackPrevious(setting.getPayTimeOut()*1000,1000,PayDetailActivity.this);
+//        PriceDao priceDao = daoSession.getPriceDao();
+//        Price price = priceDao.queryBuilder().where(PriceDao.Properties.Id.eq(priceId)).unique();
+//        if (price!=null){
+//            ticketPrice = price.getPrice();
+//            PrinterCase.getInstance().msg.setPrice(String.valueOf((int)ticketPrice));
+//        }else {
+//            ToastUtils.showText(this,"找不到对应票价");
+//        }
     }
 
     /**
      * 监听函数
      * @param view
      */
-    @OnClick({R.id.iv_pay_detail_decrease,R.id.iv_pay_detail_increase,R.id.iv_pay_detail_back})
+    @OnClick({R.id.iv_pay_detail_back})
     public void onClick(View view){
         switch (view.getId()){
             case R.id.iv_pay_detail_back:
                 PrinterCase.getInstance().amountRecord=0;//when the activity is finished, the amountRecord should be 0.
                 this.finish();
-                break;
-            case R.id.iv_pay_detail_decrease:
-                //判断票数不能小于0
-                if (num==0){
-                    ToastUtils.showText(this,"票数不能少于0");
-                    BillAcceptorUtil.getInstance().ba_Disable();//@Star 16Feb
-                }else {
-                    num--;
-                    updateAmount();
-                    if(num==0)
-                        BillAcceptorUtil.getInstance().ba_Disable();//@Star 16Feb
-                    else
-                        BillAcceptorUtil.getInstance().ba_Enable();//@Star 16Feb
-                }
-                break;
-            case R.id.iv_pay_detail_increase:
-                //更改票数和价钱
-                num++;
-                updateAmount();
-                BillAcceptorUtil.getInstance().ba_Enable();//@Star 16Feb
                 break;
         }
     }
@@ -204,15 +202,6 @@ public class PayDetailActivity extends BaseActivity{
         tv_pay_detail_left_amount.setText(String.valueOf((int)leftAmount));
     }
 
-    //##############################################
-
-    private double add(double d1,double d2){
-        BigDecimal b1=new BigDecimal(Double.toString(d1));
-        BigDecimal b2=new BigDecimal(Double.toString(d2));
-        return b1.add(b2).doubleValue();
-    }
-
-    //##############################################
 
     /**
      * 时间任务 时间更新
@@ -245,4 +234,48 @@ public class PayDetailActivity extends BaseActivity{
         BillAcceptorUtil.getInstance().ba_Disable();//@Star Feb16
         Log.i("Test","PayDetailActivity onDestroy scheduledExecutorService shutdown");
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        timeStart();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        backPrevious.cancel();
+    }
+
+    //region 无操作 返回上一页
+    private void timeStart() {
+        new Handler(getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                backPrevious.start();
+            }
+        });
+    }
+
+    /**
+     * 主要的方法，重写dispatchTouchEvent
+     *
+     * @param ev
+     * @return
+     */
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        switch (ev.getAction()) {
+            //获取触摸动作，如果ACTION_UP，计时开始。
+            case MotionEvent.ACTION_UP:
+                backPrevious.start();
+                break;
+            //否则其他动作计时取消
+            default:
+                backPrevious.cancel();
+                break;
+        }
+        return super.dispatchTouchEvent(ev);
+    }
+
 }

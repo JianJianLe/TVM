@@ -50,4 +50,7 @@
 
     <string name="print">打印</string>
     <string name="select_please">请选择</string>
+    <string name="number">数量</string>
+    <string name="zhang">张</string>
+    <string name="amount">金额</string>
 </resources>

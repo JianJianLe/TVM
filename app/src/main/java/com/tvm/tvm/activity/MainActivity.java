@@ -19,6 +19,7 @@ import com.tvm.tvm.adapter.ViewpagerDotsAdapter;
 import com.tvm.tvm.application.AppApplication;
 import com.tvm.tvm.bean.Price;
 import com.tvm.tvm.bean.Setting;
+import com.tvm.tvm.bean.TicketBean;
 import com.tvm.tvm.bean.TicketSummary;
 import com.tvm.tvm.bean.dao.DaoSession;
 import com.tvm.tvm.bean.dao.PriceDao;
@@ -27,6 +28,7 @@ import com.tvm.tvm.bean.dao.TicketSummaryDao;
 import com.tvm.tvm.util.BitmapUtils;
 import com.tvm.tvm.util.FirstInitApp;
 import com.tvm.tvm.util.FolderUtil;
+import com.tvm.tvm.util.LongClickUtils;
 import com.tvm.tvm.util.SharedPrefsUtil;
 import com.tvm.tvm.util.constant.PreConfig;
 import com.tvm.tvm.util.constant.StringUtils;
@@ -39,6 +41,7 @@ import com.tvm.tvm.util.player.PlayerCallback;
 import com.tvm.tvm.util.view.ToastUtils;
 
 import java.io.File;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -78,11 +81,29 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.ll_main_fvp)
     LinearLayout ll_main_fvp;
 
+    //点击购票布局
     @BindView(R.id.ll_main_click)
     LinearLayout ll_main_click;
 
+    //购票列表布局
     @BindView(R.id.ll_main_ticke_list)
     LinearLayout ll_main_ticke_list;
+
+    //购票汇总布局
+    @BindView(R.id.ll_main_ticket_detail)
+    LinearLayout ll_main_ticket_detail;
+
+    //描述
+    @BindView(R.id.ll_main_desc)
+    LinearLayout ll_main_desc;
+
+    //图标
+    @BindView(R.id.ll_main_icon)
+    LinearLayout ll_main_icon;
+
+    //图标与描述一起
+    @BindView(R.id.ll_main_desc_and_icon)
+    LinearLayout ll_main_desc_and_icon;
 
     @BindView(R.id.ll_main_ticket_list_2)
     LinearLayout ll_main_ticket_list_2;
@@ -121,8 +142,43 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.tv_main_click_buy)
     TextView tv_main_click_buy;
 
+    //有票时点击购买按钮
+    @BindView(R.id.iv_main_ticket_buy)
+    ImageView iv_main_ticket_buy;
+
+    //有票时取消按钮按钮
+    @BindView(R.id.iv_main_ticket_cancel)
+    ImageView iv_main_ticket_cancel;
+
     @BindView(R.id.vp_main_ads)
     ViewPager vp_main_ads;
+
+    //票1加
+    @BindView(R.id.iv_main_ticket_1_add)
+    ImageView iv_main_ticket_1_add;
+    //票1减
+    @BindView(R.id.iv_main_ticket_1_sub)
+    ImageView iv_main_ticket_1_sub;
+    //票1数量
+    @BindView(R.id.tv_main_ticket_1_num)
+    TextView tv_main_ticket_1_num;
+
+    //票2加
+    @BindView(R.id.iv_main_ticket_2_add)
+    ImageView iv_main_ticket_2_add;
+    //票2减
+    @BindView(R.id.iv_main_ticket_2_sub)
+    ImageView iv_main_ticket_2_sub;
+    //票2数量
+    @BindView(R.id.tv_main_ticket_2_num)
+    TextView tv_main_ticket_2_num;
+
+    //总票数
+    @BindView(R.id.tv_main_ticket_num)
+    TextView tv_main_ticket_num;
+    //总金额
+    @BindView(R.id.tv_main_ticket_amount)
+    TextView tv_main_ticket_amount;
 
     private DaoSession daoSession;
 
@@ -171,10 +227,10 @@ public class MainActivity extends BaseActivity {
     //时间
     private int timeFlag=-1;
 
-    static {
-        System.loadLibrary("printer");
-        System.loadLibrary("serial_port");
-    }
+//    static {
+//        System.loadLibrary("printer");
+//        System.loadLibrary("serial_port");
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -193,13 +249,22 @@ public class MainActivity extends BaseActivity {
         tv_main_header_time_date.setText(dateFormat.format(new Date()));
         tv_main_header_time_time.setText(format.format(new Date()));
 
-        initBillAcceptor();
+//        initBillAcceptor();
         /******Test******/
         //Test tv_main_title_title
         //((TextView) findViewById(R.id.tv_main_title_title)).setText(PrinterUtil.getMessageFromJNI());
         //PrinterCase.getInstance().printerCaseTest();
         /******Test******/
 
+        //长按十秒公司名称，进入登录管理页面
+        LongClickUtils.setLongClick(new Handler(), tv_main_comany_name, 10000, new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                //todo:补充长按事件的处理逻辑
+                startActivity(MainActivity.this,LoginActivity.class);
+                return true;
+            }
+        });
     }
 
     public void initBillAcceptor(){
@@ -288,15 +353,14 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    @OnLongClick(R.id.tv_main_comany_name)
-    public boolean login(){
-        startActivity(this,LoginActivity.class);
-        return true;
-    }
 
-    @OnClick({R.id.tv_main_click_buy,R.id.ll_main_ticket_list_1,R.id.ll_main_ticket_list_2})
+    @OnClick({R.id.tv_main_click_buy,
+            R.id.iv_main_ticket_cancel,R.id.iv_main_ticket_buy,
+            R.id.iv_main_ticket_1_add,R.id.iv_main_ticket_1_sub,
+            R.id.iv_main_ticket_2_add,R.id.iv_main_ticket_2_sub})
     public void onClick(View view){
         Long priceId;
+        int ticketNum = 0;
         switch (view.getId()){
             case R.id.tv_main_click_buy:
                 shutDownScheduledExecutorService();
@@ -307,23 +371,96 @@ public class MainActivity extends BaseActivity {
                     startActivity(this,SelectPriceActivity.class);
                 }
                 break;
-            case R.id.ll_main_ticket_list_1:
-                shutDownScheduledExecutorService();
-                priceId = priceList.get(0).getId();
-                Intent intent = new Intent();
-                intent.putExtra("priceId",priceId);
-                startActivity(this,intent,PayDetailActivity.class);
+            case R.id.iv_main_ticket_cancel:
+                tv_main_ticket_1_num.setText("0");
+                tv_main_ticket_2_num.setText("0");
+                tv_main_ticket_num.setText("0");
+                tv_main_ticket_amount.setText("0");
+                //取消购买，票数价钱清零
                 break;
-            case R.id.ll_main_ticket_list_2:
-                shutDownScheduledExecutorService();
-                priceId = priceList.get(1).getId();
-                Intent intent2 = new Intent();
-                intent2.putExtra("priceId",priceId);
-                startActivity(this,intent2,PayDetailActivity.class);
+            case R.id.iv_main_ticket_buy:
+                //点击购买，跳到对应购买页面
+                confirmPay();
+                break;
+            case R.id.iv_main_ticket_1_add:
+                ticketNum = Integer.valueOf(tv_main_ticket_1_num.getText().toString().trim());
+                ticketNum = ticketNum+1;
+                tv_main_ticket_1_num.setText(ticketNum+"");
+                countTicketNumAndAmount();
+                break;
+            case R.id.iv_main_ticket_1_sub:
+                ticketNum = Integer.valueOf(tv_main_ticket_1_num.getText().toString().trim());
+                if (ticketNum==0){
+                    ToastUtils.showText(this,StringUtils.TICKET_NUM_LESS_ZERO);
+                }else {
+                    ticketNum = ticketNum-1;
+                    tv_main_ticket_1_num.setText(ticketNum+"");
+                    countTicketNumAndAmount();
+                }
+                break;
+            case R.id.iv_main_ticket_2_add:
+                ticketNum = Integer.valueOf(tv_main_ticket_2_num.getText().toString().trim());
+                ticketNum = ticketNum+1;
+                tv_main_ticket_2_num.setText(ticketNum+"");
+                countTicketNumAndAmount();
+                break;
+            case R.id.iv_main_ticket_2_sub:
+                ticketNum = Integer.valueOf(tv_main_ticket_2_num.getText().toString().trim());
+                if (ticketNum==0){
+                    ToastUtils.showText(this,StringUtils.TICKET_NUM_LESS_ZERO);
+                }else {
+                    ticketNum = ticketNum-1;
+                    tv_main_ticket_2_num.setText(ticketNum+"");
+                    countTicketNumAndAmount();
+                }
                 break;
         }
     }
 
+    /**
+     * 确认支付
+     * 封装传递参数
+     * 跳转对应页面
+     */
+    public void confirmPay(){
+        List<TicketBean> ticketList = new ArrayList<>();
+        if ("0".equals(tv_main_ticket_num.getText().toString().trim())){
+            ToastUtils.showText(this,StringUtils.TICKET_NUM_LESS_ZERO);
+        }else {
+            if (Integer.valueOf(tv_main_ticket_1_num.getText().toString().trim())>0){
+                TicketBean bean = new TicketBean();
+                bean.copyFromPrice(priceList.get(0));
+                bean.setNumber(Integer.valueOf(tv_main_ticket_1_num.getText().toString().trim()));
+                ticketList.add(bean);
+            }
+            if (Integer.valueOf(tv_main_ticket_2_num.getText().toString().trim())>0){
+                TicketBean bean = new TicketBean();
+                bean.copyFromPrice(priceList.get(1));
+                bean.setNumber(Integer.valueOf(tv_main_ticket_2_num.getText().toString().trim()));
+                ticketList.add(bean);
+            }
+            Intent intent = new Intent();
+            intent.putExtra("list", (Serializable) ticketList);
+            startActivity(this,intent,PayDetailActivity.class);
+        }
+    }
+
+    /**
+     * 重新计算总额
+     */
+    public void countTicketNumAndAmount(){
+        //票数
+        int num = Integer.valueOf(tv_main_ticket_1_num.getText().toString().trim()) + Integer.valueOf(tv_main_ticket_2_num.getText().toString().trim());
+        tv_main_ticket_num.setText(num + "");
+        //金额
+        double amount = Integer.valueOf(tv_main_ticket_1_num.getText().toString().trim())*Double.valueOf(tv_main_ticke_list_price.getText().toString().trim()) + Integer.valueOf(tv_main_ticket_2_num.getText().toString().trim())*Double.valueOf(tv_main_ticke_list_price2.getText().toString().trim());
+        tv_main_ticket_amount.setText(amount+"");
+    }
+
+    /**
+     * 设置轮播图
+     * @return
+     */
     private int SetCurrentImage(){
         Log.d("Test","SetCurrentImage currentItem = " + currentItem);
         int flag=mediaFlag;
@@ -353,15 +490,37 @@ public class MainActivity extends BaseActivity {
         return flag;
     }
 
+    /**
+     * 根据票列表显示或者隐藏对应布局
+     * @param i 0:不显示票列表 1：显示票列表
+     */
+    public void setLayout(int i){
+        if (i==0){
+            ll_main_ticke_list.setVisibility(View.GONE);
+            ll_main_ticket_detail.setVisibility(View.GONE);
+            ll_main_desc_and_icon.setVisibility(View.GONE);
+            ll_main_desc.setVisibility(View.VISIBLE);
+            ll_main_icon.setVisibility(View.VISIBLE);
+            ll_main_click.setVisibility(View.VISIBLE);
+        }else {
+            ll_main_ticke_list.setVisibility(View.VISIBLE);
+            ll_main_ticket_detail.setVisibility(View.VISIBLE);
+            ll_main_desc_and_icon.setVisibility(View.VISIBLE);
+            ll_main_desc.setVisibility(View.GONE);
+            ll_main_icon.setVisibility(View.GONE);
+            ll_main_click.setVisibility(View.GONE);
+        }
+    }
+
     private void getPriceList(){
         //获取价格列表
         PriceDao priceDao = daoSession.getPriceDao();
         priceList = priceDao.queryBuilder().where(PriceDao.Properties.IsDelete.eq(0)).list();
         if (priceList==null || priceList.size()>2 || priceList.size()==0){
-            ll_main_ticke_list.setVisibility(View.GONE);
-            ll_main_click.setVisibility(View.VISIBLE);
+            setLayout(0);
         }
         if (priceList.size()==1){
+            setLayout(1);
             tv_main_ticke_list_null.setVisibility(View.GONE);
             ll_main_ticket_list_2.setVisibility(View.GONE);
             tv_main_ticke_list_desc.setText(priceList.get(0).getDescription());
@@ -371,6 +530,9 @@ public class MainActivity extends BaseActivity {
         }
 
         if (priceList.size()==2){
+
+            setLayout(1);
+
             tv_main_ticke_list_desc.setText(priceList.get(0).getDescription());
             tv_main_ticke_list_price.setText((int)priceList.get(0).getPrice()+"");
             tv_main_ticke_list_title.setText(priceList.get(0).getTitle());
@@ -384,6 +546,10 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    /**
+     * s设置广告
+     * @param flag
+     */
     private void setAdsLayout(int flag){
         switch (flag){
             case VIDEO_SHOW:
@@ -446,6 +612,9 @@ public class MainActivity extends BaseActivity {
         handler.sendMessage(message);
     }
 
+    /**
+     * 获取轮播图
+     */
     private void getBanner(){
         //动态设置轮播图数量
         list_img.clear();
@@ -481,6 +650,9 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    /**
+     * 设置右上角的总票数
+     */
     private void setTicketNum(){
         TicketSummaryDao ticketSummaryDao = daoSession.getTicketSummaryDao();
         List<TicketSummary> ticketSummaryList = ticketSummaryDao.queryBuilder().list();
@@ -510,6 +682,18 @@ public class MainActivity extends BaseActivity {
         Log.i("Test","MainActivity onStart scheduledExecutorService open!");
     }
 
+    /**
+     * 重回页面是刷新票数量等信息
+     */
+    public void initTicket(){
+        //票数
+        tv_main_ticket_num.setText("0");
+        tv_main_ticket_1_num.setText("0");
+        tv_main_ticket_2_num.setText("0");
+        //金额
+        tv_main_ticket_amount.setText("0");
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -517,6 +701,7 @@ public class MainActivity extends BaseActivity {
         setTicketNum();
         getPriceList();
         player.onResume();
+        initTicket();
     }
 
     @Override

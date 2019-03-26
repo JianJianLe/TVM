@@ -41,8 +41,7 @@ public class PaymentRecord {
      */
     private Double price;
     /**
-     * 0--支付宝
-     * 1--微信
+     * 0--网络支付
      * 2--现金
      */
     private int type;
@@ -82,19 +81,15 @@ public class PaymentRecord {
 
     public String getTypeStr() {
         if (type==0){
-            return "支付宝";
-        }else if (type==1){
-            return "微信";
+            return "网络支付";
         }else{
             return "现金";
         }
     }
 
     public int getTypeNumber(String type){
-        if(type.equals("支付宝")){
+        if(type.equals("网络支付")){
             return 0;
-        }else if(type.equals("微信")){
-            return 1;
         }else{
             return 2;
         }

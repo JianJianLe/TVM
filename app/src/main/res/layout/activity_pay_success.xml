@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/bg"
+    android:background="@color/white"
     android:gravity="center_horizontal">
 
     <TextView
@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/xy50dp"
         android:text="@string/pay_success"
-        android:textColor="@color/red"
+        android:textColor="@color/black"
         android:textSize="@dimen/xy40sp"
         android:gravity="center"/>
 
@@ -27,14 +27,14 @@
         android:layout_height="wrap_content"
         android:textSize="@dimen/xy25sp"
         android:layout_marginTop="@dimen/xy60dp"
-        android:textColor="@color/red"
+        android:textColor="@color/finish_text_color"
         android:text="@string/get_ticket"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/xy25sp"
         android:layout_marginTop="@dimen/xy5dp"
-        android:textColor="@color/red"
+        android:textColor="@color/finish_text_color"
         android:text="@string/wait_please"/>
 
     <TextView

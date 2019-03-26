@@ -54,6 +54,10 @@ public class StringUtils {
 
     public static String WRONG_MD5_KEY = "MD5 KEY 长度必须为32位，请校对后再提交！";
 
+    public static String TICKET_NUM_LESS_ZERO = "票数不能小于0!";
+
+    public static String TICKET_RECEIVER= "UPDATE_TICKET_SUMARRY";
+
     public static String billContext = "[CenterLarge]->快剪\n" +
             "        [CenterSmall]->欢迎光临快剪专营店\n" +
             "        [CenterSmall]->本店编号：[DeviceNumber]\n" +

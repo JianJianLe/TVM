@@ -167,7 +167,7 @@ public class BillAcceptorUtil {
     /***********************************************公共方法***********************************************/
 
     //初始化投币器命令
-    public void billAcceptorCmdInit() {
+    public void init_BillAcceptorCmd() {
         BA_receiveData = new byte[BA_UART_RW_LENGTH];
         BA_sendData = new byte[BA_UART_RW_LENGTH];
 
@@ -194,7 +194,7 @@ public class BillAcceptorUtil {
     }
 
     //初始化投币器设备
-    public void billAcceptorDeviceInit() {
+    public void init_BillAcceptorDevice() {
 
         File serialPortFile = new File("/dev/ttyS3");
         if(!serialPortFile.exists()){

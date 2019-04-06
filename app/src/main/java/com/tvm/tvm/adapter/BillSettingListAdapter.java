@@ -16,6 +16,7 @@ import com.tvm.tvm.R;
 import com.tvm.tvm.application.AppApplication;
 import com.tvm.tvm.bean.BillSetting;
 import com.tvm.tvm.bean.dao.BillSettingDao;
+import com.tvm.tvm.util.constant.PreConfig;
 import com.tvm.tvm.util.view.ConfirmDialogUtils;
 import com.tvm.tvm.util.view.ToastUtils;
 
@@ -105,6 +106,12 @@ public class BillSettingListAdapter extends BaseAdapter {
                 confirmDialogUtils.show();
             }
         });
+
+        viewHolder.tv_item_bill_setting_ticket_name.setTextSize(PreConfig.ADAPTER_CONTENT_FONT_SIZE);
+        viewHolder.tv_item_bill_setting_template_num.setTextSize(PreConfig.ADAPTER_CONTENT_FONT_SIZE);
+        viewHolder.btn_item_bill_setting_detail.setTextSize(PreConfig.ADAPTER_FONT_SIZE);
+        viewHolder.btn_item_bill_setting_delete.setTextSize(PreConfig.ADAPTER_FONT_SIZE);
+
         return convertView;
     }
 

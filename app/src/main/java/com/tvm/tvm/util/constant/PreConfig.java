@@ -22,5 +22,7 @@ public class PreConfig {
 
     public final static String USB_FOLDER="/mnt/usb_storage";
 
+    public final static int ADAPTER_FONT_SIZE = 25;
+    public final static int ADAPTER_CONTENT_FONT_SIZE = 20;
     //public final static String BILL_SETTING_PATH = "/sdcard/TVM/TicketTemplate";
 }

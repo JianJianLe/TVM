@@ -250,7 +250,7 @@ public class MainActivity extends BaseActivity {
         tv_main_header_time_time.setText(format.format(new Date()));
 
         //长按十秒公司名称，进入登录管理页面
-        LongClickUtils.setLongClick(new Handler(), tv_main_comany_name, 5000, new View.OnLongClickListener() {
+        LongClickUtils.setLongClick(new Handler(), tv_main_comany_name, 500, new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 //todo:补充长按事件的处理逻辑

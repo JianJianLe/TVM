@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
     android:gravity="center_horizontal"
     android:background="@drawable/bg">
     <FrameLayout
@@ -29,7 +30,7 @@
     </FrameLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
@@ -41,7 +42,7 @@
             android:gravity="center"
             android:layout_gravity="center_vertical"
             android:text="开始时间："
-            android:textSize="@dimen/xy15sp" />
+            android:textSize="@dimen/xy10sp" />
         <TextView
             android:id="@+id/tv_bill_query_start_date"
             android:layout_width="wrap_content"
@@ -50,7 +51,7 @@
             android:layout_marginTop="@dimen/xy5dp"
             android:layout_marginLeft="@dimen/xy5dp"
             android:text="2019-01-01"
-            android:textSize="@dimen/xy15sp" />
+            android:textSize="@dimen/xy10sp" />
 
         <Button
             android:id="@+id/btn_bill_query_start_date"
@@ -63,11 +64,12 @@
             android:layout_gravity="center_vertical"
             android:layout_marginBottom="@dimen/xy5dp"
             android:text="开始时间"
+            android:textSize="@dimen/xy10sp"
             android:background="@drawable/btn_back"/>
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
@@ -79,7 +81,7 @@
             android:gravity="center"
             android:layout_gravity="center_vertical"
             android:text="结束时间："
-            android:textSize="@dimen/xy15sp" />
+            android:textSize="@dimen/xy10sp" />
         <TextView
             android:id="@+id/tv_bill_query_end_date"
             android:layout_width="wrap_content"
@@ -88,7 +90,7 @@
             android:layout_marginTop="@dimen/xy5dp"
             android:layout_marginLeft="@dimen/xy5dp"
             android:text="2019-01-01"
-            android:textSize="@dimen/xy15sp" />
+            android:textSize="@dimen/xy10sp" />
 
         <Button
             android:id="@+id/btn_bill_query_end_date"
@@ -101,6 +103,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginBottom="@dimen/xy5dp"
             android:text="结束时间"
+            android:textSize="@dimen/xy10sp"
             android:background="@drawable/btn_back"/>
     </LinearLayout>
 
@@ -108,6 +111,7 @@
         android:id="@+id/sp_bill_query_title_drop_down_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/xy20dp"
         android:tooltipText="@string/select_please"></Spinner>
 
     <Button
@@ -119,6 +123,7 @@
         android:layout_marginTop="@dimen/xy20dp"
         android:layout_height="wrap_content"
         android:background="@drawable/btn_query_back"
+        android:textSize="@dimen/xy10sp"
         android:text="@string/query"/>
     <Button
         android:id="@+id/btn_bill_query_summary"
@@ -129,6 +134,7 @@
         android:layout_marginTop="@dimen/xy15dp"
         android:layout_height="wrap_content"
         android:background="@drawable/btn_query_back"
+        android:textSize="@dimen/xy10sp"
         android:text="@string/summary"/>
 
 </LinearLayout>

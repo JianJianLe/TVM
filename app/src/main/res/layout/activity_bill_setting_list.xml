@@ -36,6 +36,7 @@
             android:layout_gravity="center_vertical"
             android:background="@null"
             android:clickable="true"
+            android:textSize="@dimen/xy12sp"
             android:text="更新"/>
     </LinearLayout>
 

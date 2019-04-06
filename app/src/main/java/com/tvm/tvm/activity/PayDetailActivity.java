@@ -121,7 +121,6 @@ public class PayDetailActivity extends BaseActivity{
                 PrinterCase.getInstance().amountRecord=0;
                 //@Star goto Next Activity
                 Intent intent = new Intent();
-//                intent.putExtra("priceId",priceId);
                 intent.putExtra("list", (Serializable) ticketList);
                 startActivity(this,intent,PaySuccessActivity.class);
                 this.finish();
@@ -164,14 +163,6 @@ public class PayDetailActivity extends BaseActivity{
         tv_pay_detail_desc.setText(setting.getPayDesc());
 
         backPrevious = new BackPrevious(setting.getPayTimeOut()*1000,1000,PayDetailActivity.this);
-//        PriceDao priceDao = daoSession.getPriceDao();
-//        Price price = priceDao.queryBuilder().where(PriceDao.Properties.Id.eq(priceId)).unique();
-//        if (price!=null){
-//            ticketPrice = price.getPrice();
-//            PrinterCase.getInstance().msg.setPrice(String.valueOf((int)ticketPrice));
-//        }else {
-//            ToastUtils.showText(this,"找不到对应票价");
-//        }
     }
 
     /**

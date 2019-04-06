@@ -192,7 +192,7 @@ public class MainActivity extends BaseActivity {
 
     //格式化当前时间
     private SimpleDateFormat format = new SimpleDateFormat("HH:mm");
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy年M月d日");
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy年MM月dd日");
 
     private MPlayer player;
 
@@ -227,10 +227,10 @@ public class MainActivity extends BaseActivity {
     //时间
     private int timeFlag=-1;
 
-//    static {
-//        System.loadLibrary("printer");
-//        System.loadLibrary("serial_port");
-//    }
+    static {
+        System.loadLibrary("printer");
+        System.loadLibrary("serial_port");
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -249,15 +249,8 @@ public class MainActivity extends BaseActivity {
         tv_main_header_time_date.setText(dateFormat.format(new Date()));
         tv_main_header_time_time.setText(format.format(new Date()));
 
-//        initBillAcceptor();
-        /******Test******/
-        //Test tv_main_title_title
-        //((TextView) findViewById(R.id.tv_main_title_title)).setText(PrinterUtil.getMessageFromJNI());
-        //PrinterCase.getInstance().printerCaseTest();
-        /******Test******/
-
         //长按十秒公司名称，进入登录管理页面
-        LongClickUtils.setLongClick(new Handler(), tv_main_comany_name, 10000, new View.OnLongClickListener() {
+        LongClickUtils.setLongClick(new Handler(), tv_main_comany_name, 5000, new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 //todo:补充长按事件的处理逻辑
@@ -265,12 +258,14 @@ public class MainActivity extends BaseActivity {
                 return true;
             }
         });
+
+        initBillAcceptor();
     }
 
     public void initBillAcceptor(){
         //纸钞机初始化
-        BillAcceptorUtil.getInstance().billAcceptorCmdInit();
-        BillAcceptorUtil.getInstance().billAcceptorDeviceInit();
+        BillAcceptorUtil.getInstance().init_BillAcceptorCmd();
+        BillAcceptorUtil.getInstance().init_BillAcceptorDevice();
         BillAcceptorUtil.getInstance().ba_Disable();
     }
 
@@ -439,6 +434,7 @@ public class MainActivity extends BaseActivity {
                 bean.setNumber(Integer.valueOf(tv_main_ticket_2_num.getText().toString().trim()));
                 ticketList.add(bean);
             }
+            BillAcceptorUtil.getInstance().ba_Enable();//@Star 16Feb
             Intent intent = new Intent();
             intent.putExtra("list", (Serializable) ticketList);
             startActivity(this,intent,PayDetailActivity.class);

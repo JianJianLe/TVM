@@ -98,7 +98,6 @@ JNIEXPORT jobject JNICALL Java_com_tvm_tvm_util_device_SerialPortUtil_open
         {
             speed = getBaudrate(baudrate);
             if (speed == -1) {
-                /* TODO: throw an exception */
                 LOGE("Invalid baudrate");
                 return NULL;
             }
@@ -116,7 +115,6 @@ JNIEXPORT jobject JNICALL Java_com_tvm_tvm_util_device_SerialPortUtil_open
             if (fd == -1) {
                 /* Throw an exception */
                 LOGE("Cannot open port");
-                /* TODO: throw an exception */
                 return NULL;
             }
         }
@@ -128,7 +126,6 @@ JNIEXPORT jobject JNICALL Java_com_tvm_tvm_util_device_SerialPortUtil_open
             if (tcgetattr(fd, &cfg)) {
                 LOGE("tcgetattr() failed");
                 close(fd);
-                /* TODO: throw an exception */
                 return NULL;
             }
 
@@ -143,7 +140,6 @@ JNIEXPORT jobject JNICALL Java_com_tvm_tvm_util_device_SerialPortUtil_open
             if (tcsetattr(fd, TCSANOW, &cfg)) {
                 LOGE("tcsetattr() failed");
                 close(fd);
-                /* TODO: throw an exception */
                 return NULL;
             }
         }

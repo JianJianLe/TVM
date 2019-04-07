@@ -71,6 +71,8 @@ public class PayDetailActivity extends BaseActivity{
     private double leftAmount = 0d;
     //票数
     private int num = 0;
+    //总价
+    private double totalAmount=0d;
 
     private DaoSession daoSession;
 
@@ -114,10 +116,9 @@ public class PayDetailActivity extends BaseActivity{
     private void checkPayResult(){
         //amountRecord可以为现金支付，也可以为网络支付
         if(PrinterCase.getInstance().amountRecord>0){
-            double balance=PrinterCase.getInstance().amountRecord - (num * ticketPrice);
+            double balance=PrinterCase.getInstance().amountRecord - totalAmount;
             if(balance>=0){
                 PrinterCase.getInstance().balanceRecord=balance;
-                PrinterCase.getInstance().numRecord=num;//几张票
                 PrinterCase.getInstance().amountRecord=0;
                 //@Star goto Next Activity
                 Intent intent = new Intent();
@@ -126,6 +127,11 @@ public class PayDetailActivity extends BaseActivity{
                 this.finish();
             }
         }
+    }
+
+    //TODO: 网络支付
+    private void netWorkPay(){
+        PrinterCase.getInstance().msg.setPayType("网络支付");
     }
 
     //现金支付 @Star
@@ -137,7 +143,6 @@ public class PayDetailActivity extends BaseActivity{
             updateAmount();
             PrinterCase.getInstance().msg.setPayType("现金");
             BillAcceptorUtil.getInstance().rcvdMoney=0;
-            cash=-1;
         }
     }
 
@@ -148,21 +153,22 @@ public class PayDetailActivity extends BaseActivity{
      - @Time： ${TIME}
      */
     public void initData(){
+        totalAmount=getTotalAmount();
+        tv_pay_detail_num.setText(num+"");
+        tv_pay_detail_pay_amount.setText(totalAmount+"");
+        tv_pay_detail_desc.setText(setting.getPayDesc());
+        backPrevious = new BackPrevious(setting.getPayTimeOut()*1000,1000,PayDetailActivity.this);
+    }
+
+    private double getTotalAmount(){
         int num = 0;
         double amount = 0d;
         for (TicketBean bean:ticketList){
             num = num+bean.getNumber();
             amount = amount + bean.getNumber()*bean.getPrice();
         }
-
         amount = new BigDecimal(amount).doubleValue();
-
-        tv_pay_detail_num.setText(num+"");
-        tv_pay_detail_pay_amount.setText(amount+"");
-
-        tv_pay_detail_desc.setText(setting.getPayDesc());
-
-        backPrevious = new BackPrevious(setting.getPayTimeOut()*1000,1000,PayDetailActivity.this);
+        return amount;
     }
 
     /**

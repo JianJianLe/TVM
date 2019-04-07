@@ -22,6 +22,7 @@ import com.tvm.tvm.util.SharedPrefsUtil;
 import com.tvm.tvm.util.constant.PreConfig;
 import com.tvm.tvm.util.device.PrinterCase;
 import com.tvm.tvm.util.device.PrinterKeys;
+import com.tvm.tvm.util.device.PrinterUtil;
 import com.tvm.tvm.util.device.TimeUtil;
 
 import java.text.ParseException;
@@ -48,7 +49,8 @@ public class PaySuccessActivity extends BaseActivity {
     private DaoSession daoSession;
     private List<TicketSummary> ticketSummaryList;
     private List<TicketBean> ticketList;
-    Price price;
+    private double ticketPrice;
+    private String ticketTitle;
 
     @Override
     protected void onCreate( Bundle savedInstanceState) {
@@ -81,22 +83,8 @@ public class PaySuccessActivity extends BaseActivity {
     private void printTicket(){
         new Thread(){
             public void run() {
-
-                initMsg();
-                savePayment(PrinterCase.getInstance().msg);
-                //票据
-                int num =PrinterCase.getInstance().numRecord;
-                for(int i=0;i<num;i++){
-                    ticketSettings();
-                    PrinterCase.getInstance().print();
-                    TimeUtil.delay(3000);
-                }
-                //余额
-                int balance=(int)PrinterCase.getInstance().balanceRecord;
-                if (balance!=0){
-                    balanceTicketSettings(balance);
-                    PrinterCase.getInstance().print();
-                }
+                printTicketList();
+                printBalance();
 
                 Message message = new Message();
                 message.what = 0;
@@ -105,6 +93,46 @@ public class PaySuccessActivity extends BaseActivity {
         }.start();
     }
 
+    private void printTicketList(){
+
+        initCommonPrinterMsg();
+        for (TicketBean bean:ticketList){
+            ticketPrice=bean.getPrice();//价格
+            ticketTitle=bean.getTitle();//标题
+            priceId=bean.getId();
+            for(int i=0; i<bean.getNumber();i++){
+                initPrinterMsg();
+                savePayment(PrinterCase.getInstance().msg);
+                PrinterCase.getInstance().print();
+                TimeUtil.delay(3000);
+            }
+        }
+    }
+
+    //@Star 初始化ticket的公共信息
+    private void initCommonPrinterMsg(){
+        String currentTime =TimeUtil.dateFormat.format(new Date());
+        PrinterKeys msg = PrinterCase.getInstance().msg;
+        msg.setDeviceNumber(getDeviceNO());
+        msg.setDateStr(currentTime);
+    }
+
+    //@Star 初始化每个ticket的信息
+    private void initPrinterMsg(){
+        PrinterKeys msg = PrinterCase.getInstance().msg;
+        msg.setTicketNumber(getTicketNumber(TimeUtil.dateFormat.format(new Date())));
+        msg.setTicketName(ticketTitle);
+    }
+
+    //@Star 获取Order number
+    private String getTicketNumber(String currentTime){
+        int orderNum=getPreTicketOrderNumber();
+        orderNum++;
+        saveTicketInfo(currentTime,orderNum);
+        return PrinterCase.getInstance().OrderDispose(orderNum) ;
+    }
+
+    //@Star 获取Device No
     private String getDeviceNO(){
         SettingDao settingDao = daoSession.getSettingDao();
         Setting setting = settingDao.queryBuilder().where(SettingDao.Properties.Id.eq(1l)).unique();
@@ -114,52 +142,23 @@ public class PaySuccessActivity extends BaseActivity {
             return setting.getDeviceNo();
     }
 
-    private void ticketSettings(){
-        String currentTime =TimeUtil.dateFormat.format(new Date());
-        PrinterKeys msg = PrinterCase.getInstance().msg;
-        msg.setTicketNumber(getTicketNumber(currentTime));
-        //msg.setDateStr(currentTime);
-
-    }
-
-    private void initMsg(){
-        PrinterKeys msg = PrinterCase.getInstance().msg;
-        String currentTime =TimeUtil.dateFormat.format(new Date());
-        msg.setDeviceNumber(getDeviceNO());
-//        msg.setTicketName(getTicketName());
-        msg.setDateStr(currentTime);
-    }
-
-    private void balanceTicketSettings(int balance){
-        String currentTime =TimeUtil.dateFormat.format(new Date());
-        PrinterKeys balanceMsg = PrinterCase.getInstance().msg;
-        balanceMsg.setPrice(balance +"");
-        balanceMsg.setTicketName("余额票");
-        balanceMsg.setDateStr(currentTime);
-    }
-
+    //@Star 保存支付记录
     private void savePayment(PrinterKeys msg){
-        int num =PrinterCase.getInstance().numRecord;
         PaymentRecordDao paymentRecordDao=daoSession.getPaymentRecordDao();
         PaymentRecord paymentRecord=new PaymentRecord();
-        paymentRecord.setAmount(num * Double.valueOf(msg.getPrice()));
-        paymentRecord.setNum(num);
-        paymentRecord.setPrice(Double.valueOf(msg.getPrice()));
+        paymentRecord.setAmount(Double.valueOf(ticketPrice));
+        paymentRecord.setNum(1);
+        paymentRecord.setPrice(Double.valueOf(ticketPrice));
         paymentRecord.setPriceId(priceId);
-        paymentRecord.setTitle(price.getTitle());
+        paymentRecord.setTitle(ticketTitle);
         paymentRecord.setPayTime(TimeUtil.getDate(msg.getDateStr()));
         paymentRecord.setType(paymentRecord.getTypeNumber(msg.getPayType()));
         paymentRecordDao.save(paymentRecord);
     }
 
-    private String getTicketNumber(String currentTime){
-        int orderNum=getPreTicketNumber();
-        orderNum++;
-        saveTicketInfo(currentTime,orderNum);
-        return PrinterCase.getInstance().OrderDispose(orderNum) ;
-    }
 
-    private int getPreTicketNumber(){
+    //@Star 获取数据库里面的最新的Order Number
+    private int getPreTicketOrderNumber(){
         TicketSummaryDao ticketSummaryDao = daoSession.getTicketSummaryDao();
         ticketSummaryList = ticketSummaryDao.queryBuilder().list();
         if (ticketSummaryList.size()==0){
@@ -173,12 +172,13 @@ public class PaySuccessActivity extends BaseActivity {
     private int getNumByTime(){
         TicketSummary ticket = ticketSummaryList.get(ticketSummaryList.size()-1);
         String ticketTime=ticket.getDate();
-        if(isToday(ticketTime))
+        if(TimeUtil.isToday(ticketTime))
             return ticket.getNum();
         else
             return 0;
     }
 
+    //@Star 记录每一笔
     private void saveTicketInfo(String currentTime, int orderNum){
         TicketSummary ticketSummary=new TicketSummary();
         ticketSummary.setDate(currentTime);
@@ -186,31 +186,28 @@ public class PaySuccessActivity extends BaseActivity {
         daoSession.getTicketSummaryDao().save(ticketSummary);
     }
 
-//    private String getTicketName(){
-//        PriceDao priceDao = daoSession.getPriceDao();
-//        price=priceDao.queryBuilder().where(PriceDao.Properties.Id.eq(priceId)).unique();
-//        return price.getTitle();
-//    }
+    //@Star Print Balance 08Apr
+    private void printBalance(){
+        //余额
+        int balance=(int)PrinterCase.getInstance().balanceRecord;
+        if (balance!=0){
+            balanceTicketSettings(balance);
+            PrinterCase.getInstance().print();
+        }
+    }
+    //@Star Print Balance 08Apr
+    private void balanceTicketSettings(int balance){
+        String currentTime =TimeUtil.dateFormat.format(new Date());
+        PrinterKeys balanceMsg = PrinterCase.getInstance().msg;
+        balanceMsg.setPrice(balance +"");
+        balanceMsg.setTicketName("余额票");
+        balanceMsg.setDateStr(currentTime);
+    }
 
+    //@Star Next Activity
     private void gotoNextActivity(){
         startActivity(this,MainActivity.class);
         this.finish();
     }
 
-    private boolean isToday(String dateStr) {
-        Calendar c1 = Calendar.getInstance();
-        c1.setTime(TimeUtil.getDate(dateStr));
-        int year1 = c1.get(Calendar.YEAR);
-        int month1 = c1.get(Calendar.MONTH)+1;
-        int day1 = c1.get(Calendar.DAY_OF_MONTH);
-        Calendar c2 = Calendar.getInstance();
-        c2.setTime(new Date());
-        int year2 = c2.get(Calendar.YEAR);
-        int month2 = c2.get(Calendar.MONTH)+1;
-        int day2 = c2.get(Calendar.DAY_OF_MONTH);
-        if(year1 == year2 && month1 == month2 && day1 == day2){
-            return true;
-        }
-        return false;
-    }
 }

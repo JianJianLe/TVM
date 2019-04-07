@@ -34,6 +34,7 @@ import com.tvm.tvm.util.constant.PreConfig;
 import com.tvm.tvm.util.constant.StringUtils;
 import com.tvm.tvm.util.device.BillAcceptorUtil;
 import com.tvm.tvm.util.device.PrinterCase;
+import com.tvm.tvm.util.device.PrinterUtil;
 import com.tvm.tvm.util.player.MPlayer;
 import com.tvm.tvm.util.player.MPlayerException;
 import com.tvm.tvm.util.player.MinimalDisplay;
@@ -329,7 +330,6 @@ public class MainActivity extends BaseActivity {
 
                             @Override
                             public void complete() {
-                                // TODO Auto-generated method stub
                                 Log.d("Test", "Video completed，show Picture");
                                 setAdsLayout(PICTURE_SHOW);//图片
                                 whatShow = 0;
@@ -340,7 +340,6 @@ public class MainActivity extends BaseActivity {
                     }
                     player.play();
                 } catch (MPlayerException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             }

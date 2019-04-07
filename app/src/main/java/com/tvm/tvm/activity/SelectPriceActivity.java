@@ -221,9 +221,7 @@ public class SelectPriceActivity extends BaseActivity {
     //开启时执行延迟服务
     @Override
     protected void onStart() {
-        // TODO Auto-generated method stub
         super.onStart();
-
         Log.i("Test","Select price onStart scheduledExecutorService open!");
     }
 

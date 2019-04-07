@@ -15,25 +15,21 @@ public class ViewpagerDotsAdapter extends PagerAdapter {
 	private List<ImageView> imageViews = new ArrayList<ImageView>();
 
 	public ViewpagerDotsAdapter(Context context,List<ImageView> imageViews) {
-		// TODO Auto-generated constructor stub
 		this.imageViews = imageViews;
 	}
 
 	@Override
 	public int getCount() {
-		// TODO Auto-generated method stub
 		return imageViews.size();
 	}
 
 	@Override
 	public boolean isViewFromObject(View arg0, Object arg1) {
-		// TODO Auto-generated method stub
 		return arg0==arg1;
 	}
 	
 	@Override
 	public Object instantiateItem(View v, int position) {
-		// TODO Auto-generated method stub
 		View view = imageViews.get(position);
 		ViewPager viewPager = (ViewPager) v;
 		viewPager.addView(view);

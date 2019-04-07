@@ -103,7 +103,6 @@ public class FileUtil {
         try {
             stream = new FileOutputStream(filename);
         } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return bmp.compress(format, quality, stream);

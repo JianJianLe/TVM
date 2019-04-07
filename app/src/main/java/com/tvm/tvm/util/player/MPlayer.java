@@ -257,7 +257,6 @@ public class MPlayer implements IMPlayer,MediaPlayer.OnBufferingUpdateListener,
 			try {
 				setSource(urlList.get(position));
 			} catch (MPlayerException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}else {

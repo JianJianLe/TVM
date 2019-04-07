@@ -13,7 +13,7 @@ public class PrinterCase {
 
     public double amountRecord=0;//总共多少金额
     public double balanceRecord=0;//余额
-    public int numRecord=0;//一共打印多少张票
+    //public int numRecord=0;//一共打印多少张票
     private String printTemplate = "[CenterLarge]->快剪\n" +
             "[CenterSmall]->欢迎光临快剪专营店\n" +
             "[CenterSmall]->本店编号：[DeviceNumber]\n" +
@@ -74,6 +74,7 @@ public class PrinterCase {
                                     ).unique();
         return billSetting.getTicketBody();
     }
+
 
     // 处理顺序号，只支持1000以内
     public String OrderDispose(int OrderData) {

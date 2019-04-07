@@ -95,33 +95,22 @@ public class PaySuccessActivity extends BaseActivity {
 
     private void printTicketList(){
 
-        initCommonPrinterMsg();
+        PrinterKeys msg = PrinterCase.getInstance().msg;
+        msg.setDeviceNumber(getDeviceNO());
+        msg.setDateStr(TimeUtil.dateFormat.format(new Date()));
+
         for (TicketBean bean:ticketList){
             ticketPrice=bean.getPrice();//价格
             ticketTitle=bean.getTitle();//标题
             priceId=bean.getId();
             for(int i=0; i<bean.getNumber();i++){
-                initPrinterMsg();
+                msg.setTicketNumber(getTicketNumber(TimeUtil.dateFormat.format(new Date())));
+                msg.setTicketName(ticketTitle);
                 savePayment(PrinterCase.getInstance().msg);
                 PrinterCase.getInstance().print();
                 TimeUtil.delay(3000);
             }
         }
-    }
-
-    //@Star 初始化ticket的公共信息
-    private void initCommonPrinterMsg(){
-        String currentTime =TimeUtil.dateFormat.format(new Date());
-        PrinterKeys msg = PrinterCase.getInstance().msg;
-        msg.setDeviceNumber(getDeviceNO());
-        msg.setDateStr(currentTime);
-    }
-
-    //@Star 初始化每个ticket的信息
-    private void initPrinterMsg(){
-        PrinterKeys msg = PrinterCase.getInstance().msg;
-        msg.setTicketNumber(getTicketNumber(TimeUtil.dateFormat.format(new Date())));
-        msg.setTicketName(ticketTitle);
     }
 
     //@Star 获取Order number

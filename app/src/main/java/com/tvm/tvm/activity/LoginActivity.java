@@ -45,6 +45,7 @@ public class LoginActivity extends BaseActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         userDao = AppApplication.getApplication().getDaoSession().getUserDao();
+        initView();
     }
 
     @OnClick({R.id.bt_login_login,R.id.ib_login_back})
@@ -59,13 +60,17 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
+    private void initView(){
+        et_login_username.setText("admin");
+    }
+
     /**
      * 登录操作
      */
     public void loginLogic(){
 
-        et_login_username.setText("admin");
-        et_login_password.setText("admin");
+        if(PreConfig.Envir.equals("DEV"))
+            et_login_password.setText("admin");
 
         if ("".equals(et_login_username.getText().toString().trim())){
             ToastUtils.showText(TAG,StringUtils.USER_NAME_EMPTY);

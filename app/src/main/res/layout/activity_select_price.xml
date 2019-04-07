@@ -70,6 +70,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/number"
                 android:textColor="@color/black"
+                android:textSize="@dimen/xy15sp"
                 android:gravity="right"
                 android:layout_weight="1"/>
             <TextView
@@ -79,12 +80,14 @@
                 android:gravity="center"
                 android:textColor="@color/red"
                 android:text="0"
+                android:textSize="@dimen/xy18sp"
                 android:layout_weight="1"/>
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
                 android:text="@string/zhang"
+                android:textSize="@dimen/xy15sp"
                 android:layout_weight="1"/>
         </LinearLayout>
         <LinearLayout
@@ -98,6 +101,7 @@
                 android:textColor="@color/black"
                 android:gravity="right"
                 android:text="@string/amount"
+                android:textSize="@dimen/xy15sp"
                 android:layout_weight="1"/>
             <TextView
                 android:id="@+id/tv_select_price_amount"
@@ -106,12 +110,14 @@
                 android:textColor="@color/red"
                 android:gravity="center"
                 android:text="0"
+                android:textSize="@dimen/xy18sp"
                 android:layout_weight="1"/>
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
                 android:text="@string/yuan"
+                android:textSize="@dimen/xy15sp"
                 android:layout_weight="1"/>
         </LinearLayout>
     </LinearLayout>

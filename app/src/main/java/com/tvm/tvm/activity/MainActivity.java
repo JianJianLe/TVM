@@ -719,5 +719,4 @@ public class MainActivity extends BaseActivity {
         if(!scheduledExecutorService.isShutdown())
             scheduledExecutorService.shutdown();
     }
-
 }

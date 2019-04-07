@@ -241,16 +241,6 @@ public class SelectPriceActivity extends BaseActivity {
         priceList = priceDao.queryBuilder().where(PriceDao.Properties.IsDelete.eq(0)).list();
         adapter = new SelectPriceAdapter(this,priceList);
         gv_select_price_list.setAdapter(adapter);
-//        gv_select_price_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Long priceId = priceList.get(position).getId();
-//                Intent intent = new Intent();
-//                intent.putExtra("priceId",priceId);
-//                startActivity(TAG,intent,PayDetailActivity.class);
-//                SelectPriceActivity.this.finish();
-//            }
-//        });
     }
 
     //region 无操作 返回上一页

@@ -7,6 +7,10 @@ package com.tvm.tvm.util.constant;
  * - @Time： 23:24
  */
 public class PreConfig {
+
+    public static String Envir="DEV";
+    //public static String Envir="PROD";
+
     //缓存登录用户
     public static String USER = "user";
     //公司名

@@ -112,7 +112,7 @@ public class PayDetailActivity extends BaseActivity{
 
     //检测支付结果 @Star
     private void checkPayResult(){
-        //amountRecord可以为现金支付，也可以为微信，支付宝支付
+        //amountRecord可以为现金支付，也可以为网络支付
         if(PrinterCase.getInstance().amountRecord>0){
             double balance=PrinterCase.getInstance().amountRecord - (num * ticketPrice);
             if(balance>=0){

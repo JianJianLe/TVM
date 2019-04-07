@@ -53,7 +53,6 @@ public class TitleSpinnerAdapter extends BaseAdapter {
         convertView = LayoutInflater.from(context).inflate(R.layout.item_spinner_layout,null);
         TextView tv_item_spinner_title = convertView.findViewById(R.id.tv_item_spinner_title);
         tv_item_spinner_title.setText(titleList.get(position));
-        tv_item_spinner_title.setTextSize(PreConfig.ADAPTER_FONT_SIZE);
         return convertView;
     }
 }

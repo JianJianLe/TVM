@@ -12,6 +12,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="票号"
+            android:textSize="@dimen/xy10sp"
             android:layout_weight="1"/>
         <TextView
             android:layout_width="@dimen/xy0.5dp"
@@ -23,6 +24,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="总价"
+            android:textSize="@dimen/xy10sp"
             android:layout_weight="1"/>
         <TextView
             android:layout_width="@dimen/xy0.5dp"
@@ -34,6 +36,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="数量"
+            android:textSize="@dimen/xy10sp"
             android:layout_weight="1"/>
         <TextView
             android:layout_width="@dimen/xy0.5dp"
@@ -45,6 +48,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="渠道"
+            android:textSize="@dimen/xy10sp"
             android:layout_weight="1"/>
         <TextView
             android:layout_width="@dimen/xy0.5dp"
@@ -56,6 +60,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="时间"
+            android:textSize="@dimen/xy10sp"
             android:layout_weight="1"/>
     </LinearLayout>
 

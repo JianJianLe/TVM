@@ -60,13 +60,6 @@ public class BillListAdpter extends BaseAdapter {
         tv_item_payment_num.setText(paymentRecordList.get(position).getNum()+"");
         tv_item_payment_type.setText(paymentRecordList.get(position).getTypeStr());
         tv_item_payment_time.setText(TimeUtil.dateFormat.format(paymentRecordList.get(position).getPayTime()));
-
-        int size=PreConfig.ADAPTER_CONTENT_FONT_SIZE;
-        tv_item_payment_ticket_no.setTextSize(size);
-        tv_item_payment_amount.setTextSize(size);
-        tv_item_payment_num.setTextSize(size);
-        tv_item_payment_type.setTextSize(size);
-        tv_item_payment_time.setTextSize(size);
         return convertView;
     }
 }

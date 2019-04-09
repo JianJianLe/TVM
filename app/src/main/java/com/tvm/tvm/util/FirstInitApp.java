@@ -73,9 +73,9 @@ public class FirstInitApp {
         setting.setDeviceNo("00001");
         setting.setShopName("广州市亿儿美有限公司");
         setting.setPayDesc("本机只接收5元、10元、20元，不设找零");
-        setting.setPayTimeOut(15);
-        setting.setPrintTimeOut(15);
-        setting.setSelectTimeOut(15);
+        setting.setPayTimeOut(60);
+        setting.setPrintTimeOut(30);
+        setting.setSelectTimeOut(30);
         settingDao.save(setting);
     }
 

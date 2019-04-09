@@ -98,7 +98,6 @@ public class PaySuccessActivity extends BaseActivity {
         PrinterKeys msg = PrinterCase.getInstance().msg;
         msg.setDeviceNumber(getDeviceNO());
         msg.setDateStr(TimeUtil.dateFormat.format(new Date()));
-
         for (TicketBean bean:ticketList){
             ticketPrice=bean.getPrice();//价格
             ticketTitle=bean.getTitle();//标题
@@ -106,6 +105,7 @@ public class PaySuccessActivity extends BaseActivity {
             for(int i=0; i<bean.getNumber();i++){
                 msg.setTicketNumber(getTicketNumber(TimeUtil.dateFormat.format(new Date())));
                 msg.setTicketName(ticketTitle);
+                msg.setPrice(ticketPrice+"");
                 savePayment(PrinterCase.getInstance().msg);
                 PrinterCase.getInstance().print();
                 TimeUtil.delay(3000);
@@ -178,14 +178,14 @@ public class PaySuccessActivity extends BaseActivity {
     //@Star Print Balance 08Apr
     private void printBalance(){
         //余额
-        int balance=(int)PrinterCase.getInstance().balanceRecord;
+        double balance= PrinterCase.getInstance().balanceRecord;
         if (balance!=0){
             balanceTicketSettings(balance);
             PrinterCase.getInstance().print();
         }
     }
     //@Star Print Balance 08Apr
-    private void balanceTicketSettings(int balance){
+    private void balanceTicketSettings(double balance){
         String currentTime =TimeUtil.dateFormat.format(new Date());
         PrinterKeys balanceMsg = PrinterCase.getInstance().msg;
         balanceMsg.setPrice(balance +"");

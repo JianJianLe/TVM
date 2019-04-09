@@ -28,6 +28,7 @@ import com.tvm.tvm.util.BackPrevious;
 import com.tvm.tvm.util.SharedPrefsUtil;
 import com.tvm.tvm.util.constant.PreConfig;
 import com.tvm.tvm.util.constant.StringUtils;
+import com.tvm.tvm.util.device.BillAcceptorUtil;
 import com.tvm.tvm.util.device.PrinterCase;
 import com.tvm.tvm.util.view.ToastUtils;
 
@@ -153,6 +154,7 @@ public class SelectPriceActivity extends BaseActivity {
                 Map.Entry<Integer, TicketBean> entry = iterator.next();
                 beanList.add(entry.getValue());
             }
+            BillAcceptorUtil.getInstance().ba_Enable();//@Star 16Feb
             intent.putExtra("list", (Serializable) beanList);
             startActivity(this,intent,PayDetailActivity.class);
             this.finish();

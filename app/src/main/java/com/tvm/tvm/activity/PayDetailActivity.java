@@ -155,13 +155,12 @@ public class PayDetailActivity extends BaseActivity{
     public void initData(){
         totalAmount=getTotalAmount();
         tv_pay_detail_num.setText(num+"");
-        tv_pay_detail_pay_amount.setText(totalAmount+"");
+        tv_pay_detail_pay_amount.setText((int)totalAmount+"");
         tv_pay_detail_desc.setText(setting.getPayDesc());
         backPrevious = new BackPrevious(setting.getPayTimeOut()*1000,1000,PayDetailActivity.this);
     }
 
     private double getTotalAmount(){
-        int num = 0;
         double amount = 0d;
         for (TicketBean bean:ticketList){
             num = num+bean.getNumber();
@@ -193,9 +192,9 @@ public class PayDetailActivity extends BaseActivity{
      */
     public void updateAmount(){
         tv_pay_detail_num.setText(String.valueOf(num));
-        tv_pay_detail_pay_amount.setText(String.valueOf((int)ticketPrice*num));
+        tv_pay_detail_pay_amount.setText(String.valueOf((int)totalAmount));
         tv_pay_detail_receive_amount.setText(String.valueOf((int)receivedAmount));
-        leftAmount = ticketPrice* num - receivedAmount;
+        leftAmount = totalAmount - receivedAmount;
         tv_pay_detail_left_amount.setText(String.valueOf((int)leftAmount));
     }
 

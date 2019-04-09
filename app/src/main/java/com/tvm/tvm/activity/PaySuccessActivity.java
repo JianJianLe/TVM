@@ -47,7 +47,6 @@ public class PaySuccessActivity extends BaseActivity {
     //传递过来得票价id
     private Long priceId;
     private DaoSession daoSession;
-    private List<TicketSummary> ticketSummaryList;
     private List<TicketBean> ticketList;
     private double ticketPrice;
     private String ticketTitle;
@@ -111,9 +110,11 @@ public class PaySuccessActivity extends BaseActivity {
             ticketTitle=bean.getTitle();//标题
             priceId=bean.getId();
             for(int i=0; i<bean.getNumber();i++){
-                msg.setTicketNumber(getTicketNumber(TimeUtil.dateFormat.format(new Date())));
+                String currentTime=TimeUtil.dateFormat.format(new Date());
+                msg.setTicketNumber(PrinterCase.getInstance().getTicketNumber(currentTime));
                 msg.setTicketName(ticketTitle);
                 msg.setPrice(ticketPrice+"");
+                saveTicketInfo(currentTime,Integer.parseInt(msg.getTicketNumber()));
                 savePayment(PrinterCase.getInstance().msg);
                 PrinterCase.getInstance().print();
                 TimeUtil.delay(3000);
@@ -121,13 +122,6 @@ public class PaySuccessActivity extends BaseActivity {
         }
     }
 
-    //@Star 获取Order number
-    private String getTicketNumber(String currentTime){
-        int orderNum=getPreTicketOrderNumber();
-        orderNum++;
-        saveTicketInfo(currentTime,orderNum);
-        return PrinterCase.getInstance().OrderDispose(orderNum) ;
-    }
 
     //@Star 获取Device No
     private String getDeviceNO(){
@@ -151,28 +145,6 @@ public class PaySuccessActivity extends BaseActivity {
         paymentRecord.setPayTime(TimeUtil.getDate(msg.getDateStr()));
         paymentRecord.setType(paymentRecord.getTypeNumber(msg.getPayType()));
         paymentRecordDao.save(paymentRecord);
-    }
-
-
-    //@Star 获取数据库里面的最新的Order Number
-    private int getPreTicketOrderNumber(){
-        TicketSummaryDao ticketSummaryDao = daoSession.getTicketSummaryDao();
-        ticketSummaryList = ticketSummaryDao.queryBuilder().list();
-        if (ticketSummaryList.size()==0){
-            return 0;
-        }else {
-            return getNumByTime();
-        }
-    }
-
-    //如果是新的一天，则TicketNumber清零
-    private int getNumByTime(){
-        TicketSummary ticket = ticketSummaryList.get(ticketSummaryList.size()-1);
-        String ticketTime=ticket.getDate();
-        if(TimeUtil.isToday(ticketTime))
-            return ticket.getNum();
-        else
-            return 0;
     }
 
     //@Star 记录每一笔

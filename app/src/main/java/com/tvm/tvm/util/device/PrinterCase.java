@@ -4,7 +4,9 @@ import android.util.Log;
 
 import com.tvm.tvm.application.AppApplication;
 import com.tvm.tvm.bean.BillSetting;
+import com.tvm.tvm.bean.TicketSummary;
 import com.tvm.tvm.bean.dao.BillSettingDao;
+import com.tvm.tvm.bean.dao.TicketSummaryDao;
 
 import java.util.Date;
 import java.util.List;
@@ -14,6 +16,8 @@ public class PrinterCase {
     public double amountRecord=0;//总共多少金额
     public double balanceRecord=0;//余额
     //public int numRecord=0;//一共打印多少张票
+    private List<TicketSummary> ticketSummaryList;
+
     private String printTemplate = "[CenterLarge]->快剪\n" +
             "[CenterSmall]->欢迎光临快剪专营店\n" +
             "[CenterSmall]->本店编号：[DeviceNumber]\n" +
@@ -75,6 +79,42 @@ public class PrinterCase {
         return billSetting.getTicketBody();
     }
 
+    //@Star 获取Order number
+    public String getTicketNumber(String currentTime){
+        int orderNum=getPreTicketOrderNumber();
+        orderNum++;
+        return OrderDispose(orderNum) ;
+    }
+
+    //@Star 09Apr
+    public String getCurrentTicketNumber(){
+        int orderNum=getPreTicketOrderNumber();
+        if(orderNum==0)
+            return "001";
+        else
+            return OrderDispose(getPreTicketOrderNumber());
+    }
+
+    //@Star 获取数据库里面的最新的Order Number
+    private int getPreTicketOrderNumber(){
+        TicketSummaryDao ticketSummaryDao = AppApplication.getApplication().getDaoSession().getTicketSummaryDao();
+        ticketSummaryList = ticketSummaryDao.queryBuilder().list();
+        if (ticketSummaryList.size()==0){
+            return 0;
+        }else {
+            return getNumByTime();
+        }
+    }
+
+    //如果是新的一天，则TicketNumber清零
+    private int getNumByTime(){
+        TicketSummary ticket = ticketSummaryList.get(ticketSummaryList.size()-1);
+        String ticketTime=ticket.getDate();
+        if(TimeUtil.isToday(ticketTime))
+            return ticket.getNum();
+        else
+            return 0;
+    }
 
     // 处理顺序号，只支持1000以内
     public String OrderDispose(int OrderData) {

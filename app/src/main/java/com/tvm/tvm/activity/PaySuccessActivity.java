@@ -70,7 +70,10 @@ public class PaySuccessActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case 0:
-                    gotoNextActivity();
+                    gotoMainActivity();
+                    break;
+                case 1:
+                    gotoPayFinishActivity();
                     break;
             }
         }
@@ -84,11 +87,16 @@ public class PaySuccessActivity extends BaseActivity {
         new Thread(){
             public void run() {
                 printTicketList();
-                printBalance();
-
-                Message message = new Message();
-                message.what = 0;
-                handler.sendMessage(message);
+                double balance= PrinterCase.getInstance().balanceRecord;
+                if(balance!=0){
+                    Message message = new Message();
+                    message.what = 1;
+                    handler.sendMessage(message);
+                }else{
+                    Message message = new Message();
+                    message.what = 0;
+                    handler.sendMessage(message);
+                }
             };
         }.start();
     }
@@ -175,28 +183,15 @@ public class PaySuccessActivity extends BaseActivity {
         daoSession.getTicketSummaryDao().save(ticketSummary);
     }
 
-    //@Star Print Balance 08Apr
-    private void printBalance(){
-        //余额
-        double balance= PrinterCase.getInstance().balanceRecord;
-        if (balance!=0){
-            balanceTicketSettings(balance);
-            PrinterCase.getInstance().print();
-        }
-    }
-    //@Star Print Balance 08Apr
-    private void balanceTicketSettings(double balance){
-        String currentTime =TimeUtil.dateFormat.format(new Date());
-        PrinterKeys balanceMsg = PrinterCase.getInstance().msg;
-        balanceMsg.setPrice(balance +"");
-        balanceMsg.setTicketName("余额票");
-        balanceMsg.setDateStr(currentTime);
-    }
-
-    //@Star Next Activity
-    private void gotoNextActivity(){
+    //@Star Main Activity
+    private void gotoMainActivity(){
         startActivity(this,MainActivity.class);
         this.finish();
     }
 
+    //@Star PayFinishActivity
+    private void gotoPayFinishActivity(){
+        startActivity(this,PayFinishActivity.class);
+        this.finish();
+    }
 }

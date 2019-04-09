@@ -81,6 +81,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/xy20dp"
         android:gravity="center"
+        android:textSize="@dimen/xy10sp"
         android:text="广州市亿儿美技有限公司"/>
 
 </LinearLayout>

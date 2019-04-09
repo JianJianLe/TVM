@@ -157,6 +157,11 @@ public class PayDetailActivity extends BaseActivity{
         tv_pay_detail_num.setText(num+"");
         tv_pay_detail_pay_amount.setText((int)totalAmount+"");
         tv_pay_detail_desc.setText(setting.getPayDesc());
+        int balance = (int)PrinterCase.getInstance().balanceRecord;
+        if(balance!=0){
+            receivedAmount = balance;
+            updateAmount();
+        }
         backPrevious = new BackPrevious(setting.getPayTimeOut()*1000,1000,PayDetailActivity.this);
     }
 
@@ -195,7 +200,7 @@ public class PayDetailActivity extends BaseActivity{
         tv_pay_detail_pay_amount.setText(String.valueOf((int)totalAmount));
         tv_pay_detail_receive_amount.setText(String.valueOf((int)receivedAmount));
         leftAmount = totalAmount - receivedAmount;
-        tv_pay_detail_left_amount.setText(String.valueOf((int)leftAmount));
+        tv_pay_detail_left_amount.setText(String.valueOf((int)(leftAmount<0 ? 0:leftAmount)));
     }
 
 

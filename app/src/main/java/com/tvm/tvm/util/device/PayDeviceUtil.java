@@ -10,6 +10,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class PayDeviceUtil {
 
@@ -76,7 +78,7 @@ public class PayDeviceUtil {
 
     private void onDataReceived(final byte[] buffer, final int size) {
 
-        Log.i("Test", DataUtils.getCmdData(DataUtils.bytesToHex(buffer)));
+        Log.i("Test", getCmdData(DataUtils.bytesToHex(buffer)));
         //Log.i("Test", )
         try {
             for(int i=0;i<size;i++){
@@ -99,6 +101,14 @@ public class PayDeviceUtil {
 
     }
 
-
+    private String getCmdData(String cmdStr){
+        String partern="AA.*DD";
+        Pattern r=Pattern.compile(partern);
+        Matcher m=r.matcher(cmdStr);
+        if(m.find())
+            return m.group(0);
+        else
+            return null;
+    }
 
 }

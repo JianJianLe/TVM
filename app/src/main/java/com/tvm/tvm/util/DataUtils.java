@@ -49,14 +49,4 @@ public class DataUtils {
         }
         return hex.toUpperCase();
     }
-
-    public static String getCmdData(String cmdStr){
-        String partern="AA.*DD";
-        Pattern r=Pattern.compile(partern);
-        Matcher m=r.matcher(cmdStr);
-        if(m.find())
-            return m.group(0);
-        else
-            return null;
-    }
 }

@@ -1,5 +1,8 @@
 package com.tvm.tvm.util;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class DataUtils {
 
     public static byte[] hexToByteArray(String hexStr){
@@ -45,5 +48,15 @@ public class DataUtils {
             hex = "0" + hex;
         }
         return hex.toUpperCase();
+    }
+
+    public static String getCmdData(String cmdStr){
+        String partern="AA.*DD";
+        Pattern r=Pattern.compile(partern);
+        Matcher m=r.matcher(cmdStr);
+        if(m.find())
+            return m.group(0);
+        else
+            return null;
     }
 }

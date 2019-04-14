@@ -19,9 +19,10 @@ public class PayDeviceUtil {
     private ReadThread mReadThread;
     private byte[] PD_sendData;
     public byte[] PD_receiveData;
+    private static String serialPortFilePath1="/dev/ttyS1";//"/dev/ttyS0";
+    private static String serialPortFilePath2="/dev/ttyGS1";//"/dev/ttyGS0";
 
     private static PayDeviceUtil instance;
-
     public synchronized static PayDeviceUtil getInstance(){
         if(instance==null)
             instance=new PayDeviceUtil();
@@ -30,9 +31,9 @@ public class PayDeviceUtil {
 
     public void initPayDevice() {
 
-        File serialPortFile = new File("/dev/ttyS0");
+        File serialPortFile = new File(serialPortFilePath1);
         if(!serialPortFile.exists()){
-            serialPortFile = new File("/dev/ttyGS0");
+            serialPortFile = new File(serialPortFilePath2);
         }
         try {
             serialPort = new SerialPortUtil(serialPortFile,38400);
@@ -75,8 +76,8 @@ public class PayDeviceUtil {
 
     private void onDataReceived(final byte[] buffer, final int size) {
 
-        Log.i("Test", DataUtils.bytesToHex(buffer));
-
+        Log.i("Test", DataUtils.getCmdData(DataUtils.bytesToHex(buffer)));
+        //Log.i("Test", )
         try {
             for(int i=0;i<size;i++){
                 dataCheck(buffer[i]);
@@ -97,6 +98,7 @@ public class PayDeviceUtil {
     private void dataCheck(final byte buffer) throws IOException {
 
     }
+
 
 
 }

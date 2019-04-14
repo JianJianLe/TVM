@@ -33,6 +33,7 @@ import com.tvm.tvm.util.SharedPrefsUtil;
 import com.tvm.tvm.util.constant.PreConfig;
 import com.tvm.tvm.util.constant.StringUtils;
 import com.tvm.tvm.util.device.BillAcceptorUtil;
+import com.tvm.tvm.util.device.PayDeviceUtil;
 import com.tvm.tvm.util.device.PrinterCase;
 import com.tvm.tvm.util.device.PrinterUtil;
 import com.tvm.tvm.util.player.MPlayer;
@@ -261,6 +262,7 @@ public class MainActivity extends BaseActivity {
         });
 
         initBillAcceptor();
+        initPayDevice();
     }
 
     public void initBillAcceptor(){
@@ -268,6 +270,10 @@ public class MainActivity extends BaseActivity {
         BillAcceptorUtil.getInstance().init_BillAcceptorCmd();
         BillAcceptorUtil.getInstance().init_BillAcceptorDevice();
         BillAcceptorUtil.getInstance().ba_Disable();
+    }
+
+    public void initPayDevice(){
+        PayDeviceUtil.getInstance().initPayDevice();
     }
 
     private Handler handler = new Handler(){

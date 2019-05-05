@@ -2,8 +2,8 @@
 #include <jni.h>
 /* Header for class com_tvm_tvm_util_device_PrinterUtil */
 
-#ifndef _Included_com_tvm_tvm_util_device_PrinterUtil
-#define _Included_com_tvm_tvm_util_device_PrinterUtil
+#ifndef _Included_com_tvm_tvm_util_device_printer_PrinterUtil
+#define _Included_com_tvm_tvm_util_device_printer_PrinterUtil
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -12,7 +12,7 @@ extern "C" {
  * Method:    jPrinterInit
  * Signature: ()I
  */
-JNIEXPORT jint JNICALL Java_com_tvm_tvm_util_device_PrinterUtil_jPrinterInit
+JNIEXPORT jint JNICALL Java_com_tvm_tvm_util_device_printer_PrinterUtil_jPrinterInit
   (JNIEnv *, jobject);
 
 /*
@@ -20,7 +20,7 @@ JNIEXPORT jint JNICALL Java_com_tvm_tvm_util_device_PrinterUtil_jPrinterInit
  * Method:    jPrinterDataSend
  * Signature: ([BI)V
  */
-JNIEXPORT void JNICALL Java_com_tvm_tvm_util_device_PrinterUtil_jPrinterDataSend
+JNIEXPORT void JNICALL Java_com_tvm_tvm_util_device_printer_PrinterUtil_jPrinterDataSend
   (JNIEnv *, jobject, jbyteArray, jint);
 
 /*
@@ -28,7 +28,7 @@ JNIEXPORT void JNICALL Java_com_tvm_tvm_util_device_PrinterUtil_jPrinterDataSend
  * Method:    getMessageFromJNI
  * Signature: ()Ljava/lang/String;
  */
-JNIEXPORT jstring JNICALL Java_com_tvm_tvm_util_device_PrinterUtil_getMessageFromJNI
+JNIEXPORT jstring JNICALL Java_com_tvm_tvm_util_device_printer_PrinterUtil_getMessageFromJNI
         (JNIEnv *, jclass);
 
 #ifdef __cplusplus

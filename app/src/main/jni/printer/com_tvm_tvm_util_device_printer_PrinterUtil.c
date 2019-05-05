@@ -1,4 +1,4 @@
-#include "com_tvm_tvm_util_device_printerdevice_PrinterUtil.h"
+#include "com_tvm_tvm_util_device_printer_PrinterUtil.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -22,7 +22,7 @@ int p_fd;
 extern "C" {
 #endif
 
-JNIEXPORT jint JNICALL Java_com_tvm_tvm_util_device_PrinterUtil_jPrinterInit
+JNIEXPORT jint JNICALL Java_com_tvm_tvm_util_device_printer_PrinterUtil_jPrinterInit
   (JNIEnv *env, jobject obj){
   p_fd = open(PRINTER_DEVICE_NAME, O_RDWR | O_NOCTTY);
 
@@ -51,7 +51,7 @@ JNIEXPORT jint JNICALL Java_com_tvm_tvm_util_device_PrinterUtil_jPrinterInit
  }
 
 
-JNIEXPORT void JNICALL Java_com_tvm_tvm_util_device_PrinterUtil_jPrinterDataSend
+JNIEXPORT void JNICALL Java_com_tvm_tvm_util_device_printer_PrinterUtil_jPrinterDataSend
   (JNIEnv *env, jobject obj, jbyteArray buffer, jint data_len){
     int len;
 
@@ -63,7 +63,7 @@ JNIEXPORT void JNICALL Java_com_tvm_tvm_util_device_PrinterUtil_jPrinterDataSend
 }
 
 
-JNIEXPORT jstring JNICALL Java_com_tvm_tvm_util_device_PrinterUtil_getMessageFromJNI
+JNIEXPORT jstring JNICALL Java_com_tvm_tvm_util_device_printer_PrinterUtil_getMessageFromJNI
         (JNIEnv *env, jclass obj){
 
     return (*env)->NewStringUTF(env,"This is message from PrinterUtil JNI");;

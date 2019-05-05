@@ -73,8 +73,8 @@ public class PrinterUtil {
 
     private void parsePrintMessage(String printData){
         String[] msgArray = printData.split("\n");
-        for(int i=0; i<msgArray.length;i++){
-            String[] tempMsg=msgArray[i].split("->");
+        for(String msgStr:msgArray){
+            String[] tempMsg=msgStr.split("->");
             if(tempMsg.length>1){
                 switch (tempMsg[0]){
                     case "[CenterLarge]":

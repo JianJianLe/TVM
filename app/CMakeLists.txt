@@ -17,7 +17,7 @@ add_library( # Sets the name of the library.
              SHARED
 
              # Provides a relative path to your source file(s).
-            src/main/jni/printer/com_tvm_tvm_util_device_printerdevice_PrinterUtil.c)
+            src/main/jni/printer/com_tvm_tvm_util_device_printer_PrinterUtil.c)
 
 add_library( # Sets the name of the library.
             serial_port

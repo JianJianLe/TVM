@@ -1,4 +1,4 @@
-package com.tvm.tvm.util.device;
+package com.tvm.tvm.util;
 
 import android.util.Log;
 

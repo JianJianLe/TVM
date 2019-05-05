@@ -12,18 +12,14 @@ import android.widget.TextView;
 
 import com.tvm.tvm.R;
 import com.tvm.tvm.application.AppApplication;
-import com.tvm.tvm.bean.Price;
 import com.tvm.tvm.bean.TicketBean;
 import com.tvm.tvm.bean.dao.DaoSession;
-import com.tvm.tvm.bean.dao.PriceDao;
 import com.tvm.tvm.util.BackPrevious;
-import com.tvm.tvm.util.device.BillAcceptorUtil;
-import com.tvm.tvm.util.device.PrinterCase;
-import com.tvm.tvm.util.view.ToastUtils;
+import com.tvm.tvm.util.device.billacceptor.BillAcceptorUtil;
+import com.tvm.tvm.util.device.printerdevice.PrinterCase;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;

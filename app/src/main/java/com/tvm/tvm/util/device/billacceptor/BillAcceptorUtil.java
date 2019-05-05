@@ -1,7 +1,10 @@
-package com.tvm.tvm.util.device;
+package com.tvm.tvm.util.device.billacceptor;
 
 import android.os.Handler;
 import android.util.Log;
+
+import com.tvm.tvm.util.device.SerialPortUtil;
+import com.tvm.tvm.util.TimeUtil;
 
 import java.io.File;
 import java.io.FileInputStream;

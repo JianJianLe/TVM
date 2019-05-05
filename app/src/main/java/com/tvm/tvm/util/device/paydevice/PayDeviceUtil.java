@@ -1,8 +1,9 @@
-package com.tvm.tvm.util.device;
+package com.tvm.tvm.util.device.paydevice;
 
 import android.util.Log;
 
 import com.tvm.tvm.util.DataUtils;
+import com.tvm.tvm.util.device.SerialPortUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,8 +20,8 @@ public class PayDeviceUtil {
     private OutputStream mOutputStream;
     private InputStream mInputStream;
     private ReadThread mReadThread;
-    private byte[] PD_sendData;
-    public byte[] PD_receiveData;
+//    private byte[] PD_sendData;
+//    public byte[] PD_receiveData;
     private static String serialPortFilePath1="/dev/ttyS1";//"/dev/ttyS0";
     private static String serialPortFilePath2="/dev/ttyGS1";//"/dev/ttyGS0";
 
@@ -78,30 +79,32 @@ public class PayDeviceUtil {
 
     private void onDataReceived(final byte[] buffer, final int size) {
 
-        Log.i("Test", getCmdData(DataUtils.bytesToHex(buffer)));
-        //Log.i("Test", )
+        String cmdStr=getCMD(DataUtils.bytesToHex(buffer));
+        Log.i("Test", cmdStr);
+
+        if(compareCMD(cmdStr,"AA0B0101.*DD"))
+            write("AA0502017C72DD");
+    }
+
+    private void write(String cmdStr) {
         try {
-            for(int i=0;i<size;i++){
-                dataCheck(buffer[i]);
-            }
+            byte[] sendData = DataUtils.hexToByteArray(cmdStr);
+            mOutputStream.write(sendData);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void write() {
-        try {
-            mOutputStream.write(PD_sendData);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
-    private void dataCheck(final byte buffer) throws IOException {
+//    private boolean query_ServerSendCMD(String cmdStr){
+//        return compareCMD(cmdStr,"AA0B0101.*DD");
+//    }
+//
+//    private String query_ClientReplyCMD(){
+//        return "AA 05 02 01 7C 72 DD";
+//    }
 
-    }
-
-    private String getCmdData(String cmdStr){
+    private String getCMD(String cmdStr){
         String partern="AA.*DD";
         Pattern r=Pattern.compile(partern);
         Matcher m=r.matcher(cmdStr);
@@ -111,4 +114,12 @@ public class PayDeviceUtil {
             return null;
     }
 
+    private boolean compareCMD(String cmdStr, String pattern){
+        Pattern r = Pattern.compile(pattern);
+        Matcher m =r.matcher(cmdStr);
+        if(m.find())
+            return true;
+        else
+            return false;
+    }
 }

@@ -1,4 +1,4 @@
-package com.tvm.tvm.util.device;
+package com.tvm.tvm.util.device.printerdevice;
 
 import android.util.Log;
 
@@ -7,6 +7,7 @@ import com.tvm.tvm.bean.BillSetting;
 import com.tvm.tvm.bean.TicketSummary;
 import com.tvm.tvm.bean.dao.BillSettingDao;
 import com.tvm.tvm.bean.dao.TicketSummaryDao;
+import com.tvm.tvm.util.TimeUtil;
 
 import java.util.Date;
 import java.util.List;

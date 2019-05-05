@@ -1,6 +1,8 @@
-package com.tvm.tvm.util.device;
+package com.tvm.tvm.util.device.printerdevice;
 
 import android.util.Log;
+
+import com.tvm.tvm.util.device.printerdevice.PrinterKeys;
 
 public class PrinterUtil {
 
@@ -52,7 +54,7 @@ public class PrinterUtil {
         }
     }
 
-    public void PrintTicket(PrinterKeys msg,String printTemplate){
+    public void PrintTicket(PrinterKeys msg, String printTemplate){
         this.printTemplate=printTemplate;
         printerInit();
         parsePrintMessage(initPrintMessage(msg));

@@ -3,30 +3,21 @@ package com.tvm.tvm.activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.widget.TextView;
 
 import com.tvm.tvm.R;
 import com.tvm.tvm.application.AppApplication;
 import com.tvm.tvm.bean.PaymentRecord;
-import com.tvm.tvm.bean.Price;
 import com.tvm.tvm.bean.Setting;
 import com.tvm.tvm.bean.TicketBean;
 import com.tvm.tvm.bean.TicketSummary;
 import com.tvm.tvm.bean.dao.DaoSession;
 import com.tvm.tvm.bean.dao.PaymentRecordDao;
-import com.tvm.tvm.bean.dao.PriceDao;
 import com.tvm.tvm.bean.dao.SettingDao;
-import com.tvm.tvm.bean.dao.TicketSummaryDao;
-import com.tvm.tvm.util.SharedPrefsUtil;
-import com.tvm.tvm.util.constant.PreConfig;
-import com.tvm.tvm.util.device.PrinterCase;
-import com.tvm.tvm.util.device.PrinterKeys;
-import com.tvm.tvm.util.device.PrinterUtil;
-import com.tvm.tvm.util.device.TimeUtil;
+import com.tvm.tvm.util.device.printerdevice.PrinterCase;
+import com.tvm.tvm.util.device.printerdevice.PrinterKeys;
+import com.tvm.tvm.util.TimeUtil;
 
-import java.text.ParseException;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 

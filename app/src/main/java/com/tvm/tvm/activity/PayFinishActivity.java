@@ -11,9 +11,9 @@ import com.tvm.tvm.application.AppApplication;
 import com.tvm.tvm.bean.Price;
 import com.tvm.tvm.bean.dao.DaoSession;
 import com.tvm.tvm.bean.dao.PriceDao;
-import com.tvm.tvm.util.device.PrinterCase;
-import com.tvm.tvm.util.device.PrinterKeys;
-import com.tvm.tvm.util.device.TimeUtil;
+import com.tvm.tvm.util.device.printerdevice.PrinterCase;
+import com.tvm.tvm.util.device.printerdevice.PrinterKeys;
+import com.tvm.tvm.util.TimeUtil;
 
 import java.util.Date;
 import java.util.List;

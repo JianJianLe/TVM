@@ -20,22 +20,17 @@ import com.tvm.tvm.application.AppApplication;
 import com.tvm.tvm.bean.Price;
 import com.tvm.tvm.bean.Setting;
 import com.tvm.tvm.bean.TicketBean;
-import com.tvm.tvm.bean.TicketSummary;
 import com.tvm.tvm.bean.dao.DaoSession;
 import com.tvm.tvm.bean.dao.PriceDao;
 import com.tvm.tvm.bean.dao.SettingDao;
-import com.tvm.tvm.bean.dao.TicketSummaryDao;
 import com.tvm.tvm.util.BitmapUtils;
 import com.tvm.tvm.util.FirstInitApp;
 import com.tvm.tvm.util.FolderUtil;
 import com.tvm.tvm.util.LongClickUtils;
-import com.tvm.tvm.util.SharedPrefsUtil;
-import com.tvm.tvm.util.constant.PreConfig;
 import com.tvm.tvm.util.constant.StringUtils;
-import com.tvm.tvm.util.device.BillAcceptorUtil;
-import com.tvm.tvm.util.device.PayDeviceUtil;
-import com.tvm.tvm.util.device.PrinterCase;
-import com.tvm.tvm.util.device.PrinterUtil;
+import com.tvm.tvm.util.device.billacceptor.BillAcceptorUtil;
+import com.tvm.tvm.util.device.paydevice.PayDeviceUtil;
+import com.tvm.tvm.util.device.printerdevice.PrinterCase;
 import com.tvm.tvm.util.player.MPlayer;
 import com.tvm.tvm.util.player.MPlayerException;
 import com.tvm.tvm.util.player.MinimalDisplay;
@@ -55,7 +50,6 @@ import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.OnLongClick;
 
 public class MainActivity extends BaseActivity {
 
@@ -228,11 +222,6 @@ public class MainActivity extends BaseActivity {
 
     //时间
     private int timeFlag=-1;
-
-    static {
-        System.loadLibrary("printer");
-        System.loadLibrary("serial_port");
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

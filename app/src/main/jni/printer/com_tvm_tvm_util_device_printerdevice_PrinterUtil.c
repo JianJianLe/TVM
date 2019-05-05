@@ -1,4 +1,4 @@
-#include "com_tvm_tvm_util_device_PrinterUtil.h"
+#include "com_tvm_tvm_util_device_printerdevice_PrinterUtil.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>

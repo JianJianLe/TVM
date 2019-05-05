@@ -1,7 +1,6 @@
 package com.tvm.tvm.adapter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +9,7 @@ import android.widget.TextView;
 
 import com.tvm.tvm.R;
 import com.tvm.tvm.bean.PaymentRecord;
-import com.tvm.tvm.util.constant.PreConfig;
-import com.tvm.tvm.util.device.TimeUtil;
+import com.tvm.tvm.util.TimeUtil;
 
 import java.util.List;
 

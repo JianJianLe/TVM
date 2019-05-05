@@ -1,4 +1,4 @@
-package com.tvm.tvm.util.device.printerdevice;
+package com.tvm.tvm.util.device.printer;
 
 import android.util.Log;
 

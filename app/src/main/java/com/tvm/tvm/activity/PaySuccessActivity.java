@@ -14,8 +14,8 @@ import com.tvm.tvm.bean.TicketSummary;
 import com.tvm.tvm.bean.dao.DaoSession;
 import com.tvm.tvm.bean.dao.PaymentRecordDao;
 import com.tvm.tvm.bean.dao.SettingDao;
-import com.tvm.tvm.util.device.printerdevice.PrinterCase;
-import com.tvm.tvm.util.device.printerdevice.PrinterKeys;
+import com.tvm.tvm.util.device.printer.PrinterCase;
+import com.tvm.tvm.util.device.printer.PrinterKeys;
 import com.tvm.tvm.util.TimeUtil;
 
 import java.util.Date;

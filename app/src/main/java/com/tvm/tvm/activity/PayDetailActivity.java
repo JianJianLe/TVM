@@ -16,7 +16,7 @@ import com.tvm.tvm.bean.TicketBean;
 import com.tvm.tvm.bean.dao.DaoSession;
 import com.tvm.tvm.util.BackPrevious;
 import com.tvm.tvm.util.device.billacceptor.BillAcceptorUtil;
-import com.tvm.tvm.util.device.printerdevice.PrinterCase;
+import com.tvm.tvm.util.device.printer.PrinterCase;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

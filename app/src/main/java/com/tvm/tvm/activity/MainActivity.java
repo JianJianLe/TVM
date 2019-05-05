@@ -30,7 +30,7 @@ import com.tvm.tvm.util.LongClickUtils;
 import com.tvm.tvm.util.constant.StringUtils;
 import com.tvm.tvm.util.device.billacceptor.BillAcceptorUtil;
 import com.tvm.tvm.util.device.paydevice.PayDeviceUtil;
-import com.tvm.tvm.util.device.printerdevice.PrinterCase;
+import com.tvm.tvm.util.device.printer.PrinterCase;
 import com.tvm.tvm.util.player.MPlayer;
 import com.tvm.tvm.util.player.MPlayerException;
 import com.tvm.tvm.util.player.MinimalDisplay;

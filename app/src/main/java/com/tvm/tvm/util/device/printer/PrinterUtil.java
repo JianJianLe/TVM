@@ -1,8 +1,6 @@
-package com.tvm.tvm.util.device.printerdevice;
+package com.tvm.tvm.util.device.printer;
 
 import android.util.Log;
-
-import com.tvm.tvm.util.device.printerdevice.PrinterKeys;
 
 public class PrinterUtil {
 

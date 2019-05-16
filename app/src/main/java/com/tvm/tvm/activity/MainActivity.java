@@ -346,11 +346,18 @@ public class MainActivity extends BaseActivity {
     @OnClick({R.id.tv_main_click_buy,
             R.id.iv_main_ticket_cancel,R.id.iv_main_ticket_buy,
             R.id.iv_main_ticket_1_add,R.id.iv_main_ticket_1_sub,
-            R.id.iv_main_ticket_2_add,R.id.iv_main_ticket_2_sub})
+            R.id.iv_main_ticket_2_add,R.id.iv_main_ticket_2_sub,
+            R.id.tv_main_title_title,R.id.tv_main_header_ticket_num})
     public void onClick(View view){
         Long priceId;
         int ticketNum = 0;
         switch (view.getId()){
+            case R.id.tv_main_title_title:
+//                PayDeviceUtil.getInstance().cmd_GetQRCode(1000);//1000分->10元
+                break;
+            case R.id.tv_main_header_ticket_num:
+//                PayDeviceUtil.getInstance().cmd_ReplySever();
+                break;
             case R.id.tv_main_click_buy:
                 shutDownScheduledExecutorService();
                 //选择价格，价格列表为空的话不能购票

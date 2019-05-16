@@ -225,7 +225,8 @@ public class BillAcceptorUtil {
     // 启动收款机
     public void ba_Enable() {
         try {
-            mOutputStream.write(BA_enable);
+            //mOutputStream.write(BA_enable);
+            mOutputStream.write(BA_disable);//Test May12 - Star
             Log.i("Test", "ba_Enable()");
         } catch (IOException e) {
             e.printStackTrace();

@@ -1,13 +1,17 @@
 package com.tvm.tvm.util.device;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.security.MessageDigest;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.os.Environment;
+import android.util.Log;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
@@ -16,8 +20,32 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
 public class QRCodeUtil {
-    //TODO: Need to rewrite the details
+    private static QRCodeUtil instance;
 
+    public synchronized static QRCodeUtil getInstance(){
+        if (instance==null) {
+            instance = new QRCodeUtil();
+        }
+        return instance;
+    }
+
+    public String getQRCode(Context context, String content){
+        String path_QRCode = getDiskCacheDir(context,"QrImg.bmp").getPath();
+        qrCodeCreate(content,path_QRCode);
+        Log.i("Test","QR Code File Path:"+path_QRCode);
+        return path_QRCode;
+    }
+
+    private File getDiskCacheDir(Context context, String uniqueName) {
+        String cachePath;
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
+                || !Environment.isExternalStorageRemovable()) {
+            cachePath = context.getExternalCacheDir().getPath();
+        } else {
+            cachePath = context.getCacheDir().getPath();
+        }
+        return new File(cachePath + File.separator + uniqueName);
+    }
 //
 //
 //    private void qrCodeConfig(int money) {
@@ -68,17 +96,6 @@ public class QRCodeUtil {
 //    }
 
 
-//    // 创建二维码
-//    private void qrCodeCreate(final String QrData, final String QrImgPath) {
-//
-////        boolean success = QRCodeUtil.createQRImage(QrData, 264, 264,
-////                null, QrImgPath);
-////
-////        if (success) {
-////            Log.i(TAG, "Success!");
-////        }
-//
-//    }
 
 //    // 打印二维码
 //    private void qrCodePrint(InputStream QrData) {
@@ -97,6 +114,17 @@ public class QRCodeUtil {
 
 
 
+    // 创建二维码
+    private void qrCodeCreate(String QrData, String QrImgPath) {
+
+        boolean success = createQRImage(QrData, 200, 200,
+                null, QrImgPath);
+        if (success)
+            Log.i("Test", "Create QR Code Successful.");
+        else
+            Log.i("Test","Create QR Code Failed.");
+    }
+
     /**
      * 生成二维码Bitmap
      *
@@ -107,7 +135,7 @@ public class QRCodeUtil {
      * @param filePath 用于存储二维码图片的文件路径
      * @return 生成二维码及保存文件是否成功
      */
-    public static boolean createQRImage(String content, int widthPix, int heightPix, Bitmap logoBm,
+    private boolean createQRImage(String content, int widthPix, int heightPix, Bitmap logoBm,
                                         String filePath) {
         try {
             if (content == null || "".equals(content)) {
@@ -161,7 +189,7 @@ public class QRCodeUtil {
     /**
      * 在二维码中间添加Logo图案
      */
-    private static Bitmap addLogo(Bitmap src, Bitmap logo) {
+    private Bitmap addLogo(Bitmap src, Bitmap logo) {
         if (src == null) {
             return null;
         }

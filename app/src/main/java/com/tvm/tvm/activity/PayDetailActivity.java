@@ -1,5 +1,6 @@
 package com.tvm.tvm.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,9 +16,14 @@ import com.tvm.tvm.application.AppApplication;
 import com.tvm.tvm.bean.TicketBean;
 import com.tvm.tvm.bean.dao.DaoSession;
 import com.tvm.tvm.util.BackPrevious;
+import com.tvm.tvm.util.BitmapUtils;
+import com.tvm.tvm.util.TimeUtil;
+import com.tvm.tvm.util.device.QRCodeUtil;
 import com.tvm.tvm.util.device.billacceptor.BillAcceptorUtil;
+import com.tvm.tvm.util.device.paydevice.PayDeviceUtil;
 import com.tvm.tvm.util.device.printer.PrinterCase;
 
+import java.io.File;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
@@ -78,6 +84,9 @@ public class PayDetailActivity extends BaseActivity{
     //返回上一级倒计时
     private BackPrevious backPrevious;
 
+    private int countGetQRCode=0;
+    private File imgQRCodeFile;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +112,10 @@ public class PayDetailActivity extends BaseActivity{
                 case 0:
                     cashPay();
                     checkPayResult();
+                    break;
+                case 1:
+                    iv_pay_detail_qr_code.setImageBitmap(BitmapUtils.file2Bitmap(imgQRCodeFile));
+                    PayDeviceUtil.getInstance().QRData=null;
                     break;
             }
         }
@@ -158,7 +171,39 @@ public class PayDetailActivity extends BaseActivity{
             receivedAmount = balance;
             updateAmount();
         }
+        setQRCode();
         backPrevious = new BackPrevious(setting.getPayTimeOut()*1000,1000,PayDetailActivity.this);
+    }
+
+    private void setQRCode(){
+        countGetQRCode=0;
+        new Thread(){
+            public void run() {
+                while (!isInterrupted() && PayDeviceUtil.getInstance().QRData==null){
+                    PayDeviceUtil.getInstance().cmd_GetQRCode((int)(totalAmount*100));
+                    TimeUtil.delay(1000);
+                    displayQRCode(PayDeviceUtil.getInstance().QRData);
+                    countGetQRCode++;
+                    if(countGetQRCode==20){
+                        break;
+                    }
+                }
+            }
+        }.start();
+    }
+
+    private void displayQRCode(String QRData){
+        if(QRData!=null&&QRData.length()>0){
+            Log.i("Test","display QR Code:" + QRData);
+            imgQRCodeFile = new File(QRCodeUtil.getInstance().getQRCode(this,QRData));
+            if(imgQRCodeFile.exists()){
+                //Set Image into View
+                Message message = new Message();
+                message.what = 1;
+                handler.sendMessage(message);
+            }
+
+        }
     }
 
     private double getTotalAmount(){

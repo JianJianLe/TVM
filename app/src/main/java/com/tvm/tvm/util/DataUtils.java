@@ -49,4 +49,83 @@ public class DataUtils {
         }
         return hex.toUpperCase();
     }
+
+    //10进制转16进制，低位在前
+    //decToHex(1000); This is E803
+    public static String decToHex(int dec) {
+        String hex = "";
+        while(dec != 0) {
+            String h = Integer.toString(dec & 0xff, 16);
+            if((h.length() & 0x01) == 1)
+                h = '0' + h;
+            hex = hex + h;
+            dec = dec >> 8;
+        }
+        return hex.toUpperCase();
+    }
+
+    public static String xor(String content) {
+        content = addSpace(content.replace(" ",""));
+        String[] b = content.split(" ");
+        int a = 0;
+        for (int i = 0; i < b.length; i++) {
+            a = a ^ Integer.parseInt(b[i], 16);
+        }
+        if (a < 10) {
+            StringBuffer sb = new StringBuffer();
+            sb.append("0");
+            sb.append(a);
+            return sb.toString();
+        }
+        return Integer.toHexString(a).toUpperCase();
+    }
+
+    public static String addSpace(String content) {
+        String str = "";
+        for (int i = 0; i < content.length(); i++) {
+            if (i % 2 == 0) {
+                str += " " + content.substring(i, i + 1);
+            } else {
+                str += content.substring(i, i + 1);
+            }
+        }
+        return str.trim();
+    }
+
+    public static String convertStringToHex(String str){
+
+        char[] chars = str.toCharArray();
+
+        StringBuffer hex = new StringBuffer();
+        for(int i = 0; i < chars.length; i++){
+            hex.append(Integer.toHexString((int)chars[i]));
+        }
+
+        return hex.toString();
+    }
+
+    public static String convertHexToString(String hex) {
+
+        StringBuilder sb = new StringBuilder();
+        StringBuilder temp = new StringBuilder();
+
+        //49204c6f7665204a617661 split into two characters 49, 20, 4c...
+        for (int i = 0; i < hex.length() - 1; i += 2) {
+
+            //grab the hex in pairs
+            String output = hex.substring(i, (i + 2));
+            //convert hex to decimal
+            int decimal = Integer.parseInt(output, 16);
+            //convert the decimal to character
+            sb.append((char) decimal);
+
+            temp.append(decimal);
+        }
+
+        return sb.toString();
+    }
+
+    public static String removeSpace(String content){
+        return content.replace(" ","");
+    }
 }

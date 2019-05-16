@@ -87,7 +87,7 @@ public class PaySuccessActivity extends BaseActivity {
                     message.what = 0;
                     handler.sendMessage(message);
                 }
-            };
+            }
         }.start();
     }
 

@@ -94,7 +94,7 @@ public class PayFinishActivity extends BaseActivity {
                 Message message = new Message();
                 message.what = 0;
                 handler.sendMessage(message);
-            };
+            }
         }.start();
     }
 

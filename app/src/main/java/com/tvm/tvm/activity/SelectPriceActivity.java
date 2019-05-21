@@ -8,10 +8,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.tvm.tvm.R;
@@ -24,6 +26,7 @@ import com.tvm.tvm.bean.dao.PriceDao;
 import com.tvm.tvm.util.BackPrevious;
 import com.tvm.tvm.util.constant.StringUtils;
 import com.tvm.tvm.util.device.billacceptor.BillAcceptorUtil;
+import com.tvm.tvm.util.view.ConfirmDialogUtils;
 import com.tvm.tvm.util.view.ToastUtils;
 
 import java.io.Serializable;
@@ -44,7 +47,7 @@ import butterknife.OnClick;
  * - @Date:  2019/1/15
  * - @Time： 21:14
  */
-public class SelectPriceActivity extends BaseActivity {
+public class SelectPriceActivity extends BaseActivity implements View.OnTouchListener,GestureDetector.OnGestureListener {
 
     private Context TAG = SelectPriceActivity.this;
 
@@ -63,6 +66,9 @@ public class SelectPriceActivity extends BaseActivity {
     @BindView(R.id.iv_select_price_cancel)
     ImageView iv_select_price_cancel;
 
+    @BindView(R.id.ll_activity_select_price_layout)
+    LinearLayout ll_activity_select_price_layout;
+
     private SelectPriceAdapter adapter;
 
     private List<Price> priceList;
@@ -79,6 +85,15 @@ public class SelectPriceActivity extends BaseActivity {
     //返回上一页倒计时辅助类
     private BackPrevious backPrevious;
 
+    //监听滑动事件，记录初始滑动的坐标
+    private float mPosX = 0 ;
+    private float mPosY = 0;
+    //记录当前手指的坐标
+    private float curX = 0;
+    private float curY = 0;
+
+    GestureDetector gestureDetector;
+
     private Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -94,9 +109,12 @@ public class SelectPriceActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_price);
         ButterKnife.bind(this);
+        gestureDetector = new GestureDetector(this);
+        ll_activity_select_price_layout.setOnTouchListener(this);
+        gv_select_price_list.setOnTouchListener(this);
+        ll_activity_select_price_layout.setLongClickable(true);
         daoSession = AppApplication.getApplication().getDaoSession();
         setPrice();
-
         backPrevious = new BackPrevious(setting.getSelectTimeOut()*1000,1000,SelectPriceActivity.this);
 
         //注册广播接受者，广播接受者更新票价总数
@@ -117,6 +135,36 @@ public class SelectPriceActivity extends BaseActivity {
                 break;
         }
     }
+
+//    //绑定页面左右滑动监听
+//    public void setListener(){
+//        ll_activity_select_price_layout.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                switch (event.getAction()){
+//                    case MotionEvent.ACTION_DOWN:
+//                        mPosX = event.getX();
+//                        mPosY = event.getY();
+//                        ToastUtils.showText(SelectPriceActivity.this,"点击了");
+//                        break;
+//                    case MotionEvent.ACTION_MOVE:
+//                        curX = event.getX();
+//                        curY = event.getY();
+//                        break;
+//                    case MotionEvent.ACTION_UP:
+//                        if ( curX - mPosX > 0
+//                                && Math.abs(curX - mPosX) > 25){
+//                            //左滑
+//                            ToastUtils.showText(SelectPriceActivity.this,"左滑了");
+//                        }else if (curX - mPosX < 0 && Math.abs(curX - mPosX) < 25){
+//                            //右滑
+//                            ToastUtils.showText(SelectPriceActivity.this,"右滑了");
+//                        }
+//                }
+//                return true;
+//            }
+//        });
+//    }
 
     /**
      * 重置所有的票数和金额
@@ -262,6 +310,72 @@ public class SelectPriceActivity extends BaseActivity {
                 break;
         }
         return super.dispatchTouchEvent(ev);
+    }
+
+    @Override
+    public boolean onDown(MotionEvent e) {
+        return false;
+    }
+
+    @Override
+    public void onShowPress(MotionEvent e) {
+
+    }
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent e) {
+        return false;
+    }
+
+    @Override
+    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+        return false;
+    }
+
+    @Override
+    public void onLongPress(MotionEvent e) {
+
+    }
+
+    @Override
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+        if(e1.getX()-e2.getX()>StringUtils.FLING_MIN_DISTANCE&&Math.abs(velocityX)>StringUtils.FLING_MIN_VELOCITY){
+            final ConfirmDialogUtils confirmDialogUtils = new ConfirmDialogUtils(SelectPriceActivity.this,"购票确认","确认购买您选择的所有票吗？");
+            confirmDialogUtils.show();
+            confirmDialogUtils.setOnDialogClickListener(new ConfirmDialogUtils.OnDialogClickListener() {
+                @Override
+                public void onOKClick() {
+                    confirmDialogUtils.dismiss();
+                    confirmPay();
+                }
+
+                @Override
+                public void onCancelClick() {
+                    confirmDialogUtils.dismiss();
+                }
+            });
+        } else if (e2.getX()-e1.getX() > StringUtils.FLING_MIN_DISTANCE && Math.abs(velocityX)>StringUtils.FLING_MIN_VELOCITY){
+            final ConfirmDialogUtils confirmDialogUtils = new ConfirmDialogUtils(SelectPriceActivity.this,"取消确认","确认取消选票并返回上一页吗？");
+            confirmDialogUtils.show();
+            confirmDialogUtils.setOnDialogClickListener(new ConfirmDialogUtils.OnDialogClickListener() {
+                @Override
+                public void onOKClick() {
+                    confirmDialogUtils.dismiss();
+                    SelectPriceActivity.this.finish();
+                }
+
+                @Override
+                public void onCancelClick() {
+                    confirmDialogUtils.dismiss();
+                }
+            });
+        }
+        return false;
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        return gestureDetector.onTouchEvent(event);
     }
 
     /**

@@ -58,6 +58,9 @@ public class StringUtils {
 
     public static String TICKET_RECEIVER= "UPDATE_TICKET_SUMARRY";
 
+    public static final int FLING_MIN_DISTANCE = 100;
+    public static final int FLING_MIN_VELOCITY = 0;
+
     public static String billContext = "[CenterLarge]->快剪\n" +
             "        [CenterSmall]->欢迎光临快剪专营店\n" +
             "        [CenterSmall]->本店编号：[DeviceNumber]\n" +

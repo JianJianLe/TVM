@@ -13,7 +13,7 @@
 
         <ImageButton
             android:id="@+id/ib_bill_query_back"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/xy30dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_margin="@dimen/xy10dp"

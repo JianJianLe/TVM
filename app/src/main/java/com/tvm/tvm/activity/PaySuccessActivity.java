@@ -37,12 +37,6 @@ public class PaySuccessActivity extends BaseActivity {
     TextView tv_pay_success_company_name;
 
     private PrinterAction printerAction;
-    //传递过来得票价id
-//    private Long priceId;
-//    private DaoSession daoSession;
-//    private List<TicketBean> ticketList;
-//    private double ticketPrice;
-//    private String ticketTitle;
 
     @Override
     protected void onCreate( Bundle savedInstanceState) {

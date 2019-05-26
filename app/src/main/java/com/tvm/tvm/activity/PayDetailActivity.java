@@ -138,7 +138,11 @@ public class PayDetailActivity extends BaseActivity{
     //TODO: 网络支付
     private void netWorkPay(){
         if(PayDeviceUtil.getInstance().paySuccess){
+            PrinterCase.getInstance().amountRecord=totalAmount;
+            receivedAmount=totalAmount;
+            updateAmount();
             PrinterCase.getInstance().msg.setPayType("网络支付");
+            PayDeviceUtil.getInstance().paySuccess=false;
         }
     }
 
@@ -167,7 +171,8 @@ public class PayDetailActivity extends BaseActivity{
         tv_pay_detail_desc.setText(setting.getPayDesc());
         int balance = (int)PrinterCase.getInstance().balanceRecord;
         if(balance!=0){
-            receivedAmount = balance;
+            PrinterCase.getInstance().amountRecord=balance;
+            receivedAmount=balance;
             updateAmount();
         }
         setQRCode();

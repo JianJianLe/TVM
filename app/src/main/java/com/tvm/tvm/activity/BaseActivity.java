@@ -8,12 +8,14 @@ import android.os.CancellationSignal;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.tvm.tvm.R;
 import com.tvm.tvm.application.AppApplication;
 import com.tvm.tvm.bean.Setting;
 import com.tvm.tvm.bean.dao.SettingDao;
+import com.tvm.tvm.util.device.paydevice.PayDeviceUtil;
 
 /**
  * activity基类
@@ -42,6 +44,8 @@ public class BaseActivity extends Activity {
     }
 
     public void init(){
+        String subClassName=this.getClass().getSimpleName();
+        PayDeviceUtil.getInstance().activeActivity=subClassName;
         SettingDao settingDao = AppApplication.getApplication().getDaoSession().getSettingDao();
         setting = settingDao.queryBuilder().where(SettingDao.Properties.Id.eq(1)).unique();
     }

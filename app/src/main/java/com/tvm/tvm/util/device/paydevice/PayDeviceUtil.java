@@ -3,8 +3,11 @@ package com.tvm.tvm.util.device.paydevice;
 import android.provider.ContactsContract;
 import android.util.Log;
 
+import com.tvm.tvm.bean.TicketBean;
 import com.tvm.tvm.util.DataUtils;
 import com.tvm.tvm.util.device.SerialPortUtil;
+import com.tvm.tvm.util.device.printer.PrinterAction;
+import com.tvm.tvm.util.device.printer.PrinterCase;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,6 +15,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,6 +23,7 @@ import java.util.regex.Pattern;
 public class PayDeviceUtil {
     public String QRData=null;
     public boolean paySuccess=false;
+    public String activeActivity=null;
 
     private SerialPortUtil serialPort;
     private OutputStream mOutputStream;
@@ -115,9 +120,14 @@ public class PayDeviceUtil {
 
                 //支付盒子收款成功发送同步支付结果指令（子命令 0x03）
                 if(hasPayResult()){
-                    if(checkPayResult())
+                    if(checkPayResult()){
                         cmd_ReplyPayMatch();
-                        //TODO: print tickets
+                        if(activeActivity.equals("PayDetailActivity"))
+                            paySuccess=true;
+                        else{
+                            printTicketDirectly();
+                        }
+                    }
                     else
                         cmd_ReplyPayMismatch();
                 }
@@ -133,6 +143,15 @@ public class PayDeviceUtil {
         }else{
             printInfo("Invalid Server CMD:"+cmdStr);
         }
+    }
+
+    private void printTicketDirectly(){
+        PrinterCase.getInstance().msg.setPayType("网络支付");
+        PrinterAction printerAction=new PrinterAction();
+        printerAction.PrintTicket();
+        PrinterCase.getInstance().balanceRecord=0;
+        PrinterCase.getInstance().amountRecord=0;
+        paySuccess=false;
     }
 
     //======== Server Query Start ========

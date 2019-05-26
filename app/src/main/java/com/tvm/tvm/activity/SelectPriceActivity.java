@@ -26,6 +26,7 @@ import com.tvm.tvm.bean.dao.PriceDao;
 import com.tvm.tvm.util.BackPrevious;
 import com.tvm.tvm.util.constant.StringUtils;
 import com.tvm.tvm.util.device.billacceptor.BillAcceptorUtil;
+import com.tvm.tvm.util.device.printer.PrinterCase;
 import com.tvm.tvm.util.view.ConfirmDialogUtils;
 import com.tvm.tvm.util.view.ToastUtils;
 
@@ -193,8 +194,8 @@ public class SelectPriceActivity extends BaseActivity implements View.OnTouchLis
                 beanList.add(entry.getValue());
             }
             BillAcceptorUtil.getInstance().ba_Enable();//@Star 16Feb
-            intent.putExtra("list", (Serializable) beanList);
-            startActivity(this,intent,PayDetailActivity.class);
+            PrinterCase.getInstance().ticketList = beanList;
+            startActivity(this,PayDetailActivity.class);
             this.finish();
         }
     }

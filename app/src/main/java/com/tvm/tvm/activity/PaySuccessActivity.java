@@ -14,6 +14,7 @@ import com.tvm.tvm.bean.TicketSummary;
 import com.tvm.tvm.bean.dao.DaoSession;
 import com.tvm.tvm.bean.dao.PaymentRecordDao;
 import com.tvm.tvm.bean.dao.SettingDao;
+import com.tvm.tvm.util.device.printer.PrinterAction;
 import com.tvm.tvm.util.device.printer.PrinterCase;
 import com.tvm.tvm.util.device.printer.PrinterKeys;
 import com.tvm.tvm.util.TimeUtil;
@@ -35,20 +36,20 @@ public class PaySuccessActivity extends BaseActivity {
     @BindView(R.id.tv_pay_success_company_name)
     TextView tv_pay_success_company_name;
 
+    private PrinterAction printerAction;
     //传递过来得票价id
-    private Long priceId;
-    private DaoSession daoSession;
-    private List<TicketBean> ticketList;
-    private double ticketPrice;
-    private String ticketTitle;
+//    private Long priceId;
+//    private DaoSession daoSession;
+//    private List<TicketBean> ticketList;
+//    private double ticketPrice;
+//    private String ticketTitle;
 
     @Override
     protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay_success);
         ButterKnife.bind(this);
-        daoSession = AppApplication.getApplication().getDaoSession();
-        ticketList = (List<TicketBean>) getIntent().getSerializableExtra("list");
+        printerAction=new PrinterAction();
         initData();
         printTicket();
     }
@@ -76,7 +77,7 @@ public class PaySuccessActivity extends BaseActivity {
     private void printTicket(){
         new Thread(){
             public void run() {
-                printTicketList();
+                printerAction.PrintTicketList();
                 double balance= PrinterCase.getInstance().balanceRecord;
                 if(balance!=0){
                     Message message = new Message();
@@ -89,61 +90,6 @@ public class PaySuccessActivity extends BaseActivity {
                 }
             }
         }.start();
-    }
-
-    private void printTicketList(){
-
-        PrinterKeys msg = PrinterCase.getInstance().msg;
-        msg.setDeviceNumber(getDeviceNO());
-        msg.setDateStr(TimeUtil.dateFormat.format(new Date()));
-        for (TicketBean bean:ticketList){
-            ticketPrice=bean.getPrice();//价格
-            ticketTitle=bean.getTitle();//标题
-            priceId=bean.getId();
-            for(int i=0; i<bean.getNumber();i++){
-                String currentTime=TimeUtil.dateFormat.format(new Date());
-                msg.setTicketNumber(PrinterCase.getInstance().getTicketNumber(currentTime));
-                msg.setTicketName(ticketTitle);
-                msg.setPrice(ticketPrice+"");
-                saveTicketInfo(currentTime,Integer.parseInt(msg.getTicketNumber()));
-                savePayment(PrinterCase.getInstance().msg);
-                PrinterCase.getInstance().print();
-                TimeUtil.delay(3000);
-            }
-        }
-    }
-
-
-    //@Star 获取Device No
-    private String getDeviceNO(){
-        SettingDao settingDao = daoSession.getSettingDao();
-        Setting setting = settingDao.queryBuilder().where(SettingDao.Properties.Id.eq(1l)).unique();
-        if(setting==null)
-            return "NULL";
-        else
-            return setting.getDeviceNo();
-    }
-
-    //@Star 保存支付记录
-    private void savePayment(PrinterKeys msg){
-        PaymentRecordDao paymentRecordDao=daoSession.getPaymentRecordDao();
-        PaymentRecord paymentRecord=new PaymentRecord();
-        paymentRecord.setAmount(Double.valueOf(ticketPrice));
-        paymentRecord.setNum(1);
-        paymentRecord.setPrice(Double.valueOf(ticketPrice));
-        paymentRecord.setPriceId(priceId);
-        paymentRecord.setTitle(ticketTitle);
-        paymentRecord.setPayTime(TimeUtil.getDate(msg.getDateStr()));
-        paymentRecord.setType(paymentRecord.getTypeNumber(msg.getPayType()));
-        paymentRecordDao.save(paymentRecord);
-    }
-
-    //@Star 记录每一笔
-    private void saveTicketInfo(String currentTime, int orderNum){
-        TicketSummary ticketSummary=new TicketSummary();
-        ticketSummary.setDate(currentTime);
-        ticketSummary.setNum(orderNum);
-        daoSession.getTicketSummaryDao().save(ticketSummary);
     }
 
     //@Star Main Activity

@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.tvm.tvm.application.AppApplication;
 import com.tvm.tvm.bean.BillSetting;
+import com.tvm.tvm.bean.TicketBean;
 import com.tvm.tvm.bean.TicketSummary;
 import com.tvm.tvm.bean.dao.BillSettingDao;
 import com.tvm.tvm.bean.dao.TicketSummaryDao;
@@ -16,8 +17,9 @@ public class PrinterCase {
 
     public double amountRecord=0;//总共多少金额
     public double balanceRecord=0;//余额
-    //public int numRecord=0;//一共打印多少张票
+    public List<TicketBean> ticketList;
     private List<TicketSummary> ticketSummaryList;
+
 
     private String printTemplate = "[CenterLarge]->快剪\n" +
             "[CenterSmall]->欢迎光临快剪专营店\n" +

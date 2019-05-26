@@ -76,8 +76,6 @@ public class PayDetailActivity extends BaseActivity{
     //总价
     private double totalAmount=0d;
 
-    private DaoSession daoSession;
-
     private ScheduledExecutorService scheduledExecutorService;
     //传递的票列表
     private List<TicketBean> ticketList;
@@ -93,8 +91,7 @@ public class PayDetailActivity extends BaseActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay_detail);
         ButterKnife.bind(this);
-        daoSession = AppApplication.getApplication().getDaoSession();
-        ticketList = (List<TicketBean>) getIntent().getSerializableExtra("list");
+        ticketList = PrinterCase.getInstance().ticketList;
         initData();
     }
 
@@ -132,9 +129,7 @@ public class PayDetailActivity extends BaseActivity{
                 PrinterCase.getInstance().balanceRecord=balance;
                 PrinterCase.getInstance().amountRecord=0;
                 //@Star goto Next Activity
-                Intent intent = new Intent();
-                intent.putExtra("list", (Serializable) ticketList);
-                startActivity(this,intent,PaySuccessActivity.class);
+                startActivity(this,PaySuccessActivity.class);
                 this.finish();
             }
         }

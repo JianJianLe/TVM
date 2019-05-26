@@ -436,9 +436,8 @@ public class MainActivity extends BaseActivity {
                 ticketList.add(bean);
             }
             BillAcceptorUtil.getInstance().ba_Enable();//@Star 16Feb
-            Intent intent = new Intent();
-            intent.putExtra("list", (Serializable) ticketList);
-            startActivity(this,intent,PayDetailActivity.class);
+            PrinterCase.getInstance().ticketList = ticketList;
+            startActivity(this,PayDetailActivity.class);
         }
     }
 

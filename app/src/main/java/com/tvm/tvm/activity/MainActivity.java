@@ -353,13 +353,13 @@ public class MainActivity extends BaseActivity {
         int ticketNum = 0;
         switch (view.getId()){
             case R.id.tv_main_title_title:
+                PayDeviceUtil.getInstance().cmd_DrawBack("262247452048",100);
 //                PayDeviceUtil.getInstance().cmd_GetQRCode(1000);//1000分->10元
                 break;
             case R.id.tv_main_header_ticket_num:
 //                PayDeviceUtil.getInstance().cmd_ReplySever();
                 break;
             case R.id.tv_main_click_buy:
-                shutDownScheduledExecutorService();
                 //选择价格，价格列表为空的话不能购票
                 if (priceList==null || priceList.size() == 0){
                     ToastUtils.showText(this,StringUtils.EMPTY_PRICE_LIST);
@@ -657,9 +657,11 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
-        //时间更新，一分钟刷新一次
-        scheduledExecutorService.scheduleWithFixedDelay(new TimeTask(), 1, 1 ,TimeUnit.SECONDS);
+        if(scheduledExecutorService==null || scheduledExecutorService.isShutdown()){
+            scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+            //时间更新，一分钟刷新一次
+            scheduledExecutorService.scheduleWithFixedDelay(new TimeTask(), 1, 1 ,TimeUnit.SECONDS);
+        }
         //设置公司名和购买指引
         SettingDao settingDao = daoSession.getSettingDao();
         Setting setting = settingDao.queryBuilder().where(SettingDao.Properties.Id.eq(1)).unique();
@@ -667,8 +669,6 @@ public class MainActivity extends BaseActivity {
             tv_main_comany_name.setText(setting.getShopName());
             tv_main_pay_desc.setText(setting.getPayDesc());
         }
-
-        Log.i("Test","MainActivity onStart scheduledExecutorService open!");
     }
 
     /**

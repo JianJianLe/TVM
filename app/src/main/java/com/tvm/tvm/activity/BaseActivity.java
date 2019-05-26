@@ -44,8 +44,6 @@ public class BaseActivity extends Activity {
     }
 
     public void init(){
-        String subClassName=this.getClass().getSimpleName();
-        PayDeviceUtil.getInstance().activeActivity=subClassName;
         SettingDao settingDao = AppApplication.getApplication().getDaoSession().getSettingDao();
         setting = settingDao.queryBuilder().where(SettingDao.Properties.Id.eq(1)).unique();
     }

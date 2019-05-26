@@ -89,6 +89,7 @@ public class PayDetailActivity extends BaseActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        PayDeviceUtil.getInstance().activityRecord="PayDetailActivity";
         setContentView(R.layout.activity_pay_detail);
         ButterKnife.bind(this);
         ticketList = PrinterCase.getInstance().ticketList;
@@ -266,16 +267,19 @@ public class PayDetailActivity extends BaseActivity{
     @Override
     protected void onStart() {
         super.onStart();
-        scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
-        //时间更新，一分钟刷新一次
-        scheduledExecutorService.scheduleWithFixedDelay(new TimeTask(), 1, 1 ,TimeUnit.SECONDS);
-        Log.i("Test","PayDetailActivity onStart scheduledExecutorService open!");
+        if(scheduledExecutorService==null || scheduledExecutorService.isShutdown()) {
+            scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+            //时间更新，一分钟刷新一次
+            scheduledExecutorService.scheduleWithFixedDelay(new TimeTask(), 1, 1, TimeUnit.SECONDS);
+            Log.i("Test", "PayDetailActivity onStart scheduledExecutorService open!");
+        }
     }
 
     //关掉延迟服务
     @Override
     public void onDestroy(){
         super.onDestroy();
+        PayDeviceUtil.getInstance().activityRecord="GotoOtherActivity";
         scheduledExecutorService.shutdown();
         BillAcceptorUtil.getInstance().ba_Disable();//@Star Feb16
         Log.i("Test","PayDetailActivity onDestroy scheduledExecutorService shutdown");

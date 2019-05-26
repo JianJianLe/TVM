@@ -22,8 +22,12 @@ import java.util.regex.Pattern;
 
 public class PayDeviceUtil {
     public String QRData=null;
+    public String activityRecord=null;
     public boolean paySuccess=false;
-    public String activeActivity=null;
+
+    private String strUniquePayCode=null;
+    private String receivedCMD;
+    private int payAmount;
 
     private SerialPortUtil serialPort;
     private OutputStream mOutputStream;
@@ -31,10 +35,6 @@ public class PayDeviceUtil {
     private ReadThread mReadThread;
     private static String serialPortFilePath1="/dev/ttyS0";
     private static String serialPortFilePath2="/dev/ttyGS0";
-
-    private String receivedCMD;
-    private String strUniquePayCode;
-    private int payAmount;
 
     private static PayDeviceUtil instance;
     public synchronized static PayDeviceUtil getInstance(){
@@ -114,7 +114,7 @@ public class PayDeviceUtil {
                 //售票机超时未收到支付结果，发送上报上分结果指令（子命令 0x04）
                 if(hasReplyDrawBack()){
                     printInfo("Draw back pay code:" + getDrawBackPayCode());
-                    if(getDrawBackPayCode().equals(strUniquePayCode))
+                    if(strUniquePayCode!=null && strUniquePayCode.equals(getDrawBackPayCode()))
                         printInfo("退款成功！");
                 }
 
@@ -122,7 +122,8 @@ public class PayDeviceUtil {
                 if(hasPayResult()){
                     if(checkPayResult()){
                         cmd_ReplyPayMatch();
-                        if(activeActivity.equals("PayDetailActivity"))
+                        printInfo("activityRecord="+activityRecord);
+                        if(activityRecord.equals("PayDetailActivity"))
                             paySuccess=true;
                         else{
                             printTicketDirectly();
@@ -146,6 +147,7 @@ public class PayDeviceUtil {
     }
 
     private void printTicketDirectly(){
+        printInfo("Print Ticket Directly");
         PrinterCase.getInstance().msg.setPayType("网络支付");
         PrinterAction printerAction=new PrinterAction();
         printerAction.PrintTicket();
@@ -248,12 +250,19 @@ public class PayDeviceUtil {
         write(cmdStr);
     }
 
+    public void cmd_DrawBack(String payCode,int amount){
+        strUniquePayCode=payCode;
+        String cmdStr = "0E02C904" + strUniquePayCode + "00000000";
+        cmdStr = "AA" + addEndCMD(cmdStr);
+        write(cmdStr);
+    }
+
     private boolean hasReplyDrawBack(){
         return compareCMD(receivedCMD,"AA0E01C904.*DD");
     }
 
     private String getDrawBackPayCode(){
-        return getCMDDataByRegex(receivedCMD,"(?<=AA0E01C904).*(?=0000..DD)");
+        return getCMDDataByRegex(receivedCMD,"(?<=AA0E01C904).*(?=00000000..DD)");
     }
     //======== Draw back End ========
 
@@ -265,15 +274,15 @@ public class PayDeviceUtil {
     //售票机匹配错误则应答：AA 0E 02 C9 03  [6byte支付唯一码]  00 00 00 00   Check DD
     //匹配正确可打印票据，如果匹配错误则不打印票据
     private boolean hasPayResult(){
-        return compareCMD(receivedCMD,"AA2901C903.*DD");
+        return compareCMD(receivedCMD,"AA1901C903.*DD");
     }
 
     private String getPayResultUniqueCode(){
-        return getCMDDataByRegex(receivedCMD,"(?<=AA2901C903).{12}");
+        return getCMDDataByRegex(receivedCMD,"(?<=AA1901C903).{12}");
     }
 
     private String getPayResultAmount(){
-        return getCMDDataByRegex(receivedCMD,"(?<=AA2901C903.{12}).{8}");
+        return getCMDDataByRegex(receivedCMD,"(?<=AA1901C903.{12}).{8}");
     }
 
     private boolean checkPayResult(){

@@ -263,7 +263,6 @@ public class SelectPriceActivity extends BaseActivity implements View.OnTouchLis
     @Override
     protected void onStart() {
         super.onStart();
-        Log.i("Test","Select price onStart scheduledExecutorService open!");
     }
 
     //关掉延迟服务
@@ -271,7 +270,6 @@ public class SelectPriceActivity extends BaseActivity implements View.OnTouchLis
     public void onDestroy(){
         super.onDestroy();
         unregisterReceiver(receiver);
-        Log.i("Test","SelectPrice Activity onDestroy scheduledExecutorService shutdown");
     }
 
 

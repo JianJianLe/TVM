@@ -38,7 +38,6 @@ public class PrinterAction {
     }
 
     public void PrintTicketList(){
-
         PrinterKeys msg = PrinterCase.getInstance().msg;
         msg.setDeviceNumber(getDeviceNO());
         msg.setDateStr(TimeUtil.dateFormat.format(new Date()));

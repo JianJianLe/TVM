@@ -111,6 +111,7 @@ public class PayDetailActivity extends BaseActivity{
             switch (msg.what){
                 case 0:
                     cashPay();
+                    netWorkPay();
                     checkPayResult();
                     break;
                 case 1:
@@ -127,6 +128,7 @@ public class PayDetailActivity extends BaseActivity{
         if(PrinterCase.getInstance().amountRecord>0){
             double balance=PrinterCase.getInstance().amountRecord - totalAmount;
             if(balance>=0){
+                PayDeviceUtil.getInstance().cmd_CashReport((int)totalAmount*100);//Star 2019/05/26
                 PrinterCase.getInstance().balanceRecord=balance;
                 PrinterCase.getInstance().amountRecord=0;
                 //@Star goto Next Activity
@@ -140,7 +142,9 @@ public class PayDetailActivity extends BaseActivity{
 
     //TODO: 网络支付
     private void netWorkPay(){
-        PrinterCase.getInstance().msg.setPayType("网络支付");
+        if(PayDeviceUtil.getInstance().paySuccess){
+            PrinterCase.getInstance().msg.setPayType("网络支付");
+        }
     }
 
     //现金支付 @Star
@@ -181,10 +185,10 @@ public class PayDetailActivity extends BaseActivity{
             public void run() {
                 while (!isInterrupted() && PayDeviceUtil.getInstance().QRData==null){
                     PayDeviceUtil.getInstance().cmd_GetQRCode((int)(totalAmount*100));
-                    TimeUtil.delay(1000);
+                    TimeUtil.delay(500);
                     displayQRCode(PayDeviceUtil.getInstance().QRData);
                     countGetQRCode++;
-                    if(countGetQRCode==20){
+                    if(countGetQRCode==120){//1 Mins
                         break;
                     }
                 }

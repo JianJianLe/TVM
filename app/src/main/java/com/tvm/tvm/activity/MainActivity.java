@@ -353,7 +353,7 @@ public class MainActivity extends BaseActivity {
         int ticketNum = 0;
         switch (view.getId()){
             case R.id.tv_main_title_title:
-                PayDeviceUtil.getInstance().cmd_DrawBack("262247452048",100);
+                PayDeviceUtil.getInstance().cmd_DrawBack_Test();
 //                PayDeviceUtil.getInstance().cmd_GetQRCode(1000);//1000分->10元
                 break;
             case R.id.tv_main_header_ticket_num:

@@ -25,7 +25,7 @@ public class PayDeviceUtil {
     public String activityRecord=null;
     public boolean paySuccess=false;
 
-    private String strUniquePayCode=null;
+    public String strUniquePayCode=null;
     private String receivedCMD;
     private int payAmount;
 
@@ -250,11 +250,12 @@ public class PayDeviceUtil {
         write(cmdStr);
     }
 
-    public void cmd_DrawBack(String payCode,int amount){
-        strUniquePayCode=payCode;
-        String cmdStr = "0E02C904" + strUniquePayCode + "00000000";
-        cmdStr = "AA" + addEndCMD(cmdStr);
-        write(cmdStr);
+    public void cmd_DrawBack_Test(){
+        if(strUniquePayCode!=null){
+            String cmdStr = "0E02C904" + strUniquePayCode + "00000000";
+            cmdStr = "AA" + addEndCMD(cmdStr);
+            write(cmdStr);
+        }
     }
 
     private boolean hasReplyDrawBack(){
@@ -274,15 +275,15 @@ public class PayDeviceUtil {
     //售票机匹配错误则应答：AA 0E 02 C9 03  [6byte支付唯一码]  00 00 00 00   Check DD
     //匹配正确可打印票据，如果匹配错误则不打印票据
     private boolean hasPayResult(){
-        return compareCMD(receivedCMD,"AA1901C903.*DD");
+        return compareCMD(receivedCMD,"AA..01C903.*DD");
     }
 
     private String getPayResultUniqueCode(){
-        return getCMDDataByRegex(receivedCMD,"(?<=AA1901C903).{12}");
+        return getCMDDataByRegex(receivedCMD,"(?<=AA..01C903).{12}");
     }
 
     private String getPayResultAmount(){
-        return getCMDDataByRegex(receivedCMD,"(?<=AA1901C903.{12}).{8}");
+        return getCMDDataByRegex(receivedCMD,"(?<=AA..01C903.{12}).{8}");
     }
 
     private boolean checkPayResult(){

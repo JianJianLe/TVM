@@ -137,36 +137,6 @@ public class SelectPriceActivity extends BaseActivity implements View.OnTouchLis
         }
     }
 
-//    //绑定页面左右滑动监听
-//    public void setListener(){
-//        ll_activity_select_price_layout.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                switch (event.getAction()){
-//                    case MotionEvent.ACTION_DOWN:
-//                        mPosX = event.getX();
-//                        mPosY = event.getY();
-//                        ToastUtils.showText(SelectPriceActivity.this,"点击了");
-//                        break;
-//                    case MotionEvent.ACTION_MOVE:
-//                        curX = event.getX();
-//                        curY = event.getY();
-//                        break;
-//                    case MotionEvent.ACTION_UP:
-//                        if ( curX - mPosX > 0
-//                                && Math.abs(curX - mPosX) > 25){
-//                            //左滑
-//                            ToastUtils.showText(SelectPriceActivity.this,"左滑了");
-//                        }else if (curX - mPosX < 0 && Math.abs(curX - mPosX) < 25){
-//                            //右滑
-//                            ToastUtils.showText(SelectPriceActivity.this,"右滑了");
-//                        }
-//                }
-//                return true;
-//            }
-//        });
-//    }
-
     /**
      * 重置所有的票数和金额
      */

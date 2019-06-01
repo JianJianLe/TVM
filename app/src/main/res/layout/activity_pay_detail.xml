@@ -266,7 +266,7 @@
 
     <ImageView
         android:id="@+id/iv_pay_detail_back"
-        android:layout_marginTop="@dimen/xy10dp"
+        android:layout_marginTop="@dimen/xy50dp"
         android:layout_marginLeft="@dimen/xy10dp"
         android:layout_width="@dimen/xy100dp"
         android:layout_height="@dimen/xy40dp"

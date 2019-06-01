@@ -173,9 +173,9 @@ public class PayDetailActivity extends BaseActivity{
         int balance = (int)PrinterCase.getInstance().balanceRecord;
         if(balance!=0){
             PrinterCase.getInstance().amountRecord=balance;
-            receivedAmount=balance;
-            updateAmount();
         }
+        receivedAmount=PrinterCase.getInstance().amountRecord;
+        updateAmount();
         setQRCode();
         backPrevious = new BackPrevious(setting.getPayTimeOut()*1000,1000,PayDetailActivity.this);
     }
@@ -229,7 +229,7 @@ public class PayDetailActivity extends BaseActivity{
     public void onClick(View view){
         switch (view.getId()){
             case R.id.iv_pay_detail_back:
-                PrinterCase.getInstance().amountRecord=0;//when the activity is finished, the amountRecord should be 0.
+                //PrinterCase.getInstance().amountRecord=0;//when the activity is finished, the amountRecord should be 0.
                 this.finish();
                 break;
         }

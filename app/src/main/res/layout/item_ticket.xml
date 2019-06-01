@@ -88,6 +88,7 @@
                 android:textSize="@dimen/xy7sp"
                 android:textColor="@color/red"
                 android:textStyle="bold"
+                android:background="@drawable/bg_ticket_num"
                 android:text="0"/>
 
             <ImageView

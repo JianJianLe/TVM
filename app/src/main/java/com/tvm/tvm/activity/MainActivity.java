@@ -347,13 +347,14 @@ public class MainActivity extends BaseActivity {
             R.id.iv_main_ticket_cancel,R.id.iv_main_ticket_buy,
             R.id.iv_main_ticket_1_add,R.id.iv_main_ticket_1_sub,
             R.id.iv_main_ticket_2_add,R.id.iv_main_ticket_2_sub,
-            R.id.tv_main_title_title,R.id.tv_main_header_ticket_num})
+            R.id.tv_main_title_title,R.id.tv_main_header_ticket_num,
+            R.id.ll_main})
     public void onClick(View view){
         Long priceId;
         int ticketNum = 0;
         switch (view.getId()){
             case R.id.tv_main_title_title:
-                PayDeviceUtil.getInstance().cmd_DrawBack_Test();
+//                PayDeviceUtil.getInstance().cmd_DrawBack_Test();
 //                PayDeviceUtil.getInstance().cmd_GetQRCode(1000);//1000分->10元
                 break;
             case R.id.tv_main_header_ticket_num:
@@ -410,6 +411,14 @@ public class MainActivity extends BaseActivity {
                     countTicketNumAndAmount();
                 }
                 break;
+            case R.id.ll_main:
+                //选择价格，价格列表为空的话不能购票
+                if (priceList==null || priceList.size() < 3 ){
+
+                }else {
+                    startActivity(this,SelectPriceActivity.class);
+                }
+                break;
         }
     }
 
@@ -435,8 +444,8 @@ public class MainActivity extends BaseActivity {
                 bean.setNumber(Integer.valueOf(tv_main_ticket_2_num.getText().toString().trim()));
                 ticketList.add(bean);
             }
-            BillAcceptorUtil.getInstance().ba_Enable();//@Star 16Feb
-            PrinterCase.getInstance().ticketList = ticketList;
+//            BillAcceptorUtil.getInstance().ba_Enable();//@Star 16Feb
+//            PrinterCase.getInstance().ticketList = ticketList;
             startActivity(this,PayDetailActivity.class);
         }
     }
@@ -650,7 +659,7 @@ public class MainActivity extends BaseActivity {
      * 设置右上角的总票数
      */
     private void setTicketNum(){
-        tv_main_header_ticket_num.setText(PrinterCase.getInstance().getCurrentTicketNumber());
+//        tv_main_header_ticket_num.setText(PrinterCase.getInstance().getCurrentTicketNumber());
     }
 
     //开启时执行延迟服务

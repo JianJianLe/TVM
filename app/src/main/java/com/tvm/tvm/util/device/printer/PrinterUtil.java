@@ -17,8 +17,19 @@ public class PrinterUtil {
 
     private String TAG = "Test";
 
-    //行间距,打印二维码时可以使用（00: 无间距, Default: n=3）设置行间距为(n*0.125 毫米)
-    private byte[] lineSpaceZero = {0x1b, 0x33, 0x00};
+    //打印二维码
+    //打印一个二维码的内容为： 01234567
+    //1）居中对齐：1B 61 01
+    private byte[] CenterCMD = {0x1b, 0x61, 0x01};
+    //2）QR码的模块类型:  1D 28 6B 03 00 31 43 03
+    private byte[] typeQRCode = {0x1d,0x28,0x6b,0x03,0x00,0x31,0x43,0x03};
+    //3）QR码的错误校正水平误差： 1D 28 6B 03 00 31 45 30
+    private byte[] correctQRCode = { 0x1d,0x28,0x6b,0x03,0x00,0x31,0x45,0x30 };
+    //4）打印QR码：1D 6B 61 08 02 08 00 30 31 32 33 34 35 36 37
+    //1D  6B  61  v  r  nl  nH d1…dk
+    private byte[] printQRCode = {0x1d,0x6b,0x61,0x08,0x02};
+
+    //常规
     private byte[] printDataCMD = {0x0a}; //打印并换行
     private byte[] cutPaperCMD = { 0x1d, 0x56, 0x41, 0x00 }; //0x42:半切  0x41:全切
 
@@ -103,7 +114,7 @@ public class PrinterUtil {
                 }
             }
         }
-        printQRCode(QRCodeUtil.getInstance().qrCodeConfig());
+        printQRCode(QRCodeUtil.getInstance().getTicketQRCodeData());
         completePrint();//切割纸张
     }
 
@@ -160,11 +171,25 @@ public class PrinterUtil {
         return joinBytes(joinBytes(LeftNormalCN,inputCN), printDataCMD);
     }
 
+//    //1）居中对齐：1B 61 01
+//    private byte[] CenterCMD = {0x1b, 0x61, 0x01};
+//    //2）QR码的模块类型:  1D 28 6B 03 00 31 43 03
+//    private byte[] typeQRCode = {0x1d,0x28,0x6b,0x03,0x00,0x31,0x43,0x03};
+//    //3）QR码的错误校正水平误差： 1D 28 6B 03 00 31 45 30
+//    private byte[] correctQRCode = { 0x1d,0x28,0x6b,0x03,0x00,0x31,0x45,0x30 };
+//    //4）打印QR码：1D 6B 61 08 02 08 00 30 31 32 33 34 35 36 37
+//    //1D  6B  61  v  r  nl  nH d1…dk
+//    private byte[] printQRCode = {0x1d,0x6b,0x61,0x08,0x02};
+
     //打印二维码
     private void printQRCode(byte[] dataQRCode){
         if(dataQRCode!=null && dataQRCode.length>0) {
-            printSplitLine();
-            jPrinterDataSend(dataQRCode, dataQRCode.length);
+            Log.i(TAG, "Print Ticket QR Code");
+            jPrinterDataSend(CenterCMD,CenterCMD.length);
+            jPrinterDataSend(typeQRCode,typeQRCode.length);
+            jPrinterDataSend(correctQRCode,correctQRCode.length);
+            byte[] outputData=joinBytes(printQRCode, dataQRCode);
+            jPrinterDataSend(outputData, outputData.length);
         }
     }
 

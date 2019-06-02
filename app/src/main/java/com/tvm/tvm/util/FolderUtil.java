@@ -233,21 +233,4 @@ public class FolderUtil {
 //		return getDefaultImagePath()+File.separator+"apk";
 //	}
 
-
-//	public static boolean readJJLKeyFile(){
-//		boolean flag=false;
-//		String path="/mnt/usb_storage/JJL/JJL_key.properties";///mnt/usb_storage
-//		File file=new File(path);
-//		if(file.exists()){
-//			String temp=FileUtils.readFileStr(path);
-//			if(temp.indexOf(APPConfig.keyStr)>-1){
-//				flag=true;
-//			}
-//		}else{
-//			Log.d("Test","no file");
-//		}
-//
-//		return flag;
-//	}
-	 
 }

@@ -4,6 +4,9 @@ import android.graphics.Bitmap;
 import android.os.Environment;
 import android.util.Log;
 
+import com.tvm.tvm.util.constant.PreConfig;
+import com.tvm.tvm.util.constant.StringUtils;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -107,5 +110,17 @@ public class FileUtils {
 	         Log.e("Test",e.getMessage());
 	     }  
 		return fileStr;
+	}
+
+	public static boolean readJJLKeyFile(){
+		String path= PreConfig.USB_FOLDER + "/TVM/TVM_key.properties";///mnt/usb_storage
+		File file=new File(path);
+		if(file.exists()){
+			String temp=readFileStr(path);
+			if(temp.indexOf(StringUtils.TVMKEY)>-1)
+				return true;
+		}else
+			Log.i("Test","Cannot find the TVM_key file");
+		return false;
 	}
 }

@@ -63,6 +63,10 @@ public class StringUtils {
     public static final int FLING_MIN_DISTANCE = 100;
     public static final int FLING_MIN_VELOCITY = 0;
 
+    public final static String TVMKEY="0123456789ABCDEFFEDCBA" +
+                                      "9876543210FEDCBA0123456"+
+                                      "7890123456789ABCDEF";
+
     public static String billContext = "[CenterLarge]->快剪\n" +
             "        [CenterSmall]->欢迎光临快剪专营店\n" +
             "        [CenterSmall]->本店编号：[DeviceNumber]\n" +

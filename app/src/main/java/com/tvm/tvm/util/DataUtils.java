@@ -64,6 +64,14 @@ public class DataUtils {
         return hex.toUpperCase();
     }
 
+    //低位在前
+    public static String getDecToHex(int dec, int count){
+        String hexStr = DataUtils.decToHex(dec);
+        while (hexStr.length()<count)
+            hexStr += "0";
+        return hexStr;
+    }
+
     public static String xor(String content) {
         content = addSpace(content.replace(" ",""));
         String[] b = content.split(" ");

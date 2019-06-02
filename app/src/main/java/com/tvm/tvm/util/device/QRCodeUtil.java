@@ -48,7 +48,7 @@ public class QRCodeUtil {
     }
     public void setTimeData(String timeData){
         SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");//加密格式
-        this.timeData=sDateFormat.format(timeData);
+        this.timeData=sDateFormat.format(TimeUtil.getDate(timeData));
     }
 
     public void setKey_MD5(String key_MD5){
@@ -83,15 +83,12 @@ public class QRCodeUtil {
         return new File(cachePath + File.separator + uniqueName);
     }
 
-    public byte[] qrCodeConfig( ) {
+    public byte[] getTicketQRCodeData( ) {
         if(printQRCodeFlag.equals("No"))
             return null;
         //=========
-        String content=null;
-        FileInputStream fileInputStream = null;
-        Bitmap mBitmap=null;
         String dataStr_MD5="";
-        if(key_MD5.length()>0){
+        if(key_MD5!=null&&key_MD5.length()>0){
             // 组合需要加密的数据
             String  source_MD5 = deviceNo + priceStr + timeData + key_MD5;
             // 对MD5原始数据进行加密
@@ -105,24 +102,30 @@ public class QRCodeUtil {
             dataStr_MD5 = new String(temp_MD5);
         }
         // 组合制作二维码的全部数据
-        content = "device=" + deviceNo + "&time=" + timeData +
+        String content = "device=" + deviceNo + "&time=" + timeData +
                 "&price=" + priceStr  + "&sign=" + dataStr_MD5;
 
-        // 获取保存二维码图片的路径
-        String path_QRCode = FolderUtil.getTempFolder() + File.separator + "QrImg.bmp";
-        // 调用打印机工具类，将数据传入制作二维码
-        qrCodeCreate(content, path_QRCode);
-        // 制作完毕后获取二维码图片的流数据，转换成打印用的字节
-        try {
-            fileInputStream = new FileInputStream(new File(path_QRCode));
-            mBitmap = BitmapFactory.decodeStream(fileInputStream);
-            fileInputStream.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-        return draw2PxPoint(compressPic(mBitmap));
+        String hexStr= DataUtils.getDecToHex(content.length(),4) +
+                    DataUtils.convertStringToHex(content);
+        return  DataUtils.hexToByteArray(hexStr);
+
+//        FileInputStream fileInputStream = null;
+//        Bitmap mBitmap=null;
+//        // 获取保存二维码图片的路径
+//        String path_QRCode = FolderUtil.getTempFolder() + File.separator + "QrImg.bmp";
+//        // 调用打印机工具类，将数据传入制作二维码
+//        qrCodeCreate(content, path_QRCode);
+//        // 制作完毕后获取二维码图片的流数据，转换成打印用的字节
+//        try {
+//            fileInputStream = new FileInputStream(new File(path_QRCode));
+//            mBitmap = BitmapFactory.decodeStream(fileInputStream);
+//            fileInputStream.close();
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }catch (IOException e){
+//            e.printStackTrace();
+//        }
+//        return draw2PxPoint(compressPic(mBitmap));
     }
 
     // 创建二维码
@@ -325,8 +328,8 @@ public class QRCodeUtil {
         int width = bitmapOrg.getWidth();
         int height = bitmapOrg.getHeight();
         // 定义预转换成的图片的宽度和高度
-        int newWidth = 264;
-        int newHeight = 264;
+        int newWidth = 200;//264
+        int newHeight = 200;//264
         Bitmap targetBmp = Bitmap.createBitmap(newWidth, newHeight,
                 Bitmap.Config.ARGB_8888);
         Canvas targetCanvas = new Canvas(targetBmp);

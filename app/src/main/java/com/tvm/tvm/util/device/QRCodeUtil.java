@@ -46,8 +46,8 @@ public class QRCodeUtil {
         }
         return new File(cachePath + File.separator + uniqueName);
     }
-//
-//
+
+
 //    private void qrCodeConfig(int money) {
 ////        // 获取当前系统时间，保存在TimeData里
 ////        String TimeData = TimeUtil.dateFormat.format(new java.util.Date());

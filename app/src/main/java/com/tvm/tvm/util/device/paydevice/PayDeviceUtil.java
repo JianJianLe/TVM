@@ -148,7 +148,7 @@ public class PayDeviceUtil {
 
     private void printTicketDirectly(){
         printInfo("Print Ticket Directly");
-        PrinterCase.getInstance().msg.setPayType("网络支付");
+        PrinterCase.getInstance().msg.setPayType("线上支付");
         PrinterAction printerAction=new PrinterAction();
         printerAction.PrintTicket();
         PrinterCase.getInstance().balanceRecord=0;

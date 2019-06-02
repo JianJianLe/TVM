@@ -122,7 +122,7 @@ public class PayDetailActivity extends BaseActivity{
 
     //检测支付结果 @Star
     private void checkPayResult(){
-        //amountRecord可以为现金支付，也可以为网络支付
+        //amountRecord可以为现金支付，也可以为线上支付
         if(PrinterCase.getInstance().amountRecord>0){
             double balance=PrinterCase.getInstance().amountRecord - totalAmount;
             if(balance>=0){
@@ -136,13 +136,13 @@ public class PayDetailActivity extends BaseActivity{
         }
     }
 
-    //TODO: 网络支付
+    //TODO: 线上支付
     private void netWorkPay(){
         if(PayDeviceUtil.getInstance().paySuccess){
             PrinterCase.getInstance().amountRecord=totalAmount;
             receivedAmount=totalAmount;
             updateAmount();
-            PrinterCase.getInstance().msg.setPayType("网络支付");
+            PrinterCase.getInstance().msg.setPayType("线上支付");
             PayDeviceUtil.getInstance().paySuccess=false;
         }
     }

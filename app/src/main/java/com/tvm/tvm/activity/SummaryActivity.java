@@ -43,29 +43,20 @@ public class SummaryActivity extends BaseActivity{
     @BindView(R.id.tv_summary_cash_total)
     TextView tv_summary_cash_total;
 
-    @BindView(R.id.tv_summary_wechat_total)
-    TextView tv_summary_wechat_total;
-
-    @BindView(R.id.tv_summary_alipay_total)
-    TextView tv_summary_alipay_total;
+    @BindView(R.id.tv_summary_onlinepay_total)
+    TextView tv_summary_onlinepay_total;
 
     @BindView(R.id.tv_summary_cash_count)
     TextView tv_summary_cash_count;
 
-    @BindView(R.id.tv_summary_wechat_count)
-    TextView tv_summary_wechat_count;
-
-    @BindView(R.id.tv_summary_alipay_count)
-    TextView tv_summary_alipay_count;
+    @BindView(R.id.tv_summary_onlinepay_count)
+    TextView tv_summary_onlinepay_count;
 
     @BindView(R.id.tv_summary_bill_summary)
     TextView tv_summary_bill_summary;
 
     @BindView(R.id.tv_summary_count_summary)
     TextView tv_summary_count_summary;
-
-//    @BindView(R.id.lv_summary_group_list)
-//    ListView lv_summary_group_list;
 
     @BindView(R.id.tv_summary_print)
     TextView tv_summary_print;
@@ -110,21 +101,14 @@ public class SummaryActivity extends BaseActivity{
         int total=0;
         //aoumt
         tv_summary_bill_summary.setText(String.valueOf(getAmount()));
-        //wechat
-        List<Double> wechatList = getClassify(1);
-        if (wechatList!=null && wechatList.size()>0){
-            tv_summary_wechat_total.setText(String.valueOf(wechatList.get(0)));
-            int wechatCount=new Double(wechatList.get(1)).intValue();
-            tv_summary_wechat_count.setText(wechatCount+"");
-            total = wechatCount;
-        }
-        //alipay
-        List<Double> aliPayList = getClassify(0);
-        if (aliPayList!=null && aliPayList.size()>0){
-            tv_summary_alipay_total.setText(String.valueOf(aliPayList.get(0)));
-            int alipayCount=new Double(aliPayList.get(1)).intValue();
-            tv_summary_alipay_count.setText(alipayCount+"");
-            total += alipayCount;
+
+        //online pay
+        List<Double> onlinePayList = getClassify(0);
+        if (onlinePayList!=null && onlinePayList.size()>0){
+            tv_summary_onlinepay_total.setText(String.valueOf(onlinePayList.get(0)));
+            int onlinePayCount=new Double(onlinePayList.get(1)).intValue();
+            tv_summary_onlinepay_count.setText(onlinePayCount+"");
+            total += onlinePayCount;
         }
         //cash
         List<Double> cashList = getClassify(2);

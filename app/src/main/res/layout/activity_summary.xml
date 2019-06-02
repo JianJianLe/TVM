@@ -58,7 +58,7 @@
             android:layout_weight="1"
             android:paddingRight="@dimen/xy5dp"
             android:gravity="right"
-            android:text="纸钞总额："
+            android:text="现金总额："
             android:textSize="@dimen/xy14sp"
             android:textColor="@color/black" />
 
@@ -87,7 +87,7 @@
             android:layout_weight="1"
             android:paddingRight="@dimen/xy5dp"
             android:gravity="right"
-            android:text="纸钞笔数："
+            android:text="现金笔数："
             android:textSize="@dimen/xy14sp"
             android:textColor="@color/black" />
 
@@ -126,12 +126,12 @@
             android:layout_weight="1"
             android:paddingRight="@dimen/xy5dp"
             android:gravity="right"
-            android:text=" 微信总额："
+            android:text="线上支付总额："
             android:textSize="@dimen/xy14sp"
             android:textColor="@color/black" />
 
         <TextView
-            android:id="@+id/tv_summary_wechat_total"
+            android:id="@+id/tv_summary_onlinepay_total"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:singleLine="true"
@@ -154,12 +154,12 @@
             android:layout_weight="1"
             android:paddingRight="@dimen/xy5dp"
             android:gravity="right"
-            android:text=" 微信笔数："
+            android:text="线上支付笔数："
             android:textSize="@dimen/xy14sp"
             android:textColor="@color/black" />
 
         <TextView
-            android:id="@+id/tv_summary_wechat_count"
+            android:id="@+id/tv_summary_onlinepay_count"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:singleLine="true"
@@ -169,69 +169,6 @@
             android:textSize="@dimen/xy14sp"
             android:textColor="@color/black"
             android:layout_weight="1"/>
-    </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/xy1dp"
-        android:layout_marginTop="@dimen/xy10dp"
-        android:layout_marginBottom="@dimen/xy10dp"
-        android:layout_marginLeft="@dimen/xy10dp"
-        android:layout_marginRight="@dimen/xy10dp"
-        android:background="@drawable/wear_1" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/xy15dp"
-        android:orientation="horizontal" >
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:paddingRight="@dimen/xy5dp"
-            android:gravity="right"
-            android:text="支付宝总额："
-            android:textSize="@dimen/xy14sp"
-            android:textColor="@color/black"/>
-
-        <TextView
-            android:id="@+id/tv_summary_alipay_total"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:paddingLeft="@dimen/xy10dp"
-            android:text="0"
-            android:textSize="@dimen/xy14sp"
-            android:textColor="@color/black"
-            android:inputType="number"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/xy5dp"
-        android:orientation="horizontal" >
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:paddingRight="@dimen/xy5dp"
-            android:gravity="right"
-            android:text="支付宝笔数："
-            android:textSize="@dimen/xy14sp"
-            android:textColor="@color/black"/>
-
-        <TextView
-            android:id="@+id/tv_summary_alipay_count"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:paddingLeft="@dimen/xy10dp"
-            android:text="0"
-            android:textSize="@dimen/xy14sp"
-            android:textColor="@color/black"
-            android:inputType="number"/>
     </LinearLayout>
     <View
         android:layout_width="match_parent"

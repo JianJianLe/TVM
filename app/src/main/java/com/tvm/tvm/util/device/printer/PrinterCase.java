@@ -82,6 +82,11 @@ public class PrinterCase {
         return billSetting.getTicketBody();
     }
 
+    public boolean checkTicketTemplate(){
+        BillSettingDao billSettingDao = AppApplication.getApplication().getDaoSession().getBillSettingDao();
+        return billSettingDao.count()>0?true:false;
+    }
+
     //@Star 获取Order number
     public String getTicketNumber(String currentTime){
         int orderNum=getPreTicketOrderNumber();

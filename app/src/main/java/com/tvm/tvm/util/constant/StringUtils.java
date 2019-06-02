@@ -48,6 +48,8 @@ public class StringUtils {
 
     public static String EMPTY_PRICE_LIST = "价格列表为空，请先添加价格！！！";
 
+    public static String EMPTY_TICKET_LIST = "票据列表为空，请更新票据设置！！！";
+
     public static String WRONG_DEVICE_NO = "本机编号长度必须为5位，请校对后再提交！";
 
     public static String CONTAIN_CHINESE_IN_MD5 = "MD5 Key中不能含有中文字符，请校对后再提交！";

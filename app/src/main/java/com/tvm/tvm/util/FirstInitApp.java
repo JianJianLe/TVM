@@ -41,7 +41,7 @@ public class FirstInitApp {
         if (userDao.queryBuilder().list().size()==0){
             initUser();
             initNormalSetting();
-            addData();
+//            addData();
 //            initBillSettings();
         }
 

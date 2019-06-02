@@ -1,5 +1,6 @@
 package com.tvm.tvm.activity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -347,16 +348,15 @@ public class MainActivity extends BaseActivity {
             R.id.iv_main_ticket_cancel,R.id.iv_main_ticket_buy,
             R.id.iv_main_ticket_1_add,R.id.iv_main_ticket_1_sub,
             R.id.iv_main_ticket_2_add,R.id.iv_main_ticket_2_sub,
-            R.id.tv_main_title_title,R.id.tv_main_header_ticket_num,
-            R.id.ll_main})
+            R.id.tv_main_header_ticket_num,R.id.ll_main})
     public void onClick(View view){
         Long priceId;
         int ticketNum = 0;
         switch (view.getId()){
-            case R.id.tv_main_title_title:
+//            case R.id.tv_main_title_title:
 //                PayDeviceUtil.getInstance().cmd_DrawBack_Test();
 //                PayDeviceUtil.getInstance().cmd_GetQRCode(1000);//1000分->10元
-                break;
+//                break;
             case R.id.tv_main_header_ticket_num:
 //                PayDeviceUtil.getInstance().cmd_ReplySever();
                 break;
@@ -412,6 +412,10 @@ public class MainActivity extends BaseActivity {
                 }
                 break;
             case R.id.ll_main:
+                if(PrinterCase.getInstance().checkTicketTemplate()==false){
+                    ToastUtils.showText(this,StringUtils.EMPTY_TICKET_LIST);
+                    break;
+                }
                 //选择价格，价格列表为空的话不能购票
                 if (priceList==null || priceList.size() < 3 ){
 

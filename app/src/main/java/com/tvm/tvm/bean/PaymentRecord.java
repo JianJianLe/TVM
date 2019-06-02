@@ -41,7 +41,7 @@ public class PaymentRecord {
      */
     private Double price;
     /**
-     * 0--网络支付
+     * 0--线上支付
      * 2--现金
      */
     private int type;
@@ -81,14 +81,14 @@ public class PaymentRecord {
 
     public String getTypeStr() {
         if (type==0){
-            return "网络支付";
+            return "线上支付";
         }else{
             return "现金";
         }
     }
 
     public int getTypeNumber(String type){
-        if(type.equals("网络支付")){
+        if(type.equals("线上支付")){
             return 0;
         }else{
             return 2;

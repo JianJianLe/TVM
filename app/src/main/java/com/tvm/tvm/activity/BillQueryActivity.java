@@ -90,7 +90,7 @@ public class BillQueryActivity extends BaseActivity{
         ButterKnife.bind(this);
         daoSession = AppApplication.getApplication().getDaoSession();
         getNowDate();
-        getDistinctTickectTitle();
+        getDistinctTicketTitle();
         initView();
     }
 
@@ -149,7 +149,7 @@ public class BillQueryActivity extends BaseActivity{
         }
     }
 
-    public void getDistinctTickectTitle(){
+    public void getDistinctTicketTitle(){
         PaymentRecordDao paymentRecordDao = daoSession.getPaymentRecordDao();
         String sql = "SELECT DISTINCT "+PaymentRecordDao.Properties.Title.columnName + " FROM " +paymentRecordDao.TABLENAME;
         Cursor cursor = daoSession.getPaymentRecordDao().getDatabase().rawQuery(sql,null);

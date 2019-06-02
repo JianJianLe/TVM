@@ -234,6 +234,7 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:textSize="@dimen/xy15sp"
+                        android:background="@drawable/bg_ticket_num"
                         android:textColor="@color/red"
                         android:text="0"/>
 
@@ -328,6 +329,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
+                        android:background="@drawable/bg_ticket_num"
                         android:textSize="@dimen/xy15sp"
                         android:textColor="@color/red"
                         android:text="0"/>

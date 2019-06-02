@@ -85,7 +85,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:layout_gravity="center_vertical"
-                android:textSize="@dimen/xy7sp"
+                android:textSize="@dimen/xy10sp"
                 android:textColor="@color/red"
                 android:textStyle="bold"
                 android:background="@drawable/bg_ticket_num"

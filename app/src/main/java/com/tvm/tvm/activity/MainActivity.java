@@ -444,8 +444,8 @@ public class MainActivity extends BaseActivity {
                 bean.setNumber(Integer.valueOf(tv_main_ticket_2_num.getText().toString().trim()));
                 ticketList.add(bean);
             }
-//            BillAcceptorUtil.getInstance().ba_Enable();//@Star 16Feb
-//            PrinterCase.getInstance().ticketList = ticketList;
+            BillAcceptorUtil.getInstance().ba_Enable();//@Star 16Feb
+            PrinterCase.getInstance().ticketList = ticketList;
             startActivity(this,PayDetailActivity.class);
         }
     }
@@ -659,7 +659,7 @@ public class MainActivity extends BaseActivity {
      * 设置右上角的总票数
      */
     private void setTicketNum(){
-//        tv_main_header_ticket_num.setText(PrinterCase.getInstance().getCurrentTicketNumber());
+        tv_main_header_ticket_num.setText(PrinterCase.getInstance().getCurrentTicketNumber());
     }
 
     //开启时执行延迟服务

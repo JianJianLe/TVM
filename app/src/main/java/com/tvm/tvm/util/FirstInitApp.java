@@ -61,7 +61,7 @@ public class FirstInitApp {
         manager.setPassword("manager123");
         User superManager = new User();
         superManager.setUserName("superManager");
-        superManager.setPassword("star2config");
+        superManager.setPassword("superManager123");
         userDao.save(admin);
         userDao.save(manager);
         userDao.save(superManager);
@@ -76,6 +76,8 @@ public class FirstInitApp {
         setting.setPayTimeOut(60);
         setting.setPrintTimeOut(30);
         setting.setSelectTimeOut(30);
+        setting.setPrintQRCodeFlag("Yes");
+        //setting.setMd5Key("01234567890123456789012345678901");
         settingDao.save(setting);
     }
 

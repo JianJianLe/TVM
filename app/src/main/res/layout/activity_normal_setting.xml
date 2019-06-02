@@ -202,6 +202,47 @@
                 android:textSize="@dimen/xy18dp" />
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_marginTop="@dimen/xy10dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/xy5dp"
+            android:layout_marginRight="@dimen/xy5dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="票据是否打印二维码："
+                android:textSize="@dimen/xy18dp" />
+
+            <RadioGroup
+                android:id="@+id/rgp_print_qrcode"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal" >
+                <RadioButton
+                    android:id="@+id/rbt_isprinted"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/xy10dp"
+                    android:checked="true"
+                    android:gravity="center"
+                    android:text="是"
+                    android:textSize="@dimen/xy18dp"/>
+
+                <RadioButton
+                    android:id="@+id/rbt_isnotprinted"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/xy20dp"
+                    android:checked="false"
+                    android:text="否"
+                    android:textSize="@dimen/xy18dp" />
+            </RadioGroup>
+        </LinearLayout>
 
         <TextView
             android:gravity="center_vertical"

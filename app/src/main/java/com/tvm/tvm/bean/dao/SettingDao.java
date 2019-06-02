@@ -31,7 +31,8 @@ public class SettingDao extends AbstractDao<Setting, Long> {
         public final static Property SelectTimeOut = new Property(4, int.class, "selectTimeOut", false, "SELECT_TIME_OUT");
         public final static Property PayTimeOut = new Property(5, int.class, "payTimeOut", false, "PAY_TIME_OUT");
         public final static Property PrintTimeOut = new Property(6, int.class, "printTimeOut", false, "PRINT_TIME_OUT");
-        public final static Property PayDesc = new Property(7, String.class, "payDesc", false, "PAY_DESC");
+        public final static Property PrintQRCodeFlag = new Property(7, String.class, "printQRCodeFlag", false, "PRINT_QRCODE_FLAG");
+        public final static Property PayDesc = new Property(8, String.class, "payDesc", false, "PAY_DESC");
     }
 
 
@@ -54,7 +55,8 @@ public class SettingDao extends AbstractDao<Setting, Long> {
                 "\"SELECT_TIME_OUT\" INTEGER NOT NULL ," + // 4: selectTimeOut
                 "\"PAY_TIME_OUT\" INTEGER NOT NULL ," + // 5: payTimeOut
                 "\"PRINT_TIME_OUT\" INTEGER NOT NULL ," + // 6: printTimeOut
-                "\"PAY_DESC\" TEXT);"); // 7: payDesc
+                "\"PRINT_QRCODE_FLAG\" TEXT," + // 7: printQRCodeFlag
+                "\"PAY_DESC\" TEXT);"); // 8: payDesc
     }
 
     /** Drops the underlying database table. */
@@ -90,9 +92,14 @@ public class SettingDao extends AbstractDao<Setting, Long> {
         stmt.bindLong(6, entity.getPayTimeOut());
         stmt.bindLong(7, entity.getPrintTimeOut());
  
+        String printQRCodeFlag = entity.getPrintQRCodeFlag();
+        if (printQRCodeFlag != null) {
+            stmt.bindString(8, printQRCodeFlag);
+        }
+ 
         String payDesc = entity.getPayDesc();
         if (payDesc != null) {
-            stmt.bindString(8, payDesc);
+            stmt.bindString(9, payDesc);
         }
     }
 
@@ -123,9 +130,14 @@ public class SettingDao extends AbstractDao<Setting, Long> {
         stmt.bindLong(6, entity.getPayTimeOut());
         stmt.bindLong(7, entity.getPrintTimeOut());
  
+        String printQRCodeFlag = entity.getPrintQRCodeFlag();
+        if (printQRCodeFlag != null) {
+            stmt.bindString(8, printQRCodeFlag);
+        }
+ 
         String payDesc = entity.getPayDesc();
         if (payDesc != null) {
-            stmt.bindString(8, payDesc);
+            stmt.bindString(9, payDesc);
         }
     }
 
@@ -144,7 +156,8 @@ public class SettingDao extends AbstractDao<Setting, Long> {
             cursor.getInt(offset + 4), // selectTimeOut
             cursor.getInt(offset + 5), // payTimeOut
             cursor.getInt(offset + 6), // printTimeOut
-            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7) // payDesc
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // printQRCodeFlag
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8) // payDesc
         );
         return entity;
     }
@@ -158,7 +171,8 @@ public class SettingDao extends AbstractDao<Setting, Long> {
         entity.setSelectTimeOut(cursor.getInt(offset + 4));
         entity.setPayTimeOut(cursor.getInt(offset + 5));
         entity.setPrintTimeOut(cursor.getInt(offset + 6));
-        entity.setPayDesc(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setPrintQRCodeFlag(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setPayDesc(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
      }
     
     @Override

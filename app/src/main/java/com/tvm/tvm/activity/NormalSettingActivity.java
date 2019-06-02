@@ -2,6 +2,7 @@ package com.tvm.tvm.activity;
 
 import android.os.Bundle;
 import android.text.method.DigitsKeyListener;
+import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -96,7 +97,7 @@ public class NormalSettingActivity extends BaseActivity {
             et_normal_setting_pay_desc.setText(setting.getPayDesc());
             et_normal_setting_device_no.setText(setting.getDeviceNo());
             et_normal_setting_md5_key.setText(setting.getMd5Key());
-            if(setting.getPrintQRCodeFlag()=="Yes")
+            if(setting.getPrintQRCodeFlag().equals("Yes"))
                 rgp_print_qrcode.check(R.id.rbt_isprinted);
             else
                 rgp_print_qrcode.check(R.id.rbt_isnotprinted);
@@ -124,7 +125,7 @@ public class NormalSettingActivity extends BaseActivity {
             return false;
         }
         if (!isContainChinese(md5Key)){//不含中文字符
-            if (md5Key.length()!=32){
+            if (md5Key.length()>0&&md5Key.length()!=32){
                 ToastUtils.showText(this,StringUtils.WRONG_MD5_KEY);
                 return false;
             }
@@ -192,51 +193,17 @@ public class NormalSettingActivity extends BaseActivity {
                 break;
         }
     }
-
-//    @OnCheckedChanged({R.id.rbt_isprinted,R.id.rbt_isnotprinted})
-//    public void onCheckedChanged(View v){
-//        switch (v.getId()){
-//            case R.id.rbt_isprinted:
-//
-//                break;
-//            case R.id.rbt_isnotprinted:
-//                break;
-//        }
-//
-//    }
-
     @OnCheckedChanged({R.id.rbt_isprinted, R.id.rbt_isnotprinted})
-    public void onRadioButtonCheckChanged(CompoundButton button, boolean checked) {
-        if(checked) {
+    public void onRadioButtonCheckChanged(CompoundButton button, boolean isChecked) {
+        if(isChecked) {
             switch (button.getId()) {
                 case R.id.rbt_isprinted:
-                    // do stuff
+                    printQRCodeFlag = "Yes";
                     break;
                 case R.id.rbt_isnotprinted:
-                    // do stuff
+                    printQRCodeFlag = "No";
                     break;
             }
         }
     }
-//
-//    @OnClick({R.id.rbt_isprinted, R.id.rbt_isnotprinted})
-//    public void onRadioButtonClicked(RadioButton radioButton) {
-//        // Is the button now checked?
-//        boolean checked = radioButton.isChecked();
-//
-//        // Check which radio button was clicked
-//        switch (radioButton.getId()) {
-//            case R.id.rbt_isprinted:
-//                if (checked) {
-//                    // 1 clicked
-//                }
-//                break;
-//            case R.id.rbt_isnotprinted:
-//                if (checked) {
-//                    // 2 clicked
-//                }
-//                break;
-//        }
-//    }
-
 }

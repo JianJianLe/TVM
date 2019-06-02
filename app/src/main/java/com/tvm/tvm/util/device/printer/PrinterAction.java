@@ -12,6 +12,7 @@ import com.tvm.tvm.bean.dao.DaoSession;
 import com.tvm.tvm.bean.dao.PaymentRecordDao;
 import com.tvm.tvm.bean.dao.SettingDao;
 import com.tvm.tvm.util.TimeUtil;
+import com.tvm.tvm.util.device.QRCodeUtil;
 
 import java.util.Date;
 import java.util.List;
@@ -50,10 +51,14 @@ public class PrinterAction {
                 msg.setTicketNumber(PrinterCase.getInstance().getTicketNumber(currentTime));
                 msg.setTicketName(ticketTitle);
                 msg.setPrice(ticketPrice+"");
+                //QR code information
+                QRCodeUtil.getInstance().setTimeData(currentTime);
+                QRCodeUtil.getInstance().setPriceStr((int)ticketPrice+"");
+                //Save payment information to DB
                 saveTicketInfo(currentTime,Integer.parseInt(msg.getTicketNumber()));
                 savePayment(PrinterCase.getInstance().msg);
                 PrinterCase.getInstance().print();
-                TimeUtil.delay(3000);
+                TimeUtil.delay(4000);
             }
         }
     }

@@ -14,6 +14,7 @@ import com.tvm.tvm.bean.TicketSummary;
 import com.tvm.tvm.bean.dao.DaoSession;
 import com.tvm.tvm.bean.dao.PaymentRecordDao;
 import com.tvm.tvm.bean.dao.SettingDao;
+import com.tvm.tvm.util.device.QRCodeUtil;
 import com.tvm.tvm.util.device.printer.PrinterAction;
 import com.tvm.tvm.util.device.printer.PrinterCase;
 import com.tvm.tvm.util.device.printer.PrinterKeys;
@@ -66,6 +67,9 @@ public class PaySuccessActivity extends BaseActivity {
 
     public void initData(){
         tv_pay_success_company_name.setText(setting.getShopName());
+        QRCodeUtil.getInstance().setDeviceNo(setting.getDeviceNo());
+        QRCodeUtil.getInstance().setKey_MD5(setting.getMd5Key());
+        QRCodeUtil.getInstance().setPrintQRCodeFlag(setting.getPrintQRCodeFlag());
     }
 
     private void printTicket(){

@@ -118,4 +118,13 @@ public class DataUtils {
     public static String removeSpace(String content){
         return content.replace(" ","");
     }
+
+
+    public static String setZeros(int count){
+        return String.format("%"+count+"s", "0").replaceAll("\\s", "0");
+    }
+
+    public static String addZeros(String content, int count){
+        return String.format("%"+count+"s", content).replaceAll("\\s", "0");
+    }
 }

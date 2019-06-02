@@ -1,13 +1,19 @@
 package com.tvm.tvm.util.device;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.security.MessageDigest;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.os.Environment;
@@ -18,14 +24,44 @@ import com.google.zxing.EncodeHintType;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+import com.tvm.tvm.application.AppApplication;
+import com.tvm.tvm.bean.Setting;
+import com.tvm.tvm.bean.dao.SettingDao;
+import com.tvm.tvm.util.DataUtils;
+import com.tvm.tvm.util.FolderUtil;
+import com.tvm.tvm.util.TimeUtil;
 
 public class QRCodeUtil {
     private static QRCodeUtil instance;
+    private String deviceNo;
+    private String timeData;
+    private String priceStr;
+    private String key_MD5;
+    private String printQRCodeFlag;
+
+    public void setPriceStr(String priceStr){
+        this.priceStr= DataUtils.addZeros(priceStr,5);
+    }
+
+    public void setDeviceNo(String deviceNo){
+        this.deviceNo="DP"+deviceNo;
+    }
+    public void setTimeData(String timeData){
+        SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");//加密格式
+        this.timeData=sDateFormat.format(timeData);
+    }
+
+    public void setKey_MD5(String key_MD5){
+        this.key_MD5=key_MD5;
+    }
+
+    public void setPrintQRCodeFlag(String printQRCodeFlag){
+        this.printQRCodeFlag=printQRCodeFlag;
+    }
 
     public synchronized static QRCodeUtil getInstance(){
-        if (instance==null) {
+        if (instance==null)
             instance = new QRCodeUtil();
-        }
         return instance;
     }
 
@@ -47,72 +83,47 @@ public class QRCodeUtil {
         return new File(cachePath + File.separator + uniqueName);
     }
 
+    public byte[] qrCodeConfig( ) {
+        if(printQRCodeFlag.equals("No"))
+            return null;
+        //=========
+        String content=null;
+        FileInputStream fileInputStream = null;
+        Bitmap mBitmap=null;
+        String dataStr_MD5="";
+        if(key_MD5.length()>0){
+            // 组合需要加密的数据
+            String  source_MD5 = deviceNo + priceStr + timeData + key_MD5;
+            // 对MD5原始数据进行加密
+            char[] data_MD5 =  Md5encrypt(source_MD5);
+            // 获取从第11个字节开始的8个字节
+            char[] temp_MD5 = new char[8];
+            for (int i = 0; i < 8; i++) {
+                temp_MD5[i] = data_MD5[10 + i];
+            }
+            // 将这8个字节转换为String型
+            dataStr_MD5 = new String(temp_MD5);
+        }
+        // 组合制作二维码的全部数据
+        content = "device=" + deviceNo + "&time=" + timeData +
+                "&price=" + priceStr  + "&sign=" + dataStr_MD5;
 
-//    private void qrCodeConfig(int money) {
-////        // 获取当前系统时间，保存在TimeData里
-////        String TimeData = TimeUtil.dateFormat.format(new java.util.Date());
-////
-////        // 处理顺序号（从整型1处理为String型001）
-////        OrderNumber = OrderDispose(OrderTestNumber);
-////        Log.i(TAG, "OrderNumber = " + OrderNumber);
-////
-////        // 处理金额（从整型变为String）
-////        String MoneyS = String.valueOf(money);
-////        // 组合需要加密的数据
-////        MD5DataSource = MachineNumber + MoneyS + TimeData + MD5Key;
-////        Log.i(TAG, "MD5TestData = " + MD5DataSource);
-////
-////        // 对MD5原始数据进行加密
-////        char[] MD5DataGet = mPrinterUnit.Md5encrypt(MD5DataSource);
-////
-////        // 获取从第11个字节开始的8个字节
-////        char[] MD5dataCut = new char[8];
-////        for (int i = 0; i < 8; i++) {
-////            MD5dataCut[i] = MD5DataGet[10 + i];
-////        }
-////
-////        // 将这8个字节转换为String型
-////        MD5Data = new String(MD5dataCut);
-////        Log.i(TAG, "MD5Data = " + MD5Data);
-////
-////        // 组合制作二维码的全部数据
-////        QrCodeData = "http://wx.uuudian.com/device/LDPoint.do?device="
-////                + MachineNumber + "&time=" + TimeData + "&ticket=" + TestMoney
-////                + "&sign=" + MD5Data;
-////        Log.i(TAG, "QrCodeData = " + QrCodeData);
-////
-////        // 获取保存二维码图片的路径
-////        QrCodeDataPath = getDiskCacheDir(this) + File.separator + "QrImg.bmp";
-////
-////        // 调用打印机工具类，将数据传入制作二维码
-////        mPrinterUnit.qrCodeCreate(QrCodeData, QrCodeDataPath);
-////
-////        // 制作完毕后获取二维码图片的流数据，转换成打印用的字节
-////        try {
-////            fis = new FileInputStream(new File(QrCodeDataPath));
-////        } catch (FileNotFoundException e) {
-////            e.printStackTrace();
-////        }
-//    }
-
-
-
-//    // 打印二维码
-//    private void qrCodePrint(InputStream QrData) {
-//
-////        jPrinterDataSend(lineSizeZeroCMD, lineSizeZeroCMD.length);
-////
-////        Bitmap mBitmap = BitmapFactory.decodeStream(QrData);
-////
-////        compressPic = compressPic(mBitmap);
-////
-////        qrData = draw2PxPoint(compressPic);
-////
-////        jPrinterDataSend(qrData, qrData.length);
-//
-//    }
-
-
+        // 获取保存二维码图片的路径
+        String path_QRCode = FolderUtil.getTempFolder() + File.separator + "QrImg.bmp";
+        // 调用打印机工具类，将数据传入制作二维码
+        qrCodeCreate(content, path_QRCode);
+        // 制作完毕后获取二维码图片的流数据，转换成打印用的字节
+        try {
+            fileInputStream = new FileInputStream(new File(path_QRCode));
+            mBitmap = BitmapFactory.decodeStream(fileInputStream);
+            fileInputStream.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        return draw2PxPoint(compressPic(mBitmap));
+    }
 
     // 创建二维码
     private void qrCodeCreate(String QrData, String QrImgPath) {

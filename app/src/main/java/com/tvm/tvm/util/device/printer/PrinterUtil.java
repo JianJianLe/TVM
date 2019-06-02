@@ -2,6 +2,8 @@ package com.tvm.tvm.util.device.printer;
 
 import android.util.Log;
 
+import com.tvm.tvm.util.device.QRCodeUtil;
+
 public class PrinterUtil {
 
     static {
@@ -101,6 +103,7 @@ public class PrinterUtil {
                 }
             }
         }
+        printQRCode(QRCodeUtil.getInstance().qrCodeConfig());
         completePrint();//切割纸张
     }
 
@@ -157,6 +160,13 @@ public class PrinterUtil {
         return joinBytes(joinBytes(LeftNormalCN,inputCN), printDataCMD);
     }
 
+    //打印二维码
+    private void printQRCode(byte[] dataQRCode){
+        if(dataQRCode!=null && dataQRCode.length>0) {
+            printSplitLine();
+            jPrinterDataSend(dataQRCode, dataQRCode.length);
+        }
+    }
 
     /***********************************************************************************/
     //把文字转换成字节

@@ -313,7 +313,7 @@ public class PayDeviceUtil {
     //支付盒子应答：AA 0A 01 C9 09  [6byte支付唯一码] Check DD
     public void cmd_ReportPrintSuccess(){
         printInfo("售票机出票成功，发送上报交易结果");
-        String cmdStr="2602C909"+strUniquePayCode+getAmountHex(payAmount)+setZeros(48);
+        String cmdStr="2602C909"+strUniquePayCode+getAmountHex(payAmount)+DataUtils.setZeros(48);
         cmdStr = "AA" + addEndCMD(cmdStr);
         write(cmdStr);
     }
@@ -330,14 +330,14 @@ public class PayDeviceUtil {
     //支付盒子应答：AA 0A 01 C9 06  [6byte随机数] Check DD
     public void cmd_CashReport(int amount){
         printInfo("售票机收到现金上报：" + amount);
-        String cmdStr="2402C906"+getRandomHex(6)+getAmountHex(amount)+setZeros(44);
+        String cmdStr="2402C906"+getRandomHex(6)+getAmountHex(amount)+DataUtils.setZeros(44);
         cmdStr = "AA" + addEndCMD(cmdStr);
         write(cmdStr);
     }
 
     public void cmd_ReportCashPrintSuccess(int amount){
         printInfo("现金支付，售票机出票成功，发送上报交易结果");
-        String cmdStr="2602C909"+getRandomHex(6)+getAmountHex(amount)+setZeros(48);
+        String cmdStr="2602C909"+getRandomHex(6)+getAmountHex(amount)+DataUtils.setZeros(48);
         cmdStr = "AA" + addEndCMD(cmdStr);
         write(cmdStr);
     }
@@ -423,10 +423,6 @@ public class PayDeviceUtil {
         String result = hexStr.substring(hexStr.length()-2,hexStr.length());
         String cmdStr = hexStr.substring(0,hexStr.length()-2);
         return DataUtils.xor(cmdStr).equals(result);
-    }
-
-    private String setZeros(int count){
-        return String.format("%"+count+"s", "0").replaceAll("\\s", "0");
     }
 
     private void printInfo(String infoStr){

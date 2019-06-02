@@ -11,6 +11,16 @@ import java.util.List;
 
 public class FolderUtil {
 
+	public static String getTempFolder(){
+		File file=Environment.getExternalStorageDirectory();
+		String tempFolderPath=file.getAbsolutePath()+File.separator+"TVM"+File.separator+"Temp";
+		file=new File(tempFolderPath);
+		if(!file.exists()){
+			file.mkdirs();
+		}
+		return tempFolderPath;
+	}
+
 	public static String getImagePath(){
 		FolderUtil folderUtil=new FolderUtil();
 		String usbPath= folderUtil.getUSBfolder();

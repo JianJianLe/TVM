@@ -117,7 +117,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/linearLayout1"
-        android:layout_marginTop="@dimen/xy15dp"
+
         android:orientation="horizontal" >
 
         <TextView
@@ -142,6 +142,7 @@
             android:textColor="@color/black"
             android:layout_weight="1"/>
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -182,7 +183,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/xy15dp"
         android:orientation="horizontal" >
 
         <TextView

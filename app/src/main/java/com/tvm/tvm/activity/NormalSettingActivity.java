@@ -3,8 +3,11 @@ package com.tvm.tvm.activity;
 import android.os.Bundle;
 import android.text.method.DigitsKeyListener;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.tvm.tvm.R;
 import com.tvm.tvm.application.AppApplication;
@@ -23,6 +26,7 @@ import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 
 /**
@@ -57,8 +61,10 @@ public class NormalSettingActivity extends BaseActivity {
     @BindView(R.id.et_normal_setting_md5_key)
     EditText et_normal_setting_md5_key;
 
-    private DaoSession daoSession;
+    @BindView(R.id.rgp_print_qrcode)
+    RadioGroup rgp_print_qrcode;
 
+    private DaoSession daoSession;
 
     String compayName;
     int timeOut ;
@@ -67,6 +73,7 @@ public class NormalSettingActivity extends BaseActivity {
     String payDesc ;
     String deviceNo;
     String md5Key;
+    String printQRCodeFlag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +96,10 @@ public class NormalSettingActivity extends BaseActivity {
             et_normal_setting_pay_desc.setText(setting.getPayDesc());
             et_normal_setting_device_no.setText(setting.getDeviceNo());
             et_normal_setting_md5_key.setText(setting.getMd5Key());
+            if(setting.getPrintQRCodeFlag()=="Yes")
+                rgp_print_qrcode.check(R.id.rbt_isprinted);
+            else
+                rgp_print_qrcode.check(R.id.rbt_isnotprinted);
         }
     }
 
@@ -164,12 +175,8 @@ public class NormalSettingActivity extends BaseActivity {
             setting.setShopName(compayName);
             setting.setPayDesc(payDesc);
             setting.setMd5Key(md5Key);
+            setting.setPrintQRCodeFlag(printQRCodeFlag);
             settingDao.update(setting);
-//            SharedPrefsUtil.putValue(getApplicationContext(),PreConfig.COMPANY_NAME,compayName);
-//            SharedPrefsUtil.putValue(getApplicationContext(),PreConfig.PAY_DESC,payDesc);
-//            SharedPrefsUtil.putValue(getApplicationContext(),PreConfig.SELECT_TIME_OUT,timeOut);
-//            SharedPrefsUtil.putValue(getApplicationContext(),PreConfig.PAY_TIME_OUT,payTimeOut);
-//            SharedPrefsUtil.putValue(getApplicationContext(),PreConfig.PRINT_TIME_OUT,printTimeOut);
             ToastUtils.showText(getApplicationContext(),StringUtils.UPDATE_SUCCESS,true);
         }
     }
@@ -185,5 +192,51 @@ public class NormalSettingActivity extends BaseActivity {
                 break;
         }
     }
+
+//    @OnCheckedChanged({R.id.rbt_isprinted,R.id.rbt_isnotprinted})
+//    public void onCheckedChanged(View v){
+//        switch (v.getId()){
+//            case R.id.rbt_isprinted:
+//
+//                break;
+//            case R.id.rbt_isnotprinted:
+//                break;
+//        }
+//
+//    }
+
+    @OnCheckedChanged({R.id.rbt_isprinted, R.id.rbt_isnotprinted})
+    public void onRadioButtonCheckChanged(CompoundButton button, boolean checked) {
+        if(checked) {
+            switch (button.getId()) {
+                case R.id.rbt_isprinted:
+                    // do stuff
+                    break;
+                case R.id.rbt_isnotprinted:
+                    // do stuff
+                    break;
+            }
+        }
+    }
+//
+//    @OnClick({R.id.rbt_isprinted, R.id.rbt_isnotprinted})
+//    public void onRadioButtonClicked(RadioButton radioButton) {
+//        // Is the button now checked?
+//        boolean checked = radioButton.isChecked();
+//
+//        // Check which radio button was clicked
+//        switch (radioButton.getId()) {
+//            case R.id.rbt_isprinted:
+//                if (checked) {
+//                    // 1 clicked
+//                }
+//                break;
+//            case R.id.rbt_isnotprinted:
+//                if (checked) {
+//                    // 2 clicked
+//                }
+//                break;
+//        }
+//    }
 
 }

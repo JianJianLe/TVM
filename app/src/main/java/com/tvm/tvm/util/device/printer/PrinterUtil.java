@@ -2,6 +2,7 @@ package com.tvm.tvm.util.device.printer;
 
 import android.util.Log;
 
+import com.tvm.tvm.util.TimeUtil;
 import com.tvm.tvm.util.device.QRCodeUtil;
 
 public class PrinterUtil {
@@ -190,6 +191,7 @@ public class PrinterUtil {
             jPrinterDataSend(correctQRCode,correctQRCode.length);
             byte[] outputData=joinBytes(printQRCode, dataQRCode);
             jPrinterDataSend(outputData, outputData.length);
+            TimeUtil.delay(1500);
         }
     }
 

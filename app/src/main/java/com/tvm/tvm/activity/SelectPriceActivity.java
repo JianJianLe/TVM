@@ -141,6 +141,7 @@ public class SelectPriceActivity extends BaseActivity implements View.OnTouchLis
      * 重置所有的票数和金额
      */
     public void reset(){
+        ticketList.clear();
         tv_select_price_num.setText("0");
         tv_select_price_amount.setText("0");
         adapter = new SelectPriceAdapter(this,priceList);
@@ -213,7 +214,7 @@ public class SelectPriceActivity extends BaseActivity implements View.OnTouchLis
             amount = amount + bean.getNumber()*bean.getPrice();
         }
         tv_select_price_num.setText(num+"");
-        tv_select_price_amount.setText(amount+"");
+        tv_select_price_amount.setText((int)amount+"");
     }
 
     @Override

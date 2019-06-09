@@ -145,6 +145,10 @@ public class ToastUtils extends Toast {
         }
     }
 
+    public static void showText_Long(Context context, CharSequence text){
+        showToast(context, text, Toast.LENGTH_LONG, TYPE_HIDE);
+    }
+
     /**
      * 显示一个纯文本吐司
      *

@@ -18,10 +18,13 @@ import com.tvm.tvm.bean.dao.DaoSession;
 import com.tvm.tvm.util.BackPrevious;
 import com.tvm.tvm.util.BitmapUtils;
 import com.tvm.tvm.util.TimeUtil;
+import com.tvm.tvm.util.constant.StringUtils;
 import com.tvm.tvm.util.device.QRCodeUtil;
 import com.tvm.tvm.util.device.billacceptor.BillAcceptorUtil;
 import com.tvm.tvm.util.device.paydevice.PayDeviceUtil;
 import com.tvm.tvm.util.device.printer.PrinterCase;
+import com.tvm.tvm.util.view.ConfirmDialogUtils;
+import com.tvm.tvm.util.view.ToastUtils;
 
 import java.io.File;
 import java.io.Serializable;
@@ -84,6 +87,7 @@ public class PayDetailActivity extends BaseActivity{
 
     private int countGetQRCode=0;
     private File imgQRCodeFile;
+    private boolean hasShownQRCode=false;
 
 
     @Override
@@ -114,7 +118,10 @@ public class PayDetailActivity extends BaseActivity{
                     break;
                 case 1:
                     iv_pay_detail_qr_code.setImageBitmap(BitmapUtils.file2Bitmap(imgQRCodeFile));
-                    PayDeviceUtil.getInstance().QRData=null;
+                    hasShownQRCode=true;
+                    break;
+                case 2:
+                    connectFailed();
                     break;
             }
         }
@@ -167,7 +174,7 @@ public class PayDetailActivity extends BaseActivity{
      */
     public void initData(){
         totalAmount=getTotalAmount();
-        tv_pay_detail_num.setText(num+"");
+        tv_pay_detail_num.setText(num+" ");
         tv_pay_detail_pay_amount.setText((int)totalAmount+"");
         tv_pay_detail_desc.setText(setting.getPayDesc());
         int balance = (int)PrinterCase.getInstance().balanceRecord;
@@ -182,14 +189,21 @@ public class PayDetailActivity extends BaseActivity{
 
     private void setQRCode(){
         countGetQRCode=0;
+        PayDeviceUtil.getInstance().init_QRCode();
+        hasShownQRCode=false;
         new Thread(){
             public void run() {
-                while (!isInterrupted() && PayDeviceUtil.getInstance().QRData==null){
+                while (!isInterrupted() && !hasShownQRCode){
                     PayDeviceUtil.getInstance().cmd_GetQRCode((int)(totalAmount*100));
                     TimeUtil.delay(500);
                     displayQRCode(PayDeviceUtil.getInstance().QRData);
+                    TimeUtil.delay(1500);
                     countGetQRCode++;
-                    if(countGetQRCode==120){//1 Mins
+                    if(countGetQRCode==5){//10 s
+                        //Connect failed.
+                        Message message = new Message();
+                        message.what = 2;
+                        handler.sendMessage(message);
                         break;
                     }
                 }
@@ -219,6 +233,10 @@ public class PayDetailActivity extends BaseActivity{
         }
         amount = new BigDecimal(amount).doubleValue();
         return amount;
+    }
+
+    private void connectFailed(){
+        ToastUtils.showText_Long(this,StringUtils.ONLINE_PAY_CONNECT_FAILED_CONTENT);
     }
 
     /**

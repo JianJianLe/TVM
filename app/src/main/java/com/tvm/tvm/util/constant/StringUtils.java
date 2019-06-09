@@ -63,6 +63,9 @@ public class StringUtils {
     public static final int FLING_MIN_DISTANCE = 100;
     public static final int FLING_MIN_VELOCITY = 0;
 
+    public static String ONLINE_PAY_CONNECT_FAILED= "线上支付连接失败";
+    public static String ONLINE_PAY_CONNECT_FAILED_CONTENT="未能连接线上支付，请用现金支付!";
+
     public final static String TVMKEY="0123456789ABCDEFFEDCBA" +
                                       "9876543210FEDCBA0123456"+
                                       "7890123456789ABCDEF";

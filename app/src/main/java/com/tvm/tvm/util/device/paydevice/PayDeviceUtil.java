@@ -23,11 +23,13 @@ import java.util.regex.Pattern;
 public class PayDeviceUtil {
     public String QRData=null;
     public String activityRecord=null;
-    public boolean paySuccess=false;
-
+    public boolean paySuccess=false;//判断是否在支付界面支付成功
     public String strUniquePayCode=null;
+
     private String receivedCMD;
     private int payAmount;
+    private String strRandomHex;
+    private boolean randomHexFlag=true;// One QR code command, one RandomHexStr.
 
     private SerialPortUtil serialPort;
     private OutputStream mOutputStream;
@@ -105,7 +107,7 @@ public class PayDeviceUtil {
 
                 //售票机发送获取二维码支付链接指令（子命令 0x0A）
                 if(hasQRCode())
-                    QRData = getQRData();
+                    QRData = getQRCodeData();
 
                 //支付盒子发送获取设备状态指令（子命令 0x01)
                 if(hasQueryClientStatus())
@@ -176,6 +178,11 @@ public class PayDeviceUtil {
     //售票机发送获取二维码支付链接指令（子命令 0x0A）
     //AA 0E 02 C9 0A  [6byte随机数]  [4byte支付金额] Check DD
     //支付盒子应答：AA XX 01 C9 0A data[n] Check DD （data[n]为支付二维码链接数据）
+    public void init_QRCode(){
+        randomHexFlag=true;
+        strRandomHex=null;
+    }
+
     private boolean hasQRCode(){
         return compareCMD(receivedCMD,"AA..01C90A.*DD");
     }
@@ -184,7 +191,15 @@ public class PayDeviceUtil {
         QRData=null;
         payAmount=amount;
         printInfo("Amount = "+amount+", Send CMD to get QR code.");
-        String cmdStr="0E02C90A"+getRandomHex(6)+getAmountHex(amount);
+
+        //重发的数据帧中的[6byte随机数]不需要变化
+        //randomHexFlag=false时，不创建新的随机数
+        if(randomHexFlag){
+            strRandomHex = getRandomHex(6);
+            randomHexFlag=false;
+        }
+
+        String cmdStr="0E02C90A"+ strRandomHex +getAmountHex(amount);
         cmdStr = "AA" + addEndCMD(cmdStr);
         write(cmdStr);
     }
@@ -206,8 +221,8 @@ public class PayDeviceUtil {
             hexStr += "0";
         return hexStr;
     }
-    
-    private String getQRData(){
+
+    private String getQRCodeData(){
         String hexStr= getCMDDataByRegex(receivedCMD,"(?<=AA..01C90A).*(?=..DD)");
         printInfo(hexStr);
         return DataUtils.convertHexToString(hexStr);
@@ -368,7 +383,7 @@ public class PayDeviceUtil {
     //售票机应答：AA 04 02 06 01 07 DD （00失败，01成功）
     public void cmd_SetParam(){
         //TODO
-        SetClientParam(); 
+        SetClientParam();
     }
 
     private void SetClientParam(){

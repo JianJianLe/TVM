@@ -463,7 +463,7 @@ public class MainActivity extends BaseActivity {
         tv_main_ticket_num.setText(num + "");
         //金额
         double amount = Integer.valueOf(tv_main_ticket_1_num.getText().toString().trim())*Double.valueOf(tv_main_ticke_list_price.getText().toString().trim()) + Integer.valueOf(tv_main_ticket_2_num.getText().toString().trim())*Double.valueOf(tv_main_ticke_list_price2.getText().toString().trim());
-        tv_main_ticket_amount.setText(amount+"");
+        tv_main_ticket_amount.setText((int)amount+"");
     }
 
     /**

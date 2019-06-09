@@ -50,7 +50,7 @@ public class PrinterAction {
                 String currentTime=TimeUtil.dateFormat.format(new Date());
                 msg.setTicketNumber(PrinterCase.getInstance().getTicketNumber(currentTime));
                 msg.setTicketName(ticketTitle);
-                msg.setPrice(ticketPrice+"");
+                msg.setPrice((int)ticketPrice+"");
                 //QR code information
                 QRCodeUtil.getInstance().setTimeData(currentTime);
                 QRCodeUtil.getInstance().setPriceStr((int)ticketPrice+"");
@@ -58,7 +58,7 @@ public class PrinterAction {
                 saveTicketInfo(currentTime,Integer.parseInt(msg.getTicketNumber()));
                 savePayment(PrinterCase.getInstance().msg);
                 PrinterCase.getInstance().print();
-                TimeUtil.delay(4000);
+                TimeUtil.delay(3000);
             }
         }
     }

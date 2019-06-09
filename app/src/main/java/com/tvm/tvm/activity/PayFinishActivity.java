@@ -62,7 +62,7 @@ public class PayFinishActivity extends BaseActivity {
                 break;
             case R.id.tv_pay_finish_print:
                 //打印余额
-                tv_pay_finish_remain.setText("0.0");
+                tv_pay_finish_remain.setText("0");
                 printBalance();
                 break;
         }
@@ -109,7 +109,7 @@ public class PayFinishActivity extends BaseActivity {
 
     public void initData() {
         tv_pay_finish_company_name.setText(setting.getShopName());
-        tv_pay_finish_remain.setText(PrinterCase.getInstance().balanceRecord+"");
+        tv_pay_finish_remain.setText((int)PrinterCase.getInstance().balanceRecord+"");
     }
 
     private void backToBuyTicket(){

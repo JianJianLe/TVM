@@ -22,12 +22,23 @@ public class ConfirmDialogUtils extends Dialog {
     String title;
     //内容
     String content;
- 
+    //是否显示"取消"按钮
+    boolean isShowCancel;
+
     public ConfirmDialogUtils(Context context,String title,String content) {
         super(context);
         this.context = context;
         this.title = title;
         this.content = content;
+        initalize();
+    }
+
+    public ConfirmDialogUtils(Context context,String title,String content, boolean isShowCancel) {
+        super(context);
+        this.context = context;
+        this.title = title;
+        this.content = content;
+        this.isShowCancel=isShowCancel;
         initalize();
     }
  
@@ -43,7 +54,6 @@ public class ConfirmDialogUtils extends Dialog {
         tv_confirm_layout_title.setText(title);
         tv_confirm_layout_content.setText(content);
         okBtn = findViewById(R.id.btn_ok);
-        cancelBtn = findViewById(R.id.btn_cancel);
         okBtn.setOnClickListener(new View.OnClickListener() {
  
             @Override
@@ -54,6 +64,8 @@ public class ConfirmDialogUtils extends Dialog {
                 }
             }
         });
+
+        cancelBtn = findViewById(R.id.btn_cancel);
         cancelBtn.setOnClickListener(new View.OnClickListener() {
  
             @Override
@@ -64,6 +76,8 @@ public class ConfirmDialogUtils extends Dialog {
                 }
             }
         });
+        if(isShowCancel=false)
+            cancelBtn.setVisibility(View.GONE);
     }
  
     /**

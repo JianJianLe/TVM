@@ -135,4 +135,8 @@ public class DataUtils {
     public static String addZeros(String content, int count){
         return String.format("%"+count+"s", content).replaceAll("\\s", "0");
     }
+
+    public static int doubleToInt(double val){
+        return new Double(val).intValue();
+    }
 }

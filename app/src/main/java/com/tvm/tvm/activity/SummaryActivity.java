@@ -15,6 +15,7 @@ import com.tvm.tvm.bean.PaymentRecord;
 import com.tvm.tvm.bean.Summary;
 import com.tvm.tvm.bean.dao.DaoSession;
 import com.tvm.tvm.bean.dao.PaymentRecordDao;
+import com.tvm.tvm.util.DataUtils;
 import com.tvm.tvm.util.DateUtils;
 import com.tvm.tvm.util.TimeUtil;
 import com.tvm.tvm.util.device.printer.NormalTicket;
@@ -105,6 +106,15 @@ public class SummaryActivity extends BaseActivity{
     }
 
     private void printSummaryTicket(){
+        new Thread(){
+            public void run() {
+                setSummaryTicket();
+                PrinterCase.getInstance().print();
+            }
+        }.start();
+    }
+
+    private void setSummaryTicket(){
         SummaryTicket summaryTicket= PrinterCase.getInstance().summaryTicket;
         NormalTicket normalTicket=PrinterCase.getInstance().normalTicket;
         normalTicket.setTicketName("统计");
@@ -118,18 +128,17 @@ public class SummaryActivity extends BaseActivity{
         summaryTicket.setOnlinePayTotalCount(tv_summary_onlinepay_count.getText().toString());
         summaryTicket.setTotalAmount(tv_summary_bill_summary.getText().toString());
         summaryTicket.setTotalCount(tv_summary_count_summary.getText().toString());
-        PrinterCase.getInstance().print();
     }
 
     public void initData(){
         int total=0;
         //aoumt
-        tv_summary_bill_summary.setText(String.valueOf(getAmount()));
+        tv_summary_bill_summary.setText(String.valueOf(DataUtils.doubleToInt(getAmount())));
 
         //online pay
         List<Double> onlinePayList = getClassify(0);
         if (onlinePayList!=null && onlinePayList.size()>0){
-            tv_summary_onlinepay_total.setText(String.valueOf(onlinePayList.get(0)));
+            tv_summary_onlinepay_total.setText(String.valueOf(DataUtils.doubleToInt(onlinePayList.get(0))));
             int onlinePayCount=new Double(onlinePayList.get(1)).intValue();
             tv_summary_onlinepay_count.setText(onlinePayCount+"");
             total += onlinePayCount;
@@ -137,7 +146,7 @@ public class SummaryActivity extends BaseActivity{
         //cash
         List<Double> cashList = getClassify(2);
         if (cashList!=null && cashList.size()>0){
-            tv_summary_cash_total.setText(String.valueOf(cashList.get(0)));
+            tv_summary_cash_total.setText(String.valueOf(DataUtils.doubleToInt(cashList.get(0))));
             int cashCount=new Double(cashList.get(1)).intValue();
             tv_summary_cash_count.setText(cashCount+"");
             total += cashCount;

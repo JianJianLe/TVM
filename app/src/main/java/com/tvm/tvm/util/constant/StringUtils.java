@@ -68,6 +68,7 @@ public class StringUtils {
 
     public static String KEY_REGISTERED="解锁成功,可以正常使用!";
     public static String INSTALLATION_ERROR="安装出错,请联系厂家!";
+    public static String COPY_TEMPLATE_SUCCESS = "打印模版已复制成功！";
 
     public final static String TVMKEY="0123456789ABCDEFFEDCBA" +
                                       "9876543210FEDCBA0123456"+

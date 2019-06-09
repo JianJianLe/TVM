@@ -34,7 +34,7 @@ public class TxtUtils {
         File pathFile = new File(path);
         File[] fileList = pathFile.listFiles();
         for (File file:fileList){
-            if(file.isFile() && file.exists()){
+            if(file.isFile() && file.exists() && !file.getName().startsWith("._")){
                 try {
                     FileInputStream fileInputStream = new FileInputStream(file);
                     InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, charset);

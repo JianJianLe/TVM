@@ -219,17 +219,17 @@ public class MainActivity extends BaseActivity {
     //当前播放的哪个视频
     private int indexVideo = 0;
     //图片播放时间
-    private int imageShowTime=3;
+    private int imageShowTime = 3;
     //设置了图片播放
     private boolean isShowImage = true;
     //当轮播的时候，判断是否可以播放视频
-    private int mediaFlag =0;
+    private int mediaFlag = 0;
 
     //当前播放视频还是广告，0：广告 1：视频
     private int whatShow = 0;
 
     //时间
-    private int timeFlag=-1;
+    private int timeFlag = -1;
 
     private MediaReceiver mediaReceiver;
 
@@ -250,7 +250,7 @@ public class MainActivity extends BaseActivity {
         tvmRegisterAction();
     }
 
-    private void initView(){
+    private void initView() {
 
         //初始化时间
         tv_main_header_time_date.setText(dateFormat.format(new Date()));
@@ -261,46 +261,45 @@ public class MainActivity extends BaseActivity {
             @Override
             public boolean onLongClick(View v) {
                 //todo:补充长按事件的处理逻辑
-                startActivity(MainActivity.this,LoginActivity.class);
+                startActivity(MainActivity.this, LoginActivity.class);
                 return true;
             }
         });
 
         //设置公司名和购买指引
-        if (setting!=null){
+        if (setting != null) {
             tv_main_comany_name.setText(setting.getShopName());
             tv_main_pay_desc.setText(setting.getPayDesc());
         }
     }
 
 
-    private void tvmRegisterAction(){
+    private void tvmRegisterAction() {
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_MEDIA_EJECT);
         filter.addAction(Intent.ACTION_MEDIA_UNMOUNTED);
         filter.addAction(Intent.ACTION_MEDIA_MOUNTED);
         filter.addDataScheme("file");
-        mediaReceiver=new MediaReceiver();
+        mediaReceiver = new MediaReceiver();
         registerReceiver(mediaReceiver, filter);
     }
 
 
-
-    public void initBillAcceptor(){
+    public void initBillAcceptor() {
         //纸钞机初始化
         BillAcceptorUtil.getInstance().init_BillAcceptorCmd();
         BillAcceptorUtil.getInstance().init_BillAcceptorDevice();
         BillAcceptorUtil.getInstance().ba_Disable();
     }
 
-    public void initPayDevice(){
+    public void initPayDevice() {
         PayDeviceUtil.getInstance().initPayDevice();
     }
 
-    private Handler handler = new Handler(){
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what){
+            switch (msg.what) {
                 case 0:
                     //更新时间
                     tv_main_header_time_date.setText(dateFormat.format(new Date()));
@@ -308,27 +307,27 @@ public class MainActivity extends BaseActivity {
 
                     //切换轮播图
                     //播放广告或者混合播放的时候而且正在播放广告图片才切换轮播图
-                    if ((type==2 || type==3) && whatShow==0){
+                    if ((type == 2 || type == 3) && whatShow == 0) {
                         //开始轮播或者时间到了改切换，才去切换
-                        if(timeFlag==imageShowTime || timeFlag==-1){
+                        if (timeFlag == imageShowTime || timeFlag == -1) {
                             //时间置0，重新算时间
-                            timeFlag=0;
-                            mediaFlag= SetCurrentImage();
-                            if(mediaFlag==2){
+                            timeFlag = 0;
+                            mediaFlag = SetCurrentImage();
+                            if (mediaFlag == 2) {
                                 //当是视频图片轮播时，判断是否图片的最后一张，当flag=1时，表示为最后一张图片
                                 setAdsLayout(VIDEO_SHOW);//视频
                                 whatShow = 1;
-                                Log.d("Test","The Image is completed,Show video and Set Video");
+                                Log.d("Test", "The Image is completed,Show video and Set Video");
                                 setVideo();
                                 Log.d("Test", "Video start");
-                            }else{
+                            } else {
                                 //切换轮播图，并且更新时间
-                                Log.d("Test","CurrentItem = " + currentItem);
+                                Log.d("Test", "CurrentItem = " + currentItem);
                                 vp_main_ads.setCurrentItem(currentItem);
                             }
                         }
                         //=============
-                        Log.d("Test","timeFlag = " + timeFlag);
+                        Log.d("Test", "timeFlag = " + timeFlag);
                         timeFlag++;
                     }
 
@@ -345,14 +344,14 @@ public class MainActivity extends BaseActivity {
         }
     };
 
-    public void setVideo(){
+    public void setVideo() {
         //如果vedio可见，播放视频,播放一个视频
-        if (sv_main_video.getVisibility()==View.VISIBLE) {
+        if (sv_main_video.getVisibility() == View.VISIBLE) {
 
-            if (videos!=null && videos.size()>0) {
+            if (videos != null && videos.size() > 0) {
                 try {
-                    if (type==3) {
-                        player.setSource((ArrayList<String>) videos,true);
+                    if (type == 3) {
+                        player.setSource((ArrayList<String>) videos, true);
                         player.setCallback(new PlayerCallback() {
 
                             @Override
@@ -362,8 +361,8 @@ public class MainActivity extends BaseActivity {
                                 whatShow = 0;
                             }
                         });
-                    }else {
-                        player.setSource((ArrayList<String>) videos,false);
+                    } else {
+                        player.setSource((ArrayList<String>) videos, false);
                     }
                     player.play();
                 } catch (MPlayerException e) {
@@ -374,9 +373,9 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    private boolean checkInstallation(){
-        if(!AuthorizeUtil.getInstance().isKeyExisted()){
-            final ConfirmDialogUtils confirmDialogUtils = new ConfirmDialogUtils(this,StringUtils.INSTALLATION_ERROR," ",false);
+    private boolean checkInstallation() {
+        if (!AuthorizeUtil.getInstance().isKeyExisted()) {
+            final ConfirmDialogUtils confirmDialogUtils = new ConfirmDialogUtils(this, StringUtils.INSTALLATION_ERROR, " ", false);
             confirmDialogUtils.show();
             confirmDialogUtils.setOnDialogClickListener(new ConfirmDialogUtils.OnDialogClickListener() {
                 @Override
@@ -395,15 +394,15 @@ public class MainActivity extends BaseActivity {
     }
 
     @OnClick({R.id.tv_main_click_buy,
-            R.id.iv_main_ticket_cancel,R.id.iv_main_ticket_buy,
-            R.id.iv_main_ticket_1_add,R.id.iv_main_ticket_1_sub,
-            R.id.iv_main_ticket_2_add,R.id.iv_main_ticket_2_sub,
-            R.id.tv_main_header_ticket_num,R.id.ll_main})
-    public void onClick(View view){
-        if(!checkInstallation())
+            R.id.iv_main_ticket_cancel, R.id.iv_main_ticket_buy,
+            R.id.iv_main_ticket_1_add, R.id.iv_main_ticket_1_sub,
+            R.id.iv_main_ticket_2_add, R.id.iv_main_ticket_2_sub,
+            R.id.tv_main_header_ticket_num, R.id.ll_main})
+    public void onClick(View view) {
+        if (!checkInstallation())
             return;
         int ticketNum = 0;
-        switch (view.getId()){
+        switch (view.getId()) {
 //            case R.id.tv_main_title_title:
 //                PayDeviceUtil.getInstance().cmd_DrawBack_Test();
 //                PayDeviceUtil.getInstance().cmd_GetQRCode(1000);//1000分->10元
@@ -413,10 +412,10 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.tv_main_click_buy:
                 //选择价格，价格列表为空的话不能购票
-                if (priceList==null || priceList.size() == 0){
-                    ToastUtils.showText(this,StringUtils.EMPTY_PRICE_LIST);
-                }else {
-                    startActivity(this,SelectPriceActivity.class);
+                if (priceList == null || priceList.size() == 0) {
+                    ToastUtils.showText(this, StringUtils.EMPTY_PRICE_LIST);
+                } else {
+                    startActivity(this, SelectPriceActivity.class);
                 }
                 break;
             case R.id.iv_main_ticket_cancel:
@@ -432,46 +431,46 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.iv_main_ticket_1_add:
                 ticketNum = Integer.valueOf(tv_main_ticket_1_num.getText().toString().trim());
-                ticketNum = ticketNum+1;
-                tv_main_ticket_1_num.setText(ticketNum+"");
+                ticketNum = ticketNum + 1;
+                tv_main_ticket_1_num.setText(ticketNum + "");
                 countTicketNumAndAmount();
                 break;
             case R.id.iv_main_ticket_1_sub:
                 ticketNum = Integer.valueOf(tv_main_ticket_1_num.getText().toString().trim());
-                if (ticketNum==0){
-                    ToastUtils.showText(this,StringUtils.TICKET_NUM_LESS_ZERO);
-                }else {
-                    ticketNum = ticketNum-1;
-                    tv_main_ticket_1_num.setText(ticketNum+"");
+                if (ticketNum == 0) {
+                    ToastUtils.showText(this, StringUtils.TICKET_NUM_LESS_ZERO);
+                } else {
+                    ticketNum = ticketNum - 1;
+                    tv_main_ticket_1_num.setText(ticketNum + "");
                     countTicketNumAndAmount();
                 }
                 break;
             case R.id.iv_main_ticket_2_add:
                 ticketNum = Integer.valueOf(tv_main_ticket_2_num.getText().toString().trim());
-                ticketNum = ticketNum+1;
-                tv_main_ticket_2_num.setText(ticketNum+"");
+                ticketNum = ticketNum + 1;
+                tv_main_ticket_2_num.setText(ticketNum + "");
                 countTicketNumAndAmount();
                 break;
             case R.id.iv_main_ticket_2_sub:
                 ticketNum = Integer.valueOf(tv_main_ticket_2_num.getText().toString().trim());
-                if (ticketNum==0){
-                    ToastUtils.showText(this,StringUtils.TICKET_NUM_LESS_ZERO);
-                }else {
-                    ticketNum = ticketNum-1;
-                    tv_main_ticket_2_num.setText(ticketNum+"");
+                if (ticketNum == 0) {
+                    ToastUtils.showText(this, StringUtils.TICKET_NUM_LESS_ZERO);
+                } else {
+                    ticketNum = ticketNum - 1;
+                    tv_main_ticket_2_num.setText(ticketNum + "");
                     countTicketNumAndAmount();
                 }
                 break;
             case R.id.ll_main:
-                if(PrinterCase.getInstance().checkTicketTemplate()==false){
-                    ToastUtils.showText(this,StringUtils.EMPTY_TICKET_LIST);
+                if (PrinterCase.getInstance().checkTicketTemplate() == false) {
+                    ToastUtils.showText(this, StringUtils.EMPTY_TICKET_LIST);
                     break;
                 }
                 //选择价格，价格列表为空的话不能购票
-                if (priceList==null || priceList.size() < 3 ){
+                if (priceList == null || priceList.size() < 3) {
 
-                }else {
-                    startActivity(this,SelectPriceActivity.class);
+                } else {
+                    startActivity(this, SelectPriceActivity.class);
                 }
                 break;
         }
@@ -482,18 +481,18 @@ public class MainActivity extends BaseActivity {
      * 封装传递参数
      * 跳转对应页面
      */
-    public void confirmPay(){
+    public void confirmPay() {
         List<TicketBean> ticketList = new ArrayList<>();
-        if ("0".equals(tv_main_ticket_num.getText().toString().trim())){
-            ToastUtils.showText(this,StringUtils.TICKET_NUM_LESS_ZERO);
-        }else {
-            if (Integer.valueOf(tv_main_ticket_1_num.getText().toString().trim())>0){
+        if ("0".equals(tv_main_ticket_num.getText().toString().trim())) {
+            ToastUtils.showText(this, StringUtils.TICKET_NUM_LESS_ZERO);
+        } else {
+            if (Integer.valueOf(tv_main_ticket_1_num.getText().toString().trim()) > 0) {
                 TicketBean bean = new TicketBean();
                 bean.copyFromPrice(priceList.get(0));
                 bean.setNumber(Integer.valueOf(tv_main_ticket_1_num.getText().toString().trim()));
                 ticketList.add(bean);
             }
-            if (Integer.valueOf(tv_main_ticket_2_num.getText().toString().trim())>0){
+            if (Integer.valueOf(tv_main_ticket_2_num.getText().toString().trim()) > 0) {
                 TicketBean bean = new TicketBean();
                 bean.copyFromPrice(priceList.get(1));
                 bean.setNumber(Integer.valueOf(tv_main_ticket_2_num.getText().toString().trim()));
@@ -501,50 +500,51 @@ public class MainActivity extends BaseActivity {
             }
             BillAcceptorUtil.getInstance().ba_Enable();//@Star 16Feb
             PrinterCase.getInstance().ticketList = ticketList;
-            startActivity(this,PayDetailActivity.class);
+            startActivity(this, PayDetailActivity.class);
         }
     }
 
     /**
      * 重新计算总额
      */
-    public void countTicketNumAndAmount(){
+    public void countTicketNumAndAmount() {
         //票数
         int num = Integer.valueOf(tv_main_ticket_1_num.getText().toString().trim()) + Integer.valueOf(tv_main_ticket_2_num.getText().toString().trim());
         tv_main_ticket_num.setText(num + "");
         //金额
-        double amount = Integer.valueOf(tv_main_ticket_1_num.getText().toString().trim())*Double.valueOf(tv_main_ticke_list_price.getText().toString().trim()) + Integer.valueOf(tv_main_ticket_2_num.getText().toString().trim())*Double.valueOf(tv_main_ticke_list_price2.getText().toString().trim());
-        tv_main_ticket_amount.setText((int)amount+"");
+        double amount = Integer.valueOf(tv_main_ticket_1_num.getText().toString().trim()) * Double.valueOf(tv_main_ticke_list_price.getText().toString().trim()) + Integer.valueOf(tv_main_ticket_2_num.getText().toString().trim()) * Double.valueOf(tv_main_ticke_list_price2.getText().toString().trim());
+        tv_main_ticket_amount.setText((int) amount + "");
     }
 
     /**
      * 设置轮播图
+     *
      * @return
      */
-    private int SetCurrentImage(){
-        Log.d("Test","SetCurrentImage currentItem = " + currentItem);
-        int flag=mediaFlag;
+    private int SetCurrentImage() {
+        Log.d("Test", "SetCurrentImage currentItem = " + currentItem);
+        int flag = mediaFlag;
         //播完之后切换0
-        if(currentItem==list_img.size()-1){
-            currentItem=-1;
+        if (currentItem == list_img.size() - 1) {
+            currentItem = -1;
         }
 
         currentItem++;
 
-        if(flag==1){
-            flag=2;
-        }else{
-            if(type==3 && currentItem == list_img.size()-1 && isShowImage==true){
+        if (flag == 1) {
+            flag = 2;
+        } else {
+            if (type == 3 && currentItem == list_img.size() - 1 && isShowImage == true) {
                 // 图片视频轮播，当播放到最后一张图片后，开始播放视频，即设置flag=1。
                 // （list_img.size()-1）(图片播放到最后一张)
                 // isShowImage=True(设置了图片播放)
-                flag=1;
-            }else if(type==3 && isShowImage==false){
+                flag = 1;
+            } else if (type == 3 && isShowImage == false) {
                 //当在播放视频的时候，设置currentItem = -1;
                 //这样当切换回图片时，可以显示第一张图片
-                currentItem=0;
-            }else{
-                flag=0;//播放图片
+                currentItem = 0;
+            } else {
+                flag = 0;//播放图片
             }
         }
         return flag;
@@ -552,17 +552,18 @@ public class MainActivity extends BaseActivity {
 
     /**
      * 根据票列表显示或者隐藏对应布局
+     *
      * @param i 0:不显示票列表 1：显示票列表
      */
-    public void setLayout(int i){
-        if (i==0){
+    public void setLayout(int i) {
+        if (i == 0) {
             ll_main_ticke_list.setVisibility(View.GONE);
             ll_main_ticket_detail.setVisibility(View.GONE);
             ll_main_desc_and_icon.setVisibility(View.GONE);
             ll_main_desc.setVisibility(View.VISIBLE);
             ll_main_icon.setVisibility(View.VISIBLE);
             ll_main_click.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             ll_main_ticke_list.setVisibility(View.VISIBLE);
             ll_main_ticket_detail.setVisibility(View.VISIBLE);
             ll_main_desc_and_icon.setVisibility(View.VISIBLE);
@@ -572,35 +573,35 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    private void getPriceList(){
+    private void getPriceList() {
         //获取价格列表
         PriceDao priceDao = daoSession.getPriceDao();
         priceList = priceDao.queryBuilder().where(PriceDao.Properties.IsDelete.eq(0)).list();
-        if (priceList==null || priceList.size()>2 || priceList.size()==0){
+        if (priceList == null || priceList.size() > 2 || priceList.size() == 0) {
             setLayout(0);
         }
-        if (priceList.size()==1){
+        if (priceList.size() == 1) {
             setLayout(1);
             tv_main_ticke_list_null.setVisibility(View.GONE);
             ll_main_ticket_list_2.setVisibility(View.GONE);
             tv_main_ticke_list_desc.setText(priceList.get(0).getDescription());
-            tv_main_ticke_list_price.setText((int)priceList.get(0).getPrice()+"");
+            tv_main_ticke_list_price.setText((int) priceList.get(0).getPrice() + "");
             tv_main_ticke_list_title.setText(priceList.get(0).getTitle());
             iv_main_ticke_list_icon.setImageBitmap(BitmapUtils.byte2Bitmap(priceList.get(0).getPic()));
         }
 
-        if (priceList.size()==2){
+        if (priceList.size() == 2) {
 
             setLayout(1);
 
             tv_main_ticke_list_desc.setText(priceList.get(0).getDescription());
-            tv_main_ticke_list_price.setText((int)priceList.get(0).getPrice()+"");
+            tv_main_ticke_list_price.setText((int) priceList.get(0).getPrice() + "");
             tv_main_ticke_list_title.setText(priceList.get(0).getTitle());
             iv_main_ticke_list_icon.setImageBitmap(BitmapUtils.byte2Bitmap(priceList.get(0).getPic()));
 
 
             tv_main_ticke_list_desc2.setText(priceList.get(1).getDescription());
-            tv_main_ticke_list_price2.setText((int)priceList.get(1).getPrice()+"");
+            tv_main_ticke_list_price2.setText((int) priceList.get(1).getPrice() + "");
             tv_main_ticke_list_title2.setText(priceList.get(1).getTitle());
             iv_main_ticke_list_icon2.setImageBitmap(BitmapUtils.byte2Bitmap(priceList.get(1).getPic()));
         }
@@ -608,18 +609,19 @@ public class MainActivity extends BaseActivity {
 
     /**
      * s设置广告
+     *
      * @param flag
      */
-    private void setAdsLayout(int flag){
-        switch (flag){
+    private void setAdsLayout(int flag) {
+        switch (flag) {
             case VIDEO_SHOW:
-                isShowImage=false;
+                isShowImage = false;
                 sv_main_video.setVisibility(View.VISIBLE);
                 fl_main_ads.setVisibility(View.GONE);
                 break;
             case PICTURE_SHOW:
-                currentItem=-1;
-                isShowImage=true;
+                currentItem = -1;
+                isShowImage = true;
                 sv_main_video.setVisibility(View.GONE);
                 fl_main_ads.setVisibility(View.VISIBLE);
                 break;
@@ -627,13 +629,13 @@ public class MainActivity extends BaseActivity {
     }
 
     /**
-     - @Description:  获取机器内存，检索是否有广告视频
-     - @Author:  Jat
-     - @Date:  ${DATE}
-     - @Time： ${TIME}
+     * - @Description:  获取机器内存，检索是否有广告视频
+     * - @Author:  Jat
+     * - @Date:  ${DATE}
+     * - @Time： ${TIME}
      */
-    public void initAds(){
-        type=2;
+    public void initAds() {
+        type = 2;
         player = new MPlayer();
         player.setDisplay(new MinimalDisplay(sv_main_video));
 
@@ -648,23 +650,23 @@ public class MainActivity extends BaseActivity {
         String picturePath = FolderUtil.getImagePath();
         pictures = FolderUtil.getFolderFiles(picturePath);
 
-        if (pictures!=null){
+        if (pictures != null) {
             getBanner();
         }
 
         //判断播放广告方式
-        if (videos.size()>0 && pictures.size()>0){
+        if (videos.size() > 0 && pictures.size() > 0) {
             //视频与广告图片一起轮播
             type = 3;
-            whatShow=0;
-        }else if (videos.size()== 0 && pictures.size()>0){
+            whatShow = 0;
+        } else if (videos.size() == 0 && pictures.size() > 0) {
             //图片轮播
             type = 2;
-            whatShow=0;
-        }else {
+            whatShow = 0;
+        } else {
             //播放视频
             type = 1;
-            whatShow=1;
+            whatShow = 1;
         }
         //发送消息播放广告
         Message message = new Message();
@@ -675,22 +677,22 @@ public class MainActivity extends BaseActivity {
     /**
      * 获取轮播图
      */
-    private void getBanner(){
+    private void getBanner() {
         //动态设置轮播图数量
         list_img.clear();
         for (int i = 0; i < pictures.size(); i++) {
-            int m=400;
-            int h=300;
+            int m = 400;
+            int h = 300;
             ImageView iv = new ImageView(MainActivity.this);
             iv.setScaleType(ImageView.ScaleType.FIT_XY);
-            File f=new File(pictures.get(i));
+            File f = new File(pictures.get(i));
             Picasso.with(MainActivity.this)
                     .load(f)
                     .resize(m, h)
                     .centerCrop()
                     .into(iv);
             list_img.add(iv);
-            iv=null;
+            iv = null;
         }
 
         //设置轮播图
@@ -699,8 +701,8 @@ public class MainActivity extends BaseActivity {
 
     /**
      * 时间任务 时间更新
-     * @author Administrator
      *
+     * @author Administrator
      */
     private class TimeTask implements Runnable {
         public void run() {
@@ -713,7 +715,7 @@ public class MainActivity extends BaseActivity {
     /**
      * 设置右上角的总票数
      */
-    private void setTicketNum(){
+    private void setTicketNum() {
         tv_main_header_ticket_num.setText(PrinterCase.getInstance().getCurrentTicketNumber());
     }
 
@@ -721,17 +723,17 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if(scheduledExecutorService==null || scheduledExecutorService.isShutdown()){
+        if (scheduledExecutorService == null || scheduledExecutorService.isShutdown()) {
             scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
             //时间更新，一分钟刷新一次
-            scheduledExecutorService.scheduleWithFixedDelay(new TimeTask(), 1, 1 ,TimeUnit.SECONDS);
+            scheduledExecutorService.scheduleWithFixedDelay(new TimeTask(), 1, 1, TimeUnit.SECONDS);
         }
     }
 
     /**
      * 重回页面是刷新票数量等信息
      */
-    public void initTicket(){
+    public void initTicket() {
         //票数
         tv_main_ticket_num.setText("0");
         tv_main_ticket_1_num.setText("0");
@@ -758,16 +760,16 @@ public class MainActivity extends BaseActivity {
 
     //关掉延迟服务
     @Override
-    public void onDestroy(){
+    public void onDestroy() {
         super.onDestroy();
         player.onDestroy();
         unregisterReceiver(mediaReceiver);
         shutDownScheduledExecutorService();
-        Log.i("Test","MainActvity onDestroy scheduledExecutorService shutdown");
+        Log.i("Test", "MainActvity onDestroy scheduledExecutorService shutdown");
     }
 
-    private  void shutDownScheduledExecutorService(){
-        if(!scheduledExecutorService.isShutdown())
+    private void shutDownScheduledExecutorService() {
+        if (!scheduledExecutorService.isShutdown())
             scheduledExecutorService.shutdown();
     }
 

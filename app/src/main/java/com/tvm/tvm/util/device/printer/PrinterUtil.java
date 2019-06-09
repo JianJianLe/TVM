@@ -74,43 +74,39 @@ public class PrinterUtil {
         this.normalTicket=PrinterCase.getInstance().normalTicket;
         this.summaryTicket=PrinterCase.getInstance().summaryTicket;
         printerInit();
-        parsePrintMessage(initPrintMessage());
+        initPrintMessage();
+        parsePrintMessage();
     }
 
     /***********************************************************************************/
 
-//    [CenterSmall]->开始日期：[StartDateTime]
-//            [CenterSmall]->结束日期：[EndDateTime]
-//            [CenterSmall]->现金交易总额：[CashTotalAmount]
-//            [CenterSmall]->现金交易笔数：[CashTotalCount]
-//            [CenterSmall]->线上支付总额：[OnlinePayTotalAmount]
-//            [CenterSmall]->线上支付笔数：[OnlinePayTotalCount]
-//            [CenterSmall]->总额：[TotalAmount]
-//            [CenterSmall]->总笔数：[TotalCount]
-
-    private String initPrintMessage(){
-        String printData = printTemplate;
+    private void initPrintMessage(){
         //Normal Ticket
-        printData=printData.replace("[DeviceNumber]", normalTicket.getDeviceNumber());
-        printData=printData.replace("[TicketName]", normalTicket.getTicketName());
-        printData=printData.replace("[Price]", normalTicket.getPrice());
-        printData=printData.replace("[TicketNumber]", normalTicket.getTicketNumber());
-        printData=printData.replace("[PayType]", normalTicket.getPayType());
-        printData=printData.replace("[DateTime]", normalTicket.getDateStr());
+        replaceStr("[DeviceNumber]", normalTicket.getDeviceNumber());
+        replaceStr("[TicketName]", normalTicket.getTicketName());
+        replaceStr("[Price]", normalTicket.getPrice());
+        replaceStr("[TicketNumber]", normalTicket.getTicketNumber());
+        replaceStr("[PayType]", normalTicket.getPayType());
+        replaceStr("[DateTime]", normalTicket.getDateStr());
         //Summary Ticket
-        printData=printData.replace("[StartDateTime]", summaryTicket.getStartDateTime());
-        printData=printData.replace("[EndDateTime]", summaryTicket.getEndDateTime());
-        printData=printData.replace("[CashTotalAmount]", summaryTicket.getCashTotalAmount());
-        printData=printData.replace("[CashTotalCount]", summaryTicket.getCashTotalCount());
-        printData=printData.replace("[OnlinePayTotalAmount]", summaryTicket.getOnlinePayTotalAmount());
-        printData=printData.replace("[OnlinePayTotalCount]", summaryTicket.getOnlinePayTotalCount());
-        printData=printData.replace("[TotalAmount]", summaryTicket.getTotalAmount());
-        printData=printData.replace("[TotalCount]", summaryTicket.getTotalCount());
-        return printData;
+        replaceStr("[TicketTitle]", normalTicket.getTicketTitle());
+        replaceStr("[StartDateTime]", summaryTicket.getStartDateTime());
+        replaceStr("[EndDateTime]", summaryTicket.getEndDateTime());
+        replaceStr("[CashTotalAmount]", summaryTicket.getCashTotalAmount());
+        replaceStr("[CashTotalCount]", summaryTicket.getCashTotalCount());
+        replaceStr("[OnlinePayTotalAmount]", summaryTicket.getOnlinePayTotalAmount());
+        replaceStr("[OnlinePayTotalCount]", summaryTicket.getOnlinePayTotalCount());
+        replaceStr("[TotalAmount]", summaryTicket.getTotalAmount());
+        replaceStr("[TotalCount]", summaryTicket.getTotalCount()); 
+    }
+    
+    private void replaceStr(String target, String replacement){
+        if(replacement!=null)
+            printTemplate=printTemplate.replace(target,replacement);
     }
 
-    private void parsePrintMessage(String printData){
-        String[] msgArray = printData.split("\n");
+    private void parsePrintMessage(){
+        String[] msgArray = printTemplate.split("\n");
         for(String msgStr:msgArray){
             String[] tempMsg=msgStr.split("->");
             if(tempMsg.length>1){

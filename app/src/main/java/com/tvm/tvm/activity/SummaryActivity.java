@@ -16,11 +16,17 @@ import com.tvm.tvm.bean.Summary;
 import com.tvm.tvm.bean.dao.DaoSession;
 import com.tvm.tvm.bean.dao.PaymentRecordDao;
 import com.tvm.tvm.util.DateUtils;
+import com.tvm.tvm.util.TimeUtil;
+import com.tvm.tvm.util.device.printer.NormalTicket;
+import com.tvm.tvm.util.device.printer.PrinterCase;
+import com.tvm.tvm.util.device.printer.SummaryTicket;
 
 import org.greenrobot.greendao.query.Query;
 import org.greenrobot.greendao.query.WhereCondition;
 
+import java.nio.file.ProviderNotFoundException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -93,8 +99,26 @@ public class SummaryActivity extends BaseActivity{
                 this.finish();
                 break;
             case R.id.tv_summary_print:
+                printSummaryTicket();
                 break;
         }
+    }
+
+    private void printSummaryTicket(){
+        SummaryTicket summaryTicket= PrinterCase.getInstance().summaryTicket;
+        NormalTicket normalTicket=PrinterCase.getInstance().normalTicket;
+        normalTicket.setTicketName("统计");
+        normalTicket.setDateStr(TimeUtil.dateFormat.format(new Date()));
+        normalTicket.setDeviceNumber(setting.getDeviceNo());
+        summaryTicket.setStartDateTime(startTime);
+        summaryTicket.setEndDateTime(endTime);
+        summaryTicket.setCashTotalAmount(tv_summary_cash_total.getText().toString());
+        summaryTicket.setCashTotalCount(tv_summary_cash_count.getText().toString());
+        summaryTicket.setOnlinePayTotalAmount(tv_summary_onlinepay_total.getText().toString());
+        summaryTicket.setOnlinePayTotalCount(tv_summary_onlinepay_count.getText().toString());
+        summaryTicket.setTotalAmount(tv_summary_bill_summary.getText().toString());
+        summaryTicket.setTotalCount(tv_summary_count_summary.getText().toString());
+        PrinterCase.getInstance().print();
     }
 
     public void initData(){

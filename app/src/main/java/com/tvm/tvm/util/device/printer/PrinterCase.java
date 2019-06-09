@@ -57,7 +57,6 @@ public class PrinterCase {
     }
 
     public void printerCaseTest(){
-        NormalTicket normalTicket = new NormalTicket();
         normalTicket.setDeviceNumber("0001");
         normalTicket.setTicketName("儿童票");
         normalTicket.setPrice("10");
@@ -66,12 +65,12 @@ public class PrinterCase {
         Log.i("Test",TimeUtil.dateFormat.format(new Date()));
         normalTicket.setDateStr("2019-01-27 17:00:00");
         PrinterUtil printerUtil=new PrinterUtil();
-        printerUtil.PrintTicket(normalTicket,printTemplate);
+        printerUtil.PrintTicket(printTemplate);
     }
 
     public void print(){
         PrinterUtil printerUtil=new PrinterUtil();
-        printerUtil.PrintTicket(normalTicket,getTicketTemplate());
+        printerUtil.PrintTicket(getTicketTemplate());
     }
 
     private String getTicketTemplate(){

@@ -69,9 +69,9 @@ public class PrinterUtil {
         }
     }
 
-    public void PrintTicket(NormalTicket normalTicket, String printTemplate){
+    public void PrintTicket(String printTemplate){
         this.printTemplate=printTemplate;
-        this.normalTicket=normalTicket;
+        this.normalTicket=PrinterCase.getInstance().normalTicket;
         this.summaryTicket=PrinterCase.getInstance().summaryTicket;
         printerInit();
         parsePrintMessage(initPrintMessage());

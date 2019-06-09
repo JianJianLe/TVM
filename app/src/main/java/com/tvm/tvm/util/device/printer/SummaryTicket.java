@@ -42,7 +42,6 @@ public class SummaryTicket {
         return totalCount;
     }
 
-
     public void setStartDateTime(String startDateTime){
         this.startDateTime=startDateTime;
     }

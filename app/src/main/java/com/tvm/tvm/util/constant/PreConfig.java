@@ -24,5 +24,7 @@ public class PreConfig {
     //支付描述
     public static String PAY_DESC = "payDesc";
 
-    public final static String USB_FOLDER="/mnt/usb_storage";
+    public static String USB_FOLDER="/mnt/usb_storage";
+
+    public static String KEY_FILE_PATH="/TVM/TVM_key.properties";
 }

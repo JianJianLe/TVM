@@ -18,8 +18,10 @@ public class PrinterCase {
     public double amountRecord=0;//总共多少金额
     public double balanceRecord=0;//余额
     public List<TicketBean> ticketList;
-    private List<TicketSummary> ticketSummaryList;
+    public NormalTicket normalTicket = new NormalTicket();
+    public SummaryTicket summaryTicket= new SummaryTicket();
 
+    private List<TicketSummary> ticketSummaryList;
 
     private String printTemplate = "[CenterLarge]->快剪\n" +
             "[CenterSmall]->欢迎光临快剪专营店\n" +
@@ -45,7 +47,6 @@ public class PrinterCase {
             "[Enter]\n" +
             "[Enter]";
 
-    public PrinterKeys msg = new PrinterKeys();
     private static PrinterCase instance;
 
     public synchronized static PrinterCase getInstance(){
@@ -56,28 +57,28 @@ public class PrinterCase {
     }
 
     public void printerCaseTest(){
-        PrinterKeys msg = new PrinterKeys();
-        msg.setDeviceNumber("0001");
-        msg.setTicketName("儿童票");
-        msg.setPrice("10");
-        msg.setTicketNumber("001");
-        msg.setPayType("现金");
+        NormalTicket normalTicket = new NormalTicket();
+        normalTicket.setDeviceNumber("0001");
+        normalTicket.setTicketName("儿童票");
+        normalTicket.setPrice("10");
+        normalTicket.setTicketNumber("001");
+        normalTicket.setPayType("现金");
         Log.i("Test",TimeUtil.dateFormat.format(new Date()));
-        msg.setDateStr("2019-01-27 17:00:00");
+        normalTicket.setDateStr("2019-01-27 17:00:00");
         PrinterUtil printerUtil=new PrinterUtil();
-        printerUtil.PrintTicket(msg,printTemplate);
+        printerUtil.PrintTicket(normalTicket,printTemplate);
     }
 
     public void print(){
         PrinterUtil printerUtil=new PrinterUtil();
-        printerUtil.PrintTicket(msg,getTicketTemplate());
+        printerUtil.PrintTicket(normalTicket,getTicketTemplate());
     }
 
     private String getTicketTemplate(){
         BillSettingDao billSettingDao = AppApplication.getApplication().getDaoSession().getBillSettingDao();
         BillSetting billSetting=billSettingDao.queryBuilder().where(
                                     BillSettingDao.Properties.TicketName.like(
-                                            "[TicketName]="+msg.getTicketName())
+                                            "[TicketName]="+ normalTicket.getTicketName())
                                     ).unique();
         return billSetting.getTicketBody();
     }

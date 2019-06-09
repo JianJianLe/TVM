@@ -66,6 +66,9 @@ public class StringUtils {
     public static String ONLINE_PAY_CONNECT_FAILED= "线上支付连接失败";
     public static String ONLINE_PAY_CONNECT_FAILED_CONTENT="未能连接线上支付，请用现金支付!";
 
+    public static String KEY_REGISTERED="解锁成功,可以正常使用!";
+    public static String INSTALLATION_ERROR="安装出错,请联系厂家!";
+
     public final static String TVMKEY="0123456789ABCDEFFEDCBA" +
                                       "9876543210FEDCBA0123456"+
                                       "7890123456789ABCDEF";

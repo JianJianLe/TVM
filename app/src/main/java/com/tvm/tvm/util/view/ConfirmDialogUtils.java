@@ -30,7 +30,7 @@ public class ConfirmDialogUtils extends Dialog {
         this.context = context;
         this.title = title;
         this.content = content;
-        initalize();
+        initialize();
     }
 
     public ConfirmDialogUtils(Context context,String title,String content, boolean isShowCancel) {
@@ -39,11 +39,11 @@ public class ConfirmDialogUtils extends Dialog {
         this.title = title;
         this.content = content;
         this.isShowCancel=isShowCancel;
-        initalize();
+        initialize();
     }
  
     //初始化View
-    private void initalize() {
+    private void initialize() {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.confirm_dialog_layout, null);
         setContentView(view);
@@ -76,7 +76,7 @@ public class ConfirmDialogUtils extends Dialog {
                 }
             }
         });
-        if(isShowCancel=false)
+        if(!isShowCancel)
             cancelBtn.setVisibility(View.GONE);
     }
  

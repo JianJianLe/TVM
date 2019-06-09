@@ -1,9 +1,7 @@
 package com.tvm.tvm.util.device.paydevice;
 
-import android.provider.ContactsContract;
 import android.util.Log;
 
-import com.tvm.tvm.bean.TicketBean;
 import com.tvm.tvm.util.DataUtils;
 import com.tvm.tvm.util.device.SerialPortUtil;
 import com.tvm.tvm.util.device.printer.PrinterAction;
@@ -15,7 +13,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.math.BigDecimal;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -150,7 +147,7 @@ public class PayDeviceUtil {
 
     private void printTicketDirectly(){
         printInfo("Print Ticket Directly");
-        PrinterCase.getInstance().msg.setPayType("线上支付");
+        PrinterCase.getInstance().normalTicket.setPayType("线上支付");
         PrinterAction printerAction=new PrinterAction();
         printerAction.PrintTicket();
         PrinterCase.getInstance().balanceRecord=0;

@@ -112,8 +112,8 @@ public class FileUtils {
 		return fileStr;
 	}
 
-	public static boolean readJJLKeyFile(){
-		String path= PreConfig.USB_FOLDER + "/TVM/TVM_key.properties";///mnt/usb_storage
+	public static boolean readKeyFile(String usbFolder){
+		String path= usbFolder + PreConfig.KEY_FILE_PATH;
 		File file=new File(path);
 		if(file.exists()){
 			String temp=readFileStr(path);

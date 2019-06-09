@@ -6,22 +6,9 @@ import android.os.Message;
 import android.widget.TextView;
 
 import com.tvm.tvm.R;
-import com.tvm.tvm.application.AppApplication;
-import com.tvm.tvm.bean.PaymentRecord;
-import com.tvm.tvm.bean.Setting;
-import com.tvm.tvm.bean.TicketBean;
-import com.tvm.tvm.bean.TicketSummary;
-import com.tvm.tvm.bean.dao.DaoSession;
-import com.tvm.tvm.bean.dao.PaymentRecordDao;
-import com.tvm.tvm.bean.dao.SettingDao;
 import com.tvm.tvm.util.device.QRCodeUtil;
 import com.tvm.tvm.util.device.printer.PrinterAction;
 import com.tvm.tvm.util.device.printer.PrinterCase;
-import com.tvm.tvm.util.device.printer.PrinterKeys;
-import com.tvm.tvm.util.TimeUtil;
-
-import java.util.Date;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

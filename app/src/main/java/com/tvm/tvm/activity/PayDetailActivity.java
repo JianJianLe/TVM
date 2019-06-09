@@ -1,7 +1,5 @@
 package com.tvm.tvm.activity;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -12,9 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tvm.tvm.R;
-import com.tvm.tvm.application.AppApplication;
 import com.tvm.tvm.bean.TicketBean;
-import com.tvm.tvm.bean.dao.DaoSession;
 import com.tvm.tvm.util.BackPrevious;
 import com.tvm.tvm.util.BitmapUtils;
 import com.tvm.tvm.util.TimeUtil;
@@ -23,11 +19,9 @@ import com.tvm.tvm.util.device.QRCodeUtil;
 import com.tvm.tvm.util.device.billacceptor.BillAcceptorUtil;
 import com.tvm.tvm.util.device.paydevice.PayDeviceUtil;
 import com.tvm.tvm.util.device.printer.PrinterCase;
-import com.tvm.tvm.util.view.ConfirmDialogUtils;
 import com.tvm.tvm.util.view.ToastUtils;
 
 import java.io.File;
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -143,13 +137,12 @@ public class PayDetailActivity extends BaseActivity{
         }
     }
 
-    //TODO: 线上支付
     private void netWorkPay(){
         if(PayDeviceUtil.getInstance().paySuccess){
             PrinterCase.getInstance().amountRecord=totalAmount;
             receivedAmount=totalAmount;
             updateAmount();
-            PrinterCase.getInstance().msg.setPayType("线上支付");
+            PrinterCase.getInstance().normalTicket.setPayType("线上支付");
             PayDeviceUtil.getInstance().paySuccess=false;
         }
     }
@@ -161,7 +154,7 @@ public class PayDetailActivity extends BaseActivity{
             PrinterCase.getInstance().amountRecord+=cash;
             receivedAmount = PrinterCase.getInstance().amountRecord;
             updateAmount();
-            PrinterCase.getInstance().msg.setPayType("现金");
+            PrinterCase.getInstance().normalTicket.setPayType("现金");
             BillAcceptorUtil.getInstance().rcvdMoney=0;
         }
     }

@@ -18,6 +18,7 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.os.Environment;
 import android.util.Log;
+import android.util.Printer;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
@@ -30,6 +31,7 @@ import com.tvm.tvm.bean.dao.SettingDao;
 import com.tvm.tvm.util.DataUtils;
 import com.tvm.tvm.util.FolderUtil;
 import com.tvm.tvm.util.TimeUtil;
+import com.tvm.tvm.util.device.printer.PrinterCase;
 
 public class QRCodeUtil {
     private static QRCodeUtil instance;
@@ -39,25 +41,6 @@ public class QRCodeUtil {
     private String key_MD5;
     private String printQRCodeFlag;
 
-    public void setPriceStr(String priceStr){
-        this.priceStr= DataUtils.addZeros(priceStr,5);
-    }
-
-    public void setDeviceNo(String deviceNo){
-        this.deviceNo="DP"+deviceNo;
-    }
-    public void setTimeData(String timeData){
-        SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");//加密格式
-        this.timeData=sDateFormat.format(TimeUtil.getDate(timeData));
-    }
-
-    public void setKey_MD5(String key_MD5){
-        this.key_MD5=key_MD5;
-    }
-
-    public void setPrintQRCodeFlag(String printQRCodeFlag){
-        this.printQRCodeFlag=printQRCodeFlag;
-    }
 
     public synchronized static QRCodeUtil getInstance(){
         if (instance==null)
@@ -83,9 +66,30 @@ public class QRCodeUtil {
         return new File(cachePath + File.separator + uniqueName);
     }
 
-    public byte[] getTicketQRCodeData( ) {
+    public void setPriceStr(String priceStr){
+        this.priceStr= priceStr;
+    }
+
+    public void setDeviceNo(String deviceNo){
+        this.deviceNo="DP"+deviceNo;
+    }
+    public void setTimeData(String timeData){
+        SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");//加密格式
+        this.timeData=sDateFormat.format(TimeUtil.getDate(timeData));
+    }
+
+    public void setKey_MD5(String key_MD5){
+        this.key_MD5=key_MD5;
+    }
+
+    public void setPrintQRCodeFlag(String printQRCodeFlag){
+        this.printQRCodeFlag=printQRCodeFlag;
+    }
+
+
+    public void setTicketQRCodeData( ) {
         if(printQRCodeFlag.equals("No"))
-            return null;
+            return;
         //=========
         String dataStr_MD5="";
         if(key_MD5!=null&&key_MD5.length()>0){
@@ -107,25 +111,8 @@ public class QRCodeUtil {
 
         String hexStr= DataUtils.getDecToHex(content.length(),4) +
                     DataUtils.convertStringToHex(content);
-        return  DataUtils.hexToByteArray(hexStr);
 
-//        FileInputStream fileInputStream = null;
-//        Bitmap mBitmap=null;
-//        // 获取保存二维码图片的路径
-//        String path_QRCode = FolderUtil.getTempFolder() + File.separator + "QrImg.bmp";
-//        // 调用打印机工具类，将数据传入制作二维码
-//        qrCodeCreate(content, path_QRCode);
-//        // 制作完毕后获取二维码图片的流数据，转换成打印用的字节
-//        try {
-//            fileInputStream = new FileInputStream(new File(path_QRCode));
-//            mBitmap = BitmapFactory.decodeStream(fileInputStream);
-//            fileInputStream.close();
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }catch (IOException e){
-//            e.printStackTrace();
-//        }
-//        return draw2PxPoint(compressPic(mBitmap));
+        PrinterCase.getInstance().normalTicket.setQrData(hexStr);
     }
 
     // 创建二维码

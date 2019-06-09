@@ -12,7 +12,7 @@ import com.tvm.tvm.bean.Price;
 import com.tvm.tvm.bean.dao.DaoSession;
 import com.tvm.tvm.bean.dao.PriceDao;
 import com.tvm.tvm.util.device.printer.PrinterCase;
-import com.tvm.tvm.util.device.printer.PrinterKeys;
+import com.tvm.tvm.util.device.printer.NormalTicket;
 import com.tvm.tvm.util.TimeUtil;
 
 import java.util.Date;
@@ -101,10 +101,10 @@ public class PayFinishActivity extends BaseActivity {
     //@Star Print Balance 08Apr
     private void balanceTicketSettings(double balance){
         String currentTime =TimeUtil.dateFormat.format(new Date());
-        PrinterKeys balanceMsg = PrinterCase.getInstance().msg;
-        balanceMsg.setPrice(balance +"");
-        balanceMsg.setTicketName("余额票");
-        balanceMsg.setDateStr(currentTime);
+        NormalTicket balanceTicket = PrinterCase.getInstance().normalTicket;
+        balanceTicket.setPrice(balance +"");
+        balanceTicket.setTicketName("余额票");
+        balanceTicket.setDateStr(currentTime);
     }
 
     public void initData() {

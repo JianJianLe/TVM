@@ -1,8 +1,5 @@
 package com.tvm.tvm.util.device.printer;
 
-import android.os.Handler;
-import android.os.Message;
-
 import com.tvm.tvm.application.AppApplication;
 import com.tvm.tvm.bean.PaymentRecord;
 import com.tvm.tvm.bean.Setting;
@@ -39,24 +36,25 @@ public class PrinterAction {
     }
 
     public void PrintTicketList(){
-        PrinterKeys msg = PrinterCase.getInstance().msg;
-        msg.setDeviceNumber(getDeviceNO());
-        msg.setDateStr(TimeUtil.dateFormat.format(new Date()));
+        NormalTicket normalTicket = PrinterCase.getInstance().normalTicket;
+        normalTicket.setDeviceNumber(getDeviceNO());
+        normalTicket.setDateStr(TimeUtil.dateFormat.format(new Date()));
         for (TicketBean bean:ticketList){
             ticketPrice=bean.getPrice();//价格
             ticketTitle=bean.getTitle();//标题
             priceId=bean.getId();
             for(int i=0; i<bean.getNumber();i++){
                 String currentTime=TimeUtil.dateFormat.format(new Date());
-                msg.setTicketNumber(PrinterCase.getInstance().getTicketNumber(currentTime));
-                msg.setTicketName(ticketTitle);
-                msg.setPrice((int)ticketPrice+"");
+                normalTicket.setTicketNumber(PrinterCase.getInstance().getTicketNumber(currentTime));
+                normalTicket.setTicketName(ticketTitle);
+                normalTicket.setPrice((int)ticketPrice+"");
                 //QR code information
                 QRCodeUtil.getInstance().setTimeData(currentTime);
                 QRCodeUtil.getInstance().setPriceStr((int)ticketPrice+"");
+                QRCodeUtil.getInstance().setTicketQRCodeData();
                 //Save payment information to DB
-                saveTicketInfo(currentTime,Integer.parseInt(msg.getTicketNumber()));
-                savePayment(PrinterCase.getInstance().msg);
+                saveTicketInfo(currentTime,Integer.parseInt(normalTicket.getTicketNumber()));
+                savePayment(PrinterCase.getInstance().normalTicket);
                 PrinterCase.getInstance().print();
                 TimeUtil.delay(3000);
             }
@@ -74,7 +72,7 @@ public class PrinterAction {
     }
 
     //@Star 保存支付记录
-    private void savePayment(PrinterKeys msg){
+    private void savePayment(NormalTicket normalTicket){
         PaymentRecordDao paymentRecordDao=daoSession.getPaymentRecordDao();
         PaymentRecord paymentRecord=new PaymentRecord();
         paymentRecord.setAmount(Double.valueOf(ticketPrice));
@@ -82,8 +80,8 @@ public class PrinterAction {
         paymentRecord.setPrice(Double.valueOf(ticketPrice));
         paymentRecord.setPriceId(priceId);
         paymentRecord.setTitle(ticketTitle);
-        paymentRecord.setPayTime(TimeUtil.getDate(msg.getDateStr()));
-        paymentRecord.setType(paymentRecord.getTypeNumber(msg.getPayType()));
+        paymentRecord.setPayTime(TimeUtil.getDate(normalTicket.getDateStr()));
+        paymentRecord.setType(paymentRecord.getTypeNumber(normalTicket.getPayType()));
         paymentRecordDao.save(paymentRecord);
     }
 

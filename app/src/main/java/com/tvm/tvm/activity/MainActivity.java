@@ -1,7 +1,10 @@
 package com.tvm.tvm.activity;
 
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -24,7 +27,10 @@ import com.tvm.tvm.bean.TicketBean;
 import com.tvm.tvm.bean.dao.DaoSession;
 import com.tvm.tvm.bean.dao.PriceDao;
 import com.tvm.tvm.bean.dao.SettingDao;
+import com.tvm.tvm.receiver.MediaReceiver;
+import com.tvm.tvm.util.AuthorizeUtil;
 import com.tvm.tvm.util.BitmapUtils;
+import com.tvm.tvm.util.FileUtils;
 import com.tvm.tvm.util.FirstInitApp;
 import com.tvm.tvm.util.FolderUtil;
 import com.tvm.tvm.util.LongClickUtils;
@@ -36,6 +42,7 @@ import com.tvm.tvm.util.player.MPlayer;
 import com.tvm.tvm.util.player.MPlayerException;
 import com.tvm.tvm.util.player.MinimalDisplay;
 import com.tvm.tvm.util.player.PlayerCallback;
+import com.tvm.tvm.util.view.ConfirmDialogUtils;
 import com.tvm.tvm.util.view.ToastUtils;
 
 import java.io.File;
@@ -224,6 +231,8 @@ public class MainActivity extends BaseActivity {
     //时间
     private int timeFlag=-1;
 
+    private MediaReceiver mediaReceiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -234,8 +243,14 @@ public class MainActivity extends BaseActivity {
         //获取数据库
         daoSession = AppApplication.getApplication().getDaoSession();
 
-        type=2;
+        initView();
         initAds();
+        initBillAcceptor();
+        initPayDevice();
+        tvmRegisterAction();
+    }
+
+    private void initView(){
 
         //初始化时间
         tv_main_header_time_date.setText(dateFormat.format(new Date()));
@@ -251,9 +266,25 @@ public class MainActivity extends BaseActivity {
             }
         });
 
-        initBillAcceptor();
-        initPayDevice();
+        //设置公司名和购买指引
+        if (setting!=null){
+            tv_main_comany_name.setText(setting.getShopName());
+            tv_main_pay_desc.setText(setting.getPayDesc());
+        }
     }
+
+
+    private void tvmRegisterAction(){
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_MEDIA_EJECT);
+        filter.addAction(Intent.ACTION_MEDIA_UNMOUNTED);
+        filter.addAction(Intent.ACTION_MEDIA_MOUNTED);
+        filter.addDataScheme("file");
+        mediaReceiver=new MediaReceiver();
+        registerReceiver(mediaReceiver, filter);
+    }
+
+
 
     public void initBillAcceptor(){
         //纸钞机初始化
@@ -343,6 +374,25 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    private boolean checkInstallation(){
+        if(!AuthorizeUtil.getInstance().isKeyExisted()){
+            final ConfirmDialogUtils confirmDialogUtils = new ConfirmDialogUtils(this,StringUtils.INSTALLATION_ERROR," ",false);
+            confirmDialogUtils.show();
+            confirmDialogUtils.setOnDialogClickListener(new ConfirmDialogUtils.OnDialogClickListener() {
+                @Override
+                public void onOKClick() {
+                    confirmDialogUtils.dismiss();
+                }
+
+                @Override
+                public void onCancelClick() {
+                    confirmDialogUtils.dismiss();
+                }
+            });
+            return false;
+        }
+        return true;
+    }
 
     @OnClick({R.id.tv_main_click_buy,
             R.id.iv_main_ticket_cancel,R.id.iv_main_ticket_buy,
@@ -350,7 +400,8 @@ public class MainActivity extends BaseActivity {
             R.id.iv_main_ticket_2_add,R.id.iv_main_ticket_2_sub,
             R.id.tv_main_header_ticket_num,R.id.ll_main})
     public void onClick(View view){
-        Long priceId;
+        if(!checkInstallation())
+            return;
         int ticketNum = 0;
         switch (view.getId()){
 //            case R.id.tv_main_title_title:
@@ -582,7 +633,7 @@ public class MainActivity extends BaseActivity {
      - @Time： ${TIME}
      */
     public void initAds(){
-
+        type=2;
         player = new MPlayer();
         player.setDisplay(new MinimalDisplay(sv_main_video));
 
@@ -675,13 +726,6 @@ public class MainActivity extends BaseActivity {
             //时间更新，一分钟刷新一次
             scheduledExecutorService.scheduleWithFixedDelay(new TimeTask(), 1, 1 ,TimeUnit.SECONDS);
         }
-        //设置公司名和购买指引
-        SettingDao settingDao = daoSession.getSettingDao();
-        Setting setting = settingDao.queryBuilder().where(SettingDao.Properties.Id.eq(1)).unique();
-        if (setting!=null){
-            tv_main_comany_name.setText(setting.getShopName());
-            tv_main_pay_desc.setText(setting.getPayDesc());
-        }
     }
 
     /**
@@ -717,6 +761,7 @@ public class MainActivity extends BaseActivity {
     public void onDestroy(){
         super.onDestroy();
         player.onDestroy();
+        unregisterReceiver(mediaReceiver);
         shutDownScheduledExecutorService();
         Log.i("Test","MainActvity onDestroy scheduledExecutorService shutdown");
     }
@@ -725,4 +770,5 @@ public class MainActivity extends BaseActivity {
         if(!scheduledExecutorService.isShutdown())
             scheduledExecutorService.shutdown();
     }
+
 }

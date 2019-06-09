@@ -2,6 +2,8 @@ package com.tvm.tvm.util.device.printer;
 
 import android.util.Log;
 
+import com.tvm.tvm.bean.Summary;
+import com.tvm.tvm.util.DataUtils;
 import com.tvm.tvm.util.TimeUtil;
 import com.tvm.tvm.util.device.QRCodeUtil;
 
@@ -56,7 +58,8 @@ public class PrinterUtil {
     //[Small]: 居中正常字符
     //[LeftSmall]: 左对齐正常字符
     private String printTemplate;
-
+    private NormalTicket normalTicket;
+    private SummaryTicket summaryTicket;
     /***********************************************************************************/
     //初始化打印机
     private void printerInit() {
@@ -66,22 +69,43 @@ public class PrinterUtil {
         }
     }
 
-    public void PrintTicket(PrinterKeys msg, String printTemplate){
+    public void PrintTicket(NormalTicket normalTicket, String printTemplate){
         this.printTemplate=printTemplate;
+        this.normalTicket=normalTicket;
+        this.summaryTicket=PrinterCase.getInstance().summaryTicket;
         printerInit();
-        parsePrintMessage(initPrintMessage(msg));
+        parsePrintMessage(initPrintMessage());
     }
 
     /***********************************************************************************/
 
-    private String initPrintMessage(PrinterKeys msg){
+//    [CenterSmall]->开始日期：[StartDateTime]
+//            [CenterSmall]->结束日期：[EndDateTime]
+//            [CenterSmall]->现金交易总额：[CashTotalAmount]
+//            [CenterSmall]->现金交易笔数：[CashTotalCount]
+//            [CenterSmall]->线上支付总额：[OnlinePayTotalAmount]
+//            [CenterSmall]->线上支付笔数：[OnlinePayTotalCount]
+//            [CenterSmall]->总额：[TotalAmount]
+//            [CenterSmall]->总笔数：[TotalCount]
+
+    private String initPrintMessage(){
         String printData = printTemplate;
-        printData=printData.replace("[DeviceNumber]", msg.getDeviceNumber());
-        printData=printData.replace("[TicketName]", msg.getTicketName());
-        printData=printData.replace("[Price]", msg.getPrice());
-        printData=printData.replace("[TicketNumber]", msg.getTicketNumber());
-        printData=printData.replace("[PayType]", msg.getPayType());
-        printData=printData.replace("[DateTime]", msg.getDateStr());
+        //Normal Ticket
+        printData=printData.replace("[DeviceNumber]", normalTicket.getDeviceNumber());
+        printData=printData.replace("[TicketName]", normalTicket.getTicketName());
+        printData=printData.replace("[Price]", normalTicket.getPrice());
+        printData=printData.replace("[TicketNumber]", normalTicket.getTicketNumber());
+        printData=printData.replace("[PayType]", normalTicket.getPayType());
+        printData=printData.replace("[DateTime]", normalTicket.getDateStr());
+        //Summary Ticket
+        printData=printData.replace("[StartDateTime]", summaryTicket.getStartDateTime());
+        printData=printData.replace("[EndDateTime]", summaryTicket.getEndDateTime());
+        printData=printData.replace("[CashTotalAmount]", summaryTicket.getCashTotalAmount());
+        printData=printData.replace("[CashTotalCount]", summaryTicket.getCashTotalCount());
+        printData=printData.replace("[OnlinePayTotalAmount]", summaryTicket.getOnlinePayTotalAmount());
+        printData=printData.replace("[OnlinePayTotalCount]", summaryTicket.getOnlinePayTotalCount());
+        printData=printData.replace("[TotalAmount]", summaryTicket.getTotalAmount());
+        printData=printData.replace("[TotalCount]", summaryTicket.getTotalCount());
         return printData;
     }
 
@@ -112,10 +136,12 @@ public class PrinterUtil {
                     case "[SplitLine]":
                         printSplitLine();
                         break;
+                    case "[QRCode]":
+                        printQRCode(normalTicket.getQrData());
+                        break;
                 }
             }
         }
-        printQRCode(QRCodeUtil.getInstance().getTicketQRCodeData());
         completePrint();//切割纸张
     }
 
@@ -183,7 +209,10 @@ public class PrinterUtil {
 //    private byte[] printQRCode = {0x1d,0x6b,0x61,0x08,0x02};
 
     //打印二维码
-    private void printQRCode(byte[] dataQRCode){
+    private void printQRCode(String strQRData){
+        byte[] dataQRCode=null;
+        if(strQRData!=null)
+            dataQRCode=DataUtils.hexToByteArray(strQRData);
         if(dataQRCode!=null && dataQRCode.length>0) {
             Log.i(TAG, "Print Ticket QR Code");
             jPrinterDataSend(CenterCMD,CenterCMD.length);

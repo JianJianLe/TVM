@@ -112,6 +112,7 @@ public class PayDetailActivity extends BaseActivity{
                     break;
                 case 1:
                     iv_pay_detail_qr_code.setImageBitmap(BitmapUtils.file2Bitmap(imgQRCodeFile));
+                    Log.i("Test", "Completed to show QR Code");
                     hasShownQRCode=true;
                     break;
                 case 2:
@@ -188,20 +189,43 @@ public class PayDetailActivity extends BaseActivity{
             public void run() {
                 while (!isInterrupted() && !hasShownQRCode){
                     PayDeviceUtil.getInstance().cmd_GetQRCode((int)(totalAmount*100));
-                    TimeUtil.delay(500);
-                    displayQRCode(PayDeviceUtil.getInstance().QRData);
-                    TimeUtil.delay(1500);
-                    countGetQRCode++;
-                    if(countGetQRCode==5){//10 s
-                        //Connect failed.
-                        Message message = new Message();
-                        message.what = 2;
-                        handler.sendMessage(message);
+                    TimeUtil.delay(1000);
+                    if(PayDeviceUtil.getInstance().QRData!=null){
+                        Log.i("Test", "QRData has data");
+                        displayQRCode(PayDeviceUtil.getInstance().QRData);
                         break;
                     }
+
+//                    if(PayDeviceUtil.getInstance().QRData!=null){
+//                        Log.i("Test", "QRData has data");
+//                        break;
+//                    }else{
+//                        Log.i("Test", "QRData is null");
+//                    }
+//
+//                    if(waitQRCode(15))
+//                        break;
+//                    countGetQRCode++;
+//                    if(countGetQRCode==5){//10 s
+//                        //Connect failed.
+//                        Message message = new Message();
+//                        message.what = 2;
+//                        handler.sendMessage(message);
+//                        break;
+//                    }
                 }
             }
         }.start();
+    }
+
+    private boolean waitQRCode(int timeCount){
+        for(int i=0;i<timeCount;i++){
+            TimeUtil.delay(100);
+            if(hasShownQRCode){
+                return true;
+            }
+        }
+        return false;
     }
 
     private void displayQRCode(String QRData){

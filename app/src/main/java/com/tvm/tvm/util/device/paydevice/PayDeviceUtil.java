@@ -97,14 +97,21 @@ public class PayDeviceUtil {
                 return;
             }
             printInfo("Server CMD:"+receivedCMD);
+
             if(checkXOR()){
+                Log.i("Test","checkXOR=true");
                 //查询链接CMD01
                 if(hasServerQuery())
                     cmd_ReplySever();
 
                 //售票机发送获取二维码支付链接指令（子命令 0x0A）
-                if(hasQRCode())
+                if(hasQRCode()){
+                    Log.i("Test","hasQRCode=true");
                     QRData = getQRCodeData();
+                }else{
+                    Log.i("Test","hasQRCode=false");
+                }
+
 
                 //支付盒子发送获取设备状态指令（子命令 0x01)
                 if(hasQueryClientStatus())
@@ -139,6 +146,8 @@ public class PayDeviceUtil {
                 //售票机收到现金上报交易结果（线下支付）（子命令 0x06）
                 if(hasReplyCashReport())
                     printInfo("支付盒子应答现金上报");
+            }else {
+                Log.i("Test","checkXOR=false");
             }
         }else{
             printInfo("Invalid Server CMD:"+cmdStr);
@@ -178,6 +187,7 @@ public class PayDeviceUtil {
     public void init_QRCode(){
         randomHexFlag=true;
         strRandomHex=null;
+        QRData=null;
     }
 
     private boolean hasQRCode(){
@@ -185,7 +195,6 @@ public class PayDeviceUtil {
     }
 
     public void cmd_GetQRCode(int amount){
-        QRData=null;
         payAmount=amount;
         printInfo("Amount = "+amount+", Send CMD to get QR code.");
 
@@ -432,9 +441,19 @@ public class PayDeviceUtil {
 
     private boolean checkXOR(){
         String hexStr = getCMDDataByRegex(receivedCMD,"(?<=AA).*(?=DD)");
+
+        Log.i("Test", "hexStr=" + hexStr);
+
         String result = hexStr.substring(hexStr.length()-2,hexStr.length());
         String cmdStr = hexStr.substring(0,hexStr.length()-2);
-        return DataUtils.xor(cmdStr).equals(result);
+
+        Log.i("Test", "cmdStr=" + cmdStr);
+
+        String xorStr = DataUtils.xor(cmdStr);
+
+        Log.i("Test","result="+result);
+        Log.i("Test","xorStr="+xorStr);
+        return xorStr.equals(result);
     }
 
     private void printInfo(String infoStr){

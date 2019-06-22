@@ -118,7 +118,7 @@ public class FileUtils {
     }
 
     public static boolean readKeyFile(String usbFolder) {
-        String localKeyFilePath=FolderUtil.getDefaultHiddenTVMPath()+File.separator+".TVM_key.properties";
+        String localKeyFilePath=FolderUtil.getDefaultHiddenTVMPath()+File.separator+PreConfig.LOCAL_KEY_FILE;
         try {
             File localFile=new File(localKeyFilePath);
             if(localFile.exists()){

@@ -14,12 +14,15 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.channels.FileChannel;
 
 
 public class FileUtils {
 
     public static String SDPATH = Environment.getExternalStorageDirectory()
             + "/TVM/";
+
+    //private static String localKeyFilePath = Environment.getExternalStorageDirectory()+ "/TVM_key.properties";
 
     public static void saveBitmap(Bitmap bm, String picName) {
         try {
@@ -52,14 +55,15 @@ public class FileUtils {
         return dir;
     }
 
+
     public static boolean isFileExist(String fileName) {
         File file = new File(SDPATH + fileName);
         file.isFile();
         return file.exists();
     }
 
-    public static void deleteFile(String fileName) {
-        File file = new File(SDPATH + fileName);
+    public static void deleteFile(String filePath) {
+        File file = new File(filePath);
         if (file.isFile()) {
             file.delete();
         }
@@ -114,15 +118,48 @@ public class FileUtils {
     }
 
     public static boolean readKeyFile(String usbFolder) {
+        String localKeyFilePath=FolderUtil.getDefaultHiddenTVMPath()+File.separator+".TVM_key.properties";
+        try {
+            File localFile=new File(localKeyFilePath);
+            if(localFile.exists()){
+                String temp = readFileStr(localKeyFilePath);
+                if (temp.contains(StringUtils.TVMKEY)){
+                    return true;
+                }
+            }
+        }catch (Exception e){
+            Log.e("Test",e.getMessage());
+        }
+
+        
         String path = usbFolder + PreConfig.KEY_FILE_PATH;
         File file = new File(path);
         if (file.exists()) {
             String temp = readFileStr(path);
-            if (temp.indexOf(StringUtils.TVMKEY) > -1)
+            if (temp.contains(StringUtils.TVMKEY)){
+                copyFile(file,new File(localKeyFilePath));
                 return true;
+            }
         } else
-            Log.i("Test", "Cannot find the TVM_key file");
+            Log.i("Test", "Cannot find the TVM_key file in USB folder");
+
         return false;
+    }
+
+    public static void copyFile(File source, File dest){
+        if(dest.exists())
+            deleteFile(dest.getParent());
+        FileChannel inputChannel = null;
+        FileChannel outputChannel = null;
+        try {
+            inputChannel = new FileInputStream(source).getChannel();
+            outputChannel = new FileOutputStream(dest).getChannel();
+            outputChannel.transferFrom(inputChannel, 0, inputChannel.size());
+            inputChannel.close();
+            outputChannel.close();
+        }catch (IOException e){
+            Log.e("Test", e.getMessage());
+        }
     }
 
     public static boolean copyTemplateFolder(String usbFolder) {
@@ -139,6 +176,12 @@ public class FileUtils {
         return false;
     }
 
+    public static void createFolder(String folderPath){
+        File folder=new File(folderPath);
+        if(!folder.exists()){
+            folder.mkdirs();
+        }
+    }
 
     public static void copyFolder(String resourceFolder, String targetFolder){
         try{

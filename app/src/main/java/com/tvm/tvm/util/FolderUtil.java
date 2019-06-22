@@ -152,6 +152,16 @@ public class FolderUtil {
         return templatePath;
     }
 
+    public static String getDefaultHiddenTVMPath(){
+        File file = Environment.getExternalStorageDirectory();
+        String tempPath = file.getAbsolutePath() + File.separator + ".TVM" + File.separator;
+        file = new File(tempPath);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        return tempPath;
+    }
+
     private boolean isFileExisted(File files) {
         boolean flag = false;
         if (files.exists() && files.isDirectory()) {

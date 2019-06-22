@@ -142,9 +142,9 @@ public class BillListActivity extends BaseActivity {
         normalTicket.setTicketName("补单票");
         normalTicket.setDeviceNumber(setting.getDeviceNo());
         normalTicket.setPayType(paymentRecord.getTypeStr());
-        normalTicket.setTicketTitle(title);
+        normalTicket.setTicketTitle(paymentRecord.getTitle());
         normalTicket.setPrice(new Double(paymentRecord.getPrice()).intValue()+"");
-        normalTicket.setDateStr(TimeUtil.dateFormat.format(new Date()));
+        normalTicket.setDateStr(TimeUtil.dateFormat.format(paymentRecord.getPayTime()));
     }
 
 }

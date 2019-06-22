@@ -337,6 +337,8 @@ public class MainActivity extends BaseActivity {
                     break;
                 case 2://播放视频
                     setAdsLayout(VIDEO_SHOW);
+                    setVideo();
+                    Log.d("Test", "Video start");
                     break;
                 case 3:
                     break;
@@ -411,6 +413,10 @@ public class MainActivity extends BaseActivity {
 //                PayDeviceUtil.getInstance().cmd_ReplySever();
                 break;
             case R.id.tv_main_click_buy:
+                if (PrinterCase.getInstance().checkTicketTemplate() == false) {
+                    ToastUtils.showText(this, StringUtils.EMPTY_TICKET_LIST);
+                    break;
+                }
                 //选择价格，价格列表为空的话不能购票
                 if (priceList == null || priceList.size() == 0) {
                     ToastUtils.showText(this, StringUtils.EMPTY_PRICE_LIST);
@@ -427,6 +433,10 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.iv_main_ticket_buy:
                 //点击购买，跳到对应购买页面
+                if (PrinterCase.getInstance().checkTicketTemplate() == false) {
+                    ToastUtils.showText(this, StringUtils.EMPTY_TICKET_LIST);
+                    break;
+                }
                 confirmPay();
                 break;
             case R.id.iv_main_ticket_1_add:
@@ -635,6 +645,7 @@ public class MainActivity extends BaseActivity {
      * - @Time： ${TIME}
      */
     public void initAds() {
+
         type = 2;
         player = new MPlayer();
         player.setDisplay(new MinimalDisplay(sv_main_video));
@@ -654,6 +665,10 @@ public class MainActivity extends BaseActivity {
             getBanner();
         }
 
+        //发送消息播放广告
+        Message message = new Message();
+        message.what = 1;//播放图片
+
         //判断播放广告方式
         if (videos.size() > 0 && pictures.size() > 0) {
             //视频与广告图片一起轮播
@@ -667,10 +682,8 @@ public class MainActivity extends BaseActivity {
             //播放视频
             type = 1;
             whatShow = 1;
+            message.what=2;//播放视频
         }
-        //发送消息播放广告
-        Message message = new Message();
-        message.what = 1;
         handler.sendMessage(message);
     }
 

@@ -97,10 +97,16 @@ public class NormalSettingActivity extends BaseActivity {
             et_normal_setting_pay_desc.setText(setting.getPayDesc());
             et_normal_setting_device_no.setText(setting.getDeviceNo());
             et_normal_setting_md5_key.setText(setting.getMd5Key());
-            if(setting.getPrintQRCodeFlag().equals("Yes"))
+
+            if(setting.getPrintQRCodeFlag().equals("Yes")){
+                printQRCodeFlag="Yes";
                 rgp_print_qrcode.check(R.id.rbt_isprinted);
-            else
+            }
+            else{
+                printQRCodeFlag="No";
                 rgp_print_qrcode.check(R.id.rbt_isnotprinted);
+            }
+
         }
     }
 

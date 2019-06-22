@@ -88,8 +88,11 @@ public class QRCodeUtil {
 
 
     public void setTicketQRCodeData( ) {
-        if(printQRCodeFlag.equals("No"))
+        if(printQRCodeFlag.equals("No")){
+            PrinterCase.getInstance().normalTicket.setQrData("");
             return;
+        }
+
         //=========
         String dataStr_MD5="";
         if(key_MD5!=null&&key_MD5.length()>0){

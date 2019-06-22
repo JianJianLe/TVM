@@ -120,6 +120,7 @@ public class SummaryActivity extends BaseActivity{
         normalTicket.setTicketName("统计");
         normalTicket.setDateStr(TimeUtil.dateFormat.format(new Date()));
         normalTicket.setDeviceNumber(setting.getDeviceNo());
+        normalTicket.setTicketTitle(title);
         summaryTicket.setStartDateTime(startTime);
         summaryTicket.setEndDateTime(endTime);
         summaryTicket.setCashTotalAmount(tv_summary_cash_total.getText().toString());

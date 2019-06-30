@@ -61,7 +61,10 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void initView(){
-        et_login_username.setText("admin");
+        if(PreConfig.Envir.equals("DEV"))
+            et_login_username.setText("admin");
+        else
+            et_login_username.setText("manager");
     }
 
     /**

@@ -49,6 +49,8 @@ public class PayFinishActivity extends BaseActivity {
     //返回上一级倒计时
     private BackPrevious backPrevious;
 
+    private boolean isContinueed=false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +58,6 @@ public class PayFinishActivity extends BaseActivity {
         ButterKnife.bind(this);
         daoSession = AppApplication.getApplication().getDaoSession();
         initData();
-        Log.i("Test","getPrintTimeOut="+setting.getPrintTimeOut());
         backPrevious = new BackPrevious(setting.getPrintTimeOut()*1000,1000,PayFinishActivity.this);
     }
 
@@ -65,6 +66,7 @@ public class PayFinishActivity extends BaseActivity {
         switch (view.getId()){
             case R.id.tv_pay_finish_continue:
                 //继续购票
+                isContinueed=true;
                 backToBuyTicket();
                 break;
             case R.id.tv_pay_finish_print:
@@ -129,6 +131,7 @@ public class PayFinishActivity extends BaseActivity {
     }
 
     public void initData() {
+        isContinueed=false;
         tv_pay_finish_company_name.setText(setting.getShopName());
         tv_pay_finish_remain.setText((int)PrinterCase.getInstance().balanceRecord+"");
     }
@@ -176,8 +179,10 @@ public class PayFinishActivity extends BaseActivity {
     @Override
     public void onDestroy(){
         super.onDestroy();
-        if(PrinterCase.getInstance().balanceRecord>0){
+        if(!isContinueed && PrinterCase.getInstance().balanceRecord>0){
+            tv_pay_finish_remain.setText("0");
             printBalanceAfterTimeOut();
+            PrinterCase.getInstance().balanceRecord=0d;//reset balance after print balance ticket.
         }
         Log.i("Test","PayFinishActivity onDestroy scheduledExecutorService shutdown");
     }

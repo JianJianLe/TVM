@@ -8,8 +8,8 @@ package com.tvm.tvm.util.constant;
  */
 public class PreConfig {
 
-    public static String Envir="DEV";
-    //public static String Envir="SIT";
+    //public static String Envir="DEV";
+    public static String Envir="SIT";
     //public static String Envir="PROD";
 
     //缓存登录用户

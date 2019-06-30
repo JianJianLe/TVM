@@ -34,6 +34,7 @@ import com.tvm.tvm.util.FileUtils;
 import com.tvm.tvm.util.FirstInitApp;
 import com.tvm.tvm.util.FolderUtil;
 import com.tvm.tvm.util.LongClickUtils;
+import com.tvm.tvm.util.constant.PreConfig;
 import com.tvm.tvm.util.constant.StringUtils;
 import com.tvm.tvm.util.device.billacceptor.BillAcceptorUtil;
 import com.tvm.tvm.util.device.paydevice.PayDeviceUtil;
@@ -256,8 +257,10 @@ public class MainActivity extends BaseActivity {
         tv_main_header_time_date.setText(dateFormat.format(new Date()));
         tv_main_header_time_time.setText(format.format(new Date()));
 
+        int delayMillis=(PreConfig.Envir=="DEV")? 500:10000;
+
         //长按十秒公司名称，进入登录管理页面
-        LongClickUtils.setLongClick(new Handler(), tv_main_comany_name, 500, new View.OnLongClickListener() {
+        LongClickUtils.setLongClick(new Handler(), tv_main_comany_name, delayMillis, new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 //todo:补充长按事件的处理逻辑

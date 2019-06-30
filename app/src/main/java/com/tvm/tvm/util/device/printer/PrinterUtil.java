@@ -32,10 +32,6 @@ public class PrinterUtil {
     //1D  6B  61  v  r  nl  nH d1…dk
     private byte[] printQRCode = {0x1d,0x6b,0x61,0x08,0x02};
 
-    //初始化
-    private byte[] initCMD={0x1B,0x40};
-    private byte[] initTempCMD={0x00, 0x00, 0x00, 0x00, 0x0A};
-
     //常规
     private byte[] printDataCMD = {0x0a}; //打印并换行
     private byte[] cutPaperCMD = { 0x1d, 0x56, 0x41, 0x00 }; //0x42:半切  0x41:全切
@@ -66,13 +62,11 @@ public class PrinterUtil {
     private SummaryTicket summaryTicket;
     /***********************************************************************************/
     //初始化打印机
-    private void printerInit() {
+    public void printerInit() {
         int fd = jPrinterInit();//连接打印机
         if (fd < 0) {
             Log.i(TAG, "Device init ERR!");
         }
-        jPrinterDataSend(initTempCMD,initTempCMD.length);
-        jPrinterDataSend(initCMD,initCMD.length);
     }
 
     public void PrintTicket(String printTemplate){

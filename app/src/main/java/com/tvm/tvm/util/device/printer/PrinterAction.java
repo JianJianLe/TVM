@@ -38,7 +38,6 @@ public class PrinterAction {
     public void PrintTicketList(){
         NormalTicket normalTicket = PrinterCase.getInstance().normalTicket;
         normalTicket.setDeviceNumber(getDeviceNO());
-        normalTicket.setDateStr(TimeUtil.dateFormat.format(new Date()));
         for (TicketBean bean:ticketList){
             ticketPrice=bean.getPrice();//价格
             ticketTitle=bean.getTitle();//标题
@@ -48,6 +47,7 @@ public class PrinterAction {
                 normalTicket.setTicketNumber(PrinterCase.getInstance().getTicketNumber(currentTime));
                 normalTicket.setTicketName(ticketTitle);
                 normalTicket.setPrice((int)ticketPrice+"");
+                normalTicket.setDateStr(currentTime);
                 //QR code information
                 QRCodeUtil.getInstance().setTimeData(currentTime);
                 QRCodeUtil.getInstance().setPriceStr((int)ticketPrice+"");

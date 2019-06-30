@@ -82,6 +82,7 @@ public class PayDetailActivity extends BaseActivity{
     private int countGetQRCode=0;
     private File imgQRCodeFile;
     private boolean hasShownQRCode=false;
+    private boolean isFinished=false;
 
 
     @Override
@@ -91,6 +92,7 @@ public class PayDetailActivity extends BaseActivity{
         setContentView(R.layout.activity_pay_detail);
         ButterKnife.bind(this);
         ticketList = PrinterCase.getInstance().ticketList;
+        isFinished=false;
         initData();
     }
 
@@ -182,50 +184,23 @@ public class PayDetailActivity extends BaseActivity{
     }
 
     private void setQRCode(){
-        countGetQRCode=0;
         PayDeviceUtil.getInstance().init_QRCode();
         hasShownQRCode=false;
         new Thread(){
             public void run() {
                 while (!isInterrupted() && !hasShownQRCode){
                     PayDeviceUtil.getInstance().cmd_GetQRCode((int)(totalAmount*100));
-                    TimeUtil.delay(1000);
+                    TimeUtil.delay(500);
                     if(PayDeviceUtil.getInstance().QRData!=null){
-                        Log.i("Test", "QRData has data");
                         displayQRCode(PayDeviceUtil.getInstance().QRData);
                         break;
                     }
+                    if(isFinished)
+                        break;
 
-//                    if(PayDeviceUtil.getInstance().QRData!=null){
-//                        Log.i("Test", "QRData has data");
-//                        break;
-//                    }else{
-//                        Log.i("Test", "QRData is null");
-//                    }
-//
-//                    if(waitQRCode(15))
-//                        break;
-//                    countGetQRCode++;
-//                    if(countGetQRCode==5){//10 s
-//                        //Connect failed.
-//                        Message message = new Message();
-//                        message.what = 2;
-//                        handler.sendMessage(message);
-//                        break;
-//                    }
                 }
             }
         }.start();
-    }
-
-    private boolean waitQRCode(int timeCount){
-        for(int i=0;i<timeCount;i++){
-            TimeUtil.delay(100);
-            if(hasShownQRCode){
-                return true;
-            }
-        }
-        return false;
     }
 
     private void displayQRCode(String QRData){
@@ -314,6 +289,7 @@ public class PayDetailActivity extends BaseActivity{
     @Override
     public void onDestroy(){
         super.onDestroy();
+        isFinished=true;
         PayDeviceUtil.getInstance().activityRecord="GotoOtherActivity";
         scheduledExecutorService.shutdown();
         BillAcceptorUtil.getInstance().ba_Disable();//@Star Feb16

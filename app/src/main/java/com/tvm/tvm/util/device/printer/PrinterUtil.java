@@ -34,7 +34,7 @@ public class PrinterUtil {
 
     //初始化
     private byte[] initCMD={0x1B,0x40};
-    private byte[] initTempCMD={0x00, 0x00, 0x00, 0x00};
+    private byte[] initTempCMD={0x00, 0x00, 0x00, 0x00, 0x0A};
 
     //常规
     private byte[] printDataCMD = {0x0a}; //打印并换行
@@ -71,8 +71,8 @@ public class PrinterUtil {
         if (fd < 0) {
             Log.i(TAG, "Device init ERR!");
         }
-        jPrinterDataSend(initCMD,initCMD.length);
         jPrinterDataSend(initTempCMD,initTempCMD.length);
+        jPrinterDataSend(initCMD,initCMD.length);
     }
 
     public void PrintTicket(String printTemplate){

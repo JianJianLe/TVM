@@ -76,7 +76,7 @@ public class PayDeviceUtil {
                     receivedCMD="";
                     if (mInputStream == null)
                         return;
-                    byte[] buffer = new byte[256];
+                    byte[] buffer = new byte[1024];
                     int size = mInputStream.read(buffer);
                     if (size > 0)
                         onDataReceived(buffer);
@@ -88,7 +88,17 @@ public class PayDeviceUtil {
     }
 
 
+    private void showData(final byte[] buffer){
+        StringBuffer stringBuffer = new StringBuffer();
+        for(int i=0;i<buffer.length;i++){
+            stringBuffer.append(buffer[i]);
+            stringBuffer.append(",");
+        }
+        Log.i("Test","original CMD="+stringBuffer.toString());
+    }
+
     private void onDataReceived(final byte[] buffer) {
+        showData(buffer);
         String cmdStr=DataUtils.bytesToHex(buffer);
         if(cmdStr.startsWith("AA")){
             receivedCMD=getAllCMD(cmdStr);
@@ -111,7 +121,6 @@ public class PayDeviceUtil {
                 }else{
                     Log.i("Test","hasQRCode=false");
                 }
-
 
                 //支付盒子发送获取设备状态指令（子命令 0x01)
                 if(hasQueryClientStatus())

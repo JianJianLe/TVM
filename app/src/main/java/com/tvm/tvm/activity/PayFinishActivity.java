@@ -3,6 +3,8 @@ package com.tvm.tvm.activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
@@ -11,6 +13,7 @@ import com.tvm.tvm.application.AppApplication;
 import com.tvm.tvm.bean.Price;
 import com.tvm.tvm.bean.dao.DaoSession;
 import com.tvm.tvm.bean.dao.PriceDao;
+import com.tvm.tvm.util.BackPrevious;
 import com.tvm.tvm.util.device.printer.PrinterCase;
 import com.tvm.tvm.util.device.printer.NormalTicket;
 import com.tvm.tvm.util.TimeUtil;
@@ -43,6 +46,8 @@ public class PayFinishActivity extends BaseActivity {
     TextView tv_pay_finish_company_name;
 
     private DaoSession daoSession;
+    //返回上一级倒计时
+    private BackPrevious backPrevious;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +56,8 @@ public class PayFinishActivity extends BaseActivity {
         ButterKnife.bind(this);
         daoSession = AppApplication.getApplication().getDaoSession();
         initData();
+        Log.i("Test","getPrintTimeOut="+setting.getPrintTimeOut());
+        backPrevious = new BackPrevious(setting.getPrintTimeOut()*1000,1000,PayFinishActivity.this);
     }
 
     @OnClick({R.id.tv_pay_finish_continue,R.id.tv_pay_finish_print})
@@ -98,6 +105,20 @@ public class PayFinishActivity extends BaseActivity {
         }.start();
     }
 
+    private void printBalanceAfterTimeOut(){
+        new Thread(){
+            public void run() {
+                double balance= PrinterCase.getInstance().balanceRecord;
+                if (balance!=0){
+                    Log.i("Test","Print Balance After Time Out");
+                    balanceTicketSettings(balance);
+                    PrinterCase.getInstance().print();
+                    TimeUtil.delay(1000);
+                }
+            }
+        }.start();
+    }
+
     //@Star Print Balance 08Apr
     private void balanceTicketSettings(double balance){
         String currentTime =TimeUtil.dateFormat.format(new Date());
@@ -127,5 +148,58 @@ public class PayFinishActivity extends BaseActivity {
         PrinterCase.getInstance().balanceRecord=0d;
         startActivity(this,MainActivity.class);
         this.finish();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        timeStart();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        backPrevious.cancel();
+    }
+
+    //region 无操作 返回上一页
+    private void timeStart() {
+        new Handler(getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                backPrevious.start();
+            }
+        });
+    }
+
+    //关掉延迟服务
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        if(PrinterCase.getInstance().balanceRecord>0){
+            printBalanceAfterTimeOut();
+        }
+        Log.i("Test","PayFinishActivity onDestroy scheduledExecutorService shutdown");
+    }
+
+    /**
+     * 主要的方法，重写dispatchTouchEvent
+     *
+     * @param ev
+     * @return
+     */
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        switch (ev.getAction()) {
+            //获取触摸动作，如果ACTION_UP，计时开始。
+            case MotionEvent.ACTION_UP:
+                backPrevious.start();
+                break;
+            //否则其他动作计时取消
+            default:
+                backPrevious.cancel();
+                break;
+        }
+        return super.dispatchTouchEvent(ev);
     }
 }

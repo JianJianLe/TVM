@@ -184,6 +184,7 @@ public class PayDetailActivity extends BaseActivity{
     }
 
     private void setQRCode(){
+        countGetQRCode=0;
         PayDeviceUtil.getInstance().init_QRCode();
         hasShownQRCode=false;
         new Thread(){
@@ -195,9 +196,13 @@ public class PayDetailActivity extends BaseActivity{
                         displayQRCode(PayDeviceUtil.getInstance().QRData);
                         break;
                     }
+
                     if(isFinished)
                         break;
 
+                    countGetQRCode++;
+                    if(countGetQRCode==20)
+                        break;
                 }
             }
         }.start();

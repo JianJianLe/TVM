@@ -49,7 +49,7 @@ public class PayFinishActivity extends BaseActivity {
     //返回上一级倒计时
     private BackPrevious backPrevious;
 
-    private boolean isContinueed=false;
+    private boolean isContinued=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +66,7 @@ public class PayFinishActivity extends BaseActivity {
         switch (view.getId()){
             case R.id.tv_pay_finish_continue:
                 //继续购票
-                isContinueed=true;
+                isContinued=true;
                 backToBuyTicket();
                 break;
             case R.id.tv_pay_finish_print:
@@ -111,10 +111,12 @@ public class PayFinishActivity extends BaseActivity {
         new Thread(){
             public void run() {
                 double balance= PrinterCase.getInstance().balanceRecord;
+                Log.i("Test","printBalanceAfterTimeOut, balance="+balance);
                 if (balance!=0){
                     Log.i("Test","Print Balance After Time Out");
                     balanceTicketSettings(balance);
                     PrinterCase.getInstance().print();
+                    PrinterCase.getInstance().balanceRecord=0d;//reset balance after print balance ticket.
                     TimeUtil.delay(1000);
                 }
             }
@@ -131,7 +133,7 @@ public class PayFinishActivity extends BaseActivity {
     }
 
     public void initData() {
-        isContinueed=false;
+        isContinued=false;
         tv_pay_finish_company_name.setText(setting.getShopName());
         tv_pay_finish_remain.setText((int)PrinterCase.getInstance().balanceRecord+"");
     }
@@ -179,10 +181,11 @@ public class PayFinishActivity extends BaseActivity {
     @Override
     public void onDestroy(){
         super.onDestroy();
-        if(!isContinueed && PrinterCase.getInstance().balanceRecord>0){
+        Log.i("Test","isContinued="+isContinued);
+        if(!isContinued && PrinterCase.getInstance().balanceRecord>0){
+            Log.i("Test","print balance ticket.");
             tv_pay_finish_remain.setText("0");
             printBalanceAfterTimeOut();
-            PrinterCase.getInstance().balanceRecord=0d;//reset balance after print balance ticket.
         }
         Log.i("Test","PayFinishActivity onDestroy scheduledExecutorService shutdown");
     }

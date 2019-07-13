@@ -33,6 +33,7 @@ public class SettingDao extends AbstractDao<Setting, Long> {
         public final static Property PrintTimeOut = new Property(6, int.class, "printTimeOut", false, "PRINT_TIME_OUT");
         public final static Property PrintQRCodeFlag = new Property(7, String.class, "printQRCodeFlag", false, "PRINT_QRCODE_FLAG");
         public final static Property PayDesc = new Property(8, String.class, "payDesc", false, "PAY_DESC");
+        public final static Property PayDeviceID = new Property(9, String.class, "payDeviceID", false, "PAY_DEVICE_ID");
     }
 
 
@@ -56,7 +57,8 @@ public class SettingDao extends AbstractDao<Setting, Long> {
                 "\"PAY_TIME_OUT\" INTEGER NOT NULL ," + // 5: payTimeOut
                 "\"PRINT_TIME_OUT\" INTEGER NOT NULL ," + // 6: printTimeOut
                 "\"PRINT_QRCODE_FLAG\" TEXT," + // 7: printQRCodeFlag
-                "\"PAY_DESC\" TEXT);"); // 8: payDesc
+                "\"PAY_DESC\" TEXT," + // 8: payDesc
+                "\"PAY_DEVICE_ID\" TEXT);"); // 9: payDeviceID
     }
 
     /** Drops the underlying database table. */
@@ -101,6 +103,11 @@ public class SettingDao extends AbstractDao<Setting, Long> {
         if (payDesc != null) {
             stmt.bindString(9, payDesc);
         }
+ 
+        String payDeviceID = entity.getPayDeviceID();
+        if (payDeviceID != null) {
+            stmt.bindString(10, payDeviceID);
+        }
     }
 
     @Override
@@ -139,6 +146,11 @@ public class SettingDao extends AbstractDao<Setting, Long> {
         if (payDesc != null) {
             stmt.bindString(9, payDesc);
         }
+ 
+        String payDeviceID = entity.getPayDeviceID();
+        if (payDeviceID != null) {
+            stmt.bindString(10, payDeviceID);
+        }
     }
 
     @Override
@@ -157,7 +169,8 @@ public class SettingDao extends AbstractDao<Setting, Long> {
             cursor.getInt(offset + 5), // payTimeOut
             cursor.getInt(offset + 6), // printTimeOut
             cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // printQRCodeFlag
-            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8) // payDesc
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // payDesc
+            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9) // payDeviceID
         );
         return entity;
     }
@@ -173,6 +186,7 @@ public class SettingDao extends AbstractDao<Setting, Long> {
         entity.setPrintTimeOut(cursor.getInt(offset + 6));
         entity.setPrintQRCodeFlag(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
         entity.setPayDesc(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setPayDeviceID(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
      }
     
     @Override

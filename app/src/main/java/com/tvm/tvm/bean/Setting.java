@@ -32,6 +32,8 @@ public class Setting {
 
     private String payDesc;
 
+    private String payDeviceID;
+
     public String getPayDesc() {
         return this.payDesc;
     }
@@ -104,9 +106,17 @@ public class Setting {
         this.id = id;
     }
 
-    @Generated(hash = 1189605304)
+    public String getPayDeviceID() {
+        return this.payDeviceID;
+    }
+
+    public void setPayDeviceID(String payDeviceID) {
+        this.payDeviceID = payDeviceID;
+    }
+
+    @Generated(hash = 1188775631)
     public Setting(Long id, String shopName, String deviceNo, String md5Key, int selectTimeOut, int payTimeOut,
-            int printTimeOut, String printQRCodeFlag, String payDesc) {
+            int printTimeOut, String printQRCodeFlag, String payDesc, String payDeviceID) {
         this.id = id;
         this.shopName = shopName;
         this.deviceNo = deviceNo;
@@ -116,6 +126,7 @@ public class Setting {
         this.printTimeOut = printTimeOut;
         this.printQRCodeFlag = printQRCodeFlag;
         this.payDesc = payDesc;
+        this.payDeviceID = payDeviceID;
     }
 
     @Generated(hash = 909716735)

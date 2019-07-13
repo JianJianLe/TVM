@@ -2,6 +2,9 @@ package com.tvm.tvm.util.device.paydevice;
 
 import android.util.Log;
 
+import com.tvm.tvm.application.AppApplication;
+import com.tvm.tvm.bean.Setting;
+import com.tvm.tvm.bean.dao.SettingDao;
 import com.tvm.tvm.util.DataUtils;
 import com.tvm.tvm.util.device.SerialPortUtil;
 import com.tvm.tvm.util.device.printer.PrinterAction;
@@ -28,6 +31,7 @@ public class PayDeviceUtil {
     private String strRandomHex;
     private boolean randomHexFlag=true;// One QR code command, one RandomHexStr.
 
+    private Setting setting;
     private SerialPortUtil serialPort;
     private OutputStream mOutputStream;
     private InputStream mInputStream;
@@ -56,6 +60,9 @@ public class PayDeviceUtil {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        SettingDao settingDao = AppApplication.getApplication().getDaoSession().getSettingDao();
+        setting = settingDao.queryBuilder().where(SettingDao.Properties.Id.eq(1)).unique();
 
         mOutputStream = (FileOutputStream) serialPort.getOutputStream();
         mInputStream = (FileInputStream) serialPort.getInputStream();
@@ -87,7 +94,7 @@ public class PayDeviceUtil {
         }
     }
 
-
+    //For test
     private void showData(final byte[] buffer){
         StringBuffer stringBuffer = new StringBuffer();
         for(int i=0;i<buffer.length;i++){
@@ -98,7 +105,7 @@ public class PayDeviceUtil {
     }
 
     private void onDataReceived(final byte[] buffer) {
-        showData(buffer);
+        //showData(buffer);
         String cmdStr=DataUtils.bytesToHex(buffer);
         if(cmdStr.startsWith("AA")){
             receivedCMD=getAllCMD(cmdStr);
@@ -108,20 +115,22 @@ public class PayDeviceUtil {
             }
             printInfo("Server CMD:"+receivedCMD);
 
-            if(checkXOR()){
+            //售票机发送获取二维码支付链接指令（子命令 0x0A）
+            if(hasQRCode()){
+                //Log.i("Test","hasQRCode=true");
+
+                String strQRCodeData=getQRCodeData();
+                //Log.i("Test","Before strQRCodeData="+strQRCodeData);
+                //Log.i("Test","PayDeviceID="+setting.getPayDeviceID());
+                if(strQRCodeData!=null && setting.getPayDeviceID()!=null)
+                    QRData = strQRCodeData.replaceAll("(?<=topay/).*(?=/)", setting.getPayDeviceID());
+                //Log.i("Test","After strQRCodeData="+QRData);
+            }
+            else if(checkXOR()){
                 Log.i("Test","checkXOR=true");
                 //查询链接CMD01
                 if(hasServerQuery())
                     cmd_ReplySever();
-
-                //售票机发送获取二维码支付链接指令（子命令 0x0A）
-                if(hasQRCode()){
-                    Log.i("Test","hasQRCode=true");
-                    QRData = getQRCodeData();
-                }else{
-                    Log.i("Test","hasQRCode=false");
-                }
-
                 //支付盒子发送获取设备状态指令（子命令 0x01)
                 if(hasQueryClientStatus())
                     cmd_ReplyClientStatus();
@@ -182,8 +191,15 @@ public class PayDeviceUtil {
     }
 
     private void cmd_ReplySever(){
+        Log.i("Test","hasServerQuery receivedCMD="+receivedCMD);
+        setting.setPayDeviceID(getPayDeviceNO());
         printInfo("Reply Server");
         write("AA0502017C0872DD");
+    }
+
+    private String getPayDeviceNO(){
+        String deviceNo=getCMDDataByRegex(receivedCMD,"(?<=AA0B0101).*(?=..DD)");//0000000091203832
+        return deviceNo.replaceAll("^(0+)", "");//91203832
     }
     //======== Server Query End ========
 

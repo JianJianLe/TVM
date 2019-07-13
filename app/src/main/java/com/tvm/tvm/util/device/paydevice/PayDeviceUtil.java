@@ -32,6 +32,7 @@ public class PayDeviceUtil {
     private boolean randomHexFlag=true;// One QR code command, one RandomHexStr.
 
     private Setting setting;
+    private SettingDao settingDao;
     private SerialPortUtil serialPort;
     private OutputStream mOutputStream;
     private InputStream mInputStream;
@@ -61,7 +62,7 @@ public class PayDeviceUtil {
             e.printStackTrace();
         }
 
-        SettingDao settingDao = AppApplication.getApplication().getDaoSession().getSettingDao();
+        settingDao = AppApplication.getApplication().getDaoSession().getSettingDao();
         setting = settingDao.queryBuilder().where(SettingDao.Properties.Id.eq(1)).unique();
 
         mOutputStream = (FileOutputStream) serialPort.getOutputStream();
@@ -118,10 +119,9 @@ public class PayDeviceUtil {
             //售票机发送获取二维码支付链接指令（子命令 0x0A）
             if(hasQRCode()){
                 //Log.i("Test","hasQRCode=true");
-
                 String strQRCodeData=getQRCodeData();
                 //Log.i("Test","Before strQRCodeData="+strQRCodeData);
-                //Log.i("Test","PayDeviceID="+setting.getPayDeviceID());
+                Log.i("Test","PayDeviceID="+setting.getPayDeviceID());
                 if(strQRCodeData!=null && setting.getPayDeviceID()!=null)
                     QRData = strQRCodeData.replaceAll("(?<=topay/).*(?=/)", setting.getPayDeviceID());
                 //Log.i("Test","After strQRCodeData="+QRData);
@@ -193,6 +193,7 @@ public class PayDeviceUtil {
     private void cmd_ReplySever(){
         Log.i("Test","hasServerQuery receivedCMD="+receivedCMD);
         setting.setPayDeviceID(getPayDeviceNO());
+        settingDao.update(setting);
         printInfo("Reply Server");
         write("AA0502017C0872DD");
     }

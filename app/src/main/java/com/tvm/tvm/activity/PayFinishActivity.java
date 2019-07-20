@@ -143,15 +143,13 @@ public class PayFinishActivity extends BaseActivity {
         List<Price> priceList = priceDao.queryBuilder().where(PriceDao.Properties.IsDelete.eq(0)).list();
         if(priceList.size()>2)
             startActivity(this,SelectPriceActivity.class);
-        else
-            startActivity(this,MainActivity.class);
         this.finish();
     }
 
     //@Star Main Activity
     private void gotoMainActivity(){
         PrinterCase.getInstance().balanceRecord=0d;
-        startActivity(this,MainActivity.class);
+        //startActivity(this,MainActivity.class);
         this.finish();
     }
 

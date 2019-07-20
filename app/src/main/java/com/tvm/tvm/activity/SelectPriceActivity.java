@@ -240,6 +240,7 @@ public class SelectPriceActivity extends BaseActivity implements View.OnTouchLis
     @Override
     public void onDestroy(){
         super.onDestroy();
+        Log.i("Test","SelectPriceActivity onDestroy");
         unregisterReceiver(receiver);
     }
 

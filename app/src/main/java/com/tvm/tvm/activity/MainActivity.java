@@ -244,6 +244,10 @@ public class MainActivity extends BaseActivity {
         //获取数据库
         daoSession = AppApplication.getApplication().getDaoSession();
 
+        //初始化视频播放
+        player = new MPlayer();
+        player.setDisplay(new MinimalDisplay(sv_main_video));
+
         initView();
         initAds();
         initBillAcceptor();
@@ -628,11 +632,13 @@ public class MainActivity extends BaseActivity {
     private void setAdsLayout(int flag) {
         switch (flag) {
             case VIDEO_SHOW:
+                Log.i("Test","Set AdsLayout: Video Show");
                 isShowImage = false;
                 sv_main_video.setVisibility(View.VISIBLE);
                 fl_main_ads.setVisibility(View.GONE);
                 break;
             case PICTURE_SHOW:
+                Log.i("Test","Set AdsLayout: Picture Show");
                 currentItem = -1;
                 isShowImage = true;
                 sv_main_video.setVisibility(View.GONE);
@@ -649,10 +655,7 @@ public class MainActivity extends BaseActivity {
      */
     public void initAds() {
 
-        type = 2;
-        player = new MPlayer();
-        player.setDisplay(new MinimalDisplay(sv_main_video));
-
+        Log.i("Test","=== MainActivity InitAds ===");
         // 清空list
         videos.clear();
         pictures.clear();
@@ -668,6 +671,7 @@ public class MainActivity extends BaseActivity {
             getBanner();
         }
 
+        type = 2;
         //发送消息播放广告
         Message message = new Message();
         message.what = 1;//播放图片
@@ -761,16 +765,20 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        Log.i("Test","MainActivity OnResume");
         //设置票数
         setTicketNum();
         getPriceList();
-        player.onResume();
         initTicket();
+
+        player.onResume();
+        initAds();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        Log.i("Test","MainActivity OnPause");
         player.onPause();
     }
 

@@ -79,7 +79,6 @@ public class PaySuccessActivity extends BaseActivity {
 
     //@Star Main Activity
     private void gotoMainActivity(){
-        startActivity(this,MainActivity.class);
         this.finish();
     }
 

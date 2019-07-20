@@ -6,6 +6,7 @@ import com.tvm.tvm.application.AppApplication;
 import com.tvm.tvm.bean.Setting;
 import com.tvm.tvm.bean.dao.SettingDao;
 import com.tvm.tvm.util.DataUtils;
+import com.tvm.tvm.util.TimeUtil;
 import com.tvm.tvm.util.device.SerialPortUtil;
 import com.tvm.tvm.util.device.printer.PrinterAction;
 import com.tvm.tvm.util.device.printer.PrinterCase;
@@ -30,6 +31,7 @@ public class PayDeviceUtil {
     private int payAmount;
     private String strRandomHex;
     private boolean randomHexFlag=true;// One QR code command, one RandomHexStr.
+    private boolean hasServerStatus=false;
 
     private Setting setting;
     private SettingDao settingDao;
@@ -37,8 +39,6 @@ public class PayDeviceUtil {
     private OutputStream mOutputStream;
     private InputStream mInputStream;
     private ReadThread mReadThread;
-    private static String serialPortFilePath1="/dev/ttyS0";
-    private static String serialPortFilePath2="/dev/ttyGS0";
 
     private static PayDeviceUtil instance;
     public synchronized static PayDeviceUtil getInstance(){
@@ -48,8 +48,10 @@ public class PayDeviceUtil {
     }
 
     public void initPayDevice() {
-
         printInfo("Init PayDevice");
+
+        String serialPortFilePath1="/dev/ttyS0";
+        String serialPortFilePath2="/dev/ttyGS0";
         File serialPortFile = new File(serialPortFilePath1);
         if(!serialPortFile.exists()){
             serialPortFile = new File(serialPortFilePath2);
@@ -75,7 +77,6 @@ public class PayDeviceUtil {
     }
 
     private class ReadThread extends Thread {
-
         @Override
         public void run() {
             super.run();
@@ -127,10 +128,20 @@ public class PayDeviceUtil {
                 //Log.i("Test","After strQRCodeData="+QRData);
             }
             else if(checkXOR()){
+
                 Log.i("Test","checkXOR=true");
                 //查询链接CMD01
-                if(hasServerQuery())
+                if(hasServerQuery()){
                     cmd_ReplySever();
+                    thread_QueryServerStatus();
+                }
+
+                //查询支付盒子网络状态
+                if(hasConnectedServer()){
+                    Log.i("Test", "Receieved Server Status:" + receivedCMD);
+                    hasServerStatus=true;
+
+                }
                 //支付盒子发送获取设备状态指令（子命令 0x01)
                 if(hasQueryClientStatus())
                     cmd_ReplyClientStatus();
@@ -194,7 +205,7 @@ public class PayDeviceUtil {
         Log.i("Test","hasServerQuery receivedCMD="+receivedCMD);
         setting.setPayDeviceID(getPayDeviceNO());
         settingDao.update(setting);
-        printInfo("Reply Server");
+        printInfo("Reply Server:AA0502017C0872DD");
         write("AA0502017C0872DD");
     }
 
@@ -203,6 +214,70 @@ public class PayDeviceUtil {
         return deviceNo.replaceAll("^(0+)", "");//91203832
     }
     //======== Server Query End ========
+
+
+    //======== Query Server Status Start ========
+    //2.查询支付盒子网络状态-详见3.8.2指令说明
+    //售货机主板 -------------> 支付盒子
+    //发送：AA 03 02 19 18 DD
+    //支付盒子 -------------> 售货机主板
+    //发送：AA 05 01 19 31 00 2C DD
+    private int statusFlag=0;
+    private void thread_QueryServerStatus(){
+        hasServerStatus=false;
+        statusFlag=0;
+        new Thread(){
+            public void run() {
+                while (!isInterrupted()){
+                    if(hasServerStatus)
+                        break;
+                    TimeUtil.delay(200);
+                    cmd_QuerySeverStatus();
+                    TimeUtil.delay(800);
+                }
+            }
+        }.start();
+    }
+
+    private void cmd_QuerySeverStatus(){
+        printInfo("Query Server Status");
+        write("AA03021918DD");
+    }
+
+    private boolean hasConnectedServer(){
+        return compareCMD(receivedCMD,"AA050119..00..DD");
+    }
+
+    //======== Query Server Status End ========
+
+
+
+    //======== Query Param Start ========
+    //查询终端基础参数CMD05：
+    //支付盒子发送：AA 03 01 05 07 DD
+    //售票机应答：AA 2B 02 05 data[n] Check DD
+    public void cmd_QueryParam(){
+        //TODO
+    }
+    private String getClientParam(){
+        //TODO
+        return null;
+    }
+    //======== Query Param End ========
+
+    //======== Set Client Param Start ========
+    //设置终端基础参数CMD06：
+    //支付盒子发送给售票机：AA 2B 01 06 data[n] Check DD
+    //售票机应答：AA 04 02 06 01 07 DD （00失败，01成功）
+    public void cmd_SetParam(){
+        //TODO
+        SetClientParam();
+    }
+
+    private void SetClientParam(){
+        //TODO
+    }
+    //======== Set Client Param End ========
 
 
 
@@ -393,35 +468,6 @@ public class PayDeviceUtil {
         return compareCMD(receivedCMD,"AA0A01C906.*DD");
     }
     //======== Report Cash Result End ========
-
-
-
-    //======== Query Param Start ========
-    //查询终端基础参数CMD05：
-    //支付盒子发送：AA 03 01 05 07 DD
-    //售票机应答：AA 2B 02 05 data[n] Check DD
-    public void cmd_QueryParam(){
-        //TODO
-    }
-    private String getClientParam(){
-        //TODO
-        return null;
-    }
-    //======== Query Param End ========
-
-    //======== Set Client Param Start ========
-    //设置终端基础参数CMD06：
-    //支付盒子发送给售票机：AA 2B 01 06 data[n] Check DD
-    //售票机应答：AA 04 02 06 01 07 DD （00失败，01成功）
-    public void cmd_SetParam(){
-        //TODO
-        SetClientParam();
-    }
-
-    private void SetClientParam(){
-        //TODO
-    }
-    //======== Set Client Param End ========
 
 
     //###########################

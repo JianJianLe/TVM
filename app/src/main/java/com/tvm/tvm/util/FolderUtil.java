@@ -76,8 +76,10 @@ public class FolderUtil {
         if (folderUtil.isFileExisted(files)) {
             String name[] = files.list();
             for (int i = 0; i < name.length; ++i) {
-                File f = new File(path, name[i]);
-                link.add(f.getPath());
+                if(!name[i].startsWith(".")){
+                    File f = new File(path, name[i]);
+                    link.add(f.getPath());
+                }
             }
         }
         return link;

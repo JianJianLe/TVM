@@ -63,6 +63,7 @@ public class LoginActivity extends BaseActivity {
     private void initView(){
         if(PreConfig.Envir.equals("DEV"))
             et_login_username.setText("admin");
+            //et_login_username.setText("manager");
         else
             et_login_username.setText("manager");
     }
@@ -74,6 +75,7 @@ public class LoginActivity extends BaseActivity {
 
         if(PreConfig.Envir.equals("DEV"))
             et_login_password.setText("admin");
+            //et_login_password.setText("manager123");
 
         if ("".equals(et_login_username.getText().toString().trim())){
             ToastUtils.showText(TAG,StringUtils.USER_NAME_EMPTY);
@@ -85,7 +87,7 @@ public class LoginActivity extends BaseActivity {
         }
 
         if (proccessLogin(et_login_username.getText().toString().trim(),et_login_password.getText().toString().trim())){
-            if ("superManager".equals(et_login_username.getText().toString().trim())){
+            if ("supermanager".equals(et_login_username.getText().toString().trim())){
                 initUser();
             }else {
                 startActivity(TAG,SettingsActivity.class);
@@ -127,7 +129,7 @@ public class LoginActivity extends BaseActivity {
         admin.setPassword("admin");
         User manager = new User();
         manager.setUserName("manager");
-        manager.setPassword("manager123");
+        manager.setPassword("manager");
         userDao.update(admin);
         userDao.update(manager);
         ToastUtils.showText(this,StringUtils.INIT_FINISH,Toast.LENGTH_SHORT);

@@ -4,9 +4,11 @@ import android.os.Bundle;
 import android.text.method.DigitsKeyListener;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -38,6 +40,12 @@ import butterknife.OnClick;
  */
 public class NormalSettingActivity extends BaseActivity {
 
+    @BindView(R.id.normal_setting_layout)
+    LinearLayout normal_setting_layout;
+
+    @BindView(R.id.normal_setting_layout_md5_key)
+    LinearLayout normal_setting_layout_md5_key;
+
     @BindView(R.id.ib_normal_setting_back)
     ImageButton ib_normal_setting_back;
 
@@ -65,6 +73,15 @@ public class NormalSettingActivity extends BaseActivity {
     @BindView(R.id.rgp_print_qrcode)
     RadioGroup rgp_print_qrcode;
 
+    @BindView(R.id.rbt_isprinted)
+    RadioButton rbt_isprinted;
+
+    @BindView(R.id.rbt_isnotprinted)
+    RadioButton rbt_isnotprinted;
+
+    @BindView(R.id.bt_normal_setting_confirm)
+    Button bt_normal_setting_confirm;
+
     private DaoSession daoSession;
 
     String compayName;
@@ -87,6 +104,20 @@ public class NormalSettingActivity extends BaseActivity {
     }
 
     private void initView(){
+        if (SharedPrefsUtil.getValue(getApplicationContext(),PreConfig.USER,"").equals("manager")){
+            normal_setting_layout_md5_key.setVisibility(View.GONE);
+            bt_normal_setting_confirm.setVisibility(View.GONE);
+            et_normal_setting_company_name.setEnabled(false);
+            et_normal_setting_time_out.setEnabled(false);
+            et_normal_setting_pay_time_out.setEnabled(false);
+            et_normal_setting_print_time_out.setEnabled(false);
+            et_normal_setting_pay_desc.setEnabled(false);
+            et_normal_setting_device_no.setEnabled(false);
+            rgp_print_qrcode.setEnabled(false);
+            rbt_isprinted.setEnabled(false);
+            rbt_isnotprinted.setEnabled(false);
+        }
+
         SettingDao settingDao = daoSession.getSettingDao();
         Setting setting = settingDao.queryBuilder().where(SettingDao.Properties.Id.eq(1l)).unique();
         if (setting!=null){
@@ -106,7 +137,6 @@ public class NormalSettingActivity extends BaseActivity {
                 printQRCodeFlag="No";
                 rgp_print_qrcode.check(R.id.rbt_isnotprinted);
             }
-
         }
     }
 

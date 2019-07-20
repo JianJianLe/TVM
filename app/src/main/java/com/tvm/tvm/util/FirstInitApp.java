@@ -58,10 +58,10 @@ public class FirstInitApp {
         admin.setPassword("admin");
         User manager = new User();
         manager.setUserName("manager");
-        manager.setPassword("manager123");
+        manager.setPassword("manager");
         User superManager = new User();
-        superManager.setUserName("superManager");
-        superManager.setPassword("superManager123");
+        superManager.setUserName("supermanager");
+        superManager.setPassword("supermanager");
         userDao.save(admin);
         userDao.save(manager);
         userDao.save(superManager);

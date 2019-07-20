@@ -38,6 +38,7 @@
         android:background="@drawable/wear_1" />
 
     <LinearLayout
+        android:id="@+id/normal_setting_layout"
         android:layout_marginTop="@dimen/xy10dp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -99,6 +100,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/normal_setting_layout_md5_key"
             android:layout_marginTop="@dimen/xy10dp"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

@@ -1,5 +1,6 @@
 package com.tvm.tvm.util;
 
+import java.nio.charset.Charset;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -72,6 +73,16 @@ public class DataUtils {
         return hexStr;
     }
 
+    public static int hexToDec(String hexStr){
+        hexStr=DataUtils.addSpace(hexStr);
+        String[] b = hexStr.split(" ");
+        StringBuffer sb = new StringBuffer();
+        for(int i = 0;i<b.length;i++){
+            sb.append(b[b.length-i-1]);
+        }
+        return Integer.parseInt(sb.toString().replaceAll("^(0+)", ""),16);
+    }
+
     public static String xor(String content) {
         content = addSpace(content.replace(" ",""));
         String[] b = content.split(" ");
@@ -123,6 +134,10 @@ public class DataUtils {
         return sb.toString();
     }
 
+    public static byte[] convertStringToBytes(String str){
+        return str.getBytes(Charset.forName("GB18030"));
+    }
+
     public static String removeSpace(String content){
         return content.replace(" ","");
     }
@@ -136,6 +151,17 @@ public class DataUtils {
         return String.format("%"+count+"s", content).replaceAll("\\s", "0");
     }
 
+    public static String addRightZeros(String content, int count){
+        int strLen=content.length();
+        StringBuilder stringBuilder=null;
+        while (strLen<count){
+            stringBuilder = new StringBuilder();
+            stringBuilder.append(content).append("0");
+            content=stringBuilder.toString();
+            strLen=content.length();
+        }
+        return content;
+    }
     public static int doubleToInt(double val){
         return new Double(val).intValue();
     }

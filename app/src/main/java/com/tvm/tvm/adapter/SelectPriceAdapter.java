@@ -70,7 +70,7 @@ public class SelectPriceAdapter extends BaseAdapter {
         }
         viewHolder.tv_item_ticket_desc.setText(priceList.get(position).getDescription());
         viewHolder.tv_item_ticket_title.setText(priceList.get(position).getTitle());
-        viewHolder.tv_item_ticket_price.setText(String.valueOf(priceList.get(position).getPrice()));
+        viewHolder.tv_item_ticket_price.setText(String.valueOf((int)priceList.get(position).getPrice()));
         viewHolder.iv_item_ticket_icon.setImageBitmap(BitmapUtils.byte2Bitmap(priceList.get(position).getPic()));
         if (position%2 == 0){
             viewHolder.ll_item_ticket_layout.setBackgroundResource(R.drawable.bg_ticket_two);

@@ -42,7 +42,7 @@ public class PriceListActivity extends BaseActivity {
     @BindView(R.id.ib_ticket_list_back)
     ImageButton ib_ticket_list_back;
 
-    private List<Price> priceLists;
+    private List<Price> priceList;
 
     private PriceListAdapter priceListAdapter;
 
@@ -63,7 +63,7 @@ public class PriceListActivity extends BaseActivity {
     }
 
     public void getList(){
-        priceLists = AppApplication.getApplication().getDaoSession().getPriceDao().queryBuilder().where(PriceDao.Properties.IsDelete.eq(0)).list();
+        priceList = AppApplication.getApplication().getDaoSession().getPriceDao().queryBuilder().where(PriceDao.Properties.IsDelete.eq(0)).list();
     }
 
     private void initLayout(){
@@ -74,7 +74,7 @@ public class PriceListActivity extends BaseActivity {
             @Override
             public void onItemClick(View view) {
                 int position = (int) view.getTag();
-                Price item = priceLists.get(position);
+                Price item = priceList.get(position);
                 Intent intent = new Intent(context,PriceEditActivity.class);
                 intent.putExtra("priceId",item.getId());
                 context.startActivity(intent);
@@ -83,13 +83,13 @@ public class PriceListActivity extends BaseActivity {
             @Override
             public void onLongClick(final View view) {
                 final int position = (int) view.getTag();
-                final ConfirmDialogUtils confirmDialogUtils = new ConfirmDialogUtils(context,"删除价格","请确认是否删除价格【"+priceLists.get(position).getTitle()+"】");
+                final ConfirmDialogUtils confirmDialogUtils = new ConfirmDialogUtils(context,"删除价格","请确认是否删除价格【"+priceList.get(position).getTitle()+"】");
                 confirmDialogUtils.show();
                 confirmDialogUtils.setOnDialogClickListener(new ConfirmDialogUtils.OnDialogClickListener() {
                     @Override
                     public void onOKClick() {
-                        deletePrice(priceLists.get(position).getId());
-                        priceLists.remove(position);
+                        deletePrice(priceList.get(position).getId());
+                        priceList.remove(position);
                         priceListAdapter.notifyDataSetChanged();
                         ToastUtils.showText(context,StringUtils.DELETE_SUCCESS);
                         confirmDialogUtils.dismiss();
@@ -102,7 +102,7 @@ public class PriceListActivity extends BaseActivity {
                 });
             }
         };
-        priceListAdapter = new PriceListAdapter(context,priceLists,onItemClickListener);
+        priceListAdapter = new PriceListAdapter(context,priceList,onItemClickListener);
         rv_ticket_list_list.setAdapter(priceListAdapter);
         rv_ticket_list_list.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
         rv_ticket_list_list.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.HORIZONTAL));
@@ -125,7 +125,7 @@ public class PriceListActivity extends BaseActivity {
                 this.finish();
                 break;
             case R.id.ib_ticket_list_add:
-                if (priceLists.size()==20){
+                if (priceList.size()==20){
                     ToastUtils.showText(PriceListActivity.this, "不能超过20种票价，请删除重新设置！！！");
                     return;
                 }

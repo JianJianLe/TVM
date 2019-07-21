@@ -3,9 +3,12 @@ package com.tvm.tvm.util.device.paydevice;
 import android.util.Log;
 
 import com.tvm.tvm.application.AppApplication;
+import com.tvm.tvm.bean.Price;
 import com.tvm.tvm.bean.Setting;
+import com.tvm.tvm.bean.dao.PriceDao;
 import com.tvm.tvm.bean.dao.SettingDao;
 import com.tvm.tvm.util.DataUtils;
+import com.tvm.tvm.util.FolderUtil;
 import com.tvm.tvm.util.TimeUtil;
 import com.tvm.tvm.util.device.SerialPortUtil;
 import com.tvm.tvm.util.device.printer.PrinterAction;
@@ -17,6 +20,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.List;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -35,6 +39,8 @@ public class PayDeviceUtil {
 
     private Setting setting;
     private SettingDao settingDao;
+    private List<Price> priceList;
+    private PriceDao priceDao;
     private SerialPortUtil serialPort;
     private OutputStream mOutputStream;
     private InputStream mInputStream;
@@ -48,8 +54,9 @@ public class PayDeviceUtil {
     }
 
     public void initPayDevice() {
-        printInfo("Init PayDevice");
+        initDB();
 
+        printInfo("Init PayDevice");
         String serialPortFilePath1="/dev/ttyS0";
         String serialPortFilePath2="/dev/ttyGS0";
         File serialPortFile = new File(serialPortFilePath1);
@@ -64,9 +71,6 @@ public class PayDeviceUtil {
             e.printStackTrace();
         }
 
-        settingDao = AppApplication.getApplication().getDaoSession().getSettingDao();
-        setting = settingDao.queryBuilder().where(SettingDao.Properties.Id.eq(1)).unique();
-
         mOutputStream = (FileOutputStream) serialPort.getOutputStream();
         mInputStream = (FileInputStream) serialPort.getInputStream();
 
@@ -74,6 +78,13 @@ public class PayDeviceUtil {
             mReadThread = new ReadThread();
             mReadThread.start();
         }
+    }
+
+    private void initDB(){
+        settingDao = AppApplication.getApplication().getDaoSession().getSettingDao();
+        setting = settingDao.queryBuilder().where(SettingDao.Properties.Id.eq(1)).unique();
+        priceDao = AppApplication.getApplication().getDaoSession().getPriceDao();
+        priceList = AppApplication.getApplication().getDaoSession().getPriceDao().queryBuilder().where(PriceDao.Properties.IsDelete.eq(0)).list();
     }
 
     private class ReadThread extends Thread {
@@ -140,8 +151,15 @@ public class PayDeviceUtil {
                 if(hasConnectedServer()){
                     Log.i("Test", "Receieved Server Status:" + receivedCMD);
                     hasServerStatus=true;
-
+                    cmd_UploadParams();
                 }
+
+                //修改本地通道信息
+                if(hasReceivedUpdateParamCMD()){
+                    updateClientPrice();
+                    cmd_ReplyUpdateParamCompleted();
+                }
+
                 //支付盒子发送获取设备状态指令（子命令 0x01)
                 if(hasQueryClientStatus())
                     cmd_ReplyClientStatus();
@@ -222,10 +240,8 @@ public class PayDeviceUtil {
     //发送：AA 03 02 19 18 DD
     //支付盒子 -------------> 售货机主板
     //发送：AA 05 01 19 31 00 2C DD
-    private int statusFlag=0;
     private void thread_QueryServerStatus(){
         hasServerStatus=false;
-        statusFlag=0;
         new Thread(){
             public void run() {
                 while (!isInterrupted()){
@@ -250,34 +266,95 @@ public class PayDeviceUtil {
 
     //======== Query Server Status End ========
 
-
-
-    //======== Query Param Start ========
-    //查询终端基础参数CMD05：
-    //支付盒子发送：AA 03 01 05 07 DD
-    //售票机应答：AA 2B 02 05 data[n] Check DD
-    public void cmd_QueryParam(){
-        //TODO
-    }
-    private String getClientParam(){
-        //TODO
-        return null;
-    }
-    //======== Query Param End ========
-
-    //======== Set Client Param Start ========
-    //设置终端基础参数CMD06：
-    //支付盒子发送给售票机：AA 2B 01 06 data[n] Check DD
-    //售票机应答：AA 04 02 06 01 07 DD （00失败，01成功）
-    public void cmd_SetParam(){
-        //TODO
-        SetClientParam();
+    //======== Upload Param Start ========
+    //上报本地通道信息
+    //售货机-->支付盒子
+    //成人票：AA 1B 02 C9 02 03 00 03 00 D0 07 00 00 00 00 00 00 64 00 C8 00 06 B3 C9 C8 CB C6 B1 A1 DD
+    // AA XX 02 C9 [Data] Check DD
+    //子命令 02
+    //通道总数 [2]
+    //通道序号 [2]
+    //购票价格 [4]
+    //游戏价格 [4]
+    //通道货品数量 [2]
+    //通道货品容量 [2]
+    //通道名称字段长度 [1]
+    //通道名称 [n]
+    private void cmd_UploadParams(){
+        thread_CheckUploadParams();
     }
 
-    private void SetClientParam(){
-        //TODO
+    private void thread_CheckUploadParams(){
+        new Thread(){
+            public void run() {
+                Price price=null;
+                int totalChannel=priceList.size();
+                for(int i=0;i<priceList.size();i++){
+                    price = priceList.get(i);
+                    int currentChannel=i+1;
+                    String hex_ChannelName = getHex_TicketName(price.getTitle());
+                    String hex_ChannelNameLength = DataUtils.decToHex(hex_ChannelName.length()/2);
+                    //上报本地通道信息数据
+                    String dataStr = "02C902" +
+                            decToHex(totalChannel,4) + //通道总数
+                            decToHex(currentChannel,4) + //通道序号
+                            decToHex((int)price.getPrice() * 100,8) +//购票价格
+                            DataUtils.setZeros( 8) +//游戏价格
+                            decToHex(1000,4) +//通道货品数量
+                            decToHex(1000,4) +//通道货品容量
+                            hex_ChannelNameLength +//通道名称字段长度
+                            hex_ChannelName;//通道名称
+                    //Length
+                    String lengthStr = DataUtils.decToHex((dataStr.length()+2)/2);
+                    dataStr = lengthStr + dataStr;
+                    //Send CMD
+                    String cmdStr =  "AA"  + addEndCMD(dataStr);
+                    Log.i("Test", price.getTitle() + " cmd_UploadParams = " + cmdStr);
+                    write(cmdStr);
+                    TimeUtil.delay(500);
+                }
+            }
+        }.start();
     }
-    //======== Set Client Param End ========
+
+    private String decToHex(int number, int count){
+        return DataUtils.addRightZeros(DataUtils.decToHex(number),count);
+    }
+
+    private String getHex_TicketName(String name){
+        return DataUtils.bytesToHex(DataUtils.convertStringToBytes(name));
+    }
+
+    //支付盒子应答上报本地通道信息
+    //支付盒子-->售货机
+    //AA 08 01 C9 02 03 00 03 00 C2 DD
+    private boolean hasRepliedUploadParam(){
+        return compareCMD(receivedCMD,"AA0801C902.*DD");
+    }
+    //======== Upload Param End ========
+
+
+    //======== Update Client Param Start ========
+    //修改本地通道信息
+    //AA1B01C90800000100B004000064000000E803E80306B6F9CDAFC6B156DD
+    private boolean hasReceivedUpdateParamCMD(){
+        return compareCMD(receivedCMD,"AA..01C908.*DD");
+    }
+
+    private void updateClientPrice(){
+        int priceData = DataUtils.hexToDec(receivedCMD.substring(18,26))/100;
+        int index = DataUtils.hexToDec(receivedCMD.substring(14,18));
+        Price price=priceList.get(index-1);
+        price.setPrice(Double.valueOf(priceData));
+        priceDao.update(price);
+    }
+
+    private void cmd_ReplyUpdateParamCompleted(){
+        String cmdStr="0802C908"+decToHex(priceList.size(),4)+receivedCMD.substring(14,18);
+        cmdStr = "AA" + addEndCMD(cmdStr);
+        write(cmdStr);
+    }
+    //======== Update Client Param End ========
 
 
 

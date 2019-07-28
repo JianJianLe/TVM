@@ -35,7 +35,7 @@ public class PayDeviceUtil {
     private int payAmount;
     private String strRandomHex;
     private boolean randomHexFlag=true;// One QR code command, one RandomHexStr.
-    private boolean hasServerStatus=false;
+    private boolean hasGotServerStatus=false;
 
     private Setting setting;
     private SettingDao settingDao;
@@ -150,8 +150,8 @@ public class PayDeviceUtil {
                 //查询支付盒子网络状态
                 if(hasConnectedServer()){
                     Log.i("Test", "Receieved Server Status:" + receivedCMD);
-                    hasServerStatus=true;
-                    cmd_UploadParams();
+                    hasGotServerStatus=true;
+                    //cmd_UploadParams();
                 }
 
                 //修改本地通道信息
@@ -240,16 +240,22 @@ public class PayDeviceUtil {
     //发送：AA 03 02 19 18 DD
     //支付盒子 -------------> 售货机主板
     //发送：AA 05 01 19 31 00 2C DD
+    private int config_QueryServerStatus;
     private void thread_QueryServerStatus(){
-        hasServerStatus=false;
+        config_QueryServerStatus=0;
+        hasGotServerStatus=false;
         new Thread(){
             public void run() {
                 while (!isInterrupted()){
-                    if(hasServerStatus)
+                    if(hasGotServerStatus)
                         break;
                     TimeUtil.delay(200);
                     cmd_QuerySeverStatus();
                     TimeUtil.delay(800);
+                    config_QueryServerStatus++;
+                    if(config_QueryServerStatus==60){
+                        break;
+                    }
                 }
             }
         }.start();
@@ -280,7 +286,8 @@ public class PayDeviceUtil {
     //通道货品容量 [2]
     //通道名称字段长度 [1]
     //通道名称 [n]
-    private void cmd_UploadParams(){
+    public void cmd_UploadParams(){
+        initDB();
         thread_CheckUploadParams();
     }
 
@@ -355,8 +362,6 @@ public class PayDeviceUtil {
         write(cmdStr);
     }
     //======== Update Client Param End ========
-
-
 
     //======== QR Code Start ========
     //售票机发送获取二维码支付链接指令（子命令 0x0A）
@@ -513,6 +518,7 @@ public class PayDeviceUtil {
     public void cmd_ReportPrintSuccess(){
         printInfo("售票机出票成功，发送上报交易结果");
         String cmdStr="2602C909"+strUniquePayCode+getAmountHex(payAmount)+DataUtils.setZeros(48);
+        //TODO
         cmdStr = "AA" + addEndCMD(cmdStr);
         write(cmdStr);
     }
@@ -530,6 +536,7 @@ public class PayDeviceUtil {
     public void cmd_CashReport(int amount){
         printInfo("售票机收到现金上报：" + amount);
         String cmdStr="2402C906"+getRandomHex(6)+getAmountHex(amount)+DataUtils.setZeros(44);
+        //TODO
         cmdStr = "AA" + addEndCMD(cmdStr);
         write(cmdStr);
     }

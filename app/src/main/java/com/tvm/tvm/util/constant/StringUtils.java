@@ -42,6 +42,8 @@ public class StringUtils {
 
     public static String DESC_NOT_NULL = "描述不能为空";
 
+    public static String PAY_NETWORK_NULL="支付盒子网络未连接，是否继续？";
+
     public static String SAVE_SUCCESS = "保存成功";
 
     public static String DELETE_SUCCESS = "删除成功";

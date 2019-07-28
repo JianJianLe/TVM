@@ -16,6 +16,7 @@ import com.tvm.tvm.application.AppApplication;
 import com.tvm.tvm.bean.Price;
 import com.tvm.tvm.bean.dao.PriceDao;
 import com.tvm.tvm.util.constant.StringUtils;
+import com.tvm.tvm.util.device.paydevice.PayDeviceUtil;
 import com.tvm.tvm.util.view.ConfirmDialogUtils;
 import com.tvm.tvm.util.view.ToastUtils;
 
@@ -93,6 +94,8 @@ public class PriceListActivity extends BaseActivity {
                         priceListAdapter.notifyDataSetChanged();
                         ToastUtils.showText(context,StringUtils.DELETE_SUCCESS);
                         confirmDialogUtils.dismiss();
+                        //上报本地通道信息到支付盒子
+                        PayDeviceUtil.getInstance().cmd_UploadParams();
                     }
 
                     @Override

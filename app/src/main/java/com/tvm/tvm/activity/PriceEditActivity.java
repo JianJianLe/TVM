@@ -25,6 +25,7 @@ import com.tvm.tvm.bean.dao.PriceDao;
 import com.tvm.tvm.util.BitmapUtils;
 import com.tvm.tvm.util.FileUtil;
 import com.tvm.tvm.util.constant.StringUtils;
+import com.tvm.tvm.util.device.paydevice.PayDeviceUtil;
 import com.tvm.tvm.util.view.ButtomDialogView;
 import com.tvm.tvm.util.view.ToastUtils;
 
@@ -114,23 +115,30 @@ public class PriceEditActivity extends BaseActivity {
     private void save(){
         //检查对应值是否正确
         if (check()){
-            if (price !=null ){
-                price.setTitle(et_price_edit_title.getText().toString().trim());
-                price.setDescription(et_price_edit_desc.getText().toString().trim());
-                price.setPrice(Double.valueOf(et_price_edit_price.getText().toString().trim()));
-                price.setPic(BitmapUtils.bitmap2Byte(bitmap));
-            }else {
-                price = new Price();
-                price.setTitle(et_price_edit_title.getText().toString().trim());
-                price.setDescription(et_price_edit_desc.getText().toString().trim());
-                price.setPrice(Double.valueOf(et_price_edit_price.getText().toString().trim()));
-                price.setPic(BitmapUtils.bitmap2Byte(bitmap));
-            }
-            daoSession.getPriceDao().save(price);
+            savePrice();
             //保存成功返回列表
             ToastUtils.showText(this,StringUtils.SAVE_SUCCESS);
             this.finish();
         }
+    }
+
+    private void savePrice(){
+        if (price !=null ){
+            price.setTitle(et_price_edit_title.getText().toString().trim());
+            price.setDescription(et_price_edit_desc.getText().toString().trim());
+            price.setPrice(Double.valueOf(et_price_edit_price.getText().toString().trim()));
+            price.setPic(BitmapUtils.bitmap2Byte(bitmap));
+        }else {
+            price = new Price();
+            price.setTitle(et_price_edit_title.getText().toString().trim());
+            price.setDescription(et_price_edit_desc.getText().toString().trim());
+            price.setPrice(Double.valueOf(et_price_edit_price.getText().toString().trim()));
+            price.setPic(BitmapUtils.bitmap2Byte(bitmap));
+        }
+        daoSession.getPriceDao().save(price);
+
+        //上报本地通道信息到支付盒子
+        PayDeviceUtil.getInstance().cmd_UploadParams();
     }
 
     /**
@@ -138,6 +146,7 @@ public class PriceEditActivity extends BaseActivity {
      * @return
      */
     private boolean check(){
+
         //标题是否为空
         if ( TextUtils.isEmpty(et_price_edit_title.getText().toString().trim())){
             ToastUtils.showText(this,StringUtils.TITLE_NOT_NULL);
@@ -164,7 +173,6 @@ public class PriceEditActivity extends BaseActivity {
         }
         return true;
     }
-
 
     @OnClick({R.id.ib_price_edit_back,R.id.iv_price_edit_icon,R.id.btn_price_edit_save})
     public void onClick(View view){

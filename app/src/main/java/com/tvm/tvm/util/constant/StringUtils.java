@@ -65,6 +65,9 @@ public class StringUtils {
     public static final int FLING_MIN_DISTANCE = 100;
     public static final int FLING_MIN_VELOCITY = 0;
 
+    public static final int OnlinePay=0;
+    public static final int CashPay=2;
+
     public static String ONLINE_PAY_CONNECT_FAILED= "线上支付连接失败";
     public static String ONLINE_PAY_CONNECT_FAILED_CONTENT="未能连接线上支付，请用现金支付!";
 

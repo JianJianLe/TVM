@@ -9,8 +9,11 @@ import com.tvm.tvm.bean.dao.DaoSession;
 import com.tvm.tvm.bean.dao.PaymentRecordDao;
 import com.tvm.tvm.bean.dao.SettingDao;
 import com.tvm.tvm.util.TimeUtil;
+import com.tvm.tvm.util.constant.StringUtils;
 import com.tvm.tvm.util.device.QRCodeUtil;
+import com.tvm.tvm.util.device.paydevice.PayDeviceUtil;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -21,6 +24,8 @@ public class PrinterAction {
     private List<TicketBean> ticketList;
     private double ticketPrice;
     private String ticketTitle;
+    private int payType;
+
 
     public PrinterAction(){
         ticketList=PrinterCase.getInstance().ticketList;
@@ -55,6 +60,12 @@ public class PrinterAction {
                 //Save payment information to DB
                 saveTicketInfo(currentTime,Integer.parseInt(normalTicket.getTicketNumber()));
                 savePayment(PrinterCase.getInstance().normalTicket);
+                //上报交易结果
+                if(payType==StringUtils.OnlinePay){
+                    PayDeviceUtil.getInstance().cmd_OnlinePayReport(bean);
+                }else{
+                    PayDeviceUtil.getInstance().cmd_CashReport(bean);
+                }
                 PrinterCase.getInstance().print();
                 TimeUtil.delay(3000);
             }
@@ -81,7 +92,8 @@ public class PrinterAction {
         paymentRecord.setPriceId(priceId);
         paymentRecord.setTitle(ticketTitle);
         paymentRecord.setPayTime(TimeUtil.getDate(normalTicket.getDateStr()));
-        paymentRecord.setType(paymentRecord.getTypeNumber(normalTicket.getPayType()));
+        payType=paymentRecord.getTypeNumber(normalTicket.getPayType());
+        paymentRecord.setType(payType);
         paymentRecordDao.save(paymentRecord);
     }
 

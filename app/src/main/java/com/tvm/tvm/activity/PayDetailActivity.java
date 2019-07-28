@@ -130,7 +130,6 @@ public class PayDetailActivity extends BaseActivity{
         if(PrinterCase.getInstance().amountRecord>0){
             double balance=PrinterCase.getInstance().amountRecord - totalAmount;
             if(balance>=0){
-                PayDeviceUtil.getInstance().cmd_CashReport((int)totalAmount*100);//Star 2019/05/26
                 PrinterCase.getInstance().balanceRecord=balance;
                 PrinterCase.getInstance().amountRecord=0;
                 //@Star goto Next Activity

@@ -3,16 +3,22 @@ package com.tvm.tvm.util.device.paydevice;
 import android.util.Log;
 
 import com.tvm.tvm.application.AppApplication;
+import com.tvm.tvm.bean.PaymentRecord;
 import com.tvm.tvm.bean.Price;
 import com.tvm.tvm.bean.Setting;
+import com.tvm.tvm.bean.TicketBean;
+import com.tvm.tvm.bean.dao.PaymentRecordDao;
 import com.tvm.tvm.bean.dao.PriceDao;
 import com.tvm.tvm.bean.dao.SettingDao;
 import com.tvm.tvm.util.DataUtils;
 import com.tvm.tvm.util.FolderUtil;
 import com.tvm.tvm.util.TimeUtil;
+import com.tvm.tvm.util.constant.StringUtils;
 import com.tvm.tvm.util.device.SerialPortUtil;
 import com.tvm.tvm.util.device.printer.PrinterAction;
 import com.tvm.tvm.util.device.printer.PrinterCase;
+
+import org.greenrobot.greendao.query.QueryBuilder;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -515,12 +521,40 @@ public class PayDeviceUtil {
     //售票机出票成功后发送上报交易结果（子命令 0x09）
     //AA 26 02 C9 09  [6byte支付唯一码]  [4byte支付金额]  [data11-34均为00] Check DD
     //支付盒子应答：AA 0A 01 C9 09  [6byte支付唯一码] Check DD
-    public void cmd_ReportPrintSuccess(){
-        printInfo("售票机出票成功，发送上报交易结果");
-        String cmdStr="2602C909"+strUniquePayCode+getAmountHex(payAmount)+DataUtils.setZeros(48);
-        //TODO
+    //Sample:
+    //AA 26 02 C9 09  [6byte支付唯一码]  [支付总金额F4 01 00 00] [退款总金额00 00 00 00]
+    //通道个数01 00 通道序号01 00购票数量01 00出票数量01 00累计出票数量0A 00 00 00
+    //购买单价F4 01 00 00游戏价格00 00 00 00 Check DD
+    public void cmd_OnlinePayReport(TicketBean ticket){
+        printInfo("售票机出票成功，发送上报线上支付交易结果");
+        String cmdStr="2602C909"+
+                    strUniquePayCode+
+                    getAmountHex(payAmount)+
+                    getPayData(ticket,StringUtils.OnlinePay);
         cmdStr = "AA" + addEndCMD(cmdStr);
         write(cmdStr);
+    }
+
+    private String getPayData(TicketBean ticket,int ticketType){
+        long currentChannel=ticket.getId()+1;
+        String cmdStr = "00000000" + //退款总金额
+                "0100" + //通道个数
+                decToHex((int)currentChannel,4) + //通道序号
+                "0100" + //购票数量
+                "0100" + //出票数量
+                decToHex(accumulateTicket(ticket.getId(),ticketType),8) + //累计出票数量
+                getAmountHex((int)ticket.getPrice()) +//购买单价
+                "00000000"; //游戏价格
+        return cmdStr;
+    }
+
+    //ticketType: 0->线上支付，2->线下支付
+    private int accumulateTicket(long ticketId,int ticketType){
+        PaymentRecordDao paymentRecordDao = AppApplication.getApplication().getDaoSession().getPaymentRecordDao();
+        QueryBuilder qb = paymentRecordDao.queryBuilder();
+        qb.and(PaymentRecordDao.Properties.Id.eq(ticketId),PaymentRecordDao.Properties.Type.eq(ticketType));
+        List<PaymentRecord> paymentRecordList= qb.list();
+        return paymentRecordList.size();
     }
 
     private boolean hasReplyPrintSuccess(){
@@ -533,17 +567,15 @@ public class PayDeviceUtil {
     //售票机收到现金上报交易结果（线下支付）（子命令 0x06）
     //AA 24 02 C9 06  [6byte随机数]  [4byte支付金额]  [data11-32] Check DD
     //支付盒子应答：AA 0A 01 C9 06  [6byte随机数] Check DD
-    public void cmd_CashReport(int amount){
-        printInfo("售票机收到现金上报：" + amount);
-        String cmdStr="2402C906"+getRandomHex(6)+getAmountHex(amount)+DataUtils.setZeros(44);
-        //TODO
-        cmdStr = "AA" + addEndCMD(cmdStr);
-        write(cmdStr);
-    }
-
-    public void cmd_ReportCashPrintSuccess(int amount){
-        printInfo("现金支付，售票机出票成功，发送上报交易结果");
-        String cmdStr="2602C909"+getRandomHex(6)+getAmountHex(amount)+DataUtils.setZeros(48);
+    //AA 24 02 C9 06  [6byte随机数]  [金额F4 01 00 00]
+    // 通道个数01 00 通道序号01 00出票数量01 00累计出票数量0A 00 00 00
+    // 购买单价F4 01 00 00游戏价格00 00 00 00 该通道累计支付金额88 13 00 00 Check DD
+    public void cmd_CashReport(TicketBean ticket){
+        printInfo("售票机出票成功，发送上报线下支付交易结果");
+        String cmdStr="2402C906"+
+                      getRandomHex(6)+
+                      getAmountHex((int)ticket.getPrice())+
+                      getPayData(ticket,StringUtils.CashPay);
         cmdStr = "AA" + addEndCMD(cmdStr);
         write(cmdStr);
     }

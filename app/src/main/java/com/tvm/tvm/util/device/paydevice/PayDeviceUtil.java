@@ -90,7 +90,11 @@ public class PayDeviceUtil {
         settingDao = AppApplication.getApplication().getDaoSession().getSettingDao();
         setting = settingDao.queryBuilder().where(SettingDao.Properties.Id.eq(1)).unique();
         priceDao = AppApplication.getApplication().getDaoSession().getPriceDao();
-        priceList = AppApplication.getApplication().getDaoSession().getPriceDao().queryBuilder().where(PriceDao.Properties.IsDelete.eq(0)).list();
+
+        QueryBuilder qb = priceDao.queryBuilder();
+        qb.where(PriceDao.Properties.IsDelete.eq(0));
+        qb.orderAsc(PriceDao.Properties.Id);
+        priceList = qb.list();
     }
 
     private class ReadThread extends Thread {
@@ -399,8 +403,8 @@ public class PayDeviceUtil {
         write(cmdStr);
     }
 
-    private String getRandomHex(int count){
-        return DataUtils.bytesToHex(getRandomByte(count));
+    private String getRandomHex(int byteCount){
+        return DataUtils.bytesToHex(getRandomByte(byteCount));
     }
 
     private byte[] getRandomByte(int count){
@@ -530,23 +534,27 @@ public class PayDeviceUtil {
         String cmdStr="2602C909"+
                     strUniquePayCode+
                     getAmountHex(payAmount)+
-                    getPayData(ticket,StringUtils.OnlinePay);
+                    getOnlinePayData(ticket);
         cmdStr = "AA" + addEndCMD(cmdStr);
         write(cmdStr);
     }
 
-    private String getPayData(TicketBean ticket,int ticketType){
-        long currentChannel=ticket.getId()+1;
+    //线上支付
+    //AA 26 02 C9 09  [6byte支付唯一码]  [支付总金额F4 01 00 00] [退款总金额00 00 00 00]
+    //通道个数01 00 通道序号01 00购票数量01 00出票数量01 00累计出票数量0A 00 00 00
+    //购买单价F4 01 00 00游戏价格00 00 00 00 Check DD
+    private String getOnlinePayData(TicketBean ticket){
         String cmdStr = "00000000" + //退款总金额
                 "0100" + //通道个数
-                decToHex((int)currentChannel,4) + //通道序号
+                decToHex(getCurrentChannel(ticket.getId()),4) + //通道序号
                 "0100" + //购票数量
                 "0100" + //出票数量
-                decToHex(accumulateTicket(ticket.getId(),ticketType),8) + //累计出票数量
-                getAmountHex((int)ticket.getPrice()) +//购买单价
+                decToHex(accumulateTicket(ticket.getId(),StringUtils.OnlinePay),8) + //累计出票数量
+                getAmountHex(payAmount) +//购买单价
                 "00000000"; //游戏价格
         return cmdStr;
     }
+
 
     //ticketType: 0->线上支付，2->线下支付
     private int accumulateTicket(long ticketId,int ticketType){
@@ -555,6 +563,18 @@ public class PayDeviceUtil {
         qb.and(PaymentRecordDao.Properties.Id.eq(ticketId),PaymentRecordDao.Properties.Type.eq(ticketType));
         List<PaymentRecord> paymentRecordList= qb.list();
         return paymentRecordList.size();
+    }
+
+
+    private int getCurrentChannel(long ticketId){
+        int currentChannel=0;
+        for(int i=0;i<priceList.size();i++){
+            if(priceList.get(i).getId()==ticketId){
+                currentChannel=i+1;
+                break;
+            }
+        }
+        return currentChannel;
     }
 
     private boolean hasReplyPrintSuccess(){
@@ -574,10 +594,30 @@ public class PayDeviceUtil {
         printInfo("售票机出票成功，发送上报线下支付交易结果");
         String cmdStr="2402C906"+
                       getRandomHex(6)+
-                      getAmountHex((int)ticket.getPrice())+
-                      getPayData(ticket,StringUtils.CashPay);
+                      getAmountHex((int)ticket.getPrice()*100)+
+                      getCashPayData(ticket);
         cmdStr = "AA" + addEndCMD(cmdStr);
         write(cmdStr);
+    }
+
+    //线下支付
+    //AA 24 02 C9 06  [6byte随机数]  [金额F4 01 00 00]
+    //通道个数01 00 通道序号01 00出票数量01 00累计出票数量0A 00 00 00
+    //购买单价F4 01 00 00游戏价格00 00 00 00 该通道累计支付金额88 13 00 00 Check DD
+    //AA2402C906BA1D55AC8DAAF40100000100010001002A000000F40100000000000008520000E1DD
+    private String getCashPayData(TicketBean ticket){
+        String cmdStr = "0100" + //通道个数
+                decToHex(getCurrentChannel(ticket.getId()),4) + //通道序号
+                "0100" + //出票数量
+                decToHex(accumulateTicket(ticket.getId(),StringUtils.CashPay),8) + //累计出票数量
+                getAmountHex((int)ticket.getPrice()*100) +//购买单价
+                "00000000" + //游戏价格
+                decToHex(getAccumulateAmount(ticket),8);
+        return cmdStr;
+    }
+
+    private int getAccumulateAmount(TicketBean ticket){
+        return (int)(ticket.getPrice() * 100 * accumulateTicket(ticket.getId(),StringUtils.CashPay));
     }
 
     private boolean hasReplyCashReport(){

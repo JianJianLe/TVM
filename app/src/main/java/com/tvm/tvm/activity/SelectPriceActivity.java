@@ -158,7 +158,6 @@ public class SelectPriceActivity extends BaseActivity implements View.OnTouchLis
             LongClickUtils.setLongClick(new Handler(), tv_select_price_title_title, delayMillis, new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    //todo:补充长按事件的处理逻辑
                     startActivity(SelectPriceActivity.this, LoginActivity.class);
                     return true;
                 }

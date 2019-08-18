@@ -4,9 +4,11 @@ import android.util.Log;
 
 import com.tvm.tvm.application.AppApplication;
 import com.tvm.tvm.bean.BillSetting;
+import com.tvm.tvm.bean.Setting;
 import com.tvm.tvm.bean.TicketBean;
 import com.tvm.tvm.bean.TicketSummary;
 import com.tvm.tvm.bean.dao.BillSettingDao;
+import com.tvm.tvm.bean.dao.SettingDao;
 import com.tvm.tvm.bean.dao.TicketSummaryDao;
 import com.tvm.tvm.util.TimeUtil;
 
@@ -107,10 +109,12 @@ public class PrinterCase {
     private int getPreTicketOrderNumber(){
         TicketSummaryDao ticketSummaryDao = AppApplication.getApplication().getDaoSession().getTicketSummaryDao();
         ticketSummaryList = ticketSummaryDao.queryBuilder().list();
+        SettingDao settingDao=AppApplication.getApplication().getDaoSession().getSettingDao();
+        Setting setting=settingDao.queryBuilder().where(SettingDao.Properties.Id.eq(1)).unique();
         if (ticketSummaryList.size()==0){
-            return 0;
+            return 0+setting.getInitalTicketNumber();
         }else {
-            return getNumByTime();
+            return getNumByTime()+setting.getInitalTicketNumber();
         }
     }
 

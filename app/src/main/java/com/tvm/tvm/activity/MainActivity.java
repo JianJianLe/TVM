@@ -273,7 +273,6 @@ public class MainActivity extends BaseActivity {
         LongClickUtils.setLongClick(new Handler(), tv_main_comany_name, delayMillis, new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                //todo:补充长按事件的处理逻辑
                 startActivity(MainActivity.this, LoginActivity.class);
                 return true;
             }

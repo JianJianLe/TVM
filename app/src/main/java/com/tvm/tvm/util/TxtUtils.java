@@ -67,7 +67,6 @@ public class TxtUtils {
                         billSettingDao.save(billSetting);
                     }
                 } catch (Exception e) {
-                    // TODO: handle exception
                 }
             }
         }
@@ -95,7 +94,6 @@ public class TxtUtils {
             System.out.println("test1 done!");
 
         } catch (Exception e) {
-            // TODO: handle exception
         }
     }
 }

@@ -560,8 +560,9 @@ public class PayDeviceUtil {
     private int accumulateTicket(long ticketId,int ticketType){
         PaymentRecordDao paymentRecordDao = AppApplication.getApplication().getDaoSession().getPaymentRecordDao();
         QueryBuilder qb = paymentRecordDao.queryBuilder();
-        qb.and(PaymentRecordDao.Properties.Id.eq(ticketId),PaymentRecordDao.Properties.Type.eq(ticketType));
+        qb.where(qb.and(PaymentRecordDao.Properties.PriceId.eq(ticketId),PaymentRecordDao.Properties.Type.eq(ticketType)));
         List<PaymentRecord> paymentRecordList= qb.list();
+        Log.i("Test","Ticket ID = " +ticketId+", Ticket Type = " + ticketType + ", Ticket total number:" + qb.list().size());
         return paymentRecordList.size();
     }
 
@@ -600,6 +601,7 @@ public class PayDeviceUtil {
         write(cmdStr);
     }
 
+
     //线下支付
     //AA 24 02 C9 06  [6byte随机数]  [金额F4 01 00 00]
     //通道个数01 00 通道序号01 00出票数量01 00累计出票数量0A 00 00 00
@@ -630,6 +632,7 @@ public class PayDeviceUtil {
     //Common Function -- Start
     //###########################
     private String addEndCMD(String cmdStr){
+        Log.i("Test","异或结果：" + DataUtils.xor(cmdStr));
         return DataUtils.removeSpace(cmdStr) + DataUtils.xor(cmdStr) + "DD";
     }
 

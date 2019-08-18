@@ -1,5 +1,7 @@
 package com.tvm.tvm.util;
 
+import android.util.Log;
+
 import java.nio.charset.Charset;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -90,13 +92,11 @@ public class DataUtils {
         for (int i = 0; i < b.length; i++) {
             a = a ^ Integer.parseInt(b[i], 16);
         }
-        if (a < 10) {
-            StringBuffer sb = new StringBuffer();
-            sb.append("0");
-            sb.append(a);
-            return sb.toString();
+        String xorStr=Integer.toHexString(a).toUpperCase();
+        if (xorStr.length()==1) {
+            return "0"+xorStr;
         }
-        return Integer.toHexString(a).toUpperCase();
+        return xorStr;
     }
 
     public static String addSpace(String content) {

@@ -34,6 +34,8 @@ public class SettingDao extends AbstractDao<Setting, Long> {
         public final static Property PrintQRCodeFlag = new Property(7, String.class, "printQRCodeFlag", false, "PRINT_QRCODE_FLAG");
         public final static Property PayDesc = new Property(8, String.class, "payDesc", false, "PAY_DESC");
         public final static Property PayDeviceID = new Property(9, String.class, "payDeviceID", false, "PAY_DEVICE_ID");
+        public final static Property ShowMainViewFlag = new Property(10, String.class, "showMainViewFlag", false, "SHOW_MAIN_VIEW_FLAG");
+        public final static Property InitalTicketNumber = new Property(11, int.class, "initalTicketNumber", false, "INITAL_TICKET_NUMBER");
     }
 
 
@@ -58,7 +60,9 @@ public class SettingDao extends AbstractDao<Setting, Long> {
                 "\"PRINT_TIME_OUT\" INTEGER NOT NULL ," + // 6: printTimeOut
                 "\"PRINT_QRCODE_FLAG\" TEXT," + // 7: printQRCodeFlag
                 "\"PAY_DESC\" TEXT," + // 8: payDesc
-                "\"PAY_DEVICE_ID\" TEXT);"); // 9: payDeviceID
+                "\"PAY_DEVICE_ID\" TEXT," + // 9: payDeviceID
+                "\"SHOW_MAIN_VIEW_FLAG\" TEXT," + // 10: showMainViewFlag
+                "\"INITAL_TICKET_NUMBER\" INTEGER NOT NULL );"); // 11: initalTicketNumber
     }
 
     /** Drops the underlying database table. */
@@ -108,6 +112,12 @@ public class SettingDao extends AbstractDao<Setting, Long> {
         if (payDeviceID != null) {
             stmt.bindString(10, payDeviceID);
         }
+ 
+        String showMainViewFlag = entity.getShowMainViewFlag();
+        if (showMainViewFlag != null) {
+            stmt.bindString(11, showMainViewFlag);
+        }
+        stmt.bindLong(12, entity.getInitalTicketNumber());
     }
 
     @Override
@@ -151,6 +161,12 @@ public class SettingDao extends AbstractDao<Setting, Long> {
         if (payDeviceID != null) {
             stmt.bindString(10, payDeviceID);
         }
+ 
+        String showMainViewFlag = entity.getShowMainViewFlag();
+        if (showMainViewFlag != null) {
+            stmt.bindString(11, showMainViewFlag);
+        }
+        stmt.bindLong(12, entity.getInitalTicketNumber());
     }
 
     @Override
@@ -170,7 +186,9 @@ public class SettingDao extends AbstractDao<Setting, Long> {
             cursor.getInt(offset + 6), // printTimeOut
             cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // printQRCodeFlag
             cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // payDesc
-            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9) // payDeviceID
+            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // payDeviceID
+            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // showMainViewFlag
+            cursor.getInt(offset + 11) // initalTicketNumber
         );
         return entity;
     }
@@ -187,6 +205,8 @@ public class SettingDao extends AbstractDao<Setting, Long> {
         entity.setPrintQRCodeFlag(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
         entity.setPayDesc(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
         entity.setPayDeviceID(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
+        entity.setShowMainViewFlag(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
+        entity.setInitalTicketNumber(cursor.getInt(offset + 11));
      }
     
     @Override

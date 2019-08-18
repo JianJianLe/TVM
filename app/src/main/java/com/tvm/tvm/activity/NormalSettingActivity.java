@@ -79,6 +79,18 @@ public class NormalSettingActivity extends BaseActivity {
     @BindView(R.id.rbt_isnotprinted)
     RadioButton rbt_isnotprinted;
 
+    @BindView(R.id.rgp_show_mainview)
+    RadioGroup rgp_show_mainview;
+
+    @BindView(R.id.rbt_isshowed)
+    RadioButton rbt_isshowed;
+
+    @BindView(R.id.rbt_isnotshowed)
+    RadioButton rbt_isnotshowed;
+
+    @BindView(R.id.et_normal_setting_initial_titcket_number)
+    EditText et_normal_setting_initial_titcket_number;
+
     @BindView(R.id.bt_normal_setting_confirm)
     Button bt_normal_setting_confirm;
 
@@ -92,6 +104,9 @@ public class NormalSettingActivity extends BaseActivity {
     String deviceNo;
     String md5Key;
     String printQRCodeFlag;
+    int initialTicketNumber;
+    String showMainViewFlag;
+    String payDeviceID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,11 +131,16 @@ public class NormalSettingActivity extends BaseActivity {
             rgp_print_qrcode.setEnabled(false);
             rbt_isprinted.setEnabled(false);
             rbt_isnotprinted.setEnabled(false);
+            rgp_show_mainview.setEnabled(false);
+            rbt_isshowed.setEnabled(false);
+            rbt_isnotshowed.setEnabled(false);
+            et_normal_setting_initial_titcket_number.setEnabled(false);
         }
 
         SettingDao settingDao = daoSession.getSettingDao();
         Setting setting = settingDao.queryBuilder().where(SettingDao.Properties.Id.eq(1l)).unique();
         if (setting!=null){
+            payDeviceID=setting.getPayDeviceID();
             et_normal_setting_company_name.setText(setting.getShopName());
             et_normal_setting_time_out.setText(setting.getSelectTimeOut()+"");
             et_normal_setting_pay_time_out.setText(setting.getPayTimeOut()+"");
@@ -128,6 +148,7 @@ public class NormalSettingActivity extends BaseActivity {
             et_normal_setting_pay_desc.setText(setting.getPayDesc());
             et_normal_setting_device_no.setText(setting.getDeviceNo());
             et_normal_setting_md5_key.setText(setting.getMd5Key());
+            et_normal_setting_initial_titcket_number.setText(setting.getInitalTicketNumber()+"");
 
             if(setting.getPrintQRCodeFlag().equals("Yes")){
                 printQRCodeFlag="Yes";
@@ -136,6 +157,15 @@ public class NormalSettingActivity extends BaseActivity {
             else{
                 printQRCodeFlag="No";
                 rgp_print_qrcode.check(R.id.rbt_isnotprinted);
+            }
+
+            if(setting.getShowMainViewFlag().equals("Yes")){
+                showMainViewFlag="Yes";
+                rgp_show_mainview.check(R.id.rbt_isshowed);
+            }
+            else{
+                showMainViewFlag="No";
+                rgp_show_mainview.check(R.id.rbt_isnotshowed);
             }
         }
     }
@@ -156,6 +186,8 @@ public class NormalSettingActivity extends BaseActivity {
         payDesc = et_normal_setting_pay_desc.getText().toString().trim();
         deviceNo = et_normal_setting_device_no.getText().toString().trim();
         md5Key = et_normal_setting_md5_key.getText().toString().trim();
+        initialTicketNumber =Integer.valueOf(et_normal_setting_initial_titcket_number.getText().toString().trim().equals("")? "0" : et_normal_setting_initial_titcket_number.getText().toString().trim());
+
         if (deviceNo.length()!=5){
             ToastUtils.showText(this,StringUtils.WRONG_DEVICE_NO);
             return false;
@@ -213,6 +245,9 @@ public class NormalSettingActivity extends BaseActivity {
             setting.setPayDesc(payDesc);
             setting.setMd5Key(md5Key);
             setting.setPrintQRCodeFlag(printQRCodeFlag);
+            setting.setPayDeviceID(payDeviceID);
+            setting.setInitalTicketNumber(initialTicketNumber);
+            setting.setShowMainViewFlag(showMainViewFlag);
             settingDao.update(setting);
             ToastUtils.showText(getApplicationContext(),StringUtils.UPDATE_SUCCESS,true);
         }
@@ -229,7 +264,8 @@ public class NormalSettingActivity extends BaseActivity {
                 break;
         }
     }
-    @OnCheckedChanged({R.id.rbt_isprinted, R.id.rbt_isnotprinted})
+    @OnCheckedChanged({R.id.rbt_isprinted, R.id.rbt_isnotprinted,
+                    R.id.rbt_isshowed, R.id.rbt_isnotshowed})
     public void onRadioButtonCheckChanged(CompoundButton button, boolean isChecked) {
         if(isChecked) {
             switch (button.getId()) {
@@ -238,6 +274,12 @@ public class NormalSettingActivity extends BaseActivity {
                     break;
                 case R.id.rbt_isnotprinted:
                     printQRCodeFlag = "No";
+                    break;
+                case R.id.rbt_isshowed:
+                    showMainViewFlag = "Yes";
+                    break;
+                case R.id.rbt_isnotshowed:
+                    showMainViewFlag = "No";
                     break;
             }
         }

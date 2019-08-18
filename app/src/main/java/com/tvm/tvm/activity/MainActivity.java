@@ -250,9 +250,15 @@ public class MainActivity extends BaseActivity {
 
         initView();
         initAds();
+
         initBillAcceptor();
         initPayDevice();
         tvmRegisterAction();
+
+        if(!setting.getShowMainViewFlag().equals("Yes")){
+            startActivity(this,SelectPriceActivity.class);
+            this.finish();
+        }
     }
 
     private void initView() {
@@ -793,8 +799,10 @@ public class MainActivity extends BaseActivity {
     }
 
     private void shutDownScheduledExecutorService() {
-        if (!scheduledExecutorService.isShutdown())
-            scheduledExecutorService.shutdown();
+        if(scheduledExecutorService != null){
+            if (!scheduledExecutorService.isShutdown())
+                scheduledExecutorService.shutdown();
+        }
     }
 
 }

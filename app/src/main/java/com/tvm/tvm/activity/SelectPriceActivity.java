@@ -23,9 +23,13 @@ import com.tvm.tvm.bean.Price;
 import com.tvm.tvm.bean.TicketBean;
 import com.tvm.tvm.bean.dao.DaoSession;
 import com.tvm.tvm.bean.dao.PriceDao;
+import com.tvm.tvm.receiver.MediaReceiver;
 import com.tvm.tvm.util.BackPrevious;
+import com.tvm.tvm.util.LongClickUtils;
+import com.tvm.tvm.util.constant.PreConfig;
 import com.tvm.tvm.util.constant.StringUtils;
 import com.tvm.tvm.util.device.billacceptor.BillAcceptorUtil;
+import com.tvm.tvm.util.device.paydevice.PayDeviceUtil;
 import com.tvm.tvm.util.device.printer.PrinterCase;
 import com.tvm.tvm.util.view.ConfirmDialogUtils;
 import com.tvm.tvm.util.view.ToastUtils;
@@ -51,6 +55,9 @@ import butterknife.OnClick;
 public class SelectPriceActivity extends BaseActivity implements View.OnTouchListener,GestureDetector.OnGestureListener {
 
     private Context TAG = SelectPriceActivity.this;
+
+    @BindView(R.id.tv_select_price_title_title)
+    TextView tv_select_price_title_title;
 
     @BindView(R.id.gv_select_price_list)
     GridView gv_select_price_list;
@@ -93,7 +100,11 @@ public class SelectPriceActivity extends BaseActivity implements View.OnTouchLis
     private float curX = 0;
     private float curY = 0;
 
-    GestureDetector gestureDetector;
+    private GestureDetector gestureDetector;
+
+    private MediaReceiver mediaReceiver;
+
+    private boolean isShowMainView;
 
     private Handler handler = new Handler(){
         @Override
@@ -110,19 +121,59 @@ public class SelectPriceActivity extends BaseActivity implements View.OnTouchLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_price);
         ButterKnife.bind(this);
+
+        isShowMainView=false;
+        if(setting.getShowMainViewFlag().equals("Yes")){
+            isShowMainView=true;
+            backPrevious = new BackPrevious(setting.getSelectTimeOut()*1000,1000,SelectPriceActivity.this);
+        }
+
+        initView();
+
         gestureDetector = new GestureDetector(this);
-        ll_activity_select_price_layout.setOnTouchListener(this);
-        gv_select_price_list.setOnTouchListener(this);
-        ll_activity_select_price_layout.setLongClickable(true);
         daoSession = AppApplication.getApplication().getDaoSession();
         setPrice();
-        backPrevious = new BackPrevious(setting.getSelectTimeOut()*1000,1000,SelectPriceActivity.this);
 
         //注册广播接受者，广播接受者更新票价总数
         receiver = new UpdateBroadcastReceiver();
         intentFilter = new IntentFilter();
         intentFilter.addAction(StringUtils.TICKET_RECEIVER);
         registerReceiver(receiver,intentFilter);
+
+        //注册广播,检测USB是否接入以及获取TVM相关文件
+        tvmRegisterAction();
+
+
+    }
+
+    private void initView(){
+        ll_activity_select_price_layout.setOnTouchListener(this);
+        gv_select_price_list.setOnTouchListener(this);
+        ll_activity_select_price_layout.setLongClickable(true);
+
+        int delayMillis=(PreConfig.Envir=="DEV")? 500:10000;
+
+        if(!isShowMainView){
+            //长按十秒公司名称，进入登录管理页面
+            LongClickUtils.setLongClick(new Handler(), tv_select_price_title_title, delayMillis, new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    //todo:补充长按事件的处理逻辑
+                    startActivity(SelectPriceActivity.this, LoginActivity.class);
+                    return true;
+                }
+            });
+        }
+    }
+
+    private void tvmRegisterAction() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_MEDIA_EJECT);
+        filter.addAction(Intent.ACTION_MEDIA_UNMOUNTED);
+        filter.addAction(Intent.ACTION_MEDIA_MOUNTED);
+        filter.addDataScheme("file");
+        mediaReceiver = new MediaReceiver();
+        registerReceiver(mediaReceiver, filter);
     }
 
     @OnClick({R.id.iv_select_price_cancel,R.id.iv_select_price_buy})
@@ -167,7 +218,7 @@ public class SelectPriceActivity extends BaseActivity implements View.OnTouchLis
             BillAcceptorUtil.getInstance().ba_Enable();//@Star 16Feb
             PrinterCase.getInstance().ticketList = beanList;
             startActivity(this,PayDetailActivity.class);
-            this.finish();
+            if(isShowMainView) this.finish();
         }
     }
 
@@ -227,7 +278,7 @@ public class SelectPriceActivity extends BaseActivity implements View.OnTouchLis
     @Override
     protected void onPause() {
         super.onPause();
-        backPrevious.cancel();
+        if(isShowMainView) backPrevious.cancel();
     }
 
     //开启时执行延迟服务
@@ -242,6 +293,7 @@ public class SelectPriceActivity extends BaseActivity implements View.OnTouchLis
         super.onDestroy();
         Log.i("Test","SelectPriceActivity onDestroy");
         unregisterReceiver(receiver);
+        unregisterReceiver(mediaReceiver);
     }
 
 
@@ -257,7 +309,7 @@ public class SelectPriceActivity extends BaseActivity implements View.OnTouchLis
         new Handler(getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
-                backPrevious.start();
+                if(isShowMainView) backPrevious.start();
             }
         });
     }
@@ -273,11 +325,11 @@ public class SelectPriceActivity extends BaseActivity implements View.OnTouchLis
         switch (ev.getAction()) {
             //获取触摸动作，如果ACTION_UP，计时开始。
             case MotionEvent.ACTION_UP:
-                backPrevious.start();
+                if(isShowMainView) backPrevious.start();
                 break;
             //否则其他动作计时取消
             default:
-                backPrevious.cancel();
+                if(isShowMainView) backPrevious.cancel();
                 break;
         }
         return super.dispatchTouchEvent(ev);
@@ -332,7 +384,7 @@ public class SelectPriceActivity extends BaseActivity implements View.OnTouchLis
                 @Override
                 public void onOKClick() {
                     confirmDialogUtils.dismiss();
-                    SelectPriceActivity.this.finish();
+                    if(isShowMainView) SelectPriceActivity.this.finish();
                 }
 
                 @Override

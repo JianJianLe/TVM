@@ -34,6 +34,10 @@ public class Setting {
 
     private String payDeviceID;
 
+    private String showMainViewFlag;
+
+    private int initalTicketNumber;
+
     public String getPayDesc() {
         return this.payDesc;
     }
@@ -114,9 +118,26 @@ public class Setting {
         this.payDeviceID = payDeviceID;
     }
 
-    @Generated(hash = 1188775631)
+    public int getInitalTicketNumber() {
+        return this.initalTicketNumber;
+    }
+
+    public void setInitalTicketNumber(int initalTicketNumber) {
+        this.initalTicketNumber = initalTicketNumber;
+    }
+
+    public String getShowMainViewFlag() {
+        return this.showMainViewFlag;
+    }
+
+    public void setShowMainViewFlag(String showMainViewFlag) {
+        this.showMainViewFlag = showMainViewFlag;
+    }
+
+    @Generated(hash = 870575634)
     public Setting(Long id, String shopName, String deviceNo, String md5Key, int selectTimeOut, int payTimeOut,
-            int printTimeOut, String printQRCodeFlag, String payDesc, String payDeviceID) {
+            int printTimeOut, String printQRCodeFlag, String payDesc, String payDeviceID,
+            String showMainViewFlag, int initalTicketNumber) {
         this.id = id;
         this.shopName = shopName;
         this.deviceNo = deviceNo;
@@ -127,6 +148,8 @@ public class Setting {
         this.printQRCodeFlag = printQRCodeFlag;
         this.payDesc = payDesc;
         this.payDeviceID = payDeviceID;
+        this.showMainViewFlag = showMainViewFlag;
+        this.initalTicketNumber = initalTicketNumber;
     }
 
     @Generated(hash = 909716735)

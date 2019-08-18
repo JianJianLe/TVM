@@ -77,7 +77,8 @@ public class FirstInitApp {
         setting.setPrintTimeOut(30);
         setting.setSelectTimeOut(30);
         setting.setPrintQRCodeFlag("Yes");
-        //setting.setMd5Key("01234567890123456789012345678901");
+        setting.setInitalTicketNumber(0);
+        setting.setShowMainViewFlag("Yes");
         settingDao.save(setting);
     }
 

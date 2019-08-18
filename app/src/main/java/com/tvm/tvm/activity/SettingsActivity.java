@@ -51,6 +51,7 @@ public class SettingsActivity extends BaseActivity {
     public void onClick(View view){
         switch (view.getId()){
             case R.id.ib_settings_back:
+                startActivity(this,MainActivity.class);
                 this.finish();
                 break;
             case R.id.tv_settings_person_manage:

@@ -8,6 +8,7 @@ import com.tvm.tvm.bean.Setting;
 import com.tvm.tvm.bean.TicketBean;
 import com.tvm.tvm.bean.TicketSummary;
 import com.tvm.tvm.bean.dao.BillSettingDao;
+import com.tvm.tvm.bean.dao.DaoSession;
 import com.tvm.tvm.bean.dao.SettingDao;
 import com.tvm.tvm.bean.dao.TicketSummaryDao;
 import com.tvm.tvm.util.TimeUtil;
@@ -109,12 +110,10 @@ public class PrinterCase {
     private int getPreTicketOrderNumber(){
         TicketSummaryDao ticketSummaryDao = AppApplication.getApplication().getDaoSession().getTicketSummaryDao();
         ticketSummaryList = ticketSummaryDao.queryBuilder().list();
-        SettingDao settingDao=AppApplication.getApplication().getDaoSession().getSettingDao();
-        Setting setting=settingDao.queryBuilder().where(SettingDao.Properties.Id.eq(1)).unique();
         if (ticketSummaryList.size()==0){
-            return 0+setting.getInitalTicketNumber();
+            return addInitialTicketNumer(0);
         }else {
-            return getNumByTime()+setting.getInitalTicketNumber();
+            return getNumByTime();
         }
     }
 
@@ -126,6 +125,40 @@ public class PrinterCase {
             return ticket.getNum();
         else
             return 0;
+    }
+
+    public int addInitialTicketNumer(){
+        TicketSummaryDao ticketSummaryDao = AppApplication.getApplication().getDaoSession().getTicketSummaryDao();
+        ticketSummaryList = ticketSummaryDao.queryBuilder().list();
+        int startNum=ticketSummaryList.size();
+        SettingDao settingDao = AppApplication.getApplication().getDaoSession().getSettingDao();
+        Setting setting = settingDao.queryBuilder().where(SettingDao.Properties.Id.eq(1)).unique();
+        int initailTicketNumber=setting.getInitalTicketNumber();
+        if(initailTicketNumber!=0){
+            for(int i=startNum;i<startNum+initailTicketNumber;i++){
+                saveTicketInfo(TimeUtil.dateFormat.format(new Date()),i+1);
+            }
+        }
+        return initailTicketNumber;
+    }
+
+    public int addInitialTicketNumer(int startNum){
+        SettingDao settingDao = AppApplication.getApplication().getDaoSession().getSettingDao();
+        Setting setting = settingDao.queryBuilder().where(SettingDao.Properties.Id.eq(1)).unique();
+        int initailTicketNumber=setting.getInitalTicketNumber();
+        if(initailTicketNumber!=0){
+            for(int i=startNum;i<startNum+initailTicketNumber;i++){
+                saveTicketInfo(TimeUtil.dateFormat.format(new Date()),i+1);
+            }
+        }
+        return initailTicketNumber;
+    }
+
+    private void saveTicketInfo(String currentTime, int orderNum){
+        TicketSummary ticketSummary=new TicketSummary();
+        ticketSummary.setDate(currentTime);
+        ticketSummary.setNum(orderNum);
+        AppApplication.getApplication().getDaoSession().getTicketSummaryDao().save(ticketSummary);
     }
 
     // 处理顺序号，只支持1000以内

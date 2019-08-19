@@ -104,5 +104,4 @@ public class PrinterAction {
         ticketSummary.setNum(orderNum);
         daoSession.getTicketSummaryDao().save(ticketSummary);
     }
-
 }

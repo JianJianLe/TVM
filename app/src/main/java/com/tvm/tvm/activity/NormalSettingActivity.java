@@ -20,6 +20,7 @@ import com.tvm.tvm.bean.dao.SettingDao;
 import com.tvm.tvm.util.SharedPrefsUtil;
 import com.tvm.tvm.util.constant.PreConfig;
 import com.tvm.tvm.util.constant.StringUtils;
+import com.tvm.tvm.util.device.printer.PrinterCase;
 import com.tvm.tvm.util.view.ToastUtils;
 
 import java.io.UnsupportedEncodingException;
@@ -261,6 +262,7 @@ public class NormalSettingActivity extends BaseActivity {
                 break;
             case R.id.bt_normal_setting_confirm:
                 updateSetting();
+                PrinterCase.getInstance().addInitialTicketNumer();
                 break;
         }
     }

@@ -26,6 +26,8 @@ public class TicketSummary {
      */
     private int num;
 
+    private String flagStr;
+
     public int getNum() {
         return this.num;
     }
@@ -50,11 +52,20 @@ public class TicketSummary {
         this.id = id;
     }
 
-    @Generated(hash = 455938901)
-    public TicketSummary(Long id, String date, int num) {
+    public String getFlagStr() {
+        return this.flagStr;
+    }
+
+    public void setFlagStr(String flagStr) {
+        this.flagStr = flagStr;
+    }
+
+    @Generated(hash = 1533884495)
+    public TicketSummary(Long id, String date, int num, String flagStr) {
         this.id = id;
         this.date = date;
         this.num = num;
+        this.flagStr = flagStr;
     }
 
     @Generated(hash = 1117549325)

@@ -255,7 +255,7 @@ public class MainActivity extends BaseActivity {
         initPayDevice();
         tvmRegisterAction();
 
-        if(!setting.getShowMainViewFlag().equals("Yes")){
+        if(setting!=null && !setting.getShowMainViewFlag().equals("Yes")){
             startActivity(this,SelectPriceActivity.class);
             this.finish();
         }

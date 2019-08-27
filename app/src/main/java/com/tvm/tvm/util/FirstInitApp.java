@@ -1,6 +1,7 @@
 package com.tvm.tvm.util;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.tvm.tvm.R;
 import com.tvm.tvm.application.AppApplication;

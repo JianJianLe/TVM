@@ -11,6 +11,7 @@ import java.util.GregorianCalendar;
 public class TimeUtil {
 
     public static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
     private static Date returnDate=null;
     /*
      *gc.add(1,-1)表示年份减一.

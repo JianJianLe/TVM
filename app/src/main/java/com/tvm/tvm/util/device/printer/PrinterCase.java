@@ -9,10 +9,14 @@ import com.tvm.tvm.bean.TicketBean;
 import com.tvm.tvm.bean.TicketSummary;
 import com.tvm.tvm.bean.dao.BillSettingDao;
 import com.tvm.tvm.bean.dao.DaoSession;
+import com.tvm.tvm.bean.dao.PriceDao;
 import com.tvm.tvm.bean.dao.SettingDao;
 import com.tvm.tvm.bean.dao.TicketSummaryDao;
 import com.tvm.tvm.util.TimeUtil;
 
+import org.greenrobot.greendao.query.QueryBuilder;
+
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -25,6 +29,7 @@ public class PrinterCase {
     public SummaryTicket summaryTicket= new SummaryTicket();
 
     private List<TicketSummary> ticketSummaryList;
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 
     private String printTemplate = "[CenterLarge]->快剪\n" +
             "[CenterSmall]->欢迎光临快剪专营店\n" +
@@ -124,7 +129,7 @@ public class PrinterCase {
         if(TimeUtil.isToday(ticketTime))
             return ticket.getNum();
         else
-            return 0;
+            return addInitialTicketNumer(0);
     }
 
     public int addInitialTicketNumer(){
@@ -136,7 +141,7 @@ public class PrinterCase {
         int initailTicketNumber=setting.getInitalTicketNumber();
         if(initailTicketNumber!=0){
             for(int i=startNum;i<startNum+initailTicketNumber;i++){
-                saveTicketInfo(TimeUtil.dateFormat.format(new Date()),i+1);
+                saveTicketInfo(TimeUtil.dateFormat.format(new Date()),i+1,"Add_" + dateFormat.format(new Date()));
             }
         }
         return initailTicketNumber;
@@ -148,16 +153,35 @@ public class PrinterCase {
         int initailTicketNumber=setting.getInitalTicketNumber();
         if(initailTicketNumber!=0){
             for(int i=startNum;i<startNum+initailTicketNumber;i++){
-                saveTicketInfo(TimeUtil.dateFormat.format(new Date()),i+1);
+                saveTicketInfo(TimeUtil.dateFormat.format(new Date()),i+1,"Add_" + dateFormat.format(new Date()));
             }
         }
         return initailTicketNumber;
+    }
+
+    public boolean isAddedInitialTicketNumber(){
+        TicketSummaryDao ticketSummaryDao=AppApplication.getApplication().getDaoSession().getTicketSummaryDao();
+        List<TicketSummary> ticketSummaryList=ticketSummaryDao.queryBuilder().where(
+                TicketSummaryDao.Properties.FlagStr.eq("Add_" + dateFormat.format(new Date()))).list();
+        if(ticketSummaryList.size()!=0){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     private void saveTicketInfo(String currentTime, int orderNum){
         TicketSummary ticketSummary=new TicketSummary();
         ticketSummary.setDate(currentTime);
         ticketSummary.setNum(orderNum);
+        AppApplication.getApplication().getDaoSession().getTicketSummaryDao().save(ticketSummary);
+    }
+
+    private void saveTicketInfo(String currentTime, int orderNum,String flagStr){
+        TicketSummary ticketSummary=new TicketSummary();
+        ticketSummary.setDate(currentTime);
+        ticketSummary.setNum(orderNum);
+        ticketSummary.setFlagStr(flagStr);
         AppApplication.getApplication().getDaoSession().getTicketSummaryDao().save(ticketSummary);
     }
 

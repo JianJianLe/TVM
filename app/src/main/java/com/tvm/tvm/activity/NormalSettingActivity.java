@@ -262,7 +262,8 @@ public class NormalSettingActivity extends BaseActivity {
                 break;
             case R.id.bt_normal_setting_confirm:
                 updateSetting();
-                PrinterCase.getInstance().addInitialTicketNumer();
+                if(!PrinterCase.getInstance().isAddedInitialTicketNumber())
+                    PrinterCase.getInstance().addInitialTicketNumer();
                 break;
         }
     }

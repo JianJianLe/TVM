@@ -27,6 +27,7 @@ public class TicketSummaryDao extends AbstractDao<TicketSummary, Long> {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property Date = new Property(1, String.class, "date", false, "DATE");
         public final static Property Num = new Property(2, int.class, "num", false, "NUM");
+        public final static Property FlagStr = new Property(3, String.class, "flagStr", false, "FLAG_STR");
     }
 
 
@@ -44,7 +45,8 @@ public class TicketSummaryDao extends AbstractDao<TicketSummary, Long> {
         db.execSQL("CREATE TABLE " + constraint + "\"TICKET_SUMMARY\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
                 "\"DATE\" TEXT," + // 1: date
-                "\"NUM\" INTEGER NOT NULL );"); // 2: num
+                "\"NUM\" INTEGER NOT NULL ," + // 2: num
+                "\"FLAG_STR\" TEXT);"); // 3: flagStr
     }
 
     /** Drops the underlying database table. */
@@ -67,6 +69,11 @@ public class TicketSummaryDao extends AbstractDao<TicketSummary, Long> {
             stmt.bindString(2, date);
         }
         stmt.bindLong(3, entity.getNum());
+ 
+        String flagStr = entity.getFlagStr();
+        if (flagStr != null) {
+            stmt.bindString(4, flagStr);
+        }
     }
 
     @Override
@@ -83,6 +90,11 @@ public class TicketSummaryDao extends AbstractDao<TicketSummary, Long> {
             stmt.bindString(2, date);
         }
         stmt.bindLong(3, entity.getNum());
+ 
+        String flagStr = entity.getFlagStr();
+        if (flagStr != null) {
+            stmt.bindString(4, flagStr);
+        }
     }
 
     @Override
@@ -95,7 +107,8 @@ public class TicketSummaryDao extends AbstractDao<TicketSummary, Long> {
         TicketSummary entity = new TicketSummary( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // date
-            cursor.getInt(offset + 2) // num
+            cursor.getInt(offset + 2), // num
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3) // flagStr
         );
         return entity;
     }
@@ -105,6 +118,7 @@ public class TicketSummaryDao extends AbstractDao<TicketSummary, Long> {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setDate(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
         entity.setNum(cursor.getInt(offset + 2));
+        entity.setFlagStr(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
      }
     
     @Override

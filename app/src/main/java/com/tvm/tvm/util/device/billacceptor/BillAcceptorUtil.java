@@ -3,6 +3,7 @@ package com.tvm.tvm.util.device.billacceptor;
 import android.os.Handler;
 import android.util.Log;
 
+import com.tvm.tvm.util.constant.PreConfig;
 import com.tvm.tvm.util.device.SerialPortUtil;
 import com.tvm.tvm.util.TimeUtil;
 
@@ -42,6 +43,7 @@ public class BillAcceptorUtil {
     public int tmpRcvdMoney=-1;
 
     public Boolean responsedStatus = true;
+
 
     //String printString;
 
@@ -196,12 +198,22 @@ public class BillAcceptorUtil {
         BA_disable[0] = 0x5e;
     }
 
+
+
     //初始化投币器设备
     public void init_BillAcceptorDevice() {
 
-        File serialPortFile = new File("/dev/ttyS3");
+        String serialPortFilePath_One = "/dev/ttyS3";
+        String serialPortFilePath_Two = "/dev/ttyGS3";
+
+        if(PreConfig.AndroidBoardVersion=="2.0"){
+            serialPortFilePath_One = "/dev/ttyS4";
+            serialPortFilePath_Two = "/dev/ttyGS4";
+        }
+
+        File serialPortFile = new File(serialPortFilePath_One);
         if(!serialPortFile.exists()){
-            serialPortFile = new File("/dev/ttyGS3");
+            serialPortFile = new File(serialPortFilePath_Two);
         }
         try {
             serialPort = new SerialPortUtil(serialPortFile,9600);

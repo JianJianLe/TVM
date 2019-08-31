@@ -12,6 +12,9 @@ public class PreConfig {
     public static String Envir="SIT";
     //public static String Envir="PROD";
 
+    //public static String AndroidBoardVersion="1.0";
+    public static String AndroidBoardVersion="2.0";
+
     //缓存登录用户
     public static String USER = "user";
     //公司名

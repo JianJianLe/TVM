@@ -12,7 +12,8 @@
 
 #include <android/log.h>
 
-#define PRINTER_DEVICE_NAME "/dev/ttyS1"
+//#define PRINTER_DEVICE_NAME "/dev/ttyS1" //old android board
+#define PRINTER_DEVICE_NAME "/dev/ttyS2" //new android board
 
 #define UART_RW_LENGTH 255
 
@@ -24,7 +25,7 @@ extern "C" {
 
 JNIEXPORT jint JNICALL Java_com_tvm_tvm_util_device_printer_PrinterUtil_jPrinterInit
   (JNIEnv *env, jobject obj){
-  p_fd = open(PRINTER_DEVICE_NAME, O_RDWR | O_NOCTTY);
+  	p_fd = open(PRINTER_DEVICE_NAME, O_RDWR | O_NOCTTY);
 
   	struct termios options;
 

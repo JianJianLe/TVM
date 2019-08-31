@@ -621,7 +621,6 @@ public class MainActivity extends BaseActivity {
             tv_main_ticke_list_title.setText(priceList.get(0).getTitle());
             iv_main_ticke_list_icon.setImageBitmap(BitmapUtils.byte2Bitmap(priceList.get(0).getPic()));
 
-
             tv_main_ticke_list_desc2.setText(priceList.get(1).getDescription());
             tv_main_ticke_list_price2.setText((int) priceList.get(1).getPrice() + "");
             tv_main_ticke_list_title2.setText(priceList.get(1).getTitle());

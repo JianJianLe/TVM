@@ -156,10 +156,10 @@
             android:orientation="horizontal" >
             <LinearLayout
                 android:id="@+id/ll_main_ticket_list_1"
-                android:background="@color/ticket_back_1"
                 android:layout_width="@dimen/xy100dp"
                 android:layout_height="wrap_content"
                 android:paddingBottom="@dimen/xy3dp"
+                android:background="@drawable/bg_ticket_one"
                 android:orientation="vertical">
                 <LinearLayout android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -257,7 +257,7 @@
                 android:id="@+id/ll_main_ticket_list_2"
                 android:layout_width="@dimen/xy100dp"
                 android:layout_height="wrap_content"
-                android:background="@color/ticket_back_2"
+                android:background="@drawable/bg_ticket_two"
                 android:orientation="vertical"
                 android:paddingBottom="@dimen/xy3dp">
 

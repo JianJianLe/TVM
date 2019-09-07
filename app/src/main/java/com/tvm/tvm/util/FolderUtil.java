@@ -60,14 +60,14 @@ public class FolderUtil {
     //Folder Name: Image, Video, Template
     public static String getTargetFolderPath(String folderName){
         FolderUtil folderUtil=new FolderUtil();
-        String imageFolderPath=folderUtil.getUSBFolder(folderName);
-        if(imageFolderPath==null){
-            imageFolderPath=folderUtil.getSDCardFolder(folderName);
+        String folderPath=folderUtil.getUSBFolder(folderName);
+        if(folderPath==null){
+            folderPath=folderUtil.getSDCardFolder(folderName);
         }
-        if(imageFolderPath==null){
-            imageFolderPath=folderUtil.getDefaultFolder(folderName);
+        if(folderPath==null){
+            folderPath=folderUtil.getDefaultFolder(folderName);
         }
-        return imageFolderPath;
+        return folderPath;
     }
 
     private String getExtSDCardPath() {
@@ -88,7 +88,6 @@ public class FolderUtil {
             return false;
         }
     }
-
 
     public static List<String> getFolderFiles(String folderPath) {
         FolderUtil folderUtil = new FolderUtil();

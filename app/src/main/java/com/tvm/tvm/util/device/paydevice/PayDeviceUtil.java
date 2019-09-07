@@ -203,29 +203,6 @@ public class PayDeviceUtil {
         }
     }
 
-//    private class ReadThread extends Thread {
-//        @Override
-//        public void run() {
-//            super.run();
-//            while (!isInterrupted()) {
-//                try {
-//                    receivedCMD="";
-//                    if (mInputStream == null)
-//                        return;
-//                    byte[] buffer = new byte[512];
-//                    int size = mInputStream.read(buffer);
-//                    if (size > 0){
-//                        Log.i("Test","Size="+size);
-//                        onDataReceived(buffer);
-//                    }
-//
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-//    }
-
     //For test
     private void showData(final byte[] buffer){
         StringBuffer stringBuffer = new StringBuffer();
@@ -239,7 +216,7 @@ public class PayDeviceUtil {
     private void onDataReceived(final byte[] buffer) {
         //showData(buffer);
         String cmdStr=DataUtils.bytesToHex(buffer);
-        Log.i("Test","CmdStr="+cmdStr);
+        //Log.i("Test","CmdStr="+cmdStr);
         if(cmdStr.startsWith("AA")){
             receivedCMD=getAllCMD(cmdStr);
             if(receivedCMD==null){

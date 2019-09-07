@@ -13,7 +13,7 @@ extern "C" {
  * Signature: (Ljava/lang/String;I)Ljava/io/FileDescriptor;
  */
 JNIEXPORT jobject JNICALL Java_com_tvm_tvm_util_device_SerialPortUtil_open
-  (JNIEnv *, jclass, jstring, jint);
+  (JNIEnv *, jclass, jstring, jint, jint);
 
 /*
  * Class:     com_tvm_tvm_util_device_SerialPortUtil

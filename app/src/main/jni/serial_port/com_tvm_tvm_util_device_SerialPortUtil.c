@@ -89,7 +89,7 @@ extern "C" {
     }
 
 JNIEXPORT jobject JNICALL Java_com_tvm_tvm_util_device_SerialPortUtil_open
-  (JNIEnv *env, jclass obj, jstring path, jint baudrate){
+  (JNIEnv *env, jclass obj, jstring path, jint baudrate, jint flag){
         int fd;
         speed_t speed;
         jobject mFileDescriptor;
@@ -133,9 +133,13 @@ JNIEXPORT jobject JNICALL Java_com_tvm_tvm_util_device_SerialPortUtil_open
             cfsetispeed(&cfg, speed);
             cfsetospeed(&cfg, speed);
 
+            //投币器必须设置奇偶校验
+            //flag=0 表示为投币器
+            if(flag==0){
+                cfg.c_cflag |= PARENB;
+                cfg.c_cflag &= ~PARODD;
+            }
 
-            cfg.c_cflag |= PARENB;
-            cfg.c_cflag &= ~PARODD;
 
             if (tcsetattr(fd, TCSANOW, &cfg)) {
                 LOGE("tcsetattr() failed");

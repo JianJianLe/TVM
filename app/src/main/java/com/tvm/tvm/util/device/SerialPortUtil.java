@@ -17,7 +17,7 @@ public class SerialPortUtil {
     }
 
     //JNI
-    private native static FileDescriptor open(String path, int baudrate);
+    private native static FileDescriptor open(String path, int baudrate, int flag);
     public native void close();
     //JNI Test
     public native static String getMessageFromJNI();
@@ -27,7 +27,7 @@ public class SerialPortUtil {
     private FileOutputStream mFileOutputStream;
     private static final String TAG = "SerialPort";
 
-    public SerialPortUtil(File device, int baudrate)
+    public SerialPortUtil(File device, int baudrate, int flag)
             throws SecurityException, IOException {
 
         /* Check access permission */
@@ -48,7 +48,7 @@ public class SerialPortUtil {
             }
         }
 
-        mFd = open(device.getAbsolutePath(), baudrate);
+        mFd = open(device.getAbsolutePath(), baudrate, flag);
         if (mFd == null) {
             Log.e(TAG, "native open returns null");
             throw new IOException();

@@ -1,5 +1,6 @@
 package com.tvm.tvm.util.device.paydevice;
 
+import android.os.Handler;
 import android.util.Log;
 
 import com.tvm.tvm.application.AppApplication;
@@ -70,7 +71,7 @@ public class PayDeviceUtil {
             serialPortFile = new File(serialPortFilePath2);
         }
         try {
-            serialPort = new SerialPortUtil(serialPortFile,38400);
+            serialPort = new SerialPortUtil(serialPortFile,38400,1);
         } catch (SecurityException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -97,25 +98,133 @@ public class PayDeviceUtil {
         priceList = qb.list();
     }
 
+    private Handler mHandler=new Handler();
+
     private class ReadThread extends Thread {
+        private SendRunnable runnable = new SendRunnable();
+        //第一次运行线程时设置成true
+        private boolean beginning = false;
+        //缓冲区()
+        byte[] buffer = new byte[512];
+
         @Override
         public void run() {
             super.run();
+
             while (!isInterrupted()) {
+                int size;
                 try {
-                    receivedCMD="";
-                    if (mInputStream == null)
-                        return;
-                    byte[] buffer = new byte[1024];
-                    int size = mInputStream.read(buffer);
-                    if (size > 0)
-                        onDataReceived(buffer);
+                    if (mInputStream == null) return;
+                    //读取数据,同时获取数据长度(数据长度不是数组长度,而是实际接收到的数据长度),数据被读取到了缓冲区 buffer中
+                    size = mInputStream.read(buffer);
+                    if (size > 0) {
+                        Log.i("Test","接收数据长度:" + size);
+                        //临时数组,将缓冲区buffer中的有效数据读取出来,临时数据长度就是接收到的数据长度。
+                        byte[] temp = new byte[size];
+                        System.arraycopy(buffer, 0, temp, 0, size);
+                        //具体注释见init方法
+                        runnable.init(temp, size);
+                        //如果程序第一次运行
+                        if (!beginning) {
+                            //运行runnable,只在第一次执行,如果重复执行虽不会抛出异常,但是也无法正常执行功能
+                            mHandler.post(runnable);
+                        }
+                    }
                 } catch (IOException e) {
+                    e.printStackTrace();
+                    return;
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         }
+
     }
+
+    public class SendRunnable implements Runnable {
+        private byte[] lastBuffer;
+        int time = 0;
+        boolean work = true;
+        private int lastBufferLength;
+
+        //断包处理逻辑包含其中
+        public void init(byte[] buffer, int size) {
+
+            if (lastBuffer == null) {
+                lastBuffer = buffer;
+            } else {
+                lastBufferLength = lastBuffer.length;
+                byte[] temp = new byte[lastBufferLength + size];
+                //先拷贝之前的数据
+                System.arraycopy(lastBuffer, 0, temp, 0, lastBufferLength);
+                //再拷贝刚接收到的数据
+                System.arraycopy(buffer, 0, temp, lastBufferLength, size);
+                lastBuffer = null;
+                lastBuffer = temp;
+                temp = null;
+            }
+            work = true;
+            time = 0;
+        }
+
+        public void reStart() {
+            work = true;
+            time = 0;
+        }
+
+        public void stop() {
+            work = false;
+            time = 0;
+        }
+        //接收完成后重置完整消息缓冲区
+        public void reset() {
+            work = false;
+            time = 0;
+            lastBuffer = null;
+        }
+
+        @Override
+        public void run() {
+            while (work) {
+                try {
+                    Thread.sleep(20);
+                    time += 20;
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if (time >= 100) {
+                    byte[] finalBuffer = lastBuffer;
+                    reset();
+                    //业务处理方法
+                    onDataReceived(finalBuffer);
+                }
+            }
+
+        }
+    }
+
+//    private class ReadThread extends Thread {
+//        @Override
+//        public void run() {
+//            super.run();
+//            while (!isInterrupted()) {
+//                try {
+//                    receivedCMD="";
+//                    if (mInputStream == null)
+//                        return;
+//                    byte[] buffer = new byte[512];
+//                    int size = mInputStream.read(buffer);
+//                    if (size > 0){
+//                        Log.i("Test","Size="+size);
+//                        onDataReceived(buffer);
+//                    }
+//
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//    }
 
     //For test
     private void showData(final byte[] buffer){
@@ -130,6 +239,7 @@ public class PayDeviceUtil {
     private void onDataReceived(final byte[] buffer) {
         //showData(buffer);
         String cmdStr=DataUtils.bytesToHex(buffer);
+        Log.i("Test","CmdStr="+cmdStr);
         if(cmdStr.startsWith("AA")){
             receivedCMD=getAllCMD(cmdStr);
             if(receivedCMD==null){

@@ -94,10 +94,10 @@ public class FolderUtil {
         List<String> link = new ArrayList<>();
         File folder = new File(folderPath);
         if (folderUtil.isFileExisted(folder)) {
-            String name[] = folder.list();
-            for (int i = 0; i < name.length; ++i) {
-                if(!name[i].startsWith(".")){
-                    File f = new File(folderPath, name[i]);
+            String nameList[] = folder.list();
+            for (int i = 0; i < nameList.length; ++i) {
+                if(!nameList[i].startsWith(".")){
+                    File f = new File(folderPath, nameList[i]);
                     link.add(f.getPath());
                 }
             }
@@ -107,8 +107,8 @@ public class FolderUtil {
     private boolean isFileExisted(File file) {
         boolean flag = false;
         if (file.exists() && file.isDirectory()) {
-            String name[] = file.list();
-            if (name.length > 0) {
+            String nameList[] = file.list();
+            if (nameList!=null && nameList.length > 0) {
                 flag = true;
             }
         }

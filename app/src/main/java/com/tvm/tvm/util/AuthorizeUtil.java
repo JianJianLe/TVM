@@ -44,7 +44,7 @@ public class AuthorizeUtil {
                 return true;
         }
 
-        if(FileUtils.readKeyFile(PreConfig.USB_FOLDER)){
+        if(FileUtils.readKeyFile(FolderUtil.USB_FOLDER)){
             initTVMKey();
             return true;
         }

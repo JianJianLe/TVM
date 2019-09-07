@@ -5,8 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.tvm.tvm.util.AuthorizeUtil;
-import com.tvm.tvm.util.FileUtil;
 import com.tvm.tvm.util.FileUtils;
+import com.tvm.tvm.util.FolderUtil;
 import com.tvm.tvm.util.constant.StringUtils;
 import com.tvm.tvm.util.view.ToastUtils;
 
@@ -27,7 +27,7 @@ public class MediaReceiver extends BroadcastReceiver {
                 AuthorizeUtil.getInstance().initTVMKey();
                 ToastUtils.showText_Long(context,StringUtils.KEY_REGISTERED);
             }
-            if(FileUtils.copyTemplateFolder(usbFolder))
+            if(FolderUtil.copyTemplateFolder(usbFolder))
                 ToastUtils.showText_Long(context,StringUtils.COPY_TEMPLATE_SUCCESS);
         }
     }

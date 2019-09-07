@@ -22,6 +22,10 @@ public class FileUtils {
     public static String SDPATH = Environment.getExternalStorageDirectory()
             + "/TVM/";
 
+    public static String KEY_FILE_PATH="/TVM/TVM_key.properties";
+
+    public static String LOCAL_KEY_FILE=".tvm.backup";
+
     //private static String localKeyFilePath = Environment.getExternalStorageDirectory()+ "/TVM_key.properties";
 
     public static void saveBitmap(Bitmap bm, String picName) {
@@ -118,7 +122,8 @@ public class FileUtils {
     }
 
     public static boolean readKeyFile(String usbFolder) {
-        String localKeyFilePath=FolderUtil.getDefaultHiddenTVMPath()+File.separator+PreConfig.LOCAL_KEY_FILE;
+        //.TVM folder
+        String localKeyFilePath=FolderUtil.getDefaultFolder(FolderUtil.TempTVM_FolderName)+File.separator+LOCAL_KEY_FILE;
         try {
             File localFile=new File(localKeyFilePath);
             if(localFile.exists()){
@@ -132,7 +137,7 @@ public class FileUtils {
         }
 
         
-        String path = usbFolder + PreConfig.KEY_FILE_PATH;
+        String path = usbFolder + KEY_FILE_PATH;
         File file = new File(path);
         if (file.exists()) {
             String temp = readFileStr(path);
@@ -162,57 +167,4 @@ public class FileUtils {
         }
     }
 
-    public static boolean copyTemplateFolder(String usbFolder) {
-        String oldFolderPath = usbFolder + PreConfig.TEMPLATE_FOLDER;
-        String newFolderPath = FolderUtil.getDefaultTemplatePath();
-
-        File oldFolder = new File(oldFolderPath);
-        File newFolder = new File(newFolderPath);
-
-        if (oldFolder.isDirectory() && oldFolder.exists() && newFolder.list().length == 0) {
-            copyFolder(oldFolderPath, newFolderPath);
-            return true;
-        }
-        return false;
-    }
-
-    public static void createFolder(String folderPath){
-        File folder=new File(folderPath);
-        if(!folder.exists()){
-            folder.mkdirs();
-        }
-    }
-
-    public static void copyFolder(String resourceFolder, String targetFolder){
-        try{
-            File resfile=new File(resourceFolder);
-            File tarfile=new File(targetFolder);
-            if(!resfile.exists()){
-                resfile.mkdirs();//创建文件夹
-            }
-            if(!tarfile.exists()){
-                tarfile.mkdirs();//创建文件夹
-            }
-            File files[]=resfile.listFiles();//取出当前文件夹的所有文件
-            for (File file : files) {
-                if(file.isDirectory()){//判断是否为目录
-                    file.getName();
-                    copyFolder(file.getAbsolutePath(), targetFolder+"/"+file.getName());//如果是目录则递归复制
-                }else {
-                    FileInputStream fis=new FileInputStream(file);
-                    File f=new File(targetFolder+"/"+file.getName());
-                    f.createNewFile();//创建文件
-                    FileOutputStream fos=new FileOutputStream(f);
-                    int c=fis.available();//估算文件的长度
-                    byte b[]=new byte[c];
-                    fis.read(b);//将文件读取到b数组中
-                    fos.write(b);//将b数组中的内容写入文件
-                    fis.close();//关闭文件输入流
-                    fos.close();//关闭文件输出流
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }

@@ -6,243 +6,167 @@ import android.util.Log;
 import com.tvm.tvm.util.constant.PreConfig;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FolderUtil {
 
-    public static String getTempFolder() {
+
+    public static String USB_FOLDER="/mnt/usb_storage";
+    public static String TEMPLATE_FOLDER="/TVM/Template/";
+    public static String Project_FolderName = "TVM";
+    public static String Image_FolderName = "Image";
+    public static String Video_FolderName = "Video";
+    public static String Template_FolderName = "Template";
+    public static String TempTVM_FolderName = ".TVM";
+
+    private String getUSBFolder(String folderName) {
+        String path=null;
+        String folderPath= USB_FOLDER + File.separator + Project_FolderName + File.separator + folderName;
+        if(isFolderExisted(folderPath)){
+            path = folderPath;
+        }
+        return path;
+    }
+
+
+    private String getSDCardFolder(String folderName) {
+        String path = null;
+        String extSDCardPath = getExtSDCardPath();
+
+        if (extSDCardPath != null) {
+            String folderPath = extSDCardPath + File.separator + Project_FolderName + File.separator + folderName;
+            if (isFolderExisted(folderPath)) {
+                path = folderPath;
+            }
+        }
+        return path;
+    }
+
+    //Use below to create the folder ".TVM"
+    //Folder Name could be "Image", "Video", "Template", ".TVM"
+    public static String getDefaultFolder(String folderName) {
         File file = Environment.getExternalStorageDirectory();
-        String tempFolderPath = file.getAbsolutePath() + File.separator + "TVM" + File.separator + "Temp";
-        file = new File(tempFolderPath);
-        if (!file.exists()) {
+        String defaultFolderPath = file.getAbsolutePath() + File.separator + Project_FolderName + File.separator + folderName+ File.separator;
+        if (!isFolderExisted(defaultFolderPath)) {
+            file = new File(defaultFolderPath);
             file.mkdirs();
         }
-        return tempFolderPath;
+        return defaultFolderPath;
     }
 
-    public static String getImagePath() {
-        FolderUtil folderUtil = new FolderUtil();
-        String usbPath = folderUtil.getUSBfolder();
-        String imagePath = folderUtil.getTargetImagePath(usbPath);
-
-        if (imagePath == null) {
-            String sdcardPath = folderUtil.getSDCardfolder();
-            imagePath = folderUtil.getTargetImagePath(sdcardPath);
+    //Folder Name: Image, Video, Template
+    public static String getTargetFolderPath(String folderName){
+        FolderUtil folderUtil=new FolderUtil();
+        String imageFolderPath=folderUtil.getUSBFolder(folderName);
+        if(imageFolderPath==null){
+            imageFolderPath=folderUtil.getSDCardFolder(folderName);
         }
-        if (imagePath == null) {
-            imagePath = folderUtil.getDefaultImagePath();
+        if(imageFolderPath==null){
+            imageFolderPath=folderUtil.getDefaultFolder(folderName);
         }
-        return imagePath;
+        return imageFolderPath;
     }
 
-    public static String getVideoPath() {
-        FolderUtil folderUtil = new FolderUtil();
-        String usbPath = folderUtil.getUSBfolder();
-        String videoPath = folderUtil.getTargetVideoPath(usbPath);
-
-        if (videoPath == null) {
-            String sdcardPath = folderUtil.getSDCardfolder();
-            videoPath = folderUtil.getTargetVideoPath(sdcardPath);
+    private String getExtSDCardPath() {
+        File sdDir = null;
+        boolean isSDCardDirExist = Environment.getExternalStorageState()
+                .equals(android.os.Environment.MEDIA_MOUNTED);//判断sd卡是否存在
+        if (isSDCardDirExist) {
+            sdDir = Environment.getExternalStorageDirectory();//获取跟目录
         }
-        if (videoPath == null) {
-            videoPath = folderUtil.getDefaultVideoPath();
-        }
-        return videoPath;
+        return sdDir.toString();
     }
 
-    public static String getTicketTemplatePath() {
-        FolderUtil folderUtil = new FolderUtil();
-        String usbPath = folderUtil.getUSBfolder();
-        String templateTath = folderUtil.getTargetTemplatePath(usbPath);
-
-        if (templateTath == null) {
-            String sdcardPath = folderUtil.getSDCardfolder();
-            templateTath = folderUtil.getTargetTemplatePath(sdcardPath);
+    public static boolean isFolderExisted(String folderStr) {
+        File file = new File(folderStr);
+        if (file.exists() && file.isDirectory()) {
+            return true;
+        } else {
+            return false;
         }
-        if (templateTath == null) {
-            templateTath = folderUtil.getDefaultTemplatePath();
-        }
-        Log.i("Test", templateTath);
-        File file = new File(templateTath);
-        Log.i("Test", "number=" + file.list().length);
-        return templateTath;
     }
 
-    public static List<String> getFolderFiles(String path) {
+
+    public static List<String> getFolderFiles(String folderPath) {
         FolderUtil folderUtil = new FolderUtil();
-        List<String> link = new ArrayList<String>();
-        File files = new File(path);
-        if (folderUtil.isFileExisted(files)) {
-            String name[] = files.list();
+        List<String> link = new ArrayList<>();
+        File folder = new File(folderPath);
+        if (folderUtil.isFileExisted(folder)) {
+            String name[] = folder.list();
             for (int i = 0; i < name.length; ++i) {
                 if(!name[i].startsWith(".")){
-                    File f = new File(path, name[i]);
+                    File f = new File(folderPath, name[i]);
                     link.add(f.getPath());
                 }
             }
         }
         return link;
     }
-
-    private String getTargetImagePath(String folder) {
-        String targetImagePath = null;
-        if (folder != null) {
-            String tempPath = folder + File.separator + "Image";
-            if (isFolderExisted(tempPath)) {
-                if (isFileExisted(new File(tempPath))) {
-                    targetImagePath = tempPath;
-                }
-            }
-        }
-        return targetImagePath;
-    }
-
-    private String getTargetVideoPath(String folder) {
-        String targetVideoPath = null;
-        if (folder != null) {
-            String tempPath = folder + File.separator + "Video";
-            if (isFolderExisted(tempPath)) {
-                if (isFileExisted(new File(tempPath))) {
-                    targetVideoPath = tempPath;
-                }
-            }
-        }
-        return targetVideoPath;
-    }
-
-    private String getTargetTemplatePath(String folder) {
-        String targetTemplatePath = null;
-        if (folder != null) {
-            String tempPath = folder + File.separator + "Template";
-            if (isFolderExisted(tempPath)) {
-                if (isFileExisted(new File(tempPath))) {
-                    targetTemplatePath = tempPath;
-                }
-            }
-        }
-        return targetTemplatePath;
-    }
-
-    private String getDefaultVideoPath() {
-        File file = Environment.getExternalStorageDirectory();
-        String VideoPath = file.getAbsolutePath() + File.separator + "TVM" + File.separator + "Video";
-        file = new File(VideoPath);
-        if (!file.exists()) {
-            file.mkdirs();
-        }
-        return VideoPath;
-    }
-
-    private String getDefaultImagePath() {
-        File file = Environment.getExternalStorageDirectory();
-        String ImagePath = file.getAbsolutePath() + File.separator + "TVM" + File.separator + "Image";
-        file = new File(ImagePath);
-        if (!file.exists()) {
-            file.mkdirs();
-        }
-        return ImagePath;
-    }
-
-    public static String getDefaultTemplatePath() {
-        File file = Environment.getExternalStorageDirectory();
-        String templatePath = file.getAbsolutePath() + File.separator + "TVM" + File.separator + "Template";
-        file = new File(templatePath);
-        if (!file.exists()) {
-            file.mkdirs();
-        }
-        return templatePath;
-    }
-
-    public static String getDefaultHiddenTVMPath(){
-        File file = Environment.getExternalStorageDirectory();
-        String tempPath = file.getAbsolutePath() + File.separator + ".TVM" + File.separator;
-        file = new File(tempPath);
-        if (!file.exists()) {
-            file.mkdirs();
-        }
-        return tempPath;
-    }
-
-    private boolean isFileExisted(File files) {
+    private boolean isFileExisted(File file) {
         boolean flag = false;
-        if (files.exists() && files.isDirectory()) {
-            String name[] = files.list();
+        if (file.exists() && file.isDirectory()) {
+            String name[] = file.list();
             if (name.length > 0) {
                 flag = true;
             }
         }
-
         return flag;
     }
 
-    private String getUSBfolder() {
-        return PreConfig.USB_FOLDER + File.separator + "TVM";
-    }
+    public static boolean copyTemplateFolder(String usbFolder) {
+        String oldFolderPath = usbFolder + TEMPLATE_FOLDER;
+        String newFolderPath = FolderUtil.getTargetFolderPath(FolderUtil.Template_FolderName);
 
-    private String getExtSdcardPath() {
-        //return System.getenv("SECONDARY_STORAGE");
-        String folder = getSDPath();
-        return folder;
-    }
+        File oldFolder = new File(oldFolderPath);
+        File newFolder = new File(newFolderPath);
 
-    public String getSDPath() {
-        File sdDir = null;
-        boolean sdCardExist = Environment.getExternalStorageState()
-                .equals(android.os.Environment.MEDIA_MOUNTED);//判断sd卡是否存在
-        if (sdCardExist) {
-            sdDir = Environment.getExternalStorageDirectory();//获取跟目录
+        if (oldFolder.isDirectory() && oldFolder.exists() && newFolder.list().length == 0) {
+            copyFolder(oldFolderPath, newFolderPath);
+            return true;
         }
-        return sdDir.toString();
+        return false;
     }
 
-    private String getSDCardfolder() {
-        String path = null;
-        String extSdcardPath = getExtSdcardPath();
+    public static void createFolder(String folderPath){
+        File folder=new File(folderPath);
+        if(!folder.exists()){
+            folder.mkdirs();
+        }
+    }
 
-        if (extSdcardPath != null) {
-            String tempPath = extSdcardPath + File.separator + "TVM";
-            if (isFolderExisted(tempPath)) {
-                path = tempPath;
+    public static void copyFolder(String resourceFolder, String targetFolder){
+        try{
+            File resfile=new File(resourceFolder);
+            File tarfile=new File(targetFolder);
+            if(!resfile.exists()){
+                resfile.mkdirs();//创建文件夹
             }
+            if(!tarfile.exists()){
+                tarfile.mkdirs();//创建文件夹
+            }
+            File files[]=resfile.listFiles();//取出当前文件夹的所有文件
+            for (File file : files) {
+                if(file.isDirectory()){//判断是否为目录
+                    file.getName();
+                    copyFolder(file.getAbsolutePath(), targetFolder+"/"+file.getName());//如果是目录则递归复制
+                }else {
+                    FileInputStream fis=new FileInputStream(file);
+                    File f=new File(targetFolder+"/"+file.getName());
+                    f.createNewFile();//创建文件
+                    FileOutputStream fos=new FileOutputStream(f);
+                    int c=fis.available();//估算文件的长度
+                    byte b[]=new byte[c];
+                    fis.read(b);//将文件读取到b数组中
+                    fos.write(b);//将b数组中的内容写入文件
+                    fis.close();//关闭文件输入流
+                    fos.close();//关闭文件输出流
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return path;
     }
-
-    private boolean isFolderExisted(String folderStr) {
-        boolean flag = false;
-        File folder = new File(folderStr);
-        if (folder.exists()) {
-            flag = true;
-        } else {
-            flag = false;
-        }
-        folder = null;
-        return flag;
-    }
-
-
-//	public static void createDefaultJJLFolder(){
-//		File file=Environment.getExternalStorageDirectory();
-//		String filePath=file.getAbsolutePath()+File.separator+"JJL";
-//		file=new File(filePath);
-//		if(!file.exists()){
-//			file.mkdirs();
-//		}
-//	}
-
-//	public static String getDefaultJJLFolderPath(){
-//		File file=Environment.getExternalStorageDirectory();
-//		String folderpath=file.getAbsolutePath()+File.separator+"JJL";
-//		file=new File(folderpath);
-//		if(!file.exists()){
-//			file.mkdirs();
-//		}
-//		return folderpath;
-//	}
-
-//	public static String getDefaultJJLapkPath(){
-//		return getDefaultImagePath()+File.separator+"apk";
-//	}
-
 }

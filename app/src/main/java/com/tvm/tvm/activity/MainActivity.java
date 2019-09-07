@@ -665,10 +665,10 @@ public class MainActivity extends BaseActivity {
         pictures.clear();
 
         //视频文件
-        String videoPath = FolderUtil.getVideoPath();
+        String videoPath = FolderUtil.getTargetFolderPath(FolderUtil.Video_FolderName);
         videos = FolderUtil.getFolderFiles(videoPath);
         //图片文件
-        String picturePath = FolderUtil.getImagePath();
+        String picturePath = FolderUtil.getTargetFolderPath(FolderUtil.Image_FolderName);
         pictures = FolderUtil.getFolderFiles(picturePath);
 
         if (pictures != null) {

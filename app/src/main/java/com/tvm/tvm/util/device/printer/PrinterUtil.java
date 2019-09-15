@@ -5,6 +5,7 @@ import android.util.Log;
 import com.tvm.tvm.bean.Summary;
 import com.tvm.tvm.util.DataUtils;
 import com.tvm.tvm.util.TimeUtil;
+import com.tvm.tvm.util.constant.PreConfig;
 import com.tvm.tvm.util.device.QRCodeUtil;
 
 public class PrinterUtil {
@@ -14,7 +15,7 @@ public class PrinterUtil {
     }
 
     //JNI
-    private native int jPrinterInit();
+    private native int jPrinterInit(String path);
     private native void jPrinterDataSend(byte[] buffer, int data_len);
     private native static String getMessageFromJNI();//JNI Test
 
@@ -63,7 +64,12 @@ public class PrinterUtil {
     /***********************************************************************************/
     //初始化打印机
     public void printerInit() {
-        int fd = jPrinterInit();//连接打印机
+        String filePath = "/dev/ttyS1";
+        if(PreConfig.AndroidBoardVersion=="2.0"){
+            //filePath = "/dev/ttyS2";
+            filePath = "/dev/ttyS3";
+        }
+        int fd = jPrinterInit(filePath);//连接打印机
         if (fd < 0) {
             Log.i(TAG, "Device init ERR!");
         }

@@ -13,7 +13,7 @@ extern "C" {
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_com_tvm_tvm_util_device_printer_PrinterUtil_jPrinterInit
-  (JNIEnv *, jobject);
+  (JNIEnv *, jobject, jstring path);
 
 /*
  * Class:     com_tvm_tvm_util_device_PrinterUtil

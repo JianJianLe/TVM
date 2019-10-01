@@ -165,4 +165,18 @@ public class DataUtils {
     public static int doubleToInt(double val){
         return new Double(val).intValue();
     }
+
+    public static String makeChecksum(String data) {
+        if (data == null || data.equals("")) {
+            return "";
+        }
+        int total = 0;
+        int num = 0;
+        while (num < data.length()) {
+            String s = data.substring(num, num + 2);
+            total += Integer.parseInt(s, 16);
+            num = num + 2;
+        }
+        return getDecToHex(total,4); //低位在前
+    }
 }

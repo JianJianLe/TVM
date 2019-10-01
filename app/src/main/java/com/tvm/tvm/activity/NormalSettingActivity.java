@@ -71,6 +71,7 @@ public class NormalSettingActivity extends BaseActivity {
     @BindView(R.id.et_normal_setting_md5_key)
     EditText et_normal_setting_md5_key;
 
+    //-------
     @BindView(R.id.rgp_print_qrcode)
     RadioGroup rgp_print_qrcode;
 
@@ -80,6 +81,7 @@ public class NormalSettingActivity extends BaseActivity {
     @BindView(R.id.rbt_isnotprinted)
     RadioButton rbt_isnotprinted;
 
+    //-------
     @BindView(R.id.rgp_show_mainview)
     RadioGroup rgp_show_mainview;
 
@@ -89,6 +91,17 @@ public class NormalSettingActivity extends BaseActivity {
     @BindView(R.id.rbt_isnotshowed)
     RadioButton rbt_isnotshowed;
 
+    //-------
+    @BindView(R.id.rgp_pay_device)
+    RadioGroup rgp_pay_device;
+
+    @BindView(R.id.rbt_lyy)
+    RadioButton rbt_lyy;
+
+    @BindView(R.id.rbt_wmq)
+    RadioButton rbt_wmq;//维码器
+
+    //-------
     @BindView(R.id.et_normal_setting_initial_titcket_number)
     EditText et_normal_setting_initial_titcket_number;
 
@@ -108,6 +121,7 @@ public class NormalSettingActivity extends BaseActivity {
     int initialTicketNumber;
     String showMainViewFlag;
     String payDeviceID;
+    String payDeviceName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,6 +149,9 @@ public class NormalSettingActivity extends BaseActivity {
             rgp_show_mainview.setEnabled(false);
             rbt_isshowed.setEnabled(false);
             rbt_isnotshowed.setEnabled(false);
+            rgp_pay_device.setEnabled(false);
+            rbt_lyy.setEnabled(false);
+            rbt_wmq.setEnabled(false);
             et_normal_setting_initial_titcket_number.setEnabled(false);
         }
 
@@ -167,6 +184,15 @@ public class NormalSettingActivity extends BaseActivity {
             else{
                 showMainViewFlag="No";
                 rgp_show_mainview.check(R.id.rbt_isnotshowed);
+            }
+
+            if(setting.getPayDeviceName().equals("LYY")){
+                payDeviceName="LYY";
+                rgp_show_mainview.check(R.id.rbt_lyy);
+            }
+            else{
+                payDeviceName="WMQ";
+                rgp_show_mainview.check(R.id.rbt_wmq);
             }
         }
     }
@@ -249,6 +275,7 @@ public class NormalSettingActivity extends BaseActivity {
             setting.setPayDeviceID(payDeviceID);
             setting.setInitalTicketNumber(initialTicketNumber);
             setting.setShowMainViewFlag(showMainViewFlag);
+            setting.setPayDeviceName(payDeviceName);
             settingDao.update(setting);
             ToastUtils.showText(getApplicationContext(),StringUtils.UPDATE_SUCCESS,true);
         }
@@ -268,7 +295,8 @@ public class NormalSettingActivity extends BaseActivity {
         }
     }
     @OnCheckedChanged({R.id.rbt_isprinted, R.id.rbt_isnotprinted,
-                    R.id.rbt_isshowed, R.id.rbt_isnotshowed})
+                    R.id.rbt_isshowed, R.id.rbt_isnotshowed,
+                    R.id.rbt_lyy,R.id.rbt_wmq})
     public void onRadioButtonCheckChanged(CompoundButton button, boolean isChecked) {
         if(isChecked) {
             switch (button.getId()) {
@@ -283,6 +311,12 @@ public class NormalSettingActivity extends BaseActivity {
                     break;
                 case R.id.rbt_isnotshowed:
                     showMainViewFlag = "No";
+                    break;
+                case R.id.rbt_lyy:
+                    payDeviceName="LYY";
+                    break;
+                case R.id.rbt_wmq:
+                    payDeviceName="WMQ";
                     break;
             }
         }

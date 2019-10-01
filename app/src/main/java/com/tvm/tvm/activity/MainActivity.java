@@ -37,7 +37,8 @@ import com.tvm.tvm.util.LongClickUtils;
 import com.tvm.tvm.util.constant.PreConfig;
 import com.tvm.tvm.util.constant.StringUtils;
 import com.tvm.tvm.util.device.billacceptor.BillAcceptorUtil;
-import com.tvm.tvm.util.device.paydevice.PayDeviceUtil;
+import com.tvm.tvm.util.device.paydevice.LYYDevice;
+import com.tvm.tvm.util.device.paydevice.WMQDevice;
 import com.tvm.tvm.util.device.printer.PrinterCase;
 import com.tvm.tvm.util.player.MPlayer;
 import com.tvm.tvm.util.player.MPlayerException;
@@ -185,6 +186,11 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.tv_main_ticket_amount)
     TextView tv_main_ticket_amount;
 
+
+    //For Testing
+    @BindView(R.id.tv_main_title_title)
+    TextView tv_main_title_title;
+
     private DaoSession daoSession;
 
     //装载动态轮播图
@@ -305,7 +311,10 @@ public class MainActivity extends BaseActivity {
     }
 
     public void initPayDevice() {
-        PayDeviceUtil.getInstance().initPayDevice();
+        if(PreConfig.PayDeviceName.equals("LYY"))
+            LYYDevice.getInstance().initPayDevice();
+        else
+            WMQDevice.getInstance().initPayDevice();
     }
 
     private Handler handler = new Handler() {
@@ -407,22 +416,24 @@ public class MainActivity extends BaseActivity {
         return true;
     }
 
-    @OnClick({R.id.tv_main_click_buy,
+    @OnClick({R.id.tv_main_click_buy,R.id.ll_main,
+            R.id.tv_main_title_title,R.id.tv_main_header_ticket_num,
             R.id.iv_main_ticket_cancel, R.id.iv_main_ticket_buy,
             R.id.iv_main_ticket_1_add, R.id.iv_main_ticket_1_sub,
-            R.id.iv_main_ticket_2_add, R.id.iv_main_ticket_2_sub,
-            R.id.tv_main_header_ticket_num, R.id.ll_main})
+            R.id.iv_main_ticket_2_add, R.id.iv_main_ticket_2_sub})
     public void onClick(View view) {
         if (!checkInstallation())
             return;
         int ticketNum = 0;
         switch (view.getId()) {
-//            case R.id.tv_main_title_title:
-//                PayDeviceUtil.getInstance().cmd_DrawBack_Test();
-//                PayDeviceUtil.getInstance().cmd_GetQRCode(1000);//1000分->10元
-//                break;
+            case R.id.tv_main_title_title:
+//                LYYDevice.getInstance().cmd_DrawBack_Test();
+//                LYYDevice.getInstance().cmd_GetQRCode(1000);//1000分->10元
+                WMQDevice.getInstance().sendCMD02();
+                break;
             case R.id.tv_main_header_ticket_num:
-//                PayDeviceUtil.getInstance().cmd_ReplySever();
+//                LYYDevice.getInstance().cmd_ReplySever();
+                WMQDevice.getInstance().sendCMD01();
                 break;
             case R.id.tv_main_click_buy:
                 if (PrinterCase.getInstance().checkTicketTemplate() == false) {

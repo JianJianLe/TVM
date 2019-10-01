@@ -80,6 +80,7 @@ public class FirstInitApp {
         setting.setPrintQRCodeFlag("Yes");
         setting.setInitalTicketNumber(0);
         setting.setShowMainViewFlag("Yes");
+        setting.setPayDeviceName("LYY");//LYY: 乐摇摇  WMQ:维码器
         settingDao.save(setting);
     }
 

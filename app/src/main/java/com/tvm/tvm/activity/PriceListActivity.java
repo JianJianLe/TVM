@@ -15,8 +15,10 @@ import com.tvm.tvm.adapter.PriceListAdapter;
 import com.tvm.tvm.application.AppApplication;
 import com.tvm.tvm.bean.Price;
 import com.tvm.tvm.bean.dao.PriceDao;
+import com.tvm.tvm.util.constant.PreConfig;
 import com.tvm.tvm.util.constant.StringUtils;
-import com.tvm.tvm.util.device.paydevice.PayDeviceUtil;
+import com.tvm.tvm.util.device.paydevice.LYYDevice;
+import com.tvm.tvm.util.device.paydevice.WMQDevice;
 import com.tvm.tvm.util.view.ConfirmDialogUtils;
 import com.tvm.tvm.util.view.ToastUtils;
 
@@ -94,8 +96,11 @@ public class PriceListActivity extends BaseActivity {
                         priceListAdapter.notifyDataSetChanged();
                         ToastUtils.showText(context,StringUtils.DELETE_SUCCESS);
                         confirmDialogUtils.dismiss();
-                        //上报本地通道信息到支付盒子
-                        PayDeviceUtil.getInstance().cmd_UploadParams();
+//                        //上报本地通道信息到支付盒子
+//                        if(PreConfig.PayDeviceName.equals("LYY"))
+//                            LYYDevice.getInstance().cmd_UploadParams();
+//                        else
+//                            WMQDevice.getInstance().cmd_UploadParams();
                     }
 
                     @Override
@@ -125,6 +130,11 @@ public class PriceListActivity extends BaseActivity {
     public void onClick(View view){
         switch (view.getId()){
             case R.id.ib_ticket_list_back:
+                //上报本地通道信息到支付盒子
+                if(PreConfig.PayDeviceName.equals("LYY"))
+                    LYYDevice.getInstance().cmd_UploadParams();
+                else
+                    WMQDevice.getInstance().cmd_UploadParams();
                 this.finish();
                 break;
             case R.id.ib_ticket_list_add:

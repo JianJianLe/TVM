@@ -14,10 +14,12 @@ import com.tvm.tvm.bean.TicketBean;
 import com.tvm.tvm.util.BackPrevious;
 import com.tvm.tvm.util.BitmapUtils;
 import com.tvm.tvm.util.TimeUtil;
+import com.tvm.tvm.util.constant.PreConfig;
 import com.tvm.tvm.util.constant.StringUtils;
 import com.tvm.tvm.util.device.QRCodeUtil;
 import com.tvm.tvm.util.device.billacceptor.BillAcceptorUtil;
-import com.tvm.tvm.util.device.paydevice.PayDeviceUtil;
+import com.tvm.tvm.util.device.paydevice.LYYDevice;
+import com.tvm.tvm.util.device.paydevice.WMQDevice;
 import com.tvm.tvm.util.device.printer.PrinterCase;
 import com.tvm.tvm.util.view.ToastUtils;
 
@@ -88,7 +90,11 @@ public class PayDetailActivity extends BaseActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        PayDeviceUtil.getInstance().activityRecord="PayDetailActivity";
+        if(PreConfig.PayDeviceName.equals("LYY"))
+            LYYDevice.getInstance().activityRecord="PayDetailActivity";
+        else
+            WMQDevice.getInstance().activityRecord="PayDetailActivity";
+
         setContentView(R.layout.activity_pay_detail);
         ButterKnife.bind(this);
         ticketList = PrinterCase.getInstance().ticketList;
@@ -140,13 +146,24 @@ public class PayDetailActivity extends BaseActivity{
     }
 
     private void netWorkPay(){
-        if(PayDeviceUtil.getInstance().paySuccess){
-            PrinterCase.getInstance().amountRecord=totalAmount;
-            receivedAmount=totalAmount;
-            updateAmount();
-            PrinterCase.getInstance().normalTicket.setPayType("线上支付");
-            PayDeviceUtil.getInstance().paySuccess=false;
+        if(PreConfig.PayDeviceName.equals("LYY")){
+            if(LYYDevice.getInstance().paySuccess){
+                PrinterCase.getInstance().amountRecord=totalAmount;
+                receivedAmount=totalAmount;
+                updateAmount();
+                PrinterCase.getInstance().normalTicket.setPayType("线上支付");
+                LYYDevice.getInstance().paySuccess=false;
+            }
+        }else{
+            if(WMQDevice.getInstance().paySuccess){
+                PrinterCase.getInstance().amountRecord=totalAmount;
+                receivedAmount=totalAmount;
+                updateAmount();
+                PrinterCase.getInstance().normalTicket.setPayType("线上支付");
+                WMQDevice.getInstance().paySuccess=false;
+            }
         }
+
     }
 
     //现金支付 @Star
@@ -178,21 +195,24 @@ public class PayDetailActivity extends BaseActivity{
         }
         receivedAmount=PrinterCase.getInstance().amountRecord;
         updateAmount();
-        setQRCode();
+        if(PreConfig.PayDeviceName.equals("LYY"))
+            setQRCode_LYY();
+        else
+            setQRCode_WMQ();
         backPrevious = new BackPrevious(setting.getPayTimeOut()*1000,1000,PayDetailActivity.this);
     }
 
-    private void setQRCode(){
+    private void setQRCode_LYY(){
         countGetQRCode=0;
-        PayDeviceUtil.getInstance().init_QRCode();
+        LYYDevice.getInstance().init_QRCode();
         hasShownQRCode=false;
         new Thread(){
             public void run() {
                 while (!isInterrupted() && !hasShownQRCode){
-                    PayDeviceUtil.getInstance().cmd_GetQRCode((int)(totalAmount*100));
+                    LYYDevice.getInstance().cmd_GetQRCode((int)(totalAmount*100));
                     TimeUtil.delay(500);
-                    if(PayDeviceUtil.getInstance().QRData!=null){
-                        displayQRCode(PayDeviceUtil.getInstance().QRData);
+                    if(LYYDevice.getInstance().QRData!=null){
+                        displayQRCode(LYYDevice.getInstance().QRData);
                         break;
                     }
 
@@ -206,6 +226,32 @@ public class PayDetailActivity extends BaseActivity{
             }
         }.start();
     }
+
+    private void setQRCode_WMQ(){
+        countGetQRCode=0;
+        WMQDevice.getInstance().init_QRCode();
+        hasShownQRCode=false;
+        new Thread(){
+            public void run() {
+                while (!isInterrupted() && !hasShownQRCode){
+                    WMQDevice.getInstance().cmd_GetQRCode((int)(totalAmount*100));
+                    TimeUtil.delay(500);
+                    if(WMQDevice.getInstance().QRData!=null){
+                        displayQRCode(WMQDevice.getInstance().QRData);
+                        break;
+                    }
+
+                    if(isFinished)
+                        break;
+
+                    countGetQRCode++;
+                    if(countGetQRCode==20)
+                        break;
+                }
+            }
+        }.start();
+    }
+
 
     private void displayQRCode(String QRData){
         if(QRData!=null&&QRData.length()>0){
@@ -294,7 +340,11 @@ public class PayDetailActivity extends BaseActivity{
     public void onDestroy(){
         super.onDestroy();
         isFinished=true;
-        PayDeviceUtil.getInstance().activityRecord="GotoOtherActivity";
+        if(PreConfig.PayDeviceName.equals("LYY"))
+            LYYDevice.getInstance().activityRecord="GotoOtherActivity";
+        else
+            WMQDevice.getInstance().activityRecord="GotoOtherActivity";
+
         scheduledExecutorService.shutdown();
         BillAcceptorUtil.getInstance().ba_Disable();//@Star Feb16
         Log.i("Test","PayDetailActivity onDestroy scheduledExecutorService shutdown");

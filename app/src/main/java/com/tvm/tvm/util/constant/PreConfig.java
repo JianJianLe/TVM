@@ -8,12 +8,16 @@ package com.tvm.tvm.util.constant;
  */
 public class PreConfig {
 
-    //public static String Envir="DEV";
-    public static String Envir="SIT";
+    public static String Envir="DEV";
+    //public static String Envir="SIT";
     //public static String Envir="PROD";
 
     //public static String AndroidBoardVersion="1.0";
     public static String AndroidBoardVersion="2.0";
+
+    //支付使用的第三方模块
+    public static String PayDeviceName="WMQ";
+    //public static String PayDeviceName="LYY";
 
     //缓存登录用户
     public static String USER = "user";
@@ -27,5 +31,7 @@ public class PreConfig {
     public static String PRINT_TIME_OUT = "printTimeOut";
     //支付描述
     public static String PAY_DESC = "payDesc";
+
+
 
 }

@@ -9,9 +9,11 @@ import com.tvm.tvm.bean.dao.DaoSession;
 import com.tvm.tvm.bean.dao.PaymentRecordDao;
 import com.tvm.tvm.bean.dao.SettingDao;
 import com.tvm.tvm.util.TimeUtil;
+import com.tvm.tvm.util.constant.PreConfig;
 import com.tvm.tvm.util.constant.StringUtils;
 import com.tvm.tvm.util.device.QRCodeUtil;
-import com.tvm.tvm.util.device.paydevice.PayDeviceUtil;
+import com.tvm.tvm.util.device.paydevice.LYYDevice;
+import com.tvm.tvm.util.device.paydevice.WMQDevice;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -62,9 +64,15 @@ public class PrinterAction {
                 savePayment(PrinterCase.getInstance().normalTicket);
                 //上报交易结果
                 if(payType==StringUtils.OnlinePay){
-                    PayDeviceUtil.getInstance().cmd_OnlinePayReport(bean);
+                    if(PreConfig.PayDeviceName.equals("LYY"))
+                        LYYDevice.getInstance().cmd_OnlinePayReport(bean);
+                    else
+                        WMQDevice.getInstance().cmd_UploadOnlinePayReuslt(bean,payType);
                 }else{
-                    PayDeviceUtil.getInstance().cmd_CashReport(bean);
+                    if(PreConfig.PayDeviceName.equals("LYY"))
+                        LYYDevice.getInstance().cmd_CashReport(bean);
+                    else
+                        WMQDevice.getInstance().cmd_UploadOnlinePayReuslt(bean,payType);
                 }
                 PrinterCase.getInstance().print();
                 TimeUtil.delay(3000);

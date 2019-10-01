@@ -24,8 +24,10 @@ import com.tvm.tvm.bean.dao.DaoSession;
 import com.tvm.tvm.bean.dao.PriceDao;
 import com.tvm.tvm.util.BitmapUtils;
 import com.tvm.tvm.util.FileUtil;
+import com.tvm.tvm.util.constant.PreConfig;
 import com.tvm.tvm.util.constant.StringUtils;
-import com.tvm.tvm.util.device.paydevice.PayDeviceUtil;
+import com.tvm.tvm.util.device.paydevice.LYYDevice;
+import com.tvm.tvm.util.device.paydevice.WMQDevice;
 import com.tvm.tvm.util.view.ButtomDialogView;
 import com.tvm.tvm.util.view.ToastUtils;
 
@@ -137,8 +139,6 @@ public class PriceEditActivity extends BaseActivity {
         }
         daoSession.getPriceDao().save(price);
 
-        //上报本地通道信息到支付盒子
-        PayDeviceUtil.getInstance().cmd_UploadParams();
     }
 
     /**

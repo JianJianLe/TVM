@@ -96,11 +96,6 @@ public class PriceListActivity extends BaseActivity {
                         priceListAdapter.notifyDataSetChanged();
                         ToastUtils.showText(context,StringUtils.DELETE_SUCCESS);
                         confirmDialogUtils.dismiss();
-//                        //上报本地通道信息到支付盒子
-//                        if(PreConfig.PayDeviceName.equals("LYY"))
-//                            LYYDevice.getInstance().cmd_UploadParams();
-//                        else
-//                            WMQDevice.getInstance().cmd_UploadParams();
                     }
 
                     @Override
@@ -130,11 +125,6 @@ public class PriceListActivity extends BaseActivity {
     public void onClick(View view){
         switch (view.getId()){
             case R.id.ib_ticket_list_back:
-                //上报本地通道信息到支付盒子
-                if(PreConfig.PayDeviceName.equals("LYY"))
-                    LYYDevice.getInstance().cmd_UploadParams();
-                else
-                    WMQDevice.getInstance().cmd_UploadParams();
                 this.finish();
                 break;
             case R.id.ib_ticket_list_add:
@@ -145,5 +135,15 @@ public class PriceListActivity extends BaseActivity {
                 startActivity(this,PriceEditActivity.class);
                 break;
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //上报本地通道信息到支付盒子
+        if(PreConfig.PayDeviceName.equals("LYY"))
+            LYYDevice.getInstance().cmd_UploadParams();
+        else
+            WMQDevice.getInstance().cmd_UploadParams();
     }
 }

@@ -188,11 +188,11 @@ public class NormalSettingActivity extends BaseActivity {
 
             if(setting.getPayDeviceName().equals("LYY")){
                 payDeviceName="LYY";
-                rgp_show_mainview.check(R.id.rbt_lyy);
+                rgp_pay_device.check(R.id.rbt_lyy);
             }
             else{
                 payDeviceName="WMQ";
-                rgp_show_mainview.check(R.id.rbt_wmq);
+                rgp_pay_device.check(R.id.rbt_wmq);
             }
         }
     }

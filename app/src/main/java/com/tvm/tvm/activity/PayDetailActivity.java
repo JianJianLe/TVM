@@ -174,7 +174,7 @@ public class PayDetailActivity extends BaseActivity{
             receivedAmount = PrinterCase.getInstance().amountRecord;
             updateAmount();
             PrinterCase.getInstance().normalTicket.setPayType("现金");
-            if(PreConfig.PayDeviceName!="LYY"){
+            if(!PreConfig.PayDeviceName.equals("LYY")){
                 WMQDevice.getInstance().cmd_CashPay(cash);
             }
             BillAcceptorUtil.getInstance().rcvdMoney=0;

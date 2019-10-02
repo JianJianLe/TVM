@@ -9,6 +9,7 @@ import com.tvm.tvm.R;
 import com.tvm.tvm.application.AppApplication;
 import com.tvm.tvm.bean.Setting;
 import com.tvm.tvm.bean.dao.SettingDao;
+import com.tvm.tvm.util.constant.PreConfig;
 
 /**
  * activity基类
@@ -39,6 +40,9 @@ public class BaseActivity extends Activity {
     public void init(){
         SettingDao settingDao = AppApplication.getApplication().getDaoSession().getSettingDao();
         setting = settingDao.queryBuilder().where(SettingDao.Properties.Id.eq(1)).unique();
+        if(setting!=null){
+            PreConfig.PayDeviceName=setting.getPayDeviceName();
+        }
     }
 
 }

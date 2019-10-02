@@ -236,12 +236,6 @@ public class WMQDevice {
                     cmd_ReplySever();
                 }
 
-                //维码器发起: 0x30
-                //上传本地商品信息 0x32
-                if(isReadyUploadParams()){
-                    cmd_UploadParams();
-                }
-
                 //售票机发送获取二维码支付链接指令
                 if(hasQRCode()){
                     String strQRCodeData=getQRCodeData();
@@ -273,9 +267,9 @@ public class WMQDevice {
                     }
                 }
 
-                //售票机出票成功后发送上报交易结果（子命令 0x09）
+                //售票机出票成功后发送上报交易结果 B5
                 if(hasReplyPrintSuccess())
-                    printInfo("上传出货结果成功，支付盒子应答");
+                    printInfo("B5: 上传出货结果成功，支付盒子应答");
 
 
             }else {
@@ -412,7 +406,7 @@ public class WMQDevice {
         printInfo("支付成功，售票机匹配正确应答");
         String cmdStr="B40F"+strUniquePayCode+
                       "00" + //出货状态,0x00:出货完成，订单完成,0x01:正在出货中
-                      "0000000000000000";
+                      "00000000";
         cmdStr = "AA" + addEndCMD(cmdStr);
         write(cmdStr);
     }
@@ -437,13 +431,22 @@ public class WMQDevice {
     }
     //======== Pay result End ========
 
+    //======== Cash Pay Start ========
+    //AA8009011A00000000000000A400AB
+    public void cmd_CashPay(int amount){
+        String cmdStr = "8009011A000000000000" + decToHex(amount,2);
+        cmdStr="AA" + addEndCMD(cmdStr);
+        write(cmdStr);
+    }
+
+    //======== Cash Pay End ========
 
 
     //======== Print Success Record Start ========
     //主板上报出货结果-0x35
     //主板出货或发生交易时，需要上报次命令;指令应答超时时间 15s
     public void cmd_UploadOnlinePayReuslt(TicketBean ticket, int payType){
-        printInfo("售票机出票成功，主板上报出货结果");
+        printInfo("35: 售票机出票成功，主板上报出货结果");
         String dataStr = getCMD_PayResult(ticket,payType);
         String lengthStr = DataUtils.decToHex((dataStr.length())/2);
         dataStr = "35" + lengthStr + dataStr;
@@ -489,7 +492,7 @@ public class WMQDevice {
         QueryBuilder qb = paymentRecordDao.queryBuilder();
         qb.where(qb.and(PaymentRecordDao.Properties.PriceId.eq(ticketId),PaymentRecordDao.Properties.Type.eq(ticketType)));
         List<PaymentRecord> paymentRecordList= qb.list();
-        printInfo("Ticket ID = " +ticketId+", Ticket Type = " + ticketType + ", Ticket total number:" + qb.list().size());
+        //printInfo("Ticket ID = " +ticketId+", Ticket Type = " + ticketType + ", Ticket total number:" + qb.list().size());
         return paymentRecordList.size();
     }
 
@@ -528,7 +531,7 @@ public class WMQDevice {
     }
 
     private String addEndCMD(String cmdStr){
-        printInfo("校验结果：" + DataUtils.makeChecksum(cmdStr));
+        //printInfo("校验结果：" + DataUtils.makeChecksum(cmdStr));
         return DataUtils.removeSpace(cmdStr) + DataUtils.makeChecksum(cmdStr) + "AB";
     }
 

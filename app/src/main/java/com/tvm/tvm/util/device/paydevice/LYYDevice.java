@@ -648,7 +648,7 @@ public class LYYDevice {
         QueryBuilder qb = paymentRecordDao.queryBuilder();
         qb.where(qb.and(PaymentRecordDao.Properties.PriceId.eq(ticketId),PaymentRecordDao.Properties.Type.eq(ticketType)));
         List<PaymentRecord> paymentRecordList= qb.list();
-        Log.i("Test","Ticket ID = " +ticketId+", Ticket Type = " + ticketType + ", Ticket total number:" + qb.list().size());
+        //Log.i("Test","Ticket ID = " +ticketId+", Ticket Type = " + ticketType + ", Ticket total number:" + qb.list().size());
         return paymentRecordList.size();
     }
 

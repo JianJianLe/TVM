@@ -19,6 +19,9 @@ public class PreConfig {
     public static String PayDeviceName="WMQ";
     //public static String PayDeviceName="LYY";
 
+    //纸钞机类型
+    public static String CachMachineType="SSP";
+
     //缓存登录用户
     public static String USER = "user";
     //公司名

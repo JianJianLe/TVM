@@ -16,35 +16,31 @@ import java.io.OutputStream;
 
 public class BillAcceptorUtil {
 
-    SerialPortUtil serialPort;
-    OutputStream mOutputStream;
-    InputStream mInputStream;
-    ReadThread mReadThread;
+    private SerialPortUtil serialPort;
+    private OutputStream mOutputStream;
+    private InputStream mInputStream;
+    private ReadThread mReadThread;
 
-    String TAG = "Test";
-    int TIME = 50;
-    int BA_UART_RW_LENGTH = 1;
+    private String TAG = "Test";
+    private int TIME = 50;
+    private int BA_UART_RW_LENGTH = 1;
 
-    int BA_fd;
-    public byte[] BA_receiveData;
-    public byte[] BA_sendData;
-
-    public byte[] BA_startCode;
-    public byte[] BA_responseCode;
-    public byte[] BA_resetCode;
-    public byte[] BA_acceptCode;
-    public byte[] BA_rejectCode;
-
-    public byte[] BA_enable;
-    public byte[] BA_disable;
+    private int BA_fd;
+    private byte[] BA_receiveData;
+    private byte[] BA_sendData;
+    private byte[] BA_startCode;
+    private byte[] BA_responseCode;
+    private byte[] BA_resetCode;
+    private byte[] BA_acceptCode;
+    private byte[] BA_rejectCode;
+    private byte[] BA_enable;
+    private byte[] BA_disable;
 
     private byte moneyCode;
+    private Boolean responsedStatus = true;
+    private int tmpRcvdMoney=-1;
+
     public int rcvdMoney=-1;
-    public int tmpRcvdMoney=-1;
-
-    public Boolean responsedStatus = true;
-
-
     //String printString;
 
     private static BillAcceptorUtil instance;

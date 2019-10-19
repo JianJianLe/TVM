@@ -37,6 +37,7 @@ import com.tvm.tvm.util.LongClickUtils;
 import com.tvm.tvm.util.constant.PreConfig;
 import com.tvm.tvm.util.constant.StringUtils;
 import com.tvm.tvm.util.device.billacceptor.BillAcceptorUtil;
+import com.tvm.tvm.util.device.billacceptor.SSPBillAcceptorUtil;
 import com.tvm.tvm.util.device.paydevice.LYYDevice;
 import com.tvm.tvm.util.device.paydevice.WMQDevice;
 import com.tvm.tvm.util.device.printer.PrinterCase;
@@ -307,9 +308,15 @@ public class MainActivity extends BaseActivity {
 
     public void initBillAcceptor() {
         //纸钞机初始化
-        BillAcceptorUtil.getInstance().init_BillAcceptorCmd();
-        BillAcceptorUtil.getInstance().init_BillAcceptorDevice();
-        BillAcceptorUtil.getInstance().ba_Disable();
+        if(PreConfig.CachMachineType.equals("SSP")){
+            SSPBillAcceptorUtil.getInstance().init_BillAcceptorCmd();
+            SSPBillAcceptorUtil.getInstance().init_BillAcceptorDevice();
+            SSPBillAcceptorUtil.getInstance().ba_Disable();
+        }else{
+            BillAcceptorUtil.getInstance().init_BillAcceptorCmd();
+            BillAcceptorUtil.getInstance().init_BillAcceptorDevice();
+            BillAcceptorUtil.getInstance().ba_Disable();
+        }
     }
 
     public void initPayDevice() {
@@ -533,7 +540,11 @@ public class MainActivity extends BaseActivity {
                 bean.setNumber(Integer.valueOf(tv_main_ticket_2_num.getText().toString().trim()));
                 ticketList.add(bean);
             }
-            BillAcceptorUtil.getInstance().ba_Enable();//@Star 16Feb
+            if(PreConfig.CachMachineType.equals("SSP")){
+                SSPBillAcceptorUtil.getInstance().ba_Enable();
+            }else{
+                BillAcceptorUtil.getInstance().ba_Enable();//@Star 16Feb
+            }
             PrinterCase.getInstance().ticketList = ticketList;
             startActivity(this, PayDetailActivity.class);
         }

@@ -29,6 +29,7 @@ import com.tvm.tvm.util.LongClickUtils;
 import com.tvm.tvm.util.constant.PreConfig;
 import com.tvm.tvm.util.constant.StringUtils;
 import com.tvm.tvm.util.device.billacceptor.BillAcceptorUtil;
+import com.tvm.tvm.util.device.billacceptor.SSPBillAcceptorUtil;
 import com.tvm.tvm.util.device.paydevice.LYYDevice;
 import com.tvm.tvm.util.device.printer.PrinterCase;
 import com.tvm.tvm.util.view.ConfirmDialogUtils;
@@ -214,7 +215,11 @@ public class SelectPriceActivity extends BaseActivity implements View.OnTouchLis
                 Map.Entry<Integer, TicketBean> entry = iterator.next();
                 beanList.add(entry.getValue());
             }
-            BillAcceptorUtil.getInstance().ba_Enable();//@Star 16Feb
+            if(PreConfig.CachMachineType.equals("SSP")){
+                SSPBillAcceptorUtil.getInstance().ba_Enable();
+            }else{
+                BillAcceptorUtil.getInstance().ba_Enable();//@Star 16Feb
+            }
             PrinterCase.getInstance().ticketList = beanList;
             startActivity(this,PayDetailActivity.class);
             if(isShowMainView) this.finish();

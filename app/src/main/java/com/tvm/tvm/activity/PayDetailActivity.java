@@ -18,6 +18,7 @@ import com.tvm.tvm.util.constant.PreConfig;
 import com.tvm.tvm.util.constant.StringUtils;
 import com.tvm.tvm.util.device.QRCodeUtil;
 import com.tvm.tvm.util.device.billacceptor.BillAcceptorUtil;
+import com.tvm.tvm.util.device.billacceptor.SSPBillAcceptorUtil;
 import com.tvm.tvm.util.device.paydevice.LYYDevice;
 import com.tvm.tvm.util.device.paydevice.WMQDevice;
 import com.tvm.tvm.util.device.printer.PrinterCase;
@@ -168,7 +169,14 @@ public class PayDetailActivity extends BaseActivity{
 
     //现金支付 @Star
     private void cashPay(){
-        int cash=BillAcceptorUtil.getInstance().rcvdMoney;
+        int cash=0;
+
+        if(PreConfig.CachMachineType.equals("SSP")){
+            cash = SSPBillAcceptorUtil.getInstance().rcvdMoney;
+        }else{
+            cash = BillAcceptorUtil.getInstance().rcvdMoney;
+        }
+
         if(cash>0){
             PrinterCase.getInstance().amountRecord+=cash;
             receivedAmount = PrinterCase.getInstance().amountRecord;
@@ -177,7 +185,11 @@ public class PayDetailActivity extends BaseActivity{
             if(!PreConfig.PayDeviceName.equals("LYY")){
                 WMQDevice.getInstance().cmd_CashPay(cash);
             }
-            BillAcceptorUtil.getInstance().rcvdMoney=0;
+            if(PreConfig.CachMachineType.equals("SSP")){
+                SSPBillAcceptorUtil.getInstance().rcvdMoney=0;
+            }else{
+                BillAcceptorUtil.getInstance().rcvdMoney=0;
+            }
         }
     }
 
@@ -349,7 +361,11 @@ public class PayDetailActivity extends BaseActivity{
             WMQDevice.getInstance().activityRecord="GotoOtherActivity";
 
         scheduledExecutorService.shutdown();
-        BillAcceptorUtil.getInstance().ba_Disable();//@Star Feb16
+        if(PreConfig.CachMachineType.equals("SSP")){
+            SSPBillAcceptorUtil.getInstance().ba_Disable();
+        }else{
+            BillAcceptorUtil.getInstance().ba_Disable();//@Star Feb16
+        }
         Log.i("Test","PayDetailActivity onDestroy scheduledExecutorService shutdown");
     }
 

@@ -216,7 +216,7 @@ public class BillAcceptorUtil {
             serialPortFile = new File(serialPortFilePath_Two);
         }
         try {
-            serialPort = new SerialPortUtil(serialPortFile,9600, 0);
+            serialPort = new SerialPortUtil(serialPortFile,9600, 1);
         } catch (SecurityException e) {
             e.printStackTrace();
         } catch (IOException e) {

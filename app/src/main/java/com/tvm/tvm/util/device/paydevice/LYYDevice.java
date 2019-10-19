@@ -70,7 +70,7 @@ public class LYYDevice {
             serialPortFile = new File(serialPortFilePath2);
         }
         try {
-            serialPort = new SerialPortUtil(serialPortFile,38400,1);
+            serialPort = new SerialPortUtil(serialPortFile,38400,0);
         } catch (SecurityException e) {
             e.printStackTrace();
         } catch (IOException e) {

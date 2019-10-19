@@ -431,11 +431,11 @@ public class MainActivity extends BaseActivity {
             case R.id.tv_main_title_title:
 //                LYYDevice.getInstance().cmd_DrawBack_Test();
 //                LYYDevice.getInstance().cmd_GetQRCode(1000);//1000分->10元
-                WMQDevice.getInstance().sendCMD02();
+//                WMQDevice.getInstance().sendCMD02();
                 break;
             case R.id.tv_main_header_ticket_num:
 //                LYYDevice.getInstance().cmd_ReplySever();
-                WMQDevice.getInstance().sendCMD01();
+//                WMQDevice.getInstance().sendCMD01();
                 break;
             case R.id.tv_main_click_buy:
                 if (PrinterCase.getInstance().checkTicketTemplate() == false) {

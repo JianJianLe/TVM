@@ -133,11 +133,16 @@ JNIEXPORT jobject JNICALL Java_com_tvm_tvm_util_device_SerialPortUtil_open
             cfsetispeed(&cfg, speed);
             cfsetospeed(&cfg, speed);
 
-            //投币器必须设置奇偶校验
-            //flag=0 表示为投币器
-            if(flag==0){
-                cfg.c_cflag |= PARENB;
-                cfg.c_cflag &= ~PARODD;
+            //flag=0 表示为普通串口需求
+            //flag=1 表示为投币器,投币器必须设置奇偶校验
+            //flag=2 表示为新型投币器(SSP)
+            if(flag==1){
+                cfg.c_cflag |= PARENB;//Odd: 奇校验
+                cfg.c_cflag &= ~PARODD;//Even: 偶校验 
+            }else if(flag==2){
+                cfg.c_cflag |= PARENB;//Odd: 奇校验
+                cfg.c_cflag &= ~PARODD;//Even: 偶校验
+                cfg.c_cflag |= CSTOPB;//stopBit=2
             }
 
 

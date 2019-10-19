@@ -67,7 +67,7 @@ public class WMQDevice {
             serialPortFile = new File(serialPortFilePath2);
         }
         try {
-            serialPort = new SerialPortUtil(serialPortFile,9600,1);
+            serialPort = new SerialPortUtil(serialPortFile,9600,0);
         } catch (SecurityException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -199,19 +199,17 @@ public class WMQDevice {
         }
     }
 
-
-
-    public void sendCMD01(){
-        String temp="AA 80 09 01 1A 00 00 00 00 00 00 00 A4 00 AB";
-        temp=DataUtils.removeSpace(temp);
-        write(temp);
-    }
-
-    public void sendCMD02(){
-        String temp="AA 33 06 00 5A 10 27 00 00 CA 00 AB";
-        temp=DataUtils.removeSpace(temp);
-        write(temp);
-    }
+//    public void sendCMD01(){
+//        String temp="AA 80 09 01 1A 00 00 00 00 00 00 00 A4 00 AB";
+//        temp=DataUtils.removeSpace(temp);
+//        write(temp);
+//    }
+//
+//    public void sendCMD02(){
+//        String temp="AA 33 06 00 5A 10 27 00 00 CA 00 AB";
+//        temp=DataUtils.removeSpace(temp);
+//        write(temp);
+//    }
 
 
     private void onDataReceived(final byte[] buffer) {

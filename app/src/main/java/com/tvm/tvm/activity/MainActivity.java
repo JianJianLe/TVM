@@ -309,9 +309,9 @@ public class MainActivity extends BaseActivity {
     public void initBillAcceptor() {
         //纸钞机初始化
         if(PreConfig.CachMachineType.equals("SSP")){
-            SSPBillAcceptorUtil.getInstance().init_BillAcceptorCmd();
             SSPBillAcceptorUtil.getInstance().init_BillAcceptorDevice();
-            SSPBillAcceptorUtil.getInstance().ba_Disable();
+            SSPBillAcceptorUtil.getInstance().init_BillAcceptorCmd();
+            //SSPBillAcceptorUtil.getInstance().ba_Disable();
         }else{
             BillAcceptorUtil.getInstance().init_BillAcceptorCmd();
             BillAcceptorUtil.getInstance().init_BillAcceptorDevice();

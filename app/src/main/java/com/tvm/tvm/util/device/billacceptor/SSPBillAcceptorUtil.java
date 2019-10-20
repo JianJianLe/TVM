@@ -219,26 +219,22 @@ public class SSPBillAcceptorUtil {
                             printInfo("收到1元");
                         }
                         if(resultStr.equals("02")){
-                            rcvdMoney=2;
-                            printInfo("收到2元");
-                        }
-                        if(resultStr.equals("03")){
                             rcvdMoney=5;
                             printInfo("收到5元");
                         }
-                        if(resultStr.equals("04")){
+                        if(resultStr.equals("03")){
                             rcvdMoney=10;
                             printInfo("收到10元");
                         }
-                        if(resultStr.equals("05")){
+                        if(resultStr.equals("04")){
                             rcvdMoney=20;
                             printInfo("收到20元");
                         }
-                        if(resultStr.equals("06")){
+                        if(resultStr.equals("05")){
                             rcvdMoney=50;
                             printInfo("收到50元");
                         }
-                        if(resultStr.equals("07")){
+                        if(resultStr.equals("06")){
                             rcvdMoney=100;
                             printInfo("收到100元");
                         }
@@ -354,7 +350,7 @@ public class SSPBillAcceptorUtil {
     }
 
     private String getReceivedCash(){
-        return getCMDDataByRegex(receivedCMD,"(?<=7F..05F0EE).*(?=........)");
+        return getCMDDataByRegex(receivedCMD,"(?<=7F..04F0EE).*(?=CC)");
     }
     //======== 纸钞机指令 End========
 

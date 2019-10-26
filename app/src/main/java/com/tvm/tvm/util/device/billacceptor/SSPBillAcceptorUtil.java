@@ -26,6 +26,7 @@ public class SSPBillAcceptorUtil {
     private String receivedCMD;
     private boolean hasConnected;
     private boolean isEnable=false;
+    private boolean isInit=false;
     private String cmdType="00";
     private int pollFlag=0;
 
@@ -166,8 +167,15 @@ public class SSPBillAcceptorUtil {
                     //printInfo("纸币机应答OK，纸币机已经完成指令");
                     if(cmdType.equals("02")){
                         printInfo("设置成功: 设置允许识别哪几种纸币");
-                        ba_Enable();
-                        //ba_Disable();
+                        if(isInit)
+                            ba_Disable();
+                        else{
+                            //发送0x0A指令允许纸币机识别纸币（使能）
+                            cmdType="0A";
+                            sendCmd="7F00010A3C08";
+                            printInfo("发送0A指令");
+                            write(sendCmd);
+                        }
                     }
                     if(cmdType.equals("11")){
                         printInfo("纸币机已经连接成功");
@@ -263,6 +271,7 @@ public class SSPBillAcceptorUtil {
 
     public void init_BillAcceptorCmd(){
         //发送0x11号指令查找纸币机是否连接
+        isInit=true;
         cmdType="11";
         String cmdStr="7F8001116582";
         printInfo("发送11指令");
@@ -301,23 +310,18 @@ public class SSPBillAcceptorUtil {
     }
 
 
+    //要使能纸钞机，要先发送 0x02 号命令设置允许识别哪几种纸币
+    //然后在发送0A指令使能
     public void ba_Enable(){
-        //发送使能之前，发送一次Poll,确保没有多余的信息会带到下面的处理流程中
-//        String cmdStr="7F8001071202";
-//        write(cmdStr);
-        //发送0x0A指令允许纸币机识别纸币（使能）
-        cmdType="0A";
-        String cmdStr="7F00010A3C08";
-        printInfo("发送0A指令");
+        isInit=false;
+        cmdType="02";
+        String cmdStr="7F800302FF0027A6";
+        printInfo("发送02指令");
         write(cmdStr);
     }
 
     //发送0x09指令禁止纸币机识别纸币
     public void ba_Disable(){
-        //发送使能之前，发送一次Poll,确保没有多余的信息会带到下面的处理流程中
-//        String cmdStr="7F8001071202";
-//        write(cmdStr);
-//        write(cmdStr);//多发一次，清空其他数据
         //发送0x09指令允许纸币机识别纸币（使能）
         cmdType="09";
         String cmdStr="7F0001093608";
@@ -350,7 +354,7 @@ public class SSPBillAcceptorUtil {
     }
 
     private String getReceivedCash(){
-        return getCMDDataByRegex(receivedCMD,"(?<=7F..04F0EE).*(?=CC)");
+        return getCMDDataByRegex(receivedCMD,"(?<=7F....F0EE).*(?=CC)");
     }
     //======== 纸钞机指令 End========
 

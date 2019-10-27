@@ -36,6 +36,10 @@ public class Setting {
 
     private String payDeviceName;
 
+    private String billAcceptorName;
+
+    private String billType;
+
     private String showMainViewFlag;
 
     private int initalTicketNumber;
@@ -144,10 +148,26 @@ public class Setting {
         this.payDeviceName = payDeviceName;
     }
 
-    @Generated(hash = 180037971)
+    public String getBillAcceptorName() {
+        return this.billAcceptorName;
+    }
+
+    public void setBillAcceptorName(String billAcceptorName) {
+        this.billAcceptorName = billAcceptorName;
+    }
+
+    public String getBillType() {
+        return this.billType;
+    }
+
+    public void setBillType(String billType) {
+        this.billType = billType;
+    }
+
+    @Generated(hash = 1709305926)
     public Setting(Long id, String shopName, String deviceNo, String md5Key, int selectTimeOut, int payTimeOut,
             int printTimeOut, String printQRCodeFlag, String payDesc, String payDeviceID, String payDeviceName,
-            String showMainViewFlag, int initalTicketNumber) {
+            String billAcceptorName, String billType, String showMainViewFlag, int initalTicketNumber) {
         this.id = id;
         this.shopName = shopName;
         this.deviceNo = deviceNo;
@@ -159,6 +179,8 @@ public class Setting {
         this.payDesc = payDesc;
         this.payDeviceID = payDeviceID;
         this.payDeviceName = payDeviceName;
+        this.billAcceptorName = billAcceptorName;
+        this.billType = billType;
         this.showMainViewFlag = showMainViewFlag;
         this.initalTicketNumber = initalTicketNumber;
     }

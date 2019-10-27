@@ -171,13 +171,15 @@ public class PayDetailActivity extends BaseActivity{
     private void cashPay(){
         int cash=0;
 
-        if(PreConfig.CachMachineType.equals("SSP")){
+        if(PreConfig.CachMachineType.equals("ITL")){
+            Log.i("Test","ITL rcvdMoney="+SSPBillAcceptorUtil.getInstance().rcvdMoney);
             cash = SSPBillAcceptorUtil.getInstance().rcvdMoney;
         }else{
             cash = BillAcceptorUtil.getInstance().rcvdMoney;
         }
 
         if(cash>0){
+            Log.i("Test","ITL cash="+cash);
             PrinterCase.getInstance().amountRecord+=cash;
             receivedAmount = PrinterCase.getInstance().amountRecord;
             updateAmount();
@@ -185,7 +187,8 @@ public class PayDetailActivity extends BaseActivity{
             if(!PreConfig.PayDeviceName.equals("LYY")){
                 WMQDevice.getInstance().cmd_CashPay(cash);
             }
-            if(PreConfig.CachMachineType.equals("SSP")){
+            if(PreConfig.CachMachineType.equals("ITL")){
+                Log.i("Test","ITL rcvdMoney=0");
                 SSPBillAcceptorUtil.getInstance().rcvdMoney=0;
             }else{
                 BillAcceptorUtil.getInstance().rcvdMoney=0;
@@ -361,7 +364,7 @@ public class PayDetailActivity extends BaseActivity{
             WMQDevice.getInstance().activityRecord="GotoOtherActivity";
 
         scheduledExecutorService.shutdown();
-        if(PreConfig.CachMachineType.equals("SSP")){
+        if(PreConfig.CachMachineType.equals("ITL")){
             SSPBillAcceptorUtil.getInstance().ba_Disable();
         }else{
             BillAcceptorUtil.getInstance().ba_Disable();//@Star Feb16

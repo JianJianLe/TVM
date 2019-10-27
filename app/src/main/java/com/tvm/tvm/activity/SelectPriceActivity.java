@@ -215,7 +215,7 @@ public class SelectPriceActivity extends BaseActivity implements View.OnTouchLis
                 Map.Entry<Integer, TicketBean> entry = iterator.next();
                 beanList.add(entry.getValue());
             }
-            if(PreConfig.CachMachineType.equals("SSP")){
+            if(PreConfig.CachMachineType.equals("ITL")){
                 SSPBillAcceptorUtil.getInstance().ba_Enable();
             }else{
                 BillAcceptorUtil.getInstance().ba_Enable();//@Star 16Feb

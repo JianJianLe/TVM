@@ -37,379 +37,464 @@
         android:layout_marginRight="@dimen/xy10dp"
         android:background="@drawable/wear_1" />
 
-    <LinearLayout
-        android:id="@+id/normal_setting_layout"
-        android:layout_marginTop="@dimen/xy10dp"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical" >
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
 
         <LinearLayout
+            android:id="@+id/normal_setting_layout"
             android:layout_marginTop="@dimen/xy10dp"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/xy5dp"
-            android:layout_marginRight="@dimen/xy5dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal" >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/xy18sp"
-                android:text="本店编号："/>
-            <EditText
-                android:id="@+id/et_normal_setting_device_no"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawablePadding="@dimen/xy5dp"
-                android:gravity="center_vertical"
-                android:hint="本店编号"
-                android:cursorVisible="true"
-                android:singleLine="true"
-                android:maxLength="5"
-                android:inputType="number"
-                android:textColor="#666666"
-                android:textSize="@dimen/xy18dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_marginTop="@dimen/xy10dp"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/xy5dp"
-            android:layout_marginRight="@dimen/xy5dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal" >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/xy18sp"
-                android:text="店名："/>
-            <EditText
-                android:id="@+id/et_normal_setting_company_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawablePadding="@dimen/xy5dp"
-                android:gravity="center_vertical"
-                android:hint="店名"
-                android:cursorVisible="true"
-                android:singleLine="true"
-                android:textColor="#666666"
-                android:textSize="@dimen/xy18dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/normal_setting_layout_md5_key"
-            android:layout_marginTop="@dimen/xy10dp"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/xy5dp"
-            android:layout_marginRight="@dimen/xy5dp"
-            android:gravity="center_vertical"
+            android:gravity="center"
             android:orientation="vertical" >
-            <TextView
-                android:layout_width="wrap_content"
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/xy10dp"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/xy18sp"
-                android:text="MD5 Key："/>
-            <EditText
-                android:id="@+id/et_normal_setting_md5_key"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/xy60dp"
-                android:drawablePadding="@dimen/xy5dp"
+                android:layout_marginLeft="@dimen/xy5dp"
+                android:layout_marginRight="@dimen/xy5dp"
                 android:gravity="center_vertical"
-                android:hint="MD5 Key"
-                android:cursorVisible="true"
-                android:singleLine="true"
-                android:maxLength="32"
-                android:textColor="#666666"
-                android:textSize="@dimen/xy18dp" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_marginTop="@dimen/xy10dp"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/xy5dp"
-            android:layout_marginRight="@dimen/xy5dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal" >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/xy18sp"
-                android:text="选票超时时间："/>
-            <EditText
-                android:id="@+id/et_normal_setting_time_out"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawablePadding="@dimen/xy5dp"
-                android:gravity="center_vertical"
-                android:cursorVisible="true"
-                android:inputType="number"
-                android:singleLine="true"
-                android:textColor="#666666"
-                android:textSize="@dimen/xy18dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_marginTop="@dimen/xy10dp"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/xy5dp"
-            android:layout_marginRight="@dimen/xy5dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal" >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/xy18sp"
-                android:text="购票超时时间："/>
-            <EditText
-                android:id="@+id/et_normal_setting_pay_time_out"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawablePadding="@dimen/xy5dp"
-                android:gravity="center_vertical"
-                android:cursorVisible="true"
-                android:singleLine="true"
-                android:inputType="number"
-                android:textColor="#666666"
-                android:textSize="@dimen/xy18dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_marginTop="@dimen/xy10dp"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/xy5dp"
-            android:layout_marginRight="@dimen/xy5dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal" >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/xy18sp"
-                android:text="打印余票超时时间："/>
-            <EditText
-                android:id="@+id/et_normal_setting_print_time_out"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawablePadding="@dimen/xy5dp"
-                android:gravity="center_vertical"
-                android:inputType="number"
-                android:cursorVisible="true"
-                android:singleLine="true"
-                android:textColor="#666666"
-                android:textSize="@dimen/xy18dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_marginTop="@dimen/xy10dp"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/xy5dp"
-            android:layout_marginRight="@dimen/xy5dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="票据是否打印二维码："
-                android:textSize="@dimen/xy18dp" />
-
-            <RadioGroup
-                android:id="@+id/rgp_print_qrcode"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
                 android:orientation="horizontal" >
-                <RadioButton
-                    android:id="@+id/rbt_isprinted"
+                <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/xy10dp"
-                    android:checked="true"
-                    android:gravity="center"
-                    android:text="是"
-                    android:textSize="@dimen/xy18dp"/>
-
-                <RadioButton
-                    android:id="@+id/rbt_isnotprinted"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/xy20dp"
-                    android:checked="false"
-                    android:text="否"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/xy18sp"
+                    android:text="本店编号："/>
+                <EditText
+                    android:id="@+id/et_normal_setting_device_no"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="@dimen/xy5dp"
+                    android:gravity="center_vertical"
+                    android:hint="本店编号"
+                    android:cursorVisible="true"
+                    android:singleLine="true"
+                    android:maxLength="5"
+                    android:inputType="number"
+                    android:textColor="#666666"
                     android:textSize="@dimen/xy18dp" />
-            </RadioGroup>
-        </LinearLayout>
+            </LinearLayout>
 
-        <LinearLayout
-            android:layout_marginTop="@dimen/xy10dp"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/xy5dp"
-            android:layout_marginRight="@dimen/xy5dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="是否显示广告界面："
-                android:textSize="@dimen/xy18dp" />
-
-            <RadioGroup
-                android:id="@+id/rgp_show_mainview"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="horizontal" >
-                <RadioButton
-                    android:id="@+id/rbt_isshowed"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/xy10dp"
-                    android:checked="true"
-                    android:gravity="center"
-                    android:text="是"
-                    android:textSize="@dimen/xy18dp"/>
-
-                <RadioButton
-                    android:id="@+id/rbt_isnotshowed"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/xy20dp"
-                    android:checked="false"
-                    android:text="否"
-                    android:textSize="@dimen/xy18dp" />
-            </RadioGroup>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_marginTop="@dimen/xy10dp"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/xy5dp"
-            android:layout_marginRight="@dimen/xy5dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="请选择支付模块提供商:"
-                android:textSize="@dimen/xy18dp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_marginTop="@dimen/xy10dp"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/xy5dp"
-            android:layout_marginRight="@dimen/xy5dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal" >
-            <RadioGroup
-                android:id="@+id/rgp_pay_device"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="horizontal" >
-                <RadioButton
-                    android:id="@+id/rbt_lyy"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/xy10dp"
-                    android:checked="true"
-                    android:gravity="center"
-                    android:text="乐摇摇"
-                    android:textSize="@dimen/xy18dp"/>
-
-                <RadioButton
-                    android:id="@+id/rbt_wmq"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/xy20dp"
-                    android:checked="false"
-                    android:text="趣互联"
-                    android:textSize="@dimen/xy18dp" />
-            </RadioGroup>
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_marginTop="@dimen/xy10dp"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/xy5dp"
-            android:layout_marginRight="@dimen/xy5dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal" >
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_marginTop="@dimen/xy10dp"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/xy18sp"
-                android:text="起始票数："/>
-            <EditText
-                android:id="@+id/et_normal_setting_initial_titcket_number"
+                android:layout_marginLeft="@dimen/xy5dp"
+                android:layout_marginRight="@dimen/xy5dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/xy18sp"
+                    android:text="店名："/>
+                <EditText
+                    android:id="@+id/et_normal_setting_company_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="@dimen/xy5dp"
+                    android:gravity="center_vertical"
+                    android:hint="店名"
+                    android:cursorVisible="true"
+                    android:singleLine="true"
+                    android:textColor="#666666"
+                    android:textSize="@dimen/xy18dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/normal_setting_layout_md5_key"
+                android:layout_marginTop="@dimen/xy10dp"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/xy5dp"
+                android:layout_marginRight="@dimen/xy5dp"
+                android:gravity="center_vertical"
+                android:orientation="vertical" >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/xy18sp"
+                    android:text="MD5 Key："/>
+                <EditText
+                    android:id="@+id/et_normal_setting_md5_key"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/xy60dp"
+                    android:drawablePadding="@dimen/xy5dp"
+                    android:gravity="center_vertical"
+                    android:hint="MD5 Key"
+                    android:cursorVisible="true"
+                    android:singleLine="true"
+                    android:maxLength="32"
+                    android:textColor="#666666"
+                    android:textSize="@dimen/xy18dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginTop="@dimen/xy10dp"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/xy5dp"
+                android:layout_marginRight="@dimen/xy5dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/xy18sp"
+                    android:text="选票超时时间："/>
+                <EditText
+                    android:id="@+id/et_normal_setting_time_out"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="@dimen/xy5dp"
+                    android:gravity="center_vertical"
+                    android:cursorVisible="true"
+                    android:inputType="number"
+                    android:singleLine="true"
+                    android:textColor="#666666"
+                    android:textSize="@dimen/xy18dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/xy10dp"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/xy5dp"
+                android:layout_marginRight="@dimen/xy5dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/xy18sp"
+                    android:text="购票超时时间："/>
+                <EditText
+                    android:id="@+id/et_normal_setting_pay_time_out"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="@dimen/xy5dp"
+                    android:gravity="center_vertical"
+                    android:cursorVisible="true"
+                    android:singleLine="true"
+                    android:inputType="number"
+                    android:textColor="#666666"
+                    android:textSize="@dimen/xy18dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/xy10dp"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/xy5dp"
+                android:layout_marginRight="@dimen/xy5dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/xy18sp"
+                    android:text="打印余票超时时间："/>
+                <EditText
+                    android:id="@+id/et_normal_setting_print_time_out"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="@dimen/xy5dp"
+                    android:gravity="center_vertical"
+                    android:inputType="number"
+                    android:cursorVisible="true"
+                    android:singleLine="true"
+                    android:textColor="#666666"
+                    android:textSize="@dimen/xy18dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/xy10dp"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/xy5dp"
+                android:layout_marginRight="@dimen/xy5dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="票据是否打印二维码："
+                    android:textSize="@dimen/xy18dp" />
+
+                <RadioGroup
+                    android:id="@+id/rgp_print_qrcode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal" >
+                    <RadioButton
+                        android:id="@+id/rbt_isprinted"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/xy10dp"
+                        android:checked="true"
+                        android:gravity="center"
+                        android:text="是"
+                        android:textSize="@dimen/xy18dp"/>
+
+                    <RadioButton
+                        android:id="@+id/rbt_isnotprinted"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/xy20dp"
+                        android:checked="false"
+                        android:text="否"
+                        android:textSize="@dimen/xy18dp" />
+                </RadioGroup>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/xy10dp"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/xy5dp"
+                android:layout_marginRight="@dimen/xy5dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="是否显示广告界面："
+                    android:textSize="@dimen/xy18dp" />
+
+                <RadioGroup
+                    android:id="@+id/rgp_show_mainview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal" >
+                    <RadioButton
+                        android:id="@+id/rbt_isshowed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/xy10dp"
+                        android:checked="true"
+                        android:gravity="center"
+                        android:text="是"
+                        android:textSize="@dimen/xy18dp"/>
+
+                    <RadioButton
+                        android:id="@+id/rbt_isnotshowed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/xy20dp"
+                        android:checked="false"
+                        android:text="否"
+                        android:textSize="@dimen/xy18dp" />
+                </RadioGroup>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/xy10dp"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/xy5dp"
+                android:layout_marginRight="@dimen/xy5dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="请选择支付模块提供商:"
+                    android:textSize="@dimen/xy18dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/xy10dp"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/xy5dp"
+                android:layout_marginRight="@dimen/xy5dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+                <RadioGroup
+                    android:id="@+id/rgp_pay_device"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal" >
+                    <RadioButton
+                        android:id="@+id/rbt_lyy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/xy10dp"
+                        android:checked="true"
+                        android:gravity="center"
+                        android:text="乐摇摇"
+                        android:textSize="@dimen/xy18dp"/>
+
+                    <RadioButton
+                        android:id="@+id/rbt_wmq"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/xy20dp"
+                        android:checked="false"
+                        android:text="趣互联"
+                        android:textSize="@dimen/xy18dp" />
+                </RadioGroup>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/xy10dp"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/xy5dp"
+                android:layout_marginRight="@dimen/xy5dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="请选择纸钞机类型:"
+                    android:textSize="@dimen/xy18dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/xy10dp"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/xy5dp"
+                android:layout_marginRight="@dimen/xy5dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+                <RadioGroup
+                    android:id="@+id/rgp_bill_acceptor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal" >
+                    <RadioButton
+                        android:id="@+id/rbt_ict"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/xy10dp"
+                        android:checked="true"
+                        android:gravity="center"
+                        android:text="ICT"
+                        android:textSize="@dimen/xy18dp"/>
+
+                    <RadioButton
+                        android:id="@+id/rbt_itl"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/xy20dp"
+                        android:checked="false"
+                        android:text="ITL"
+                        android:textSize="@dimen/xy18dp" />
+                </RadioGroup>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/xy10dp"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/xy5dp"
+                android:layout_marginRight="@dimen/xy5dp"
+                android:gravity="center_vertical"
+                android:orientation="vertical" >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/xy18sp"
+                    android:text="ITL纸钞机接收纸币金额(元)："/>
+                <EditText
+                    android:id="@+id/et_normal_setting_bill_type"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/xy5dp"
+                    android:layout_marginRight="@dimen/xy5dp"
+                    android:drawablePadding="@dimen/xy10dp"
+                    android:gravity="center_vertical"
+                    android:cursorVisible="true"
+                    android:inputType="textMultiLine"
+                    android:singleLine="true"
+                    android:textColor="#666666"
+                    android:text="1,5,10,20,50,100"
+                    android:textSize="@dimen/xy18dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/xy10dp"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/xy5dp"
+                android:layout_marginRight="@dimen/xy5dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/xy18sp"
+                    android:text="起始票数："/>
+                <EditText
+                    android:id="@+id/et_normal_setting_initial_titcket_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="@dimen/xy5dp"
+                    android:gravity="center_vertical"
+                    android:inputType="number"
+                    android:cursorVisible="true"
+                    android:singleLine="true"
+                    android:textColor="#666666"
+                    android:textSize="@dimen/xy18dp" />
+            </LinearLayout>
+
+            <TextView
+                android:gravity="center_vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawablePadding="@dimen/xy5dp"
+                android:layout_marginLeft="@dimen/xy5dp"
+                android:layout_marginRight="@dimen/xy5dp"
+                android:layout_marginTop="@dimen/xy10dp"
+                android:layout_marginBottom="@dimen/xy5dp"
+                android:textSize="@dimen/xy18sp"
+                android:text="指导购票标语："/>
+            <EditText
+                android:id="@+id/et_normal_setting_pay_desc"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/xy5dp"
+                android:layout_marginRight="@dimen/xy5dp"
+                android:drawablePadding="@dimen/xy10dp"
                 android:gravity="center_vertical"
-                android:inputType="number"
+                android:hint="指导购票标语"
                 android:cursorVisible="true"
+                android:inputType="textMultiLine"
                 android:singleLine="true"
                 android:textColor="#666666"
+                android:text="本机只接收5元、10元、20元，不设找零"
                 android:textSize="@dimen/xy18dp" />
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/xy10dp"
+                android:layout_marginRight="@dimen/xy10dp"
+                android:orientation="horizontal" >
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/bt_normal_setting_confirm"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/xy40dp"
+                android:layout_margin="@dimen/xy20dp"
+                android:text="@string/save"
+                android:textStyle="bold"
+                android:textSize="@dimen/xy16sp" />
+
         </LinearLayout>
-
-        <TextView
-            android:gravity="center_vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/xy5dp"
-            android:layout_marginRight="@dimen/xy5dp"
-            android:layout_marginTop="@dimen/xy10dp"
-            android:layout_marginBottom="@dimen/xy5dp"
-            android:textSize="@dimen/xy18sp"
-            android:text="指导购票标语："/>
-        <EditText
-            android:id="@+id/et_normal_setting_pay_desc"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/xy5dp"
-            android:layout_marginRight="@dimen/xy5dp"
-            android:drawablePadding="@dimen/xy10dp"
-            android:gravity="center_vertical"
-            android:hint="指导购票标语"
-            android:cursorVisible="true"
-            android:inputType="textMultiLine"
-            android:singleLine="true"
-            android:textColor="#666666"
-            android:text="本机只接收5元、10元、20元，不设找零"
-            android:textSize="@dimen/xy18dp" />
-
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/xy10dp"
-            android:layout_marginRight="@dimen/xy10dp"
-            android:orientation="horizontal" >
-        </RelativeLayout>
-
-        <Button
-            android:id="@+id/bt_normal_setting_confirm"
-            android:layout_width="fill_parent"
-            android:layout_height="@dimen/xy40dp"
-            android:layout_margin="@dimen/xy20dp"
-            android:text="@string/save"
-            android:textStyle="bold"
-            android:textSize="@dimen/xy16sp" />
-
-    </LinearLayout>
-
+    </ScrollView>
 </LinearLayout>

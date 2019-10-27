@@ -42,6 +42,7 @@ public class BaseActivity extends Activity {
         setting = settingDao.queryBuilder().where(SettingDao.Properties.Id.eq(1)).unique();
         if(setting!=null){
             PreConfig.PayDeviceName=setting.getPayDeviceName();
+            PreConfig.CachMachineType=setting.getBillAcceptorName();
         }
     }
 

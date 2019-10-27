@@ -102,6 +102,20 @@ public class NormalSettingActivity extends BaseActivity {
     RadioButton rbt_wmq;//维码器
 
     //-------
+    @BindView(R.id.rgp_bill_acceptor)
+    RadioGroup rgp_bill_acceptor;
+
+    @BindView(R.id.rbt_ict)
+    RadioButton rbt_ict;
+
+    @BindView(R.id.rbt_itl)
+    RadioButton rbt_itl;//SSP纸钞机
+
+    //-------
+    @BindView(R.id.et_normal_setting_bill_type)
+    EditText et_normal_setting_bill_type;
+
+    //-------
     @BindView(R.id.et_normal_setting_initial_titcket_number)
     EditText et_normal_setting_initial_titcket_number;
 
@@ -122,6 +136,8 @@ public class NormalSettingActivity extends BaseActivity {
     String showMainViewFlag;
     String payDeviceID;
     String payDeviceName;
+    String billAcceptorName;
+    String billType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,7 +168,11 @@ public class NormalSettingActivity extends BaseActivity {
             rgp_pay_device.setEnabled(false);
             rbt_lyy.setEnabled(false);
             rbt_wmq.setEnabled(false);
+            rgp_bill_acceptor.setEnabled(false);
+            rbt_ict.setEnabled(false);
+            rbt_itl.setEnabled(false);
             et_normal_setting_initial_titcket_number.setEnabled(false);
+            et_normal_setting_bill_type.setEnabled(false);
         }
 
         SettingDao settingDao = daoSession.getSettingDao();
@@ -167,6 +187,7 @@ public class NormalSettingActivity extends BaseActivity {
             et_normal_setting_device_no.setText(setting.getDeviceNo());
             et_normal_setting_md5_key.setText(setting.getMd5Key());
             et_normal_setting_initial_titcket_number.setText(setting.getInitalTicketNumber()+"");
+            et_normal_setting_bill_type.setText(setting.getBillType());
 
             if(setting.getPrintQRCodeFlag().equals("Yes")){
                 printQRCodeFlag="Yes";
@@ -194,6 +215,14 @@ public class NormalSettingActivity extends BaseActivity {
                 payDeviceName="WMQ";
                 rgp_pay_device.check(R.id.rbt_wmq);
             }
+
+            if(setting.getBillAcceptorName().equals("ICT")){
+                billAcceptorName="ICT";
+                rgp_bill_acceptor.check(R.id.rbt_ict);
+            }else{
+                billAcceptorName="ITL";
+                rgp_bill_acceptor.check(R.id.rbt_itl);
+            }
         }
     }
 
@@ -214,6 +243,7 @@ public class NormalSettingActivity extends BaseActivity {
         deviceNo = et_normal_setting_device_no.getText().toString().trim();
         md5Key = et_normal_setting_md5_key.getText().toString().trim();
         initialTicketNumber =Integer.valueOf(et_normal_setting_initial_titcket_number.getText().toString().trim().equals("")? "0" : et_normal_setting_initial_titcket_number.getText().toString().trim());
+        billType=et_normal_setting_bill_type.getText().toString().trim();
 
         if (deviceNo.length()!=5){
             ToastUtils.showText(this,StringUtils.WRONG_DEVICE_NO);
@@ -240,6 +270,7 @@ public class NormalSettingActivity extends BaseActivity {
             ToastUtils.showText(this,StringUtils.EMPTY_TIME_OUT);
             return false;
         }
+
         return isOk;
     }
 
@@ -276,6 +307,8 @@ public class NormalSettingActivity extends BaseActivity {
             setting.setInitalTicketNumber(initialTicketNumber);
             setting.setShowMainViewFlag(showMainViewFlag);
             setting.setPayDeviceName(payDeviceName);
+            setting.setBillAcceptorName(billAcceptorName);
+            setting.setBillType(billType);
             settingDao.update(setting);
             ToastUtils.showText(getApplicationContext(),StringUtils.UPDATE_SUCCESS,true);
         }
@@ -296,7 +329,8 @@ public class NormalSettingActivity extends BaseActivity {
     }
     @OnCheckedChanged({R.id.rbt_isprinted, R.id.rbt_isnotprinted,
                     R.id.rbt_isshowed, R.id.rbt_isnotshowed,
-                    R.id.rbt_lyy,R.id.rbt_wmq})
+                    R.id.rbt_lyy,R.id.rbt_wmq,
+                    R.id.rbt_ict,R.id.rbt_itl})
     public void onRadioButtonCheckChanged(CompoundButton button, boolean isChecked) {
         if(isChecked) {
             switch (button.getId()) {
@@ -317,6 +351,12 @@ public class NormalSettingActivity extends BaseActivity {
                     break;
                 case R.id.rbt_wmq:
                     payDeviceName="WMQ";
+                    break;
+                case R.id.rbt_ict:
+                    billAcceptorName="ICT";
+                    break;
+                case R.id.rbt_itl:
+                    billAcceptorName="ITL";
                     break;
             }
         }

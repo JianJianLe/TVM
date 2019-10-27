@@ -35,8 +35,10 @@ public class SettingDao extends AbstractDao<Setting, Long> {
         public final static Property PayDesc = new Property(8, String.class, "payDesc", false, "PAY_DESC");
         public final static Property PayDeviceID = new Property(9, String.class, "payDeviceID", false, "PAY_DEVICE_ID");
         public final static Property PayDeviceName = new Property(10, String.class, "payDeviceName", false, "PAY_DEVICE_NAME");
-        public final static Property ShowMainViewFlag = new Property(11, String.class, "showMainViewFlag", false, "SHOW_MAIN_VIEW_FLAG");
-        public final static Property InitalTicketNumber = new Property(12, int.class, "initalTicketNumber", false, "INITAL_TICKET_NUMBER");
+        public final static Property BillAcceptorName = new Property(11, String.class, "billAcceptorName", false, "BILL_ACCEPTOR_NAME");
+        public final static Property BillType = new Property(12, String.class, "billType", false, "BILL_TYPE");
+        public final static Property ShowMainViewFlag = new Property(13, String.class, "showMainViewFlag", false, "SHOW_MAIN_VIEW_FLAG");
+        public final static Property InitalTicketNumber = new Property(14, int.class, "initalTicketNumber", false, "INITAL_TICKET_NUMBER");
     }
 
 
@@ -63,8 +65,10 @@ public class SettingDao extends AbstractDao<Setting, Long> {
                 "\"PAY_DESC\" TEXT," + // 8: payDesc
                 "\"PAY_DEVICE_ID\" TEXT," + // 9: payDeviceID
                 "\"PAY_DEVICE_NAME\" TEXT," + // 10: payDeviceName
-                "\"SHOW_MAIN_VIEW_FLAG\" TEXT," + // 11: showMainViewFlag
-                "\"INITAL_TICKET_NUMBER\" INTEGER NOT NULL );"); // 12: initalTicketNumber
+                "\"BILL_ACCEPTOR_NAME\" TEXT," + // 11: billAcceptorName
+                "\"BILL_TYPE\" TEXT," + // 12: billType
+                "\"SHOW_MAIN_VIEW_FLAG\" TEXT," + // 13: showMainViewFlag
+                "\"INITAL_TICKET_NUMBER\" INTEGER NOT NULL );"); // 14: initalTicketNumber
     }
 
     /** Drops the underlying database table. */
@@ -120,11 +124,21 @@ public class SettingDao extends AbstractDao<Setting, Long> {
             stmt.bindString(11, payDeviceName);
         }
  
+        String billAcceptorName = entity.getBillAcceptorName();
+        if (billAcceptorName != null) {
+            stmt.bindString(12, billAcceptorName);
+        }
+ 
+        String billType = entity.getBillType();
+        if (billType != null) {
+            stmt.bindString(13, billType);
+        }
+ 
         String showMainViewFlag = entity.getShowMainViewFlag();
         if (showMainViewFlag != null) {
-            stmt.bindString(12, showMainViewFlag);
+            stmt.bindString(14, showMainViewFlag);
         }
-        stmt.bindLong(13, entity.getInitalTicketNumber());
+        stmt.bindLong(15, entity.getInitalTicketNumber());
     }
 
     @Override
@@ -174,11 +188,21 @@ public class SettingDao extends AbstractDao<Setting, Long> {
             stmt.bindString(11, payDeviceName);
         }
  
+        String billAcceptorName = entity.getBillAcceptorName();
+        if (billAcceptorName != null) {
+            stmt.bindString(12, billAcceptorName);
+        }
+ 
+        String billType = entity.getBillType();
+        if (billType != null) {
+            stmt.bindString(13, billType);
+        }
+ 
         String showMainViewFlag = entity.getShowMainViewFlag();
         if (showMainViewFlag != null) {
-            stmt.bindString(12, showMainViewFlag);
+            stmt.bindString(14, showMainViewFlag);
         }
-        stmt.bindLong(13, entity.getInitalTicketNumber());
+        stmt.bindLong(15, entity.getInitalTicketNumber());
     }
 
     @Override
@@ -200,8 +224,10 @@ public class SettingDao extends AbstractDao<Setting, Long> {
             cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // payDesc
             cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // payDeviceID
             cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // payDeviceName
-            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // showMainViewFlag
-            cursor.getInt(offset + 12) // initalTicketNumber
+            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // billAcceptorName
+            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // billType
+            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // showMainViewFlag
+            cursor.getInt(offset + 14) // initalTicketNumber
         );
         return entity;
     }
@@ -219,8 +245,10 @@ public class SettingDao extends AbstractDao<Setting, Long> {
         entity.setPayDesc(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
         entity.setPayDeviceID(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
         entity.setPayDeviceName(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
-        entity.setShowMainViewFlag(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
-        entity.setInitalTicketNumber(cursor.getInt(offset + 12));
+        entity.setBillAcceptorName(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
+        entity.setBillType(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
+        entity.setShowMainViewFlag(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
+        entity.setInitalTicketNumber(cursor.getInt(offset + 14));
      }
     
     @Override

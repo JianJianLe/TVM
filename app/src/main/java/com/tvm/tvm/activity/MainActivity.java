@@ -308,10 +308,9 @@ public class MainActivity extends BaseActivity {
 
     public void initBillAcceptor() {
         //纸钞机初始化
-        if(PreConfig.CachMachineType.equals("SSP")){
+        if(PreConfig.CachMachineType.equals("ITL")){
             SSPBillAcceptorUtil.getInstance().init_BillAcceptorDevice();
             SSPBillAcceptorUtil.getInstance().init_BillAcceptorCmd();
-            //SSPBillAcceptorUtil.getInstance().ba_Disable();
         }else{
             BillAcceptorUtil.getInstance().init_BillAcceptorCmd();
             BillAcceptorUtil.getInstance().init_BillAcceptorDevice();
@@ -540,7 +539,7 @@ public class MainActivity extends BaseActivity {
                 bean.setNumber(Integer.valueOf(tv_main_ticket_2_num.getText().toString().trim()));
                 ticketList.add(bean);
             }
-            if(PreConfig.CachMachineType.equals("SSP")){
+            if(PreConfig.CachMachineType.equals("ITL")){
                 SSPBillAcceptorUtil.getInstance().ba_Enable();
             }else{
                 BillAcceptorUtil.getInstance().ba_Enable();//@Star 16Feb

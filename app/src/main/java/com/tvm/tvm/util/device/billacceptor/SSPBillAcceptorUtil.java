@@ -3,12 +3,15 @@ package com.tvm.tvm.util.device.billacceptor;
 import android.os.Handler;
 import android.util.Log;
 
+import com.tvm.tvm.application.AppApplication;
+import com.tvm.tvm.bean.Setting;
+import com.tvm.tvm.bean.dao.SettingDao;
 import com.tvm.tvm.util.CRCUtils;
 import com.tvm.tvm.util.DataUtils;
-import com.tvm.tvm.util.DateUtils;
 import com.tvm.tvm.util.TimeUtil;
 import com.tvm.tvm.util.constant.PreConfig;
 import com.tvm.tvm.util.device.SerialPortUtil;
+
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -29,6 +32,8 @@ public class SSPBillAcceptorUtil {
     private boolean isInit=false;
     private String cmdType="00";
     private int pollFlag=0;
+    private Setting setting;
+    private SettingDao settingDao;
 
     private SerialPortUtil serialPort;
     private OutputStream mOutputStream;
@@ -213,41 +218,42 @@ public class SSPBillAcceptorUtil {
                     //第一字节的最高位Bit7必须为1
                     //可以识别100，50，20，10，5，2，1
                     //只识别10，20，50，100，则为（1111 1000）F8
-                    cmdType="02";
-                    sendCmd="7F800302FF0027A6";
-                    printInfo("发送02指令");
-                    write(sendCmd);
+                    //7F 80 03 02 FF 00 27 A6
+                    cmd_SetBillChannel();
                 }
 
                 if(isEnable){
                     String resultStr=getReceivedCash();
-                    if(resultStr!=null && !resultStr.equals("00")){
-                        if(resultStr.equals("01")){
-                            rcvdMoney=1;
-                            printInfo("收到1元");
+                    printInfo("getReceivedCash resultStr="+resultStr);
+                    if(resultStr!=null){
+                        if(!resultStr.equals("00")){
+                            if(resultStr.equals("01")){
+                                rcvdMoney=1;
+                                printInfo("收到1元");
+                            }
+                            if(resultStr.equals("02")){
+                                rcvdMoney=5;
+                                printInfo("收到5元");
+                            }
+                            if(resultStr.equals("03")){
+                                rcvdMoney=10;
+                                printInfo("收到10元");
+                            }
+                            if(resultStr.equals("04")){
+                                rcvdMoney=20;
+                                printInfo("收到20元");
+                            }
+                            if(resultStr.equals("05")){
+                                rcvdMoney=50;
+                                printInfo("收到50元");
+                            }
+                            if(resultStr.equals("06")){
+                                rcvdMoney=100;
+                                printInfo("收到100元");
+                            }
+                        }else{
+                            rcvdMoney=-1;
                         }
-                        if(resultStr.equals("02")){
-                            rcvdMoney=5;
-                            printInfo("收到5元");
-                        }
-                        if(resultStr.equals("03")){
-                            rcvdMoney=10;
-                            printInfo("收到10元");
-                        }
-                        if(resultStr.equals("04")){
-                            rcvdMoney=20;
-                            printInfo("收到20元");
-                        }
-                        if(resultStr.equals("05")){
-                            rcvdMoney=50;
-                            printInfo("收到50元");
-                        }
-                        if(resultStr.equals("06")){
-                            rcvdMoney=100;
-                            printInfo("收到100元");
-                        }
-                    }else{
-                        rcvdMoney=-1;
                     }
                 }
 
@@ -259,7 +265,6 @@ public class SSPBillAcceptorUtil {
         }
 
     }
-
 
 
     //======== 纸钞机指令 Start========
@@ -309,15 +314,28 @@ public class SSPBillAcceptorUtil {
         }
     }
 
+    private void cmd_SetBillChannel(){
+        //发送0x02指令设置允许识别哪几种纸币
+        //第一字节的最高位Bit7必须为1
+        //可以识别100，50，20，10，5，2，1
+        //只识别10，20，50，100，则为（1111 1000）F8
+        //7F 80 03 02 FF 00 27 A6
+        cmdType="02";
+        String sendCmd="800302" + getBillTypeCMD();
+        //CRC校验
+        CRCUtils crcUtils=new CRCUtils(CRCUtils.Parameters.CRC16_SSP);
+        String crcStr=DataUtils.decToHex((int) crcUtils.calculateCRC(DataUtils.hexToByteArray(sendCmd)));
+        //最终指令
+        String finalCMD="7F" + sendCmd + crcStr;
+        printInfo("发送02指令");
+        write(finalCMD);
+    }
 
     //要使能纸钞机，要先发送 0x02 号命令设置允许识别哪几种纸币
-    //然后在发送0A指令使能
+    //然后在接到02指令成功信息后，发送0A指令使能
     public void ba_Enable(){
         isInit=false;
-        cmdType="02";
-        String cmdStr="7F800302FF0027A6";
-        printInfo("发送02指令");
-        write(cmdStr);
+        cmd_SetBillChannel(); //发送02指令
     }
 
     //发送0x09指令禁止纸币机识别纸币
@@ -355,6 +373,52 @@ public class SSPBillAcceptorUtil {
 
     private String getReceivedCash(){
         return getCMDDataByRegex(receivedCMD,"(?<=7F....F0EE).*(?=CC)");
+    }
+
+    private void initDB(){
+        settingDao = AppApplication.getApplication().getDaoSession().getSettingDao();
+        setting = settingDao.queryBuilder().where(SettingDao.Properties.Id.eq(1)).unique();
+    }
+
+    private String getBillTypeCMD(){
+        initDB();
+        return Integer.toHexString(Integer.parseInt(parseBillType(setting.getBillType()),2)).toUpperCase() + "00";
+    }
+
+    private String parseBillType(String billType){
+        String billTypeResult="11[100][50][20][10][5][1]";
+        String[] tempArr=billType.split(",");
+        printInfo("billType="+billType);
+        for(int i=0;i<tempArr.length;i++){
+            String tempStr="["+tempArr[i].trim()+"]";
+            if(tempStr.equals("[1]")){
+                billTypeResult=billTypeResult.replace("[1]", "1");
+            }
+            if(tempStr.equals("[5]")){
+                billTypeResult=billTypeResult.replace("[5]", "1");
+            }
+            if(tempStr.equals("[10]")){
+                billTypeResult=billTypeResult.replace("[10]", "1");
+            }
+            if(tempStr.equals("[20]")){
+                billTypeResult=billTypeResult.replace("[20]", "1");
+            }
+            if(tempStr.equals("[50]")){
+                billTypeResult=billTypeResult.replace("[50]", "1");
+            }
+            if(tempStr.equals("[100]")){
+                billTypeResult=billTypeResult.replace("[100]", "1");
+            }
+        }
+
+        billTypeResult= billTypeResult.replace("[1]", "0")
+                .replace("[5]", "0")
+                .replace("[10]", "0")
+                .replace("[20]", "0")
+                .replace("[50]", "0")
+                .replace("[100]", "0");
+        printInfo("billTypeResult="+billTypeResult);
+        return billTypeResult;
     }
     //======== 纸钞机指令 End========
 

@@ -20,7 +20,7 @@ public class PreConfig {
     //public static String PayDeviceName="LYY";
 
     //纸钞机类型
-    public static String CachMachineType="SSP";
+    public static String CachMachineType="ITL";
 
     //缓存登录用户
     public static String USER = "user";

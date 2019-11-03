@@ -309,6 +309,7 @@ public class ITLBillAcceptorUtil {
     //发送0x09指令禁止纸币机识别纸币
     public void ba_Disable(){
         isEnable=false;
+
         //发送0x09指令允许纸币机识别纸币（使能）
         String cmdStr=getSEQCMD()+"0109";
         printInfo("发送09指令");
@@ -322,7 +323,7 @@ public class ITLBillAcceptorUtil {
     private void cmd_Poll(){
         String cmdStr = getSEQCMD()+"0107";
         write(getFinalCMD(cmdStr));
-        TimeUtil.delay(500);
+        //TimeUtil.delay(200);
     }
 
     //循环发送Poll指令，等待接收纸币
@@ -383,7 +384,11 @@ public class ITLBillAcceptorUtil {
         return cmdStr;
     }
 
-    private void write(final String cmdStr) {
+    private void write(String cmdStr){
+        writeCMD(cmdStr);
+        TimeUtil.delay(300);
+    }
+    private void writeCMD(final String cmdStr) {
 
         new Thread(){
             public void run() {
@@ -391,7 +396,6 @@ public class ITLBillAcceptorUtil {
                     printInfo( "SSP Bill Acceptor Util Write CMD: "+cmdStr);
                     byte[] sendData = DataUtils.hexToByteArray(cmdStr);
                     mOutputStream.write(sendData);
-                    TimeUtil.delay(200);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

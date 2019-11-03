@@ -81,7 +81,7 @@ public class FirstInitApp {
         setting.setInitalTicketNumber(0);
         setting.setShowMainViewFlag("Yes");
         setting.setPayDeviceName("LYY");//LYY: 乐摇摇  WMQ:维码器
-        setting.setBillAcceptorName("ITL");
+        setting.setBillAcceptorName("ICT");
         setting.setBillType("1,5,10,20,50,100");
         setting.setBillTimesNumber(1);
         setting.setBillAcceptorCashAmountType("1,5,10,20,50,100");

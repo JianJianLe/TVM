@@ -305,6 +305,48 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
+                    android:text="是否显示排队号："
+                    android:textSize="@dimen/xy18dp" />
+
+                <RadioGroup
+                    android:id="@+id/rgp_show_orderNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal" >
+                    <RadioButton
+                        android:id="@+id/rbt_is_showed_orderNumber"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/xy10dp"
+                        android:checked="true"
+                        android:gravity="center"
+                        android:text="是"
+                        android:textSize="@dimen/xy18dp"/>
+
+                    <RadioButton
+                        android:id="@+id/rbt_isnot_showed_orderNumber"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/xy20dp"
+                        android:checked="false"
+                        android:text="否"
+                        android:textSize="@dimen/xy18dp" />
+                </RadioGroup>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/xy10dp"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/xy5dp"
+                android:layout_marginRight="@dimen/xy5dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
                     android:text="请选择支付模块提供商:"
                     android:textSize="@dimen/xy18dp" />
 

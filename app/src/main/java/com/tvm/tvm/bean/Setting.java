@@ -42,7 +42,13 @@ public class Setting {
 
     private String showMainViewFlag;
 
+    private String showOrderNumberFlag;
+
     private int initalTicketNumber;
+
+    private int billTimesNumber;//Value Multiplier 倍率
+
+    private String billAcceptorCashAmountType;//纸币面额
 
     public String getPayDesc() {
         return this.payDesc;
@@ -164,10 +170,35 @@ public class Setting {
         this.billType = billType;
     }
 
-    @Generated(hash = 1709305926)
+    public String getBillAcceptorCashAmountType() {
+        return this.billAcceptorCashAmountType;
+    }
+
+    public void setBillAcceptorCashAmountType(String billAcceptorCashAmountType) {
+        this.billAcceptorCashAmountType = billAcceptorCashAmountType;
+    }
+
+    public int getBillTimesNumber() {
+        return this.billTimesNumber;
+    }
+
+    public void setBillTimesNumber(int billTimesNumber) {
+        this.billTimesNumber = billTimesNumber;
+    }
+
+    public String getShowOrderNumberFlag() {
+        return this.showOrderNumberFlag;
+    }
+
+    public void setShowOrderNumberFlag(String showOrderNumberFlag) {
+        this.showOrderNumberFlag = showOrderNumberFlag;
+    }
+
+    @Generated(hash = 851088808)
     public Setting(Long id, String shopName, String deviceNo, String md5Key, int selectTimeOut, int payTimeOut,
             int printTimeOut, String printQRCodeFlag, String payDesc, String payDeviceID, String payDeviceName,
-            String billAcceptorName, String billType, String showMainViewFlag, int initalTicketNumber) {
+            String billAcceptorName, String billType, String showMainViewFlag, String showOrderNumberFlag,
+            int initalTicketNumber, int billTimesNumber, String billAcceptorCashAmountType) {
         this.id = id;
         this.shopName = shopName;
         this.deviceNo = deviceNo;
@@ -182,7 +213,10 @@ public class Setting {
         this.billAcceptorName = billAcceptorName;
         this.billType = billType;
         this.showMainViewFlag = showMainViewFlag;
+        this.showOrderNumberFlag = showOrderNumberFlag;
         this.initalTicketNumber = initalTicketNumber;
+        this.billTimesNumber = billTimesNumber;
+        this.billAcceptorCashAmountType = billAcceptorCashAmountType;
     }
 
     @Generated(hash = 909716735)

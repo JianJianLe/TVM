@@ -83,6 +83,9 @@ public class FirstInitApp {
         setting.setPayDeviceName("LYY");//LYY: 乐摇摇  WMQ:维码器
         setting.setBillAcceptorName("ITL");
         setting.setBillType("1,5,10,20,50,100");
+        setting.setBillTimesNumber(1);
+        setting.setBillAcceptorCashAmountType("1,5,10,20,50,100");
+        setting.setShowOrderNumberFlag("Yes");
         settingDao.save(setting);
     }
 

@@ -267,6 +267,9 @@ public class MainActivity extends BaseActivity {
                 startActivity(this,SelectPriceActivity.class);
                 this.finish();
             }
+            if(!setting.getShowOrderNumberFlag().equals("Yes")){
+                tv_main_header_ticket_num.setVisibility(View.INVISIBLE);
+            }
         }
     }
 

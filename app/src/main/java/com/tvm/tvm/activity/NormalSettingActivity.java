@@ -92,6 +92,16 @@ public class NormalSettingActivity extends BaseActivity {
     RadioButton rbt_isnotshowed;
 
     //-------
+    @BindView(R.id.rgp_show_orderNumber)
+    RadioGroup rgp_show_orderNumber;
+
+    @BindView(R.id.rbt_is_showed_orderNumber)
+    RadioButton rbt_is_showed_orderNumber;
+
+    @BindView(R.id.rbt_isnot_showed_orderNumber)
+    RadioButton rbt_isnot_showed_orderNumber;
+
+    //-------
     @BindView(R.id.rgp_pay_device)
     RadioGroup rgp_pay_device;
 
@@ -134,6 +144,7 @@ public class NormalSettingActivity extends BaseActivity {
     String printQRCodeFlag;
     int initialTicketNumber;
     String showMainViewFlag;
+    String showOrderNumberFlag;
     String payDeviceID;
     String payDeviceName;
     String billAcceptorName;
@@ -171,6 +182,9 @@ public class NormalSettingActivity extends BaseActivity {
             rgp_bill_acceptor.setEnabled(false);
             rbt_ict.setEnabled(false);
             rbt_itl.setEnabled(false);
+            rgp_show_orderNumber.setEnabled(false);
+            rbt_is_showed_orderNumber.setEnabled(false);
+            rbt_isnot_showed_orderNumber.setEnabled(false);
             et_normal_setting_initial_titcket_number.setEnabled(false);
             et_normal_setting_bill_type.setEnabled(false);
         }
@@ -205,6 +219,15 @@ public class NormalSettingActivity extends BaseActivity {
             else{
                 showMainViewFlag="No";
                 rgp_show_mainview.check(R.id.rbt_isnotshowed);
+            }
+
+            if(setting.getShowOrderNumberFlag().equals("Yes")){
+                showOrderNumberFlag="Yes";
+                rgp_show_orderNumber.check(R.id.rbt_is_showed_orderNumber);
+            }
+            else{
+                showOrderNumberFlag="No";
+                rgp_show_orderNumber.check(R.id.rbt_isnot_showed_orderNumber);
             }
 
             if(setting.getPayDeviceName().equals("LYY")){
@@ -309,6 +332,7 @@ public class NormalSettingActivity extends BaseActivity {
             setting.setPayDeviceName(payDeviceName);
             setting.setBillAcceptorName(billAcceptorName);
             setting.setBillType(billType);
+            setting.setShowOrderNumberFlag(showOrderNumberFlag);
             settingDao.update(setting);
             ToastUtils.showText(getApplicationContext(),StringUtils.UPDATE_SUCCESS,true);
         }
@@ -329,6 +353,7 @@ public class NormalSettingActivity extends BaseActivity {
     }
     @OnCheckedChanged({R.id.rbt_isprinted, R.id.rbt_isnotprinted,
                     R.id.rbt_isshowed, R.id.rbt_isnotshowed,
+                    R.id.rbt_is_showed_orderNumber, R.id.rbt_isnot_showed_orderNumber,
                     R.id.rbt_lyy,R.id.rbt_wmq,
                     R.id.rbt_ict,R.id.rbt_itl})
     public void onRadioButtonCheckChanged(CompoundButton button, boolean isChecked) {
@@ -357,6 +382,12 @@ public class NormalSettingActivity extends BaseActivity {
                     break;
                 case R.id.rbt_itl:
                     billAcceptorName="ITL";
+                    break;
+                case R.id.rbt_is_showed_orderNumber:
+                    showOrderNumberFlag="Yes";
+                    break;
+                case R.id.rbt_isnot_showed_orderNumber:
+                    showOrderNumberFlag="No";
                     break;
             }
         }

@@ -1,6 +1,7 @@
 package com.tvm.tvm.util.device.billacceptor;
 
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
 import com.tvm.tvm.application.AppApplication;
@@ -31,8 +32,9 @@ public class SSPBillAcceptorUtil {
     private boolean isEnable=false;
     private boolean isInit=false;
     private String cmdType="00";
-    private int pollFlag=0;
     private BillParser billParser=new BillParser();
+    private int countSEQ=0;
+    private CRCUtils crcUtils=new CRCUtils(CRCUtils.Parameters.CRC16_SSP);
 
     private SerialPortUtil serialPort;
     private OutputStream mOutputStream;
@@ -150,6 +152,22 @@ public class SSPBillAcceptorUtil {
         }
     }
 
+    private String handlerMsg=null;
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case 0:
+                    handlerMsg=(String) msg.obj;
+                    break;
+                case 1:
+                    break;
+                case 2:
+                    break;
+            }
+        }
+    };
+
     private void onDataReceived(final byte[] buffer) {
         String sendCmd=null;
         String cmdStr = DataUtils.bytesToHex(buffer);
@@ -163,6 +181,14 @@ public class SSPBillAcceptorUtil {
             printInfo("SSP Bill Acceptor Actual CMD="+receivedCMD);
 
             if(checkCRC(receivedCMD)){
+
+                //--------------
+                Message msg=Message.obtain();
+                msg.what=0;
+                msg.obj=receivedCMD;
+                handler.sendMessage(msg);
+                //--------------
+
                 //纸币机应答
                 //7F 00 01 07 11 88
                 //7F 80 01 F0 23 80
@@ -176,9 +202,9 @@ public class SSPBillAcceptorUtil {
                         else{
                             //发送0x0A指令允许纸币机识别纸币（使能）
                             cmdType="0A";
-                            sendCmd="7F00010A3C08";
+                            sendCmd=getSEQCMD()+"010A" ;
                             printInfo("发送0A指令");
-                            write(sendCmd);
+                            write(getFinalCMD(sendCmd));
                         }
                     }
                     if(cmdType.equals("11")){
@@ -186,9 +212,9 @@ public class SSPBillAcceptorUtil {
 
                         //发送0x05指令读取纸币机通道配置情况
                         cmdType="05";
-                        sendCmd="7F0001051E08";
+                        sendCmd=getSEQCMD()+"0105";
                         printInfo("发送05指令");
-                        write(sendCmd);
+                        write(getFinalCMD(sendCmd));
                     }
 
                     if(cmdType.equals("0A")){
@@ -239,6 +265,9 @@ public class SSPBillAcceptorUtil {
 
     }
 
+    private void parseCMD(String receivedCMDStr){
+
+    }
 
     //======== 纸钞机指令 Start========
     //数据包格式：STX SEQ LENGTH DATA CRCL CRCH
@@ -251,9 +280,9 @@ public class SSPBillAcceptorUtil {
         //发送0x11号指令查找纸币机是否连接
         isInit=true;
         cmdType="11";
-        String cmdStr="7F8001116582";
+        String cmdStr=getSEQCMD()+"0111";
         printInfo("发送11指令");
-        write(cmdStr);
+        write(getFinalCMD(cmdStr));
     }
 
     public void init_BillAcceptorDevice(){
@@ -294,15 +323,12 @@ public class SSPBillAcceptorUtil {
         //只识别10，20，50，100，则为（1111 1000）F8
         //7F 80 03 02 FF 00 27 A6
         cmdType="02";
-        String sendCmd="800302" + billParser.getBillTypeCMD();
-        //CRC校验
-        CRCUtils crcUtils=new CRCUtils(CRCUtils.Parameters.CRC16_SSP);
-        String crcStr=DataUtils.decToHex((int) crcUtils.calculateCRC(DataUtils.hexToByteArray(sendCmd)));
-        //最终指令
-        String finalCMD="7F" + sendCmd + crcStr;
+        String sendCmd=getSEQCMD()+"0302" + billParser.getBillTypeCMD();
         printInfo("发送02指令");
-        write(finalCMD);
+        write(getFinalCMD(sendCmd));
     }
+
+
 
     //要使能纸钞机，要先发送 0x02 号命令设置允许识别哪几种纸币
     //然后在接到02指令成功信息后，发送0A指令使能
@@ -315,9 +341,9 @@ public class SSPBillAcceptorUtil {
     public void ba_Disable(){
         //发送0x09指令允许纸币机识别纸币（使能）
         cmdType="09";
-        String cmdStr="7F0001093608";
+        String cmdStr=getSEQCMD()+"0109";
         printInfo("发送09指令");
-        write(cmdStr);
+        write(getFinalCMD(cmdStr));
     }
 
 
@@ -328,29 +354,44 @@ public class SSPBillAcceptorUtil {
         public void run() {
             super.run();
             while (!isInterrupted() && isEnable) {
-                 String cmdStr=null;
-                 if(pollFlag % 2 == 0){
-                     cmdStr="7F0001071188";
-                 }else {
-                     cmdStr="7F8001071202";
-                 }
-                 write(cmdStr);
-                 TimeUtil.delay(500);
-                 pollFlag++;
-                 if(pollFlag==10){
-                     pollFlag=0;
-                 }
+                String cmdStr = getSEQCMD()+"0107";
+                write(getFinalCMD(cmdStr));
+                TimeUtil.delay(500);
+                printInfo("CatchCashThread received CMD = "+handlerMsg);
             }
         }
     }
 
     private String getReceivedCash(){
-        return getCMDDataByRegex(receivedCMD,"(?<=7F....F0EE).*(?=CC)");
+        String result=getCMDDataByRegex(receivedCMD,"(?<=7F....F0EE).*(?=CC)");
+        if(result==null){
+            result=getCMDDataByRegex(receivedCMD,"(?<=7F....F0E6).*(?=CC)");
+        }
+        return result;
     }
     //======== 纸钞机指令 End========
 
 
     //======== Common Function Start ========
+
+    private String getFinalCMD(String cmdStr){
+        String crcStr=DataUtils.decToHex((int) crcUtils.calculateCRC(DataUtils.hexToByteArray(cmdStr)));
+        return  "7F" + cmdStr + crcStr;
+    }
+
+    private String getSEQCMD(){
+        String cmdStr=null;
+        if(countSEQ%2==0){
+            cmdStr= "80";
+        }else{
+            cmdStr= "00";
+        }
+        countSEQ++;
+        if(countSEQ==10){
+            countSEQ=0;
+        }
+        return cmdStr;
+    }
 
     private void write(String cmdStr) {
         try {

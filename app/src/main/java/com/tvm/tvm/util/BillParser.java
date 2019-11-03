@@ -69,7 +69,7 @@ public class BillParser {
     }
 
     public int getReceivedMoney(String resultStr){
-        int rcvdMoney=0;
+        int rcvdMoney=-1;
         if(!resultStr.equals("00")){
             if(resultStr.equals("01")){
                 rcvdMoney=1;
@@ -96,7 +96,7 @@ public class BillParser {
                 printInfo("收到100元");
             }
         }else{
-            rcvdMoney=-1;
+            rcvdMoney=0;
         }
         return rcvdMoney;
     }

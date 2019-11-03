@@ -17,8 +17,8 @@ import com.tvm.tvm.util.TimeUtil;
 import com.tvm.tvm.util.constant.PreConfig;
 import com.tvm.tvm.util.constant.StringUtils;
 import com.tvm.tvm.util.device.QRCodeUtil;
-import com.tvm.tvm.util.device.billacceptor.BillAcceptorUtil;
-import com.tvm.tvm.util.device.billacceptor.SSPBillAcceptorUtil;
+import com.tvm.tvm.util.device.billacceptor.ICTBillAcceptorUtil;
+import com.tvm.tvm.util.device.billacceptor.ITLBillAcceptorUtil;
 import com.tvm.tvm.util.device.paydevice.LYYDevice;
 import com.tvm.tvm.util.device.paydevice.WMQDevice;
 import com.tvm.tvm.util.device.printer.PrinterCase;
@@ -172,10 +172,10 @@ public class PayDetailActivity extends BaseActivity{
         int cash=0;
 
         if(PreConfig.CachMachineType.equals("ITL")){
-            Log.i("Test","ITL rcvdMoney="+SSPBillAcceptorUtil.getInstance().rcvdMoney);
-            cash = SSPBillAcceptorUtil.getInstance().rcvdMoney;
+            Log.i("Test","ITL rcvdMoney="+ITLBillAcceptorUtil.getInstance().rcvdMoney);
+            cash = ITLBillAcceptorUtil.getInstance().rcvdMoney;
         }else{
-            cash = BillAcceptorUtil.getInstance().rcvdMoney;
+            cash = ICTBillAcceptorUtil.getInstance().rcvdMoney;
         }
 
         if(cash>0){
@@ -189,9 +189,9 @@ public class PayDetailActivity extends BaseActivity{
             }
             if(PreConfig.CachMachineType.equals("ITL")){
                 Log.i("Test","ITL rcvdMoney=0");
-                SSPBillAcceptorUtil.getInstance().rcvdMoney=0;
+                ITLBillAcceptorUtil.getInstance().rcvdMoney=0;
             }else{
-                BillAcceptorUtil.getInstance().rcvdMoney=0;
+                ICTBillAcceptorUtil.getInstance().rcvdMoney=0;
             }
         }
     }
@@ -365,9 +365,9 @@ public class PayDetailActivity extends BaseActivity{
 
         scheduledExecutorService.shutdown();
         if(PreConfig.CachMachineType.equals("ITL")){
-            SSPBillAcceptorUtil.getInstance().ba_Disable();
+            ITLBillAcceptorUtil.getInstance().ba_Disable();
         }else{
-            BillAcceptorUtil.getInstance().ba_Disable();//@Star Feb16
+            ICTBillAcceptorUtil.getInstance().ba_Disable();//@Star Feb16
         }
         Log.i("Test","PayDetailActivity onDestroy scheduledExecutorService shutdown");
     }

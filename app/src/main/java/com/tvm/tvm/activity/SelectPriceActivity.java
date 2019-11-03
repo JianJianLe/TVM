@@ -28,14 +28,12 @@ import com.tvm.tvm.util.BackPrevious;
 import com.tvm.tvm.util.LongClickUtils;
 import com.tvm.tvm.util.constant.PreConfig;
 import com.tvm.tvm.util.constant.StringUtils;
-import com.tvm.tvm.util.device.billacceptor.BillAcceptorUtil;
-import com.tvm.tvm.util.device.billacceptor.SSPBillAcceptorUtil;
-import com.tvm.tvm.util.device.paydevice.LYYDevice;
+import com.tvm.tvm.util.device.billacceptor.ICTBillAcceptorUtil;
+import com.tvm.tvm.util.device.billacceptor.ITLBillAcceptorUtil;
 import com.tvm.tvm.util.device.printer.PrinterCase;
 import com.tvm.tvm.util.view.ConfirmDialogUtils;
 import com.tvm.tvm.util.view.ToastUtils;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -216,9 +214,9 @@ public class SelectPriceActivity extends BaseActivity implements View.OnTouchLis
                 beanList.add(entry.getValue());
             }
             if(PreConfig.CachMachineType.equals("ITL")){
-                SSPBillAcceptorUtil.getInstance().ba_Enable();
+                ITLBillAcceptorUtil.getInstance().ba_Enable();
             }else{
-                BillAcceptorUtil.getInstance().ba_Enable();//@Star 16Feb
+                ICTBillAcceptorUtil.getInstance().ba_Enable();//@Star 16Feb
             }
             PrinterCase.getInstance().ticketList = beanList;
             startActivity(this,PayDetailActivity.class);

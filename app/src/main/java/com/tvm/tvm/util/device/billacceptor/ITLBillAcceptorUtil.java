@@ -4,9 +4,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-import com.tvm.tvm.application.AppApplication;
-import com.tvm.tvm.bean.Setting;
-import com.tvm.tvm.bean.dao.SettingDao;
 import com.tvm.tvm.util.BillParser;
 import com.tvm.tvm.util.CRCUtils;
 import com.tvm.tvm.util.DataUtils;
@@ -24,7 +21,7 @@ import java.io.OutputStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class SSPBillAcceptorUtil {
+public class ITLBillAcceptorUtil {
 
     public int rcvdMoney=-1;
 
@@ -41,10 +38,10 @@ public class SSPBillAcceptorUtil {
     private InputStream mInputStream;
     private ReadThread mReadThread;
 
-    private static SSPBillAcceptorUtil instance;
-    public synchronized static SSPBillAcceptorUtil getInstance(){
+    private static ITLBillAcceptorUtil instance;
+    public synchronized static ITLBillAcceptorUtil getInstance(){
         if(instance==null){
-            instance = new SSPBillAcceptorUtil();
+            instance = new ITLBillAcceptorUtil();
         }
         return instance;
     }
@@ -90,7 +87,7 @@ public class SSPBillAcceptorUtil {
 
     }
 
-    public class SendRunnable implements Runnable {
+    private class SendRunnable implements Runnable {
         private byte[] lastBuffer;
         int time = 0;
         boolean work = true;
@@ -188,7 +185,7 @@ public class SSPBillAcceptorUtil {
                 printInfo("checkCRC=false");
             }
         }else{
-            printInfo("Invalid CMD: " + cmdStr);
+            printInfo("SSP Invalid CMD: " + cmdStr);
         }
 
     }

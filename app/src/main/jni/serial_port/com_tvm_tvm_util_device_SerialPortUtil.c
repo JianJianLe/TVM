@@ -138,7 +138,8 @@ JNIEXPORT jobject JNICALL Java_com_tvm_tvm_util_device_SerialPortUtil_open
             //flag=2 表示为新型投币器(SSP)
             if(flag==1){
                 cfg.c_cflag |= PARENB;//Odd: 奇校验
-                cfg.c_cflag &= ~PARODD;//Even: 偶校验 
+                cfg.c_cflag &= ~PARODD;//Even: 偶校验
+                cfg.c_cflag &= ~CSTOPB;//stopBit=1
             }else if(flag==2){
                 cfg.c_cflag |= PARENB;//Odd: 奇校验
                 cfg.c_cflag &= ~PARODD;//Even: 偶校验

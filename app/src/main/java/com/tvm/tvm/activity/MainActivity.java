@@ -1,8 +1,5 @@
 package com.tvm.tvm.activity;
 
-import android.app.AlertDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -22,22 +19,19 @@ import com.tvm.tvm.R;
 import com.tvm.tvm.adapter.ViewpagerDotsAdapter;
 import com.tvm.tvm.application.AppApplication;
 import com.tvm.tvm.bean.Price;
-import com.tvm.tvm.bean.Setting;
 import com.tvm.tvm.bean.TicketBean;
 import com.tvm.tvm.bean.dao.DaoSession;
 import com.tvm.tvm.bean.dao.PriceDao;
-import com.tvm.tvm.bean.dao.SettingDao;
 import com.tvm.tvm.receiver.MediaReceiver;
 import com.tvm.tvm.util.AuthorizeUtil;
 import com.tvm.tvm.util.BitmapUtils;
-import com.tvm.tvm.util.FileUtils;
 import com.tvm.tvm.util.FirstInitApp;
 import com.tvm.tvm.util.FolderUtil;
 import com.tvm.tvm.util.LongClickUtils;
 import com.tvm.tvm.util.constant.PreConfig;
 import com.tvm.tvm.util.constant.StringUtils;
-import com.tvm.tvm.util.device.billacceptor.BillAcceptorUtil;
-import com.tvm.tvm.util.device.billacceptor.SSPBillAcceptorUtil;
+import com.tvm.tvm.util.device.billacceptor.ICTBillAcceptorUtil;
+import com.tvm.tvm.util.device.billacceptor.ITLBillAcceptorUtil;
 import com.tvm.tvm.util.device.paydevice.LYYDevice;
 import com.tvm.tvm.util.device.paydevice.WMQDevice;
 import com.tvm.tvm.util.device.printer.PrinterCase;
@@ -49,7 +43,6 @@ import com.tvm.tvm.util.view.ConfirmDialogUtils;
 import com.tvm.tvm.util.view.ToastUtils;
 
 import java.io.File;
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -311,13 +304,16 @@ public class MainActivity extends BaseActivity {
 
     public void initBillAcceptor() {
         //纸钞机初始化
+        Log.i("Test","CachMachineType="+PreConfig.CachMachineType);
         if(PreConfig.CachMachineType.equals("ITL")){
-            SSPBillAcceptorUtil.getInstance().init_BillAcceptorDevice();
-            SSPBillAcceptorUtil.getInstance().init_BillAcceptorCmd();
+            Log.i("Test","ITL initBillAcceptor");
+            ITLBillAcceptorUtil.getInstance().init_BillAcceptorDevice();
+            ITLBillAcceptorUtil.getInstance().init_BillAcceptorCmd();
         }else{
-            BillAcceptorUtil.getInstance().init_BillAcceptorCmd();
-            BillAcceptorUtil.getInstance().init_BillAcceptorDevice();
-            BillAcceptorUtil.getInstance().ba_Disable();
+            Log.i("Test","ICT initBillAcceptor");
+            ICTBillAcceptorUtil.getInstance().init_BillAcceptorCmd();
+            ICTBillAcceptorUtil.getInstance().init_BillAcceptorDevice();
+            ICTBillAcceptorUtil.getInstance().ba_Disable();
         }
     }
 
@@ -543,9 +539,9 @@ public class MainActivity extends BaseActivity {
                 ticketList.add(bean);
             }
             if(PreConfig.CachMachineType.equals("ITL")){
-                SSPBillAcceptorUtil.getInstance().ba_Enable();
+                ITLBillAcceptorUtil.getInstance().ba_Enable();
             }else{
-                BillAcceptorUtil.getInstance().ba_Enable();//@Star 16Feb
+                ICTBillAcceptorUtil.getInstance().ba_Enable();//@Star 16Feb
             }
             PrinterCase.getInstance().ticketList = ticketList;
             startActivity(this, PayDetailActivity.class);

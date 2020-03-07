@@ -43,5 +43,5 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/xy120dp"
         android:textSize="@dimen/xy15sp"
-        android:text="广州市亿儿美有限公司"/>
+        android:text="@string/company_info"/>
 </LinearLayout>

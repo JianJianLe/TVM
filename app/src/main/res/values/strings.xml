@@ -14,7 +14,7 @@
     <string name="ticket_setting">票价设置</string>
     <string name="bill_setting">票据设置</string>
     <string name="bill_query">账单查询</string>
-    <string name="bill_list">账单列表</string>
+
     <string name="exception_query">异常查询</string>
     <string name="about">关于我们</string>
     <string name="mianze">免责声明</string>
@@ -36,12 +36,13 @@
     <string name="price">价格</string>
     <string name="desc">描述</string>
 
+    <string name="pay_option">支付方式</string>
+    <string name="time">时间</string>
     <string name="pay">请支付</string>
     <string name="buy_num">购买数量：</string>
     <string name="pay_amount">支付金额：</string>
     <string name="receieve_amount">已收金额：</string>
     <string name="left_amount">未收金额：</string>
-    <string name="yuan">元</string>
     <string name="pay_success">支付成功</string>
     <string name="get_ticket">请取走你的小票</string>
     <string name="wait_please">耐心等候</string>
@@ -53,4 +54,64 @@
     <string name="number">数量</string>
     <string name="zhang">张</string>
     <string name="amount">金额</string>
+
+    <string name="bill_list">账单列表</string>
+    <string name="bill_Number">票号</string>
+
+    <string name="start_time">开始时间</string>
+    <string name="end_time">结束时间</string>
+    <string name="update">更新</string>
+    <string name="user_name">用户名</string>
+    <string name="password_text">密码</string>
+    <string name="initial_Date">2020年01月01日</string>
+    <string name="adult_ticket">成人票</string>
+    <string name="yuan">元</string>
+    <string name="male_or_female">男女不限</string>
+    <string name="company_info">广州市亿儿美有限公司</string>
+    <string name="device_no_txt">本店编号: </string>
+    <string name="device_no_hint">本店编号</string>
+    <string name="store_name_txt">店名: </string>
+    <string name="store_name_hint">店名</string>
+    <string name="select_ticket_over_time">选票超时时间: </string>
+    <string name="buy_ticket_over_time">购票超时时间: </string>
+    <string name="print_ticket_over_time">打印余票超时时间: </string>
+    <string name="is_printed_qr_code">票据是否打印二维码: </string>
+    <string name="yes">是</string>
+    <string name="no">否</string>
+    <string name="is_show_ads_view">是否显示广告界面: </string>
+    <string name="is_show_order_number">是否显示排队号: </string>
+    <string name="select_pay_device">请选择支付模块提供商: </string>
+    <string name="lyy_device">乐摇摇</string>
+    <string name="wmq_device">趣互联</string>
+    <string name="select_bill_acceptor">请选择纸钞机类型:</string>
+    <string name="itl_accept_amount">TL纸钞机接收纸币金额(元): </string>
+    <string name="start_ticket_number">起始票数: </string>
+    <string name="buy_ticket_tips_txt">指导购票标语: </string>
+    <string name="buy_ticket_tips_hint">指导购票标语</string>
+    <string name="pay_desc">本机只接收5元、10元、20元，不设找零</string>
+
+    <string name="balance_title">余 额</string>
+    <string name="continue_buy_ticket">继续购票</string>
+    <string name="print_balance_ticket">打印余额票</string>
+    <string name="balance_service">本次购票余额，请选择你所需要的服务</string>
+
+    <string name="cash_amount">现金总额: </string>
+    <string name="cash_count">现金笔数: </string>
+    <string name="online_pay_amount">线上支付总额: </string>
+    <string name="online_pay_count">线上支付笔数: </string>
+    <string name="bill_summary">总额: </string>
+    <string name="count_summary">总笔数: </string>
+    <string name="exit_operation">退出操作</string>
+    <string name="exit_current_account">是否退出当前账号?</string>
+    <string name="cancel">取消</string>
+    <string name="confirm">确定</string>
+    <string name="take_photo">拍照</string>
+    <string name="choose_picture">从相册选择</string>
+    <string name="template_number">票据编号</string>
+    <string name="ticket_name">票据名称</string>
+    <string name="detail">详情</string>
+    <string name="delete">删除</string>
+    <string name="ticket">票据</string>
+
+
 </resources>

@@ -38,6 +38,7 @@ public class BillParser {
     //7F001DF00030333430434E590000010601050A14326402020202020200006404F42A
     public void parseBillChannel(String cmdStr){
         //initDB();
+        printInfo("setBillTimesNumber & setBillAcceptorCashAmountType");
         int totalNum=Integer.parseInt(cmdStr.substring(15*2, 15*2+2));
         setting.setBillTimesNumber(Integer.parseInt(cmdStr.substring(14*2, 14*2+2)));
         setting.setBillAcceptorCashAmountType(getCmdBill(cmdStr.substring(16*2, 16*2 + totalNum * 2)));
@@ -54,9 +55,45 @@ public class BillParser {
         String result=billTemplateList.toString().replace(", ", "");
         return result.substring(1,result.length()-1);
     }
-
     private String parseBillType(String billType){
+        String billTypeResult="11[100][50][20][10][5][1]";
+        String[] tempArr=billType.split(",");
+        printInfo("billType="+billType);
+        for(int i=0;i<tempArr.length;i++){
+            String tempStr="["+tempArr[i].trim()+"]";
+            if(tempStr.equals("[1]")){
+                billTypeResult=billTypeResult.replace("[1]", "1");
+            }
+            if(tempStr.equals("[5]")){
+                billTypeResult=billTypeResult.replace("[5]", "1");
+            }
+            if(tempStr.equals("[10]")){
+                billTypeResult=billTypeResult.replace("[10]", "1");
+            }
+            if(tempStr.equals("[20]")){
+                billTypeResult=billTypeResult.replace("[20]", "1");
+            }
+            if(tempStr.equals("[50]")){
+                billTypeResult=billTypeResult.replace("[50]", "1");
+            }
+            if(tempStr.equals("[100]")){
+                billTypeResult=billTypeResult.replace("[100]", "1");
+            }
+        }
+
+        billTypeResult= billTypeResult.replace("[1]", "0")
+                .replace("[5]", "0")
+                .replace("[10]", "0")
+                .replace("[20]", "0")
+                .replace("[50]", "0")
+                .replace("[100]", "0");
+        printInfo("billTypeResult="+billTypeResult);
+        return billTypeResult;
+    }
+
+    private String parseBillType_New(String billType){
         String billTypeResult=setting.getBillAcceptorCashAmountType();
+        printInfo("billTypeResult="+billTypeResult);
         String[] tempArr=billType.split(",");
         printInfo("billType="+billType);
         for(int i=0;i<tempArr.length;i++){
@@ -69,7 +106,7 @@ public class BillParser {
         return billTypeResult;
     }
 
-    public int getReceivedMoney(String resultStr){
+    public int getReceivedMoney_New(String resultStr){
         int rcvdMoney=-1;
         if(!resultStr.equals("00")){
             int index=Integer.parseInt(resultStr);
@@ -77,6 +114,39 @@ public class BillParser {
             String tempStr=reverseBillTemplate(setting.getBillAcceptorCashAmountType());
             List<String> result = getDataByRegex(tempStr,"(?<=\\[).*?(?=\\])");
             rcvdMoney=Integer.parseInt(result.get(index-1));
+        }else{
+            rcvdMoney=0;
+        }
+        return rcvdMoney;
+    }
+
+    public int getReceivedMoney(String resultStr){
+        int rcvdMoney=-1;
+        if(!resultStr.equals("00")){
+            if(resultStr.equals("01")){
+                rcvdMoney=1;
+                printInfo("收到1元");
+            }
+            if(resultStr.equals("02")){
+                rcvdMoney=5;
+                printInfo("收到5元");
+            }
+            if(resultStr.equals("03")){
+                rcvdMoney=10;
+                printInfo("收到10元");
+            }
+            if(resultStr.equals("04")){
+                rcvdMoney=20;
+                printInfo("收到20元");
+            }
+            if(resultStr.equals("05")){
+                rcvdMoney=50;
+                printInfo("收到50元");
+            }
+            if(resultStr.equals("06")){
+                rcvdMoney=100;
+                printInfo("收到100元");
+            }
         }else{
             rcvdMoney=0;
         }

@@ -58,7 +58,7 @@
             android:layout_weight="1"
             android:paddingRight="@dimen/xy5dp"
             android:gravity="right"
-            android:text="现金总额："
+            android:text="@string/cash_amount"
             android:textSize="@dimen/xy14sp"
             android:textColor="@color/black" />
 
@@ -87,7 +87,7 @@
             android:layout_weight="1"
             android:paddingRight="@dimen/xy5dp"
             android:gravity="right"
-            android:text="现金笔数："
+            android:text="@string/cash_count"
             android:textSize="@dimen/xy14sp"
             android:textColor="@color/black" />
 
@@ -126,7 +126,7 @@
             android:layout_weight="1"
             android:paddingRight="@dimen/xy5dp"
             android:gravity="right"
-            android:text="线上支付总额："
+            android:text="@string/online_pay_amount"
             android:textSize="@dimen/xy14sp"
             android:textColor="@color/black" />
 
@@ -155,7 +155,7 @@
             android:layout_weight="1"
             android:paddingRight="@dimen/xy5dp"
             android:gravity="right"
-            android:text="线上支付笔数："
+            android:text="@string/online_pay_count"
             android:textSize="@dimen/xy14sp"
             android:textColor="@color/black" />
 
@@ -191,7 +191,7 @@
             android:layout_weight="1"
             android:paddingRight="@dimen/xy5dp"
             android:gravity="right"
-            android:text="总额："
+            android:text="@string/bill_summary"
             android:textSize="@dimen/xy14sp"
             android:textColor="@color/black" />
 
@@ -217,7 +217,7 @@
             android:layout_weight="1"
             android:paddingRight="@dimen/xy5dp"
             android:gravity="right"
-            android:text="总笔数："
+            android:text="@string/count_summary"
             android:textSize="@dimen/xy14sp"
             android:textColor="@color/black" />
 
@@ -232,10 +232,6 @@
             android:layout_weight="1"/>
     </LinearLayout>
 
-    <!--<ListView
-        android:id="@+id/lv_summary_group_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"></ListView>-->
 
     <View
         android:layout_width="match_parent"

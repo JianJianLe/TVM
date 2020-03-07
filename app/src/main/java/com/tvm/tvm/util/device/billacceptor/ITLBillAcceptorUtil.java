@@ -230,6 +230,7 @@ public class ITLBillAcceptorUtil {
     //LENGTH:包长度，不包含STX，SEQ， CRCL， CRCH
     //CRCL，CRCH：CRC-16校验，从SEQ到DATA
     public void init_BillAcceptorCmd(){
+        printInfo("Init_BillAcceptorCmd");
         //0x11
         cmd_Connection();
 

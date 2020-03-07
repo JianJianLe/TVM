@@ -61,14 +61,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/xy18sp"
-                    android:text="本店编号："/>
+                    android:text="@string/device_no_txt"/>
                 <EditText
                     android:id="@+id/et_normal_setting_device_no"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawablePadding="@dimen/xy5dp"
                     android:gravity="center_vertical"
-                    android:hint="本店编号"
+                    android:hint="@string/device_no_hint"
                     android:cursorVisible="true"
                     android:singleLine="true"
                     android:maxLength="5"
@@ -89,14 +89,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/xy18sp"
-                    android:text="店名："/>
+                    android:text="@string/store_name_txt"/>
                 <EditText
                     android:id="@+id/et_normal_setting_company_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawablePadding="@dimen/xy5dp"
                     android:gravity="center_vertical"
-                    android:hint="店名"
+                    android:hint="@string/store_name_hint"
                     android:cursorVisible="true"
                     android:singleLine="true"
                     android:textColor="#666666"
@@ -142,7 +142,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/xy18sp"
-                    android:text="选票超时时间："/>
+                    android:text="@string/select_ticket_over_time"/>
                 <EditText
                     android:id="@+id/et_normal_setting_time_out"
                     android:layout_width="match_parent"
@@ -168,7 +168,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/xy18sp"
-                    android:text="购票超时时间："/>
+                    android:text="@string/buy_ticket_over_time"/>
                 <EditText
                     android:id="@+id/et_normal_setting_pay_time_out"
                     android:layout_width="match_parent"
@@ -194,7 +194,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/xy18sp"
-                    android:text="打印余票超时时间："/>
+                    android:text="@string/print_ticket_over_time"/>
                 <EditText
                     android:id="@+id/et_normal_setting_print_time_out"
                     android:layout_width="match_parent"
@@ -221,7 +221,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="票据是否打印二维码："
+                    android:text="@string/is_printed_qr_code"
                     android:textSize="@dimen/xy18dp" />
 
                 <RadioGroup
@@ -236,7 +236,7 @@
                         android:layout_marginLeft="@dimen/xy10dp"
                         android:checked="true"
                         android:gravity="center"
-                        android:text="是"
+                        android:text="@string/yes"
                         android:textSize="@dimen/xy18dp"/>
 
                     <RadioButton
@@ -245,7 +245,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginLeft="@dimen/xy20dp"
                         android:checked="false"
-                        android:text="否"
+                        android:text="@string/no"
                         android:textSize="@dimen/xy18dp" />
                 </RadioGroup>
             </LinearLayout>
@@ -263,7 +263,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="是否显示广告界面："
+                    android:text="@string/is_show_ads_view"
                     android:textSize="@dimen/xy18dp" />
 
                 <RadioGroup
@@ -278,7 +278,7 @@
                         android:layout_marginLeft="@dimen/xy10dp"
                         android:checked="true"
                         android:gravity="center"
-                        android:text="是"
+                        android:text="@string/yes"
                         android:textSize="@dimen/xy18dp"/>
 
                     <RadioButton
@@ -287,7 +287,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginLeft="@dimen/xy20dp"
                         android:checked="false"
-                        android:text="否"
+                        android:text="@string/no"
                         android:textSize="@dimen/xy18dp" />
                 </RadioGroup>
             </LinearLayout>
@@ -305,7 +305,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="是否显示排队号："
+                    android:text="@string/is_show_order_number"
                     android:textSize="@dimen/xy18dp" />
 
                 <RadioGroup
@@ -320,7 +320,7 @@
                         android:layout_marginLeft="@dimen/xy10dp"
                         android:checked="true"
                         android:gravity="center"
-                        android:text="是"
+                        android:text="@string/yes"
                         android:textSize="@dimen/xy18dp"/>
 
                     <RadioButton
@@ -329,7 +329,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginLeft="@dimen/xy20dp"
                         android:checked="false"
-                        android:text="否"
+                        android:text="@string/no"
                         android:textSize="@dimen/xy18dp" />
                 </RadioGroup>
             </LinearLayout>
@@ -347,7 +347,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="请选择支付模块提供商:"
+                    android:text="@string/select_pay_device"
                     android:textSize="@dimen/xy18dp" />
 
             </LinearLayout>
@@ -372,7 +372,7 @@
                         android:layout_marginLeft="@dimen/xy10dp"
                         android:checked="true"
                         android:gravity="center"
-                        android:text="乐摇摇"
+                        android:text="@string/lyy_device"
                         android:textSize="@dimen/xy18dp"/>
 
                     <RadioButton
@@ -381,7 +381,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginLeft="@dimen/xy20dp"
                         android:checked="false"
-                        android:text="趣互联"
+                        android:text="@string/wmq_device"
                         android:textSize="@dimen/xy18dp" />
                 </RadioGroup>
             </LinearLayout>
@@ -399,7 +399,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="请选择纸钞机类型:"
+                    android:text="@string/select_bill_acceptor"
                     android:textSize="@dimen/xy18dp" />
 
             </LinearLayout>
@@ -451,7 +451,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/xy18sp"
-                    android:text="ITL纸钞机接收纸币金额(元)："/>
+                    android:text="@string/itl_accept_amount"/>
                 <EditText
                     android:id="@+id/et_normal_setting_bill_type"
                     android:layout_width="fill_parent"
@@ -480,7 +480,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/xy18sp"
-                    android:text="起始票数："/>
+                    android:text="@string/start_ticket_number"/>
                 <EditText
                     android:id="@+id/et_normal_setting_initial_titcket_number"
                     android:layout_width="match_parent"
@@ -503,7 +503,7 @@
                 android:layout_marginTop="@dimen/xy10dp"
                 android:layout_marginBottom="@dimen/xy5dp"
                 android:textSize="@dimen/xy18sp"
-                android:text="指导购票标语："/>
+                android:text="@string/buy_ticket_tips_txt"/>
             <EditText
                 android:id="@+id/et_normal_setting_pay_desc"
                 android:layout_width="fill_parent"
@@ -512,12 +512,12 @@
                 android:layout_marginRight="@dimen/xy5dp"
                 android:drawablePadding="@dimen/xy10dp"
                 android:gravity="center_vertical"
-                android:hint="指导购票标语"
+                android:hint="@string/buy_ticket_tips_hint"
                 android:cursorVisible="true"
                 android:inputType="textMultiLine"
                 android:singleLine="true"
                 android:textColor="#666666"
-                android:text="本机只接收5元、10元、20元，不设找零"
+                android:text="@string/pay_desc"
                 android:textSize="@dimen/xy18dp" />
 
             <RelativeLayout

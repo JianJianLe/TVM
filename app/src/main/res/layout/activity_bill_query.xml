@@ -41,7 +41,7 @@
             android:layout_marginLeft="@dimen/xy10dp"
             android:gravity="center"
             android:layout_gravity="center_vertical"
-            android:text="开始时间："
+            android:text="@string/start_time"
             android:textSize="@dimen/xy10sp" />
         <TextView
             android:id="@+id/tv_bill_query_start_date"
@@ -63,7 +63,7 @@
             android:layout_marginLeft="@dimen/xy15dp"
             android:layout_gravity="center_vertical"
             android:layout_marginBottom="@dimen/xy5dp"
-            android:text="开始时间"
+            android:text="@string/start_time"
             android:textSize="@dimen/xy10sp"
             android:background="@drawable/btn_back"/>
     </LinearLayout>
@@ -80,7 +80,7 @@
             android:layout_marginLeft="@dimen/xy10dp"
             android:gravity="center"
             android:layout_gravity="center_vertical"
-            android:text="结束时间："
+            android:text="@string/end_time"
             android:textSize="@dimen/xy10sp" />
         <TextView
             android:id="@+id/tv_bill_query_end_date"
@@ -102,7 +102,7 @@
             android:layout_marginLeft="@dimen/xy15dp"
             android:layout_gravity="center_vertical"
             android:layout_marginBottom="@dimen/xy5dp"
-            android:text="结束时间"
+            android:text="@string/end_time"
             android:textSize="@dimen/xy10sp"
             android:background="@drawable/btn_back"/>
     </LinearLayout>

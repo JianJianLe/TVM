@@ -11,7 +11,7 @@
         android:gravity="center"
         android:layout_weight="2"
         android:textSize="@dimen/xy6sp"
-        android:text="票据编号"/>
+        android:text="@string/template_number"/>
     <TextView
         android:id="@+id/tv_item_bill_setting_ticket_name"
         android:layout_width="0dp"
@@ -19,13 +19,13 @@
         android:gravity="center"
         android:layout_weight="6"
         android:textSize="@dimen/xy6sp"
-        android:text="票据名称"/>
+        android:text="@string/ticket_name"/>
     <Button
         android:id="@+id/btn_item_bill_setting_detail"
         android:layout_width="0dp"
         android:layout_height="@dimen/xy20dp"
         android:layout_marginRight="@dimen/xy5dp"
-        android:text="详情"
+        android:text="@string/detail"
         android:textSize="@dimen/xy6sp"
         android:layout_weight="2"/>
 
@@ -34,7 +34,7 @@
         android:layout_width="0dp"
         android:layout_height="@dimen/xy20dp"
         android:layout_marginRight="@dimen/xy5dp"
-        android:text="删除"
+        android:text="@string/delete"
         android:textSize="@dimen/xy6sp"
         android:layout_weight="2"/>
 </LinearLayout>

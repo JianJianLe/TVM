@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:textSize="@dimen/xy30sp"
             android:textColor="@color/black"
-            android:text="余 额"/>
+            android:text="@string/balance_title"/>
         <TextView
             android:id="@+id/tv_pay_finish_remain"
             android:layout_width="wrap_content"
@@ -48,7 +48,7 @@
         android:layout_height="@dimen/xy60dp"
         android:layout_marginTop="@dimen/xy40dp"
         android:textColor="@color/red"
-        android:text="继续购票"
+        android:text="@string/continue_buy_ticket"
         android:textSize="@dimen/xy30sp"
         android:background="@drawable/pay_detail"
         android:gravity="center"
@@ -59,7 +59,7 @@
         android:layout_width="@dimen/xy160dp"
         android:layout_height="@dimen/xy60dp"
         android:layout_marginTop="@dimen/xy40dp"
-        android:text="打印余额票"
+        android:text="@string/print_balance_ticket"
         android:textSize="@dimen/xy25sp"
         android:background="@drawable/pay_detail"
         android:textColor="@color/red"
@@ -73,7 +73,7 @@
         android:layout_marginTop="@dimen/xy80dp"
         android:textSize="@dimen/xy15sp"
         android:textColor="@color/finish_text_color"
-        android:text="本次购票余额，请选择你所需要的服务"/>
+        android:text="@string/balance_service"/>
 
     <TextView
         android:id="@+id/tv_pay_finish_company_name"
@@ -82,6 +82,6 @@
         android:layout_marginTop="@dimen/xy20dp"
         android:gravity="center"
         android:textSize="@dimen/xy10sp"
-        android:text="广州市亿儿美技有限公司"/>
+        android:text="@string/company_info"/>
 
 </LinearLayout>

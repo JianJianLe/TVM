@@ -149,6 +149,7 @@ public class NormalSettingActivity extends BaseActivity {
     String payDeviceName;
     String billAcceptorName;
     String billType;
+    String billAcceptorCashAmountType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -267,6 +268,7 @@ public class NormalSettingActivity extends BaseActivity {
         md5Key = et_normal_setting_md5_key.getText().toString().trim();
         initialTicketNumber =Integer.valueOf(et_normal_setting_initial_titcket_number.getText().toString().trim().equals("")? "0" : et_normal_setting_initial_titcket_number.getText().toString().trim());
         billType=et_normal_setting_bill_type.getText().toString().trim();
+        billAcceptorCashAmountType = setting.getBillAcceptorCashAmountType();
 
         if (deviceNo.length()!=5){
             ToastUtils.showText(this,StringUtils.WRONG_DEVICE_NO);
@@ -333,6 +335,7 @@ public class NormalSettingActivity extends BaseActivity {
             setting.setBillAcceptorName(billAcceptorName);
             setting.setBillType(billType);
             setting.setShowOrderNumberFlag(showOrderNumberFlag);
+            setting.setBillAcceptorCashAmountType(billAcceptorCashAmountType);
             settingDao.update(setting);
             ToastUtils.showText(getApplicationContext(),StringUtils.UPDATE_SUCCESS,true);
         }

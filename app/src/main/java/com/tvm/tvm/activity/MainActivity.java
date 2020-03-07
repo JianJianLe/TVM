@@ -318,6 +318,7 @@ public class MainActivity extends BaseActivity {
     }
 
     public void initPayDevice() {
+        Log.i("Test", "PayDeviceName="+PreConfig.PayDeviceName);
         if(PreConfig.PayDeviceName.equals("LYY"))
             LYYDevice.getInstance().initPayDevice();
         else

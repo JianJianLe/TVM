@@ -34,13 +34,13 @@
                     android:textColor="@color/red"
                     android:textSize="@dimen/xy15sp"
                     android:layout_gravity="center"
-                    android:text="2018年11月13日"/>
+                    android:text="@string/initial_Date"/>
                 <TextView
                     android:id="@+id/tv_main_header_time_time"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:text="10:32"
+                    android:text="10:00"
                     android:textSize="@dimen/xy15sp"
                     android:textColor="@color/red"
                     android:gravity="center"
@@ -172,13 +172,13 @@
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/xy10sp"
                         android:textColor="@color/black"
-                        android:text="成人票"/>
+                        android:text="@string/adult_ticket"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/xy10sp"
                         android:textColor="@color/black"
-                        android:text="："/>
+                        android:text=": "/>
                     <TextView
                         android:id="@+id/tv_main_ticke_list_price"
                         android:layout_width="wrap_content"
@@ -191,7 +191,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/xy10sp"
                         android:textColor="@color/black"
-                        android:text="元"/>
+                        android:text="@string/yuan"/>
                 </LinearLayout>
                 <TextView
                     android:id="@+id/tv_main_ticke_list_desc"
@@ -202,7 +202,7 @@
                     android:layout_gravity="center_horizontal"
                     android:textSize="@dimen/xy10sp"
                     android:textColor="@color/black"
-                    android:text="男女不限"/>
+                    android:text="@string/male_or_female"/>
                 <ImageView
                     android:id="@+id/iv_main_ticke_list_icon"
                     android:layout_marginTop="@dimen/xy3dp"
@@ -272,7 +272,7 @@
                         android:id="@+id/tv_main_ticke_list_title2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="成人票"
+                        android:text="@string/adult_ticket"
                         android:textColor="@color/black"
                         android:textSize="@dimen/xy10sp" />
 
@@ -280,7 +280,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/xy10sp"
-                        android:text="："
+                        android:text=": "
                         android:textColor="@color/black" />
 
                     <TextView
@@ -294,7 +294,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="元"
+                        android:text="@string/yuan"
                         android:textColor="@color/black"
                         android:textSize="@dimen/xy10sp" />
                 </LinearLayout>
@@ -306,7 +306,7 @@
                     android:layout_gravity="center_horizontal"
                     android:gravity="center_horizontal"
                     android:layout_marginTop="@dimen/xy2dp"
-                    android:text="男女不限"
+                    android:text="@string/male_or_female"
                     android:textColor="@color/black"
                     android:textSize="@dimen/xy10sp" />
 
@@ -535,7 +535,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:textSize="@dimen/xy15sp"
-                android:text="广州市亿儿美有限公司"/>
+                android:text="@string/company_info"/>
         </LinearLayout>
 
     </LinearLayout>

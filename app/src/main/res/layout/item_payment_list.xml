@@ -11,7 +11,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="票号"
+            android:text="@string/bill_Number"
             android:textSize="@dimen/xy10sp"
             android:layout_weight="1"/>
         <TextView
@@ -23,7 +23,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="价格"
+            android:text="@string/price"
             android:textSize="@dimen/xy10sp"
             android:layout_weight="1"/>
         <TextView
@@ -35,7 +35,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="数量"
+            android:text="@string/number"
             android:textSize="@dimen/xy10sp"
             android:layout_weight="1"/>
         <TextView
@@ -47,7 +47,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="支付方式"
+            android:text="@string/pay_option"
             android:textSize="@dimen/xy10sp"
             android:layout_weight="1"/>
         <TextView
@@ -59,7 +59,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="时间"
+            android:text="@string/time"
             android:textSize="@dimen/xy10sp"
             android:layout_weight="1"/>
     </LinearLayout>

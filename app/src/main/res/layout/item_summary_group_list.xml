@@ -8,7 +8,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="right"
-        android:text="票据1"
+        android:text="@string/ticket"
         android:padding="@dimen/xy10dp"
         android:layout_weight="1"/>
 

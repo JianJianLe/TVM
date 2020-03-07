@@ -2,10 +2,13 @@ package com.tvm.tvm.activity;
 
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.SurfaceView;
 import android.view.View;
@@ -27,6 +30,7 @@ import com.tvm.tvm.util.AuthorizeUtil;
 import com.tvm.tvm.util.BitmapUtils;
 import com.tvm.tvm.util.FirstInitApp;
 import com.tvm.tvm.util.FolderUtil;
+import com.tvm.tvm.util.LanguageUtil;
 import com.tvm.tvm.util.LongClickUtils;
 import com.tvm.tvm.util.constant.PreConfig;
 import com.tvm.tvm.util.constant.StringUtils;
@@ -47,6 +51,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -248,6 +253,7 @@ public class MainActivity extends BaseActivity {
         player = new MPlayer();
         player.setDisplay(new MinimalDisplay(sv_main_video));
 
+        initLanguage();
         initView();
         initAds();
 
@@ -264,6 +270,21 @@ public class MainActivity extends BaseActivity {
                 tv_main_header_ticket_num.setVisibility(View.INVISIBLE);
             }
         }
+    }
+
+    /**
+     * 初始化国际化语言，繁体字和简体字
+     */
+    private void initLanguage() {
+        Resources resources = getResources();
+        DisplayMetrics dm = resources.getDisplayMetrics();
+        Configuration config = resources.getConfiguration();
+        if (LanguageUtil.getCountry(getApplicationContext()).equals("TW")) {
+            config.locale = Locale.TAIWAN;
+        } else {
+            config.locale = Locale.CHINESE;
+        }
+        resources.updateConfiguration(config, dm);
     }
 
     private void initView() {

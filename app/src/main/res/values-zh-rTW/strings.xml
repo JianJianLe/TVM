@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TVM</string>
+    <string name="tvm_title">自 助 售 票</string>
+    <string name="tvm_buy_title">自助購票</string>
+    <string name="tvm_support">本機支持現金 微信 支付寶 支付</string>
+
+    <string name="setting">設置</string>
+    <string name="login">登錄</string>
+
+    <string name="personal_setting">個人中心</string>
+    <string name="normal_setting">常規設置</string>
+    <string name="ticket_setting">票價設置</string>
+    <string name="bill_setting">票據設置</string>
+    <string name="bill_query">賬單查詢</string>
+
+    <string name="exception_query">異常查詢</string>
+    <string name="about">關於我們</string>
+    <string name="mianze">免責聲明</string>
+    <string name="summary">統計</string>
+
+    <string name="admin">修改admin密碼</string>
+    <string name="manager">修改manager密碼</string>
+
+    <string name="password">請輸入密碼</string>
+    <string name="password_again">請重復輸入密碼</string>
+    <string name="change_password">修改密碼</string>
+
+    <string name="save">保存</string>
+    <string name="query">查詢</string>
+
+    <string name="price_edit">修改價格</string>
+
+    <string name="title">標題</string>
+    <string name="price">價格</string>
+    <string name="desc">描述</string>
+
+    <string name="pay_option">支付方式</string>
+    <string name="time">時間</string>
+    <string name="pay">請支付</string>
+    <string name="buy_num">購買數量：</string>
+    <string name="pay_amount">支付金額：</string>
+    <string name="receieve_amount">已收金額：</string>
+    <string name="left_amount">未收金額：</string>
+    <string name="pay_success">支付成功</string>
+    <string name="get_ticket">請取走妳的小票</string>
+    <string name="wait_please">耐心等候</string>
+
+    <string name="ticket_setting_list">票據列表</string>
+
+    <string name="print">打印</string>
+    <string name="select_please">請選擇</string>
+    <string name="number">數量</string>
+    <string name="zhang">張</string>
+    <string name="amount">金額</string>
+
+    <string name="bill_list">賬單列表</string>
+    <string name="bill_Number">票號</string>
+
+    <string name="start_time">開始時間</string>
+    <string name="end_time">結束時間</string>
+    <string name="update">更新</string>
+    <string name="user_name">用戶名</string>
+    <string name="password_text">密碼</string>
+    <string name="initial_Date">2020年01月01日</string>
+    <string name="adult_ticket">成人票</string>
+    <string name="yuan">元</string>
+    <string name="male_or_female">男女不限</string>
+    <string name="company_info">廣州市億兒美有限公司</string>
+    <string name="device_no_txt">本店編號: </string>
+    <string name="device_no_hint">本店編號</string>
+    <string name="store_name_txt">店名: </string>
+    <string name="store_name_hint">店名</string>
+    <string name="select_ticket_over_time">選票超時時間: </string>
+    <string name="buy_ticket_over_time">購票超時時間: </string>
+    <string name="print_ticket_over_time">打印余票超時時間: </string>
+    <string name="is_printed_qr_code">票據是否打印二維碼: </string>
+    <string name="yes">是</string>
+    <string name="no">否</string>
+    <string name="is_show_ads_view">是否顯示廣告界面: </string>
+    <string name="is_show_order_number">是否顯示排隊號: </string>
+    <string name="select_pay_device">請選擇支付模塊提供商: </string>
+    <string name="lyy_device">樂搖搖</string>
+    <string name="wmq_device">趣互聯</string>
+    <string name="select_bill_acceptor">請選擇紙鈔機類型:</string>
+    <string name="itl_accept_amount">TL紙鈔機接收紙幣金額(元): </string>
+    <string name="start_ticket_number">起始票數: </string>
+    <string name="buy_ticket_tips_txt">指導購票標語: </string>
+    <string name="buy_ticket_tips_hint">指導購票標語</string>
+    <string name="pay_desc">本機只接收5元、10元、20元，不設找零</string>
+
+    <string name="balance_title">余 額</string>
+    <string name="continue_buy_ticket">繼續購票</string>
+    <string name="print_balance_ticket">打印余額票</string>
+    <string name="balance_service">本次購票余額，請選擇妳所需要的服務</string>
+
+    <string name="cash_amount">現金總額: </string>
+    <string name="cash_count">現金筆數: </string>
+    <string name="online_pay_amount">線上支付總額: </string>
+    <string name="online_pay_count">線上支付筆數: </string>
+    <string name="bill_summary">總額: </string>
+    <string name="count_summary">總筆數: </string>
+    <string name="exit_operation">退出操作</string>
+    <string name="exit_current_account">是否退出當前賬號?</string>
+    <string name="cancel">取消</string>
+    <string name="confirm">確定</string>
+    <string name="take_photo">拍照</string>
+    <string name="choose_picture">從相冊選擇</string>
+    <string name="template_number">票據編號</string>
+    <string name="ticket_name">票據名稱</string>
+    <string name="detail">詳情</string>
+    <string name="delete">刪除</string>
+    <string name="ticket">票據</string>
+
+</resources>

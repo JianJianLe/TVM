@@ -1,15 +1,20 @@
 package com.tvm.tvm.application;
 
 import android.app.Application;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.DisplayMetrics;
 import android.util.Log;
 
 import com.tvm.tvm.bean.User;
 import com.tvm.tvm.bean.dao.DaoMaster;
 import com.tvm.tvm.bean.dao.DaoSession;
 import com.tvm.tvm.bean.dao.UserDao;
+import com.tvm.tvm.util.LanguageUtil;
 
 import java.util.List;
+import java.util.Locale;
 
 public class AppApplication extends Application {
     private  static AppApplication application;
@@ -24,6 +29,7 @@ public class AppApplication extends Application {
         application = this;
         //初始化数据库
         setDataBase();
+        initLanguage();
     }
 
     public static AppApplication getApplication(){
@@ -40,6 +46,21 @@ public class AppApplication extends Application {
         // 注意：该数据库连接属于DaoMaster，所以多个 Session 指的是相同的数据库连接。
         mDaoMaster = new DaoMaster(db);
         mDaoSession = mDaoMaster.newSession();
+    }
+
+    /**
+     * 初始化国际化语言，繁体字和简体字
+     */
+    private void initLanguage() {
+        Resources resources = getResources();
+        DisplayMetrics dm = resources.getDisplayMetrics();
+        Configuration config = resources.getConfiguration();
+        if (LanguageUtil.getCountry(getApplicationContext()).equals("TW")) {
+            config.locale = Locale.TAIWAN;
+        } else {
+            config.locale = Locale.CHINESE;
+        }
+        resources.updateConfiguration(config, dm);
     }
 
     public DaoSession getDaoSession() {

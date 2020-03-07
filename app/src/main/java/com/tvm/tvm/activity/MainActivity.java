@@ -253,7 +253,6 @@ public class MainActivity extends BaseActivity {
         player = new MPlayer();
         player.setDisplay(new MinimalDisplay(sv_main_video));
 
-        initLanguage();
         initView();
         initAds();
 
@@ -272,20 +271,6 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    /**
-     * 初始化国际化语言，繁体字和简体字
-     */
-    private void initLanguage() {
-        Resources resources = getResources();
-        DisplayMetrics dm = resources.getDisplayMetrics();
-        Configuration config = resources.getConfiguration();
-        if (LanguageUtil.getCountry(getApplicationContext()).equals("TW")) {
-            config.locale = Locale.TAIWAN;
-        } else {
-            config.locale = Locale.CHINESE;
-        }
-        resources.updateConfiguration(config, dm);
-    }
 
     private void initView() {
 

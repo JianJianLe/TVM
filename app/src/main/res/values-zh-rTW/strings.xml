@@ -43,7 +43,7 @@
     <string name="receieve_amount">已收金額：</string>
     <string name="left_amount">未收金額：</string>
     <string name="pay_success">支付成功</string>
-    <string name="get_ticket">請取走妳的小票</string>
+    <string name="get_ticket">請取走您的小票</string>
     <string name="wait_please">耐心等候</string>
 
     <string name="ticket_setting_list">票據列表</string>
@@ -73,7 +73,7 @@
     <string name="store_name_hint">店名</string>
     <string name="select_ticket_over_time">選票超時時間: </string>
     <string name="buy_ticket_over_time">購票超時時間: </string>
-    <string name="print_ticket_over_time">打印余票超時時間: </string>
+    <string name="print_ticket_over_time">打印餘票超時時間: </string>
     <string name="is_printed_qr_code">票據是否打印二維碼: </string>
     <string name="yes">是</string>
     <string name="no">否</string>
@@ -89,10 +89,10 @@
     <string name="buy_ticket_tips_hint">指導購票標語</string>
     <string name="pay_desc">本機只接收5元、10元、20元，不設找零</string>
 
-    <string name="balance_title">余 額</string>
+    <string name="balance_title">餘 額</string>
     <string name="continue_buy_ticket">繼續購票</string>
-    <string name="print_balance_ticket">打印余額票</string>
-    <string name="balance_service">本次購票余額，請選擇妳所需要的服務</string>
+    <string name="print_balance_ticket">打印餘額票</string>
+    <string name="balance_service">本次購票餘額，請選擇您所需要的服務</string>
 
     <string name="cash_amount">現金總額: </string>
     <string name="cash_count">現金筆數: </string>

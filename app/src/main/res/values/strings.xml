@@ -44,7 +44,7 @@
     <string name="receieve_amount">已收金额：</string>
     <string name="left_amount">未收金额：</string>
     <string name="pay_success">支付成功</string>
-    <string name="get_ticket">请取走你的小票</string>
+    <string name="get_ticket">请取走您的小票</string>
     <string name="wait_please">耐心等候</string>
 
     <string name="ticket_setting_list">票据列表</string>
@@ -93,7 +93,7 @@
     <string name="balance_title">余 额</string>
     <string name="continue_buy_ticket">继续购票</string>
     <string name="print_balance_ticket">打印余额票</string>
-    <string name="balance_service">本次购票余额，请选择你所需要的服务</string>
+    <string name="balance_service">本次购票余额，请选择您所需要的服务</string>
 
     <string name="cash_amount">现金总额: </string>
     <string name="cash_count">现金笔数: </string>

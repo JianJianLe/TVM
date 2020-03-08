@@ -60,7 +60,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/btn_confirm_pay_template"
-                android:text="确认支付"
+                android:text="@string/confirm_pay"
                 android:textColor="@color/white"
                 android:textSize="@dimen/xy12sp"
                 android:layout_weight="0.5"

@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -67,11 +68,11 @@ public class SelectPriceActivity extends BaseActivity implements View.OnTouchLis
     @BindView(R.id.tv_select_price_amount)
     TextView tv_select_price_amount;
 
-    @BindView(R.id.iv_select_price_buy)
-    ImageView iv_select_price_buy;
+    @BindView(R.id.btn_select_price_buy)
+    Button btn_select_price_buy;
 
-    @BindView(R.id.iv_select_price_cancel)
-    ImageView iv_select_price_cancel;
+    @BindView(R.id.btn_select_price_cancel)
+    Button btn_select_price_cancel;
 
     @BindView(R.id.ll_activity_select_price_layout)
     LinearLayout ll_activity_select_price_layout;
@@ -174,13 +175,13 @@ public class SelectPriceActivity extends BaseActivity implements View.OnTouchLis
         registerReceiver(mediaReceiver, filter);
     }
 
-    @OnClick({R.id.iv_select_price_cancel,R.id.iv_select_price_buy})
+    @OnClick({R.id.btn_select_price_cancel,R.id.btn_select_price_buy})
     public void onClick(View view){
         switch (view.getId()){
-            case R.id.iv_select_price_buy:
+            case R.id.btn_select_price_buy:
                 confirmPay();
                 break;
-            case R.id.iv_select_price_cancel:
+            case R.id.btn_select_price_cancel:
                 reset();
                 break;
         }

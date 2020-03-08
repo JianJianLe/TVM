@@ -111,5 +111,7 @@
     <string name="detail">詳情</string>
     <string name="delete">刪除</string>
     <string name="ticket">票據</string>
-
+    <string name="confirm_pay">確認支付</string>
+    <string name="click_buy">點擊購票</string>
+    <string name="last_page">上壹頁</string>
 </resources>

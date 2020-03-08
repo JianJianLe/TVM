@@ -6,6 +6,7 @@ import android.os.Message;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -38,8 +39,8 @@ import butterknife.OnClick;
 public class PayDetailActivity extends BaseActivity{
 
     //返回键
-    @BindView(R.id.iv_pay_detail_back)
-    ImageView iv_pay_detail_back;
+    @BindView(R.id.btn_pay_detail_back)
+    Button btn_pay_detail_back;
 
     //支付二维码
     @BindView(R.id.iv_pay_detail_qr_code)
@@ -303,10 +304,10 @@ public class PayDetailActivity extends BaseActivity{
      * 监听函数
      * @param view
      */
-    @OnClick({R.id.iv_pay_detail_back})
+    @OnClick({R.id.btn_pay_detail_back})
     public void onClick(View view){
         switch (view.getId()){
-            case R.id.iv_pay_detail_back:
+            case R.id.btn_pay_detail_back:
                 //PrinterCase.getInstance().amountRecord=0;//when the activity is finished, the amountRecord should be 0.
                 this.finish();
                 break;

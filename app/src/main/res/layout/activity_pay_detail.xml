@@ -96,7 +96,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="张"
+                android:text="@string/zhang"
                 android:textColor="@color/red"
                 android:textSize="@dimen/xy18sp"  />
         </LinearLayout>
@@ -287,14 +287,19 @@
             android:text="@string/tvm_support"/>
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/iv_pay_detail_back"
+
+    <Button
+        android:id="@+id/btn_pay_detail_back"
         android:layout_marginTop="@dimen/xy10dp"
-        android:layout_marginLeft="@dimen/xy10dp"
-        android:layout_width="@dimen/xy120dp"
+        android:layout_marginLeft="@dimen/xy20dp"
         android:layout_marginBottom="@dimen/xy10dp"
+        android:layout_width="@dimen/xy80dp"
         android:layout_height="0dp"
+        android:background="@drawable/btn_next_page_template"
+        android:text="@string/last_page"
+        android:textColor="@color/black"
+        android:textSize="@dimen/xy12sp"
         android:layout_weight="1"
-        android:src="@drawable/last_page"/>
+        />
 
 </LinearLayout>

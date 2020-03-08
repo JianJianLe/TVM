@@ -12,6 +12,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -106,10 +107,6 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.ll_main_icon)
     LinearLayout ll_main_icon;
 
-    //图标与描述一起
-    @BindView(R.id.ll_main_desc_and_icon)
-    LinearLayout ll_main_desc_and_icon;
-
     @BindView(R.id.ll_main_ticket_list_2)
     LinearLayout ll_main_ticket_list_2;
 
@@ -148,12 +145,12 @@ public class MainActivity extends BaseActivity {
     TextView tv_main_click_buy;
 
     //有票时点击购买按钮
-    @BindView(R.id.iv_main_ticket_buy)
-    ImageView iv_main_ticket_buy;
+    @BindView(R.id.btn_main_ticket_buy)
+    Button btn_main_ticket_buy;
 
     //有票时取消按钮按钮
-    @BindView(R.id.iv_main_ticket_cancel)
-    ImageView iv_main_ticket_cancel;
+    @BindView(R.id.btn_main_ticket_cancel)
+    Button btn_main_ticket_cancel;
 
     @BindView(R.id.vp_main_ads)
     ViewPager vp_main_ads;
@@ -432,7 +429,7 @@ public class MainActivity extends BaseActivity {
 
     @OnClick({R.id.tv_main_click_buy,R.id.ll_main,
             R.id.tv_main_title_title,R.id.tv_main_header_ticket_num,
-            R.id.iv_main_ticket_cancel, R.id.iv_main_ticket_buy,
+            R.id.btn_main_ticket_cancel, R.id.btn_main_ticket_buy,
             R.id.iv_main_ticket_1_add, R.id.iv_main_ticket_1_sub,
             R.id.iv_main_ticket_2_add, R.id.iv_main_ticket_2_sub})
     public void onClick(View view) {
@@ -461,14 +458,14 @@ public class MainActivity extends BaseActivity {
                     startActivity(this, SelectPriceActivity.class);
                 }
                 break;
-            case R.id.iv_main_ticket_cancel:
+            case R.id.btn_main_ticket_cancel:
                 tv_main_ticket_1_num.setText("0");
                 tv_main_ticket_2_num.setText("0");
                 tv_main_ticket_num.setText("0");
                 tv_main_ticket_amount.setText("0");
                 //取消购买，票数价钱清零
                 break;
-            case R.id.iv_main_ticket_buy:
+            case R.id.btn_main_ticket_buy:
                 //点击购买，跳到对应购买页面
                 if (PrinterCase.getInstance().checkTicketTemplate() == false) {
                     ToastUtils.showText(this, StringUtils.EMPTY_TICKET_LIST);
@@ -610,14 +607,12 @@ public class MainActivity extends BaseActivity {
         if (i == 0) {
             ll_main_ticke_list.setVisibility(View.GONE);
             ll_main_ticket_detail.setVisibility(View.GONE);
-            ll_main_desc_and_icon.setVisibility(View.GONE);
             ll_main_desc.setVisibility(View.VISIBLE);
             ll_main_icon.setVisibility(View.VISIBLE);
             ll_main_click.setVisibility(View.VISIBLE);
         } else {
             ll_main_ticke_list.setVisibility(View.VISIBLE);
             ll_main_ticket_detail.setVisibility(View.VISIBLE);
-            ll_main_desc_and_icon.setVisibility(View.VISIBLE);
             ll_main_desc.setVisibility(View.GONE);
             ll_main_icon.setVisibility(View.GONE);
             ll_main_click.setVisibility(View.GONE);

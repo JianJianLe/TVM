@@ -112,6 +112,7 @@
     <string name="detail">详情</string>
     <string name="delete">删除</string>
     <string name="ticket">票据</string>
-
-
+    <string name="confirm_pay">确认支付</string>
+    <string name="click_buy">点击购票</string>
+    <string name="last_page">上一页</string>
 </resources>

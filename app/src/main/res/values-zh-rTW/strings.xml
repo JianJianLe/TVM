@@ -114,4 +114,10 @@
     <string name="confirm_pay">確認支付</string>
     <string name="click_buy">點擊購票</string>
     <string name="last_page">上壹頁</string>
+
+    <string name="printer_summary">統計</string>
+    <string name="printer_replacement">補單票</string>
+    <string name="printer_balance">餘額票</string>
+
+
 </resources>

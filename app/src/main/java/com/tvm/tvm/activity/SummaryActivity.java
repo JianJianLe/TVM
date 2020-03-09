@@ -117,7 +117,7 @@ public class SummaryActivity extends BaseActivity{
     private void setSummaryTicket(){
         SummaryTicket summaryTicket= PrinterCase.getInstance().summaryTicket;
         NormalTicket normalTicket=PrinterCase.getInstance().normalTicket;
-        normalTicket.setTicketName("统计");
+        normalTicket.setTicketName(getString(R.string.printer_summary));//"统计"
         normalTicket.setDateStr(TimeUtil.dateFormat.format(new Date()));
         normalTicket.setDeviceNumber(setting.getDeviceNo());
         normalTicket.setTicketTitle(title);

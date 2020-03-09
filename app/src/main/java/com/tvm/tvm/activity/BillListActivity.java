@@ -139,7 +139,7 @@ public class BillListActivity extends BaseActivity {
 
     private void setReplacementTicket(){
         NormalTicket normalTicket=PrinterCase.getInstance().normalTicket;
-        normalTicket.setTicketName("补单票");
+        normalTicket.setTicketName(getString(R.string.printer_replacement));//"补单票"
         normalTicket.setDeviceNumber(setting.getDeviceNo());
         normalTicket.setPayType(paymentRecord.getTypeStr());
         normalTicket.setTicketTitle(paymentRecord.getTitle());

@@ -128,7 +128,7 @@ public class PayFinishActivity extends BaseActivity {
         String currentTime =TimeUtil.dateFormat.format(new Date());
         NormalTicket balanceTicket = PrinterCase.getInstance().normalTicket;
         balanceTicket.setPrice(balance +"");
-        balanceTicket.setTicketName("余额票");
+        balanceTicket.setTicketName(getString(R.string.printer_balance));//"余额票"
         balanceTicket.setDateStr(currentTime);
     }
 

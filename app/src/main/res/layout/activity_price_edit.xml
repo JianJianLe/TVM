@@ -90,8 +90,7 @@
         android:layout_marginRight="@dimen/xy30dp"
         android:layout_marginLeft="@dimen/xy30dp"
         android:textSize="@dimen/xy10sp"
-        android:hint="@string/desc"
-        android:maxLength="20"/>
+        android:hint="@string/desc"/>
 
     <Button
         android:id="@+id/btn_price_edit_save"

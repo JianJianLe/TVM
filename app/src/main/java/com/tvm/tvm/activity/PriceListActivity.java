@@ -128,10 +128,10 @@ public class PriceListActivity extends BaseActivity {
                 this.finish();
                 break;
             case R.id.ib_ticket_list_add:
-                if (priceList.size()==20){
-                    ToastUtils.showText(PriceListActivity.this, "不能超过20种票价，请删除重新设置！！！");
-                    return;
-                }
+//                if (priceList.size()==20){
+//                    ToastUtils.showText(PriceListActivity.this, "不能超过20种票价，请删除重新设置！！！");
+//                    return;
+//                }
                 startActivity(this,PriceEditActivity.class);
                 break;
         }

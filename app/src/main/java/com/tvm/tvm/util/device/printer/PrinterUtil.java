@@ -81,6 +81,7 @@ public class PrinterUtil {
         this.summaryTicket=PrinterCase.getInstance().summaryTicket;
         printerInit();
         initPrintMessage();
+        Log.i(TAG, "printTemplate=" +printTemplate);
         parsePrintMessage();
     }
 
@@ -103,7 +104,7 @@ public class PrinterUtil {
         replaceStr("[OnlinePayTotalAmount]", summaryTicket.getOnlinePayTotalAmount());
         replaceStr("[OnlinePayTotalCount]", summaryTicket.getOnlinePayTotalCount());
         replaceStr("[TotalAmount]", summaryTicket.getTotalAmount());
-        replaceStr("[TotalCount]", summaryTicket.getTotalCount()); 
+        replaceStr("[TotalCount]", summaryTicket.getTotalCount());
     }
     
     private void replaceStr(String target, String replacement){

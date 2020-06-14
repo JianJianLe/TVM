@@ -49,7 +49,7 @@ public class TxtUtils {
                         if (i==0){
                             templateNum = text.split("[TemplateNumber]=")[0];
                         }else if (i==1){
-                            ticketName = text.split("[TicketName]=")[0];
+                            ticketName = (text.split("[TicketName]=")[0]).replace("（","(").replace("）",")");
                         }else{
                             sb.append(text + "\n");
                         }

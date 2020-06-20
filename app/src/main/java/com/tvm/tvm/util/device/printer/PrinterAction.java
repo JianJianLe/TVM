@@ -59,10 +59,9 @@ public class PrinterAction {
             for(int i=0; i<bean.getNumber();i++){
                 if(IsPakage(ticketDescription)){
                     List<String> packageList=getPackageList(ticketDescription);
-                    String tempStr=bean.getTitle();
-                    for(int index=0; index<=packageList.size();index++){
+                    for(int index=0; index<packageList.size();index++){
                         ticketTitle=getPackageTicketName(packageList.get(index),bean.getTitle());
-                        Log.i("Test","ticketTitle="+ticketTitle);
+                        Log.i("Test","updated ticketTitle="+ticketTitle);
                         PrintTargetTicket(bean);
                     }
                 }else{

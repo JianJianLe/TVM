@@ -57,33 +57,39 @@ public class PrinterAction {
             ticketDescription=bean.getDescription().replace("（","(").replace("）",")");//描述
             priceId=bean.getId();
             for(int i=0; i<bean.getNumber();i++){
-                if(IsPakage(ticketDescription)){
+
+                String currentTime=TimeUtil.dateFormat.format(new Date());
+                normalTicket.setTicketNumber(PrinterCase.getInstance().getTicketNumber(currentTime));
+                normalTicket.setTicketName(ticketTitle);
+                normalTicket.setPrice((int)ticketPrice+"");
+                normalTicket.setDateStr(currentTime);
+                //QR code information
+                QRCodeUtil.getInstance().setTimeData(currentTime);
+                QRCodeUtil.getInstance().setPriceStr((int)ticketPrice+"");
+                QRCodeUtil.getInstance().setTicketQRCodeData();
+                //Save payment information to DB
+                saveTicketInfo(currentTime,Integer.parseInt(normalTicket.getTicketNumber()));
+                savePayment(PrinterCase.getInstance().normalTicket);
+
+                if(IsPackage(ticketDescription)){
                     List<String> packageList=getPackageList(ticketDescription);
                     for(int index=0; index<packageList.size();index++){
                         ticketTitle=getPackageTicketName(packageList.get(index),bean.getTitle());
                         Log.i("Test","updated ticketTitle="+ticketTitle);
+                        normalTicket.setTicketName(ticketTitle);
                         PrintTargetTicket(bean);
                     }
                 }else{
                     PrintTargetTicket(bean);
                 }
+
+
             }
         }
     }
 
+
     private void PrintTargetTicket(TicketBean bean){
-        String currentTime=TimeUtil.dateFormat.format(new Date());
-        normalTicket.setTicketNumber(PrinterCase.getInstance().getTicketNumber(currentTime));
-        normalTicket.setTicketName(ticketTitle);
-        normalTicket.setPrice((int)ticketPrice+"");
-        normalTicket.setDateStr(currentTime);
-        //QR code information
-        QRCodeUtil.getInstance().setTimeData(currentTime);
-        QRCodeUtil.getInstance().setPriceStr((int)ticketPrice+"");
-        QRCodeUtil.getInstance().setTicketQRCodeData();
-        //Save payment information to DB
-        saveTicketInfo(currentTime,Integer.parseInt(normalTicket.getTicketNumber()));
-        savePayment(PrinterCase.getInstance().normalTicket);
         //上报交易结果
         if(payType==StringUtils.OnlinePay){
             if(PreConfig.PayDeviceName.equals("LYY"))
@@ -106,7 +112,7 @@ public class PrinterAction {
         return strVal.trim() + "(" + strTitle + ")";
     }
 
-    private boolean IsPakage(String strDesc){
+    private boolean IsPackage(String strDesc){
         return IsContainedByRegex(strDesc,"\\(.+.\\)");
     }
 

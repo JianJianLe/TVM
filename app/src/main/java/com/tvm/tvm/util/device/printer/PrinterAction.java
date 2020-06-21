@@ -53,11 +53,10 @@ public class PrinterAction {
         normalTicket.setDeviceNumber(getDeviceNO());
         for (TicketBean bean:ticketList){
             ticketPrice=bean.getPrice();//价格
-            ticketTitle=bean.getTitle();//标题
             ticketDescription=bean.getDescription().replace("（","(").replace("）",")");//描述
             priceId=bean.getId();
             for(int i=0; i<bean.getNumber();i++){
-
+                ticketTitle=bean.getTitle();//标题
                 String currentTime=TimeUtil.dateFormat.format(new Date());
                 normalTicket.setTicketNumber(PrinterCase.getInstance().getTicketNumber(currentTime));
                 normalTicket.setTicketName(ticketTitle);

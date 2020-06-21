@@ -336,7 +336,8 @@ public class NormalSettingActivity extends BaseActivity {
             setting.setBillType(billType);
             setting.setShowOrderNumberFlag(showOrderNumberFlag);
             setting.setBillAcceptorCashAmountType(billAcceptorCashAmountType);
-            settingDao.update(setting);
+            //settingDao.update(setting);
+            settingDao.updateInTx(setting);
             ToastUtils.showText(getApplicationContext(),StringUtils.UPDATE_SUCCESS,true);
         }
     }

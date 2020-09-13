@@ -48,6 +48,7 @@ public class WMQDevice {
     private OutputStream mOutputStream;
     private InputStream mInputStream;
     private ReadThread mReadThread;
+    private String strPreUniquePayCode="NULL";
 
     private static WMQDevice instance;
     public synchronized static WMQDevice getInstance(){
@@ -199,19 +200,6 @@ public class WMQDevice {
         }
     }
 
-//    public void sendCMD01(){
-//        String temp="AA 80 09 01 1A 00 00 00 00 00 00 00 A4 00 AB";
-//        temp=DataUtils.removeSpace(temp);
-//        write(temp);
-//    }
-//
-//    public void sendCMD02(){
-//        String temp="AA 33 06 00 5A 10 27 00 00 CA 00 AB";
-//        temp=DataUtils.removeSpace(temp);
-//        write(temp);
-//    }
-
-
     private void onDataReceived(final byte[] buffer) {
         String cmdStr=DataUtils.bytesToHex(buffer);
         printInfo("cmdStr="+cmdStr);
@@ -246,22 +234,24 @@ public class WMQDevice {
                 }
 
                 //通知主板支付结果-0x34
-                //用户扫码支付后，由微码器通知主板支付结果
+                //用户扫码支付后，由维码器通知主板支付结果
                 //指令超时时间 15s,应答超时维码器会重发2次,主板每次接收到指令需应答,如主板超时无应答此命令,维码器会自动退款
                 if(hasPayResult()){
                     strUniquePayCode=getPayResultUniqueCode();
-
-                    if(checkPayResult()){
-                        cmd_ReplyPayMatch();
-                        printInfo("activityRecord="+activityRecord);
-                        if(activityRecord.equals("PayDetailActivity"))
-                            paySuccess=true;
-                        else{
-                            printTicketDirectly();
+                    printInfo("strUniquePayCode="+strUniquePayCode);
+                    if(strPreUniquePayCode!=null && !strUniquePayCode.equals(strPreUniquePayCode)) {
+                        if (checkPayResult()) {
+                            strPreUniquePayCode = strUniquePayCode;
+                            cmd_ReplyPayMatch();
+                            printInfo("activityRecord=" + activityRecord);
+                            if (activityRecord.equals("PayDetailActivity"))
+                                paySuccess = true;
+                            else {
+                                printTicketDirectly();
+                            }
+                        } else {
+                            cmd_ReplyPayMismatch();
                         }
-                    }
-                    else{
-                        cmd_ReplyPayMismatch();
                     }
                 }
 

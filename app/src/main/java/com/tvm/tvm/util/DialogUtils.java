@@ -28,13 +28,27 @@ public class DialogUtils {
         dialog.show();
     }
 
-    public static Dialog showDialog(Context context,String msg){
+//    public static Dialog showDialog(Context context,String msg){
+//
+//        Dialog dialog=new AlertDialog.Builder(context).setTitle("提示")
+//                .setMessage(msg)
+//                .setCancelable(false)
+//                .create();
+//        dialog.show();
+//        return dialog;
+//    }
 
+    public static void showDialog(Context context,String message){
         Dialog dialog=new AlertDialog.Builder(context).setTitle("提示")
-                .setMessage(msg)
-                .setCancelable(false)
-                .create();
+                .setMessage(message)
+                .setPositiveButton("确定",new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        return;
+                    }
+                }).create();
         dialog.show();
-        return dialog;
     }
 }

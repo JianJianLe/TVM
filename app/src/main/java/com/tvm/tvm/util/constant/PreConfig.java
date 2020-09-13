@@ -15,6 +15,8 @@ public class PreConfig {
     //public static String AndroidBoardVersion="1.0";
     public static String AndroidBoardVersion="2.0";
 
+    public static String AppVersion="1.9.5";
+
     //支付使用的第三方模块
     public static String PayDeviceName="WMQ";
     //public static String PayDeviceName="LYY";
@@ -34,7 +36,5 @@ public class PreConfig {
     public static String PRINT_TIME_OUT = "printTimeOut";
     //支付描述
     public static String PAY_DESC = "payDesc";
-
-
 
 }

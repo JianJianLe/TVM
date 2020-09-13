@@ -6,6 +6,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.tvm.tvm.R;
+import com.tvm.tvm.util.DialogUtils;
+import com.tvm.tvm.util.constant.PreConfig;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -72,6 +74,7 @@ public class SettingsActivity extends BaseActivity {
             case R.id.tv_settings_exception_query:
                 break;
             case R.id.tv_settings_about:
+                DialogUtils.showDialog(SettingsActivity.this,"版本号：" + PreConfig.AppVersion);
                 break;
             case R.id.tv_settings_disclaimer:
                 break;

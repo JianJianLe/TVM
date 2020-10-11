@@ -45,6 +45,17 @@ public class FolderUtil {
         return path;
     }
 
+    public static String getDefaultLogPath(){
+        File file=Environment.getExternalStorageDirectory();
+        String logPath=file.getAbsolutePath()+File.separator+Project_FolderName+File.separator+"Log";
+        file=new File(logPath);
+        if(!file.exists()){
+            file.mkdirs();
+        }
+        return logPath;
+    }
+
+
     //Use below to create the folder ".TVM"
     //Folder Name could be "Image", "Video", "Template", ".TVM"
     public static String getDefaultFolder(String folderName) {

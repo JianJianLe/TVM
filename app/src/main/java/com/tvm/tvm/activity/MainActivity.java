@@ -32,6 +32,7 @@ import com.tvm.tvm.util.BitmapUtils;
 import com.tvm.tvm.util.FirstInitApp;
 import com.tvm.tvm.util.FolderUtil;
 import com.tvm.tvm.util.LanguageUtil;
+import com.tvm.tvm.util.LogUtils;
 import com.tvm.tvm.util.LongClickUtils;
 import com.tvm.tvm.util.constant.PreConfig;
 import com.tvm.tvm.util.constant.StringUtils;
@@ -256,6 +257,8 @@ public class MainActivity extends BaseActivity {
         initBillAcceptor();
         initPayDevice();
         tvmRegisterAction();
+
+        LogUtils.delFile();
 
         if(setting!=null ){
             if(!setting.getShowMainViewFlag().equals("Yes")){

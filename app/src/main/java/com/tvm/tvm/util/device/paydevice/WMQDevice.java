@@ -12,6 +12,7 @@ import com.tvm.tvm.bean.dao.PaymentRecordDao;
 import com.tvm.tvm.bean.dao.PriceDao;
 import com.tvm.tvm.bean.dao.SettingDao;
 import com.tvm.tvm.util.DataUtils;
+import com.tvm.tvm.util.LogUtils;
 import com.tvm.tvm.util.TimeUtil;
 import com.tvm.tvm.util.constant.StringUtils;
 import com.tvm.tvm.util.device.SerialPortUtil;
@@ -237,6 +238,7 @@ public class WMQDevice {
                 //用户扫码支付后，由维码器通知主板支付结果
                 //指令超时时间 15s,应答超时维码器会重发2次,主板每次接收到指令需应答,如主板超时无应答此命令,维码器会自动退款
                 if(hasPayResult()){
+                    printInfo("hasPayResult() 0x34");
                     strUniquePayCode=getPayResultUniqueCode();
                     printInfo("strUniquePayCode="+strUniquePayCode);
                     if(strPreUniquePayCode!=null && !strUniquePayCode.equals(strPreUniquePayCode)) {
@@ -570,7 +572,8 @@ public class WMQDevice {
     }
 
     private void printInfo(String infoStr){
-        Log.i("Test", infoStr);
+        //Log.i("Test", infoStr);
+        LogUtils.i("Test", infoStr);
     }
     //###########################
     //Common Function -- End

@@ -393,7 +393,7 @@ public class WMQDevice {
     }
 
     private void cmd_ReplyPayMatch(){
-        printInfo("支付成功，售票机匹配正确应答");
+        printInfo("Pay successfully - 支付成功，售票机匹配正确应答");
         String cmdStr="B40F"+strUniquePayCode+
                       "00" + //出货状态,0x00:出货完成，订单完成,0x01:正在出货中
                       "00000000";
@@ -402,7 +402,7 @@ public class WMQDevice {
     }
 
     private void cmd_ReplyPayMismatch(){
-        printInfo("支付成功，售票机匹配错误，发送退款指令");
+        printInfo("Mismatch - 支付成功，售票机匹配错误，发送退款指令");
         String cmdStr="B40F"+strUniquePayCode+
                 "03" + //0x03-0x07:出货故障代码，此时必须退款，下边 内容是退款金额
                 decToHex(payAmount,8);

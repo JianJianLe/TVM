@@ -350,9 +350,9 @@ public class ITLBillAcceptorUtil {
     }
 
     private String getReceivedCash(String receivedCMDStr){
-        String result=getCMDDataByRegex(receivedCMDStr,"(?<=7F....F0EE).*(?=CC)");
+        String result=getCMDDataByRegex(receivedCMDStr,"(?<=7F....F0EE)..");
         if(result==null){
-            result=getCMDDataByRegex(receivedCMDStr,"(?<=7F....F0E6).*(?=CC)");
+            result=getCMDDataByRegex(receivedCMDStr,"(?<=7F....F0E6)..");
         }
         return result;
     }

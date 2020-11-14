@@ -83,7 +83,7 @@
     <string name="lyy_device">樂搖搖</string>
     <string name="wmq_device">趣互聯</string>
     <string name="select_bill_acceptor">請選擇紙鈔機類型:</string>
-    <string name="itl_accept_amount">TL紙鈔機接收紙幣金額(元): </string>
+    <string name="itl_accept_amount">ITL紙鈔機接收紙幣金額(元): </string>
     <string name="start_ticket_number">起始票數: </string>
     <string name="buy_ticket_tips_txt">指導購票標語: </string>
     <string name="buy_ticket_tips_hint">指導購票標語</string>

@@ -8,7 +8,7 @@ package com.tvm.tvm.util.constant;
  */
 public class PreConfig {
 
-    //public static String Envir="DEV";
+//    public static String Envir="DEV";
     public static String Envir="UAT";
     //public static String Envir="PROD";
 

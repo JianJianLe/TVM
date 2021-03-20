@@ -12,6 +12,7 @@ import com.tvm.tvm.bean.dao.PaymentRecordDao;
 import com.tvm.tvm.bean.dao.PriceDao;
 import com.tvm.tvm.bean.dao.SettingDao;
 import com.tvm.tvm.util.DataUtils;
+import com.tvm.tvm.util.LogUtils;
 import com.tvm.tvm.util.TimeUtil;
 import com.tvm.tvm.util.constant.StringUtils;
 import com.tvm.tvm.util.device.SerialPortUtil;
@@ -117,7 +118,7 @@ public class LYYDevice {
                     //读取数据,同时获取数据长度(数据长度不是数组长度,而是实际接收到的数据长度),数据被读取到了缓冲区 buffer中
                     size = mInputStream.read(buffer);
                     if (size > 0) {
-                        Log.i("Test","接收数据长度:" + size);
+                        LogUtils.i("Test","接收数据长度:" + size);
                         //临时数组,将缓冲区buffer中的有效数据读取出来,临时数据长度就是接收到的数据长度。
                         byte[] temp = new byte[size];
                         System.arraycopy(buffer, 0, temp, 0, size);
@@ -209,13 +210,13 @@ public class LYYDevice {
             stringBuffer.append(buffer[i]);
             stringBuffer.append(",");
         }
-        Log.i("Test","original CMD="+stringBuffer.toString());
+        LogUtils.i("Test","original CMD="+stringBuffer.toString());
     }
 
     private void onDataReceived(final byte[] buffer) {
         //showData(buffer);
         String cmdStr=DataUtils.bytesToHex(buffer);
-        //Log.i("Test","CmdStr="+cmdStr);
+        //LogUtils.i("Test","CmdStr="+cmdStr);
         if(cmdStr.startsWith("AA")){
             receivedCMD=getAllCMD(cmdStr);
             if(receivedCMD==null){
@@ -226,17 +227,17 @@ public class LYYDevice {
 
             //售票机发送获取二维码支付链接指令（子命令 0x0A）
             if(hasQRCode()){
-                //Log.i("Test","hasQRCode=true");
+                //LogUtils.i("Test","hasQRCode=true");
                 String strQRCodeData=getQRCodeData();
-                //Log.i("Test","Before strQRCodeData="+strQRCodeData);
-                Log.i("Test","PayDeviceID="+setting.getPayDeviceID());
+                //LogUtils.i("Test","Before strQRCodeData="+strQRCodeData);
+                LogUtils.i("Test","PayDeviceID="+setting.getPayDeviceID());
                 if(strQRCodeData!=null && setting.getPayDeviceID()!=null)
                     QRData = strQRCodeData.replaceAll("(?<=topay/).*(?=/)", setting.getPayDeviceID());
-                //Log.i("Test","After strQRCodeData="+QRData);
+                //LogUtils.i("Test","After strQRCodeData="+QRData);
             }
             else if(checkXOR()){
 
-                Log.i("Test","checkXOR=true");
+                LogUtils.i("Test","checkXOR=true");
                 //查询链接CMD01
                 if(hasServerQuery()){
                     cmd_ReplySever();
@@ -245,7 +246,7 @@ public class LYYDevice {
 
                 //查询支付盒子网络状态
                 if(hasConnectedServer()){
-                    Log.i("Test", "Receieved Server Status:" + receivedCMD);
+                    LogUtils.i("Test", "Receieved Server Status:" + receivedCMD);
                     hasGotServerStatus=true;
                     //cmd_UploadParams();
                 }
@@ -290,7 +291,7 @@ public class LYYDevice {
                 if(hasReplyCashReport())
                     printInfo("支付盒子应答现金上报");
             }else {
-                Log.i("Test","checkXOR=false");
+                LogUtils.i("Test","checkXOR=false");
             }
         }else{
             printInfo("Invalid Server CMD:"+cmdStr);
@@ -316,7 +317,7 @@ public class LYYDevice {
     }
 
     private void cmd_ReplySever(){
-        Log.i("Test","hasServerQuery receivedCMD="+receivedCMD);
+        LogUtils.i("Test","hasServerQuery receivedCMD="+receivedCMD);
         setting.setPayDeviceID(getPayDeviceNO());
         settingDao.update(setting);
         printInfo("Reply Server:AA0502017C0872DD");
@@ -412,7 +413,7 @@ public class LYYDevice {
                     dataStr = lengthStr + dataStr;
                     //Send CMD
                     String cmdStr =  "AA"  + addEndCMD(dataStr);
-                    Log.i("Test", price.getTitle() + " cmd_UploadParams = " + cmdStr);
+                    LogUtils.i("Test", price.getTitle() + " cmd_UploadParams = " + cmdStr);
                     write(cmdStr);
                     TimeUtil.delay(500);
                 }
@@ -648,7 +649,7 @@ public class LYYDevice {
         QueryBuilder qb = paymentRecordDao.queryBuilder();
         qb.where(qb.and(PaymentRecordDao.Properties.PriceId.eq(ticketId),PaymentRecordDao.Properties.Type.eq(ticketType)));
         List<PaymentRecord> paymentRecordList= qb.list();
-        //Log.i("Test","Ticket ID = " +ticketId+", Ticket Type = " + ticketType + ", Ticket total number:" + qb.list().size());
+        //LogUtils.i("Test","Ticket ID = " +ticketId+", Ticket Type = " + ticketType + ", Ticket total number:" + qb.list().size());
         return paymentRecordList.size();
     }
 
@@ -718,7 +719,7 @@ public class LYYDevice {
     //Common Function -- Start
     //###########################
     private String addEndCMD(String cmdStr){
-        Log.i("Test","异或结果：" + DataUtils.xor(cmdStr));
+        LogUtils.i("Test","异或结果：" + DataUtils.xor(cmdStr));
         return DataUtils.removeSpace(cmdStr) + DataUtils.xor(cmdStr) + "DD";
     }
 
@@ -759,22 +760,22 @@ public class LYYDevice {
     private boolean checkXOR(){
         String hexStr = getCMDDataByRegex(receivedCMD,"(?<=AA).*(?=DD)");
 
-        Log.i("Test", "hexStr=" + hexStr);
+        LogUtils.i("Test", "hexStr=" + hexStr);
 
         String result = hexStr.substring(hexStr.length()-2,hexStr.length());
         String cmdStr = hexStr.substring(0,hexStr.length()-2);
 
-        Log.i("Test", "cmdStr=" + cmdStr);
+        LogUtils.i("Test", "cmdStr=" + cmdStr);
 
         String xorStr = DataUtils.xor(cmdStr);
 
-        Log.i("Test","result="+result);
-        Log.i("Test","xorStr="+xorStr);
+        LogUtils.i("Test","result="+result);
+        LogUtils.i("Test","xorStr="+xorStr);
         return xorStr.equals(result);
     }
 
     private void printInfo(String infoStr){
-        Log.i("Test", infoStr);
+        LogUtils.i("Test", infoStr);
     }
     //###########################
     //Common Function -- End

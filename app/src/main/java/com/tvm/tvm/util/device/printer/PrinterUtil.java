@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.tvm.tvm.bean.Summary;
 import com.tvm.tvm.util.DataUtils;
+import com.tvm.tvm.util.LogUtils;
 import com.tvm.tvm.util.TimeUtil;
 import com.tvm.tvm.util.constant.PreConfig;
 import com.tvm.tvm.util.device.QRCodeUtil;
@@ -71,7 +72,7 @@ public class PrinterUtil {
         }
         int fd = jPrinterInit(filePath);//连接打印机
         if (fd < 0) {
-            Log.i(TAG, "Device init ERR!");
+            LogUtils.i(TAG, "Device init ERR!");
         }
     }
 
@@ -81,7 +82,7 @@ public class PrinterUtil {
         this.summaryTicket=PrinterCase.getInstance().summaryTicket;
         printerInit();
         initPrintMessage();
-        Log.i(TAG, "printTemplate=" +printTemplate);
+        LogUtils.i(TAG, "printTemplate=" +printTemplate);
         parsePrintMessage();
     }
 

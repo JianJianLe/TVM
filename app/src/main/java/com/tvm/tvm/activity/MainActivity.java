@@ -269,6 +269,7 @@ public class MainActivity extends BaseActivity {
                 tv_main_header_ticket_num.setVisibility(View.INVISIBLE);
             }
         }
+        LogUtils.i("Login Main Screen");
     }
 
 
@@ -310,13 +311,13 @@ public class MainActivity extends BaseActivity {
 
     public void initBillAcceptor() {
         //纸钞机初始化
-        Log.i("Test","CachMachineType="+PreConfig.CachMachineType);
+        LogUtils.i("Test","CachMachineType="+PreConfig.CachMachineType);
         if(PreConfig.CachMachineType.equals("ITL")){
-            Log.i("Test","ITL initBillAcceptor");
+            LogUtils.i("Test","ITL initBillAcceptor");
             ITLBillAcceptorUtil.getInstance().init_BillAcceptorDevice();
             ITLBillAcceptorUtil.getInstance().init_BillAcceptorCmd();
         }else{
-            Log.i("Test","ICT initBillAcceptor");
+            LogUtils.i("Test","ICT initBillAcceptor");
             ICTBillAcceptorUtil.getInstance().init_BillAcceptorCmd();
             ICTBillAcceptorUtil.getInstance().init_BillAcceptorDevice();
             ICTBillAcceptorUtil.getInstance().ba_Disable();
@@ -324,7 +325,7 @@ public class MainActivity extends BaseActivity {
     }
 
     public void initPayDevice() {
-        Log.i("Test", "PayDeviceName="+PreConfig.PayDeviceName);
+        LogUtils.i("Test", "PayDeviceName="+PreConfig.PayDeviceName);
         if(PreConfig.PayDeviceName.equals("LYY"))
             LYYDevice.getInstance().initPayDevice();
         else
@@ -352,17 +353,17 @@ public class MainActivity extends BaseActivity {
                                 //当是视频图片轮播时，判断是否图片的最后一张，当flag=1时，表示为最后一张图片
                                 setAdsLayout(VIDEO_SHOW);//视频
                                 whatShow = 1;
-                                Log.d("Test", "The Image is completed,Show video and Set Video");
+                                LogUtils.d("Test", "The Image is completed,Show video and Set Video");
                                 setVideo();
-                                Log.d("Test", "Video start");
+                                LogUtils.d("Test", "Video start");
                             } else {
                                 //切换轮播图，并且更新时间
-                                Log.d("Test", "CurrentItem = " + currentItem);
+                                LogUtils.d("Test", "CurrentItem = " + currentItem);
                                 vp_main_ads.setCurrentItem(currentItem);
                             }
                         }
                         //=============
-                        Log.d("Test", "timeFlag = " + timeFlag);
+                        LogUtils.d("Test", "timeFlag = " + timeFlag);
                         timeFlag++;
                     }
 
@@ -373,7 +374,7 @@ public class MainActivity extends BaseActivity {
                 case 2://播放视频
                     setAdsLayout(VIDEO_SHOW);
                     setVideo();
-                    Log.d("Test", "Video start");
+                    LogUtils.d("Test", "Video start");
                     break;
                 case 3:
                     break;
@@ -393,7 +394,7 @@ public class MainActivity extends BaseActivity {
 
                             @Override
                             public void complete() {
-                                Log.d("Test", "Video completed，show Picture");
+                                LogUtils.d("Test", "Video completed，show Picture");
                                 setAdsLayout(PICTURE_SHOW);//图片
                                 whatShow = 0;
                             }
@@ -573,7 +574,7 @@ public class MainActivity extends BaseActivity {
      * @return
      */
     private int SetCurrentImage() {
-        Log.d("Test", "SetCurrentImage currentItem = " + currentItem);
+        LogUtils.d("Test", "SetCurrentImage currentItem = " + currentItem);
         int flag = mediaFlag;
         //播完之后切换0
         if (currentItem == list_img.size() - 1) {
@@ -663,13 +664,13 @@ public class MainActivity extends BaseActivity {
     private void setAdsLayout(int flag) {
         switch (flag) {
             case VIDEO_SHOW:
-                Log.i("Test","Set AdsLayout: Video Show");
+                LogUtils.i("Test","Set AdsLayout: Video Show");
                 isShowImage = false;
                 sv_main_video.setVisibility(View.VISIBLE);
                 fl_main_ads.setVisibility(View.GONE);
                 break;
             case PICTURE_SHOW:
-                Log.i("Test","Set AdsLayout: Picture Show");
+                LogUtils.i("Test","Set AdsLayout: Picture Show");
                 currentItem = -1;
                 isShowImage = true;
                 sv_main_video.setVisibility(View.GONE);
@@ -686,7 +687,7 @@ public class MainActivity extends BaseActivity {
      */
     public void initAds() {
 
-        Log.i("Test","=== MainActivity InitAds ===");
+        LogUtils.i("Test","=== MainActivity InitAds ===");
         // 清空list
         videos.clear();
         pictures.clear();
@@ -796,7 +797,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.i("Test","MainActivity OnResume");
+        LogUtils.i("Test","MainActivity OnResume");
         //设置票数
         setTicketNum();
         getPriceList();
@@ -809,7 +810,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        Log.i("Test","MainActivity OnPause");
+        LogUtils.i("Test","MainActivity OnPause");
         player.onPause();
     }
 
@@ -820,7 +821,7 @@ public class MainActivity extends BaseActivity {
         player.onDestroy();
         unregisterReceiver(mediaReceiver);
         shutDownScheduledExecutorService();
-        Log.i("Test", "MainActvity onDestroy scheduledExecutorService shutdown");
+        LogUtils.i("Test", "MainActvity onDestroy scheduledExecutorService shutdown");
     }
 
     private void shutDownScheduledExecutorService() {

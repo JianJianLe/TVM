@@ -14,6 +14,7 @@ import com.tvm.tvm.bean.Price;
 import com.tvm.tvm.bean.dao.DaoSession;
 import com.tvm.tvm.bean.dao.PriceDao;
 import com.tvm.tvm.util.BackPrevious;
+import com.tvm.tvm.util.LogUtils;
 import com.tvm.tvm.util.device.printer.PrinterCase;
 import com.tvm.tvm.util.device.printer.NormalTicket;
 import com.tvm.tvm.util.TimeUtil;
@@ -84,6 +85,7 @@ public class PayFinishActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case 0:
+                    LogUtils.i("Goto MainActivity");
                     gotoMainActivity();
                     break;
             }
@@ -95,6 +97,7 @@ public class PayFinishActivity extends BaseActivity {
         new Thread(){
             public void run() {
                 double balance= PrinterCase.getInstance().balanceRecord;
+                LogUtils.i("Print Balance:"+balance);
                 if (balance!=0){
                     balanceTicketSettings(balance);
                     PrinterCase.getInstance().print();
@@ -111,9 +114,9 @@ public class PayFinishActivity extends BaseActivity {
         new Thread(){
             public void run() {
                 double balance= PrinterCase.getInstance().balanceRecord;
-                Log.i("Test","printBalanceAfterTimeOut, balance="+balance);
+                LogUtils.i("Test","printBalanceAfterTimeOut, balance="+balance);
                 if (balance!=0){
-                    Log.i("Test","Print Balance After Time Out");
+                    LogUtils.i("Test","Print Balance After Time Out");
                     balanceTicketSettings(balance);
                     PrinterCase.getInstance().print();
                     PrinterCase.getInstance().balanceRecord=0d;//reset balance after print balance ticket.
@@ -179,13 +182,13 @@ public class PayFinishActivity extends BaseActivity {
     @Override
     public void onDestroy(){
         super.onDestroy();
-        Log.i("Test","isContinued="+isContinued);
+        LogUtils.i("Test","isContinued="+isContinued);
         if(!isContinued && PrinterCase.getInstance().balanceRecord>0){
-            Log.i("Test","print balance ticket.");
+            LogUtils.i("Test","print balance ticket.");
             tv_pay_finish_remain.setText("0");
             printBalanceAfterTimeOut();
         }
-        Log.i("Test","PayFinishActivity onDestroy scheduledExecutorService shutdown");
+        LogUtils.i("Test","PayFinishActivity onDestroy scheduledExecutorService shutdown");
     }
 
     /**

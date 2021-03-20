@@ -6,6 +6,7 @@ import android.os.Message;
 import android.widget.TextView;
 
 import com.tvm.tvm.R;
+import com.tvm.tvm.util.LogUtils;
 import com.tvm.tvm.util.device.QRCodeUtil;
 import com.tvm.tvm.util.device.printer.PrinterAction;
 import com.tvm.tvm.util.device.printer.PrinterCase;
@@ -43,9 +44,11 @@ public class PaySuccessActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case 0:
+                    LogUtils.i("Go to MainActivity");
                     gotoMainActivity();
                     break;
                 case 1:
+                    LogUtils.i("Goto PayFinishActivity");
                     gotoPayFinishActivity();
                     break;
             }

@@ -26,6 +26,7 @@ import com.tvm.tvm.bean.dao.DaoSession;
 import com.tvm.tvm.bean.dao.PriceDao;
 import com.tvm.tvm.receiver.MediaReceiver;
 import com.tvm.tvm.util.BackPrevious;
+import com.tvm.tvm.util.LogUtils;
 import com.tvm.tvm.util.LongClickUtils;
 import com.tvm.tvm.util.constant.PreConfig;
 import com.tvm.tvm.util.constant.StringUtils;
@@ -163,6 +164,7 @@ public class SelectPriceActivity extends BaseActivity implements View.OnTouchLis
                 }
             });
         }
+        LogUtils.i("SelectPriceActivity");
     }
 
     private void tvmRegisterAction() {
@@ -207,6 +209,7 @@ public class SelectPriceActivity extends BaseActivity implements View.OnTouchLis
         if (Integer.valueOf(tv_select_price_num.getText().toString().trim())<=0){
             ToastUtils.showText(this,StringUtils.TICKET_NUM_LESS_ZERO);
         }else {
+            LogUtils.i("Confirm Pay");
             Intent intent = new Intent();
             List<TicketBean> beanList = new ArrayList<>();
             Iterator<Map.Entry<Integer, TicketBean>> iterator = ticketList.entrySet().iterator();
@@ -294,7 +297,7 @@ public class SelectPriceActivity extends BaseActivity implements View.OnTouchLis
     @Override
     public void onDestroy(){
         super.onDestroy();
-        Log.i("Test","SelectPriceActivity onDestroy");
+        LogUtils.i("Test","SelectPriceActivity onDestroy");
         unregisterReceiver(receiver);
         unregisterReceiver(mediaReceiver);
     }

@@ -10,6 +10,7 @@ import com.tvm.tvm.bean.TicketSummary;
 import com.tvm.tvm.bean.dao.DaoSession;
 import com.tvm.tvm.bean.dao.PaymentRecordDao;
 import com.tvm.tvm.bean.dao.SettingDao;
+import com.tvm.tvm.util.LogUtils;
 import com.tvm.tvm.util.TimeUtil;
 import com.tvm.tvm.util.constant.PreConfig;
 import com.tvm.tvm.util.constant.StringUtils;
@@ -50,6 +51,7 @@ public class PrinterAction {
     }
 
     public void PrintTicketList(){
+        LogUtils.i("Print Tickets");
         normalTicket.setDeviceNumber(getDeviceNO());
         for (TicketBean bean:ticketList){
             ticketPrice=bean.getPrice();//价格
@@ -58,6 +60,8 @@ public class PrinterAction {
             for(int i=0; i<bean.getNumber();i++){
                 ticketTitle=bean.getTitle();//标题
                 String currentTime=TimeUtil.dateFormat.format(new Date());
+                LogUtils.i("Print:"+ticketTitle+", Ticket Price:"+ticketPrice);
+                LogUtils.i("Print Time:"+currentTime);
                 normalTicket.setTicketNumber(PrinterCase.getInstance().getTicketNumber(currentTime));
                 normalTicket.setTicketName(ticketTitle);
                 normalTicket.setPrice((int)ticketPrice+"");
@@ -74,7 +78,7 @@ public class PrinterAction {
                     List<String> packageList=getPackageList(ticketDescription);
                     for(int index=0; index<packageList.size();index++){
                         ticketTitle=getPackageTicketName(packageList.get(index),bean.getTitle());
-                        Log.i("Test","updated ticketTitle="+ticketTitle);
+                        LogUtils.i("Test","updated ticketTitle="+ticketTitle);
                         normalTicket.setTicketName(ticketTitle);
                         PrintTargetTicket(bean);
                     }
@@ -103,6 +107,7 @@ public class PrinterAction {
         }
         PrinterCase.getInstance().print();
         TimeUtil.delay(3000);
+        LogUtils.i(bean.getTitle() + " - Print Target Ticket Completed");
     }
 
 

@@ -14,6 +14,7 @@ import com.tvm.tvm.R;
 import com.tvm.tvm.bean.TicketBean;
 import com.tvm.tvm.util.BackPrevious;
 import com.tvm.tvm.util.BitmapUtils;
+import com.tvm.tvm.util.LogUtils;
 import com.tvm.tvm.util.TimeUtil;
 import com.tvm.tvm.util.constant.PreConfig;
 import com.tvm.tvm.util.constant.StringUtils;
@@ -122,7 +123,7 @@ public class PayDetailActivity extends BaseActivity{
                     break;
                 case 1:
                     iv_pay_detail_qr_code.setImageBitmap(BitmapUtils.file2Bitmap(imgQRCodeFile));
-                    Log.i("Test", "Completed to show QR Code");
+                    LogUtils.i("Test", "Completed to show QR Code");
                     hasShownQRCode=true;
                     break;
                 case 2:
@@ -138,6 +139,7 @@ public class PayDetailActivity extends BaseActivity{
         if(PrinterCase.getInstance().amountRecord>0){
             double balance=PrinterCase.getInstance().amountRecord - totalAmount;
             if(balance>=0){
+                LogUtils.i("Pay Successfully");
                 PrinterCase.getInstance().balanceRecord=balance;
                 PrinterCase.getInstance().amountRecord=0;
                 //@Star goto Next Activity
@@ -150,6 +152,7 @@ public class PayDetailActivity extends BaseActivity{
     private void netWorkPay(){
         if(PreConfig.PayDeviceName.equals("LYY")){
             if(LYYDevice.getInstance().paySuccess){
+                LogUtils.i("Online Pay");
                 PrinterCase.getInstance().amountRecord=totalAmount;
                 receivedAmount=totalAmount;
                 updateAmount();
@@ -158,6 +161,7 @@ public class PayDetailActivity extends BaseActivity{
             }
         }else{
             if(WMQDevice.getInstance().paySuccess){
+                LogUtils.i("Online Pay");
                 PrinterCase.getInstance().amountRecord=totalAmount;
                 receivedAmount=totalAmount;
                 updateAmount();
@@ -173,14 +177,15 @@ public class PayDetailActivity extends BaseActivity{
         int cash=0;
 
         if(PreConfig.CachMachineType.equals("ITL")){
-            Log.i("Test","ITL rcvdMoney="+ITLBillAcceptorUtil.getInstance().rcvdMoney);
+            LogUtils.i("Test","ITL rcvdMoney="+ITLBillAcceptorUtil.getInstance().rcvdMoney);
             cash = ITLBillAcceptorUtil.getInstance().rcvdMoney;
         }else{
             cash = ICTBillAcceptorUtil.getInstance().rcvdMoney;
         }
 
         if(cash>0){
-            Log.i("Test","ITL cash="+cash);
+            LogUtils.i("Cash Pay");
+            LogUtils.i("Test","ITL cash="+cash);
             PrinterCase.getInstance().amountRecord+=cash;
             receivedAmount = PrinterCase.getInstance().amountRecord;
             updateAmount();
@@ -189,7 +194,7 @@ public class PayDetailActivity extends BaseActivity{
                 WMQDevice.getInstance().cmd_CashPay(cash);
             }
             if(PreConfig.CachMachineType.equals("ITL")){
-                Log.i("Test","ITL rcvdMoney=0");
+                LogUtils.i("Test","ITL rcvdMoney=0");
                 ITLBillAcceptorUtil.getInstance().rcvdMoney=0;
             }else{
                 ICTBillAcceptorUtil.getInstance().rcvdMoney=0;
@@ -274,7 +279,7 @@ public class PayDetailActivity extends BaseActivity{
 
     private void displayQRCode(String QRData){
         if(QRData!=null&&QRData.length()>0){
-            Log.i("Test","display QR Code:" + QRData);
+            LogUtils.i("Test","display QR Code:" + QRData);
             imgQRCodeFile = new File(QRCodeUtil.getInstance().getQRCode(this,QRData));
             if(imgQRCodeFile.exists()){
                 //Set Image into View
@@ -350,7 +355,7 @@ public class PayDetailActivity extends BaseActivity{
             scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
             //时间更新，一分钟刷新一次
             scheduledExecutorService.scheduleWithFixedDelay(new TimeTask(), 1, 1, TimeUnit.SECONDS);
-            Log.i("Test", "PayDetailActivity onStart scheduledExecutorService open!");
+            LogUtils.i("Test", "PayDetailActivity onStart scheduledExecutorService open!");
         }
     }
 
@@ -370,7 +375,7 @@ public class PayDetailActivity extends BaseActivity{
         }else{
             ICTBillAcceptorUtil.getInstance().ba_Disable();//@Star Feb16
         }
-        Log.i("Test","PayDetailActivity onDestroy scheduledExecutorService shutdown");
+        LogUtils.i("Test","PayDetailActivity onDestroy scheduledExecutorService shutdown");
     }
 
     @Override

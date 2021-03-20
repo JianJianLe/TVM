@@ -15,7 +15,7 @@ public class PreConfig {
     //public static String AndroidBoardVersion="1.0";
     public static String AndroidBoardVersion="2.0";
 
-    public static String AppVersion="1.9.7";
+    public static String AppVersion="1.9.8";
 
     //支付使用的第三方模块
     public static String PayDeviceName="WMQ";

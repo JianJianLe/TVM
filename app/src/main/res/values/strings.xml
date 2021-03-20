@@ -56,7 +56,7 @@
     <string name="amount">金额</string>
 
     <string name="bill_list">账单列表</string>
-    <string name="bill_Number">票号</string>
+    <string name="bill_Number">序号</string>
 
     <string name="start_time">开始时间</string>
     <string name="end_time">结束时间</string>
